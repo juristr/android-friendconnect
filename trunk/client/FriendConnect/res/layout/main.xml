@@ -4,6 +4,17 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
+    
+    <LinearLayout android:orientation="vertical"
+    	android:layout_width="fill_parent"
+    	android:layout_height="fill_parent"
+    >
+    
+	<EditText android:text="Enter your status..." android:id="@+id/editTextMyStatus" android:layout_width="fill_parent" android:layout_height="wrap_content"></EditText>
+	
+	<TextView android:text="Attending a lecture" android:id="@+id/textViewMyStatus" android:layout_width="fill_parent" android:layout_height="wrap_content"></TextView>
+
+</LinearLayout>
 
 	<ListView android:id="@+id/listViewFriends" 
 		android:layout_width="fill_parent" 
