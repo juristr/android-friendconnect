@@ -31,6 +31,7 @@ public class FriendConnectActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
         
         ListView listViewFriends = (ListView) findViewById(R.id.listViewFriends);
         
@@ -39,6 +40,7 @@ public class FriendConnectActivity extends Activity {
         map.put("username", "Juri username");
         map.put("status", "some status");
         mylist.add(map);
+        map = new HashMap<String, String>();
         map.put("username", "Matthias username");
         map.put("status", "some status2");
         mylist.add(map);
@@ -47,7 +49,5 @@ public class FriendConnectActivity extends Activity {
                     new String[] {"username", "status"}, new int[] {R.id.textViewUsername, R.id.textViewStatus});
         
         listViewFriends.setAdapter(simpleAdapter);
-        
-        setContentView(R.layout.main);
     }
 }
