@@ -9,6 +9,7 @@
 			  android:src="@drawable/online"
 			  android:layout_width="wrap_content"
 			  android:layout_height="fill_parent"
+			  android:padding="5px"
 	/>
 	
 	<LinearLayout android:id="@+id/mainItemContainer"
@@ -20,12 +21,14 @@
 			 android:text="Username" 
 			 android:layout_width="fill_parent" 
 			 android:layout_height="wrap_content"
+			 android:textAppearance="?android:attr/textAppearanceLarge"  
 		/>
 		 
 		<TextView android:id="@+id/textViewStatus"
 			 android:text="Statusmessage" 
 			 android:layout_width="fill_parent" 
 			 android:layout_height="wrap_content"
+			 android:textAppearance="?android:attr/textAppearanceSmall"  
 		/>	 
 		 
 	</LinearLayout>

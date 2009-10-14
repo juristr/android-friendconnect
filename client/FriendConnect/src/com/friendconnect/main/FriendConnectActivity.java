@@ -37,12 +37,12 @@ public class FriendConnectActivity extends Activity {
         
         ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> map = new HashMap<String, String>();
-        map.put("username", "Juri username");
-        map.put("status", "some status");
+        map.put("username", "Juri");
+        map.put("status", "Some status...");
         mylist.add(map);
         map = new HashMap<String, String>();
-        map.put("username", "Matthias username");
-        map.put("status", "some status2");
+        map.put("username", "Matthias");
+        map.put("status", "Some status...");
         mylist.add(map);
         // ...
         SimpleAdapter simpleAdapter = new SimpleAdapter(this, mylist, R.layout.friendlistrowitem,
