@@ -2,14 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
-	
-	<TextView android:id="@+id/textViewContacts" android:layout_width="fill_parent"
-		android:text="Contacts"
-		android:layout_height="wrap_content" android:paddingTop="2dip"
-		android:paddingBottom="2dip" android:paddingLeft="5dip"
-		style="?android:attr/listSeparatorTextViewStyle" />
+		
+	<TextView android:id="@+id/textViewContacts" 
+			android:layout_width="fill_parent"
+			android:text="@string/friends"
+			android:layout_height="wrap_content" android:paddingTop="2dip"
+			android:paddingBottom="2dip" android:paddingLeft="5dip"
+			style="?android:attr/listSeparatorTextViewStyle" />
+
+
 
 	<ListView android:id="@+id/listViewFriends"
-		android:layout_width="fill_parent" android:layout_height="fill_parent" />
-
+			android:layout_width="fill_parent" 
+			android:layout_height="fill_parent" />
+			
 </LinearLayout>
