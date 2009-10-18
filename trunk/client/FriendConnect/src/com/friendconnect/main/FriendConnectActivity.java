@@ -20,20 +20,29 @@ package com.friendconnect.main;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Observable;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-public class FriendConnectActivity extends Activity {
+import com.friendconnect.view.IView;
+
+public class FriendConnectActivity extends Activity implements IView {
+	
+	private ListView listViewFriends;
+	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        ListView listViewFriends = (ListView) findViewById(R.id.listViewFriends);
+        this.listViewFriends = (ListView) findViewById(R.id.listViewFriends); 
+        
         
         ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> map = new HashMap<String, String>();
@@ -45,9 +54,16 @@ public class FriendConnectActivity extends Activity {
         map.put("status", "Some status...");
         mylist.add(map);
         // ...
-        SimpleAdapter simpleAdapter = new SimpleAdapter(this, mylist, R.layout.friendlistrowitem,
-                    new String[] {"username", "status"}, new int[] {R.id.textViewUsername, R.id.textViewStatus});
         
-        listViewFriends.setAdapter(simpleAdapter);
+        listViewFriends.setAdapter(getAdapter(mylist));
     }
+    
+    private BaseAdapter getAdapter(List data){
+    	return new SimpleAdapter(this, data, R.layout.friendlistrowitem,
+                new String[] {"username", "status"}, new int[] {R.id.textViewUsername, R.id.textViewStatus});
+    }
+
+	public void update(Observable observable, Object data) {
+		// TODO Auto-generated method stub	
+	}
 }

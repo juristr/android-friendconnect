@@ -2,4 +2,5 @@
 <resources>
     
     <string name="app_name">Friend Connect</string>
+<string name="friends">Friends</string>
 </resources>
