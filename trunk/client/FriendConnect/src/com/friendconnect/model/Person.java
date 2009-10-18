@@ -18,7 +18,10 @@
 
 package com.friendconnect.model;
 
-public abstract class Person implements ILoadable, ILocatable {
+import java.util.Observable;
+
+public abstract class Person extends Observable implements ILoadable,
+		ILocatable {
 	protected long id;
 	protected String nickname;
 	protected String firstname;
@@ -39,7 +42,11 @@ public abstract class Person implements ILoadable, ILocatable {
 	}
 
 	public void setNickname(String nickname) {
-		this.nickname = nickname;
+		if (!this.nickname.equals(nickname)) {
+			this.nickname = nickname;
+			setChanged();
+			notifyObservers();
+		}
 	}
 
 	public String getFirstname() {
@@ -47,7 +54,11 @@ public abstract class Person implements ILoadable, ILocatable {
 	}
 
 	public void setFirstname(String firstname) {
-		this.firstname = firstname;
+		if (!this.firstname.equals(firstname)) {
+			this.firstname = firstname;
+			setChanged();
+			notifyObservers();
+		}
 	}
 
 	public String getSurname() {
@@ -55,21 +66,29 @@ public abstract class Person implements ILoadable, ILocatable {
 	}
 
 	public void setSurname(String surname) {
-		this.surname = surname;
+		if (!this.surname.equals(surname)) {
+			this.surname = surname;
+			setChanged();
+			notifyObservers();
+		}
 	}
-	
+
 	public String getStatusMessage() {
 		return statusMessage;
 	}
 
 	public void setStatusMessage(String statusMessage) {
-		this.statusMessage = statusMessage;
+		if (!this.statusMessage.equals(statusMessage)) {
+			this.statusMessage = statusMessage;
+			setChanged();
+			notifyObservers();
+		}
 	}
 
-	public Location getPosition(){
+	public Location getPosition() {
 		return this.position;
 	}
-	
+
 	public void setPosition(Location location) {
 		this.position = location;
 	}
