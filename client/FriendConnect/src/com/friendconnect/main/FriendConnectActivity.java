@@ -19,21 +19,23 @@
 package com.friendconnect.main;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
+import com.friendconnect.adapters.PersonAdapter;
+import com.friendconnect.model.Friend;
+import com.friendconnect.model.Person;
 import com.friendconnect.view.IView;
 
 public class FriendConnectActivity extends Activity implements IView {
 	
 	private ListView listViewFriends;
+	private ArrayAdapter<Person> personAdapter;
 	
     /** Called when the activity is first created. */
     @Override
@@ -43,27 +45,22 @@ public class FriendConnectActivity extends Activity implements IView {
         
         this.listViewFriends = (ListView) findViewById(R.id.listViewFriends); 
         
+        //TODO dummy dataset. to be replaced with the correct data
+        ArrayList<Person> friends = new ArrayList<Person>();
+        friends.add(new Friend(1, "Juri", "Strumpflohner", "Hello World!"));
+        friends.add(new Friend(2, "Matthias", "Braunhofer", "Hello FriendConnect!"));
         
-        ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("username", "Juri");
-        map.put("status", "Some status...");
-        mylist.add(map);
-        map = new HashMap<String, String>();
-        map.put("username", "Matthias");
-        map.put("status", "Some status...");
-        mylist.add(map);
-        // ...
-        
-        listViewFriends.setAdapter(getAdapter(mylist));
+        this.personAdapter = createAdapter(friends);
+        listViewFriends.setAdapter(this.personAdapter);
     }
     
-    private BaseAdapter getAdapter(List data){
-    	return new SimpleAdapter(this, data, R.layout.friendlistrowitem,
-                new String[] {"username", "status"}, new int[] {R.id.textViewUsername, R.id.textViewStatus});
+    //TODO extract to a generic interface?? Necessary??
+    private PersonAdapter createAdapter(List data){
+    	return new PersonAdapter(this, R.layout.friendlistrowitem, data);
     }
 
 	public void update(Observable observable, Object data) {
-		// TODO Auto-generated method stub	
+		//provocate rebinding of the friendlist
+		this.personAdapter.notifyDataSetChanged();
 	}
 }

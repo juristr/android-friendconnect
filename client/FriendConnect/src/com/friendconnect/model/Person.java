@@ -19,12 +19,13 @@
 package com.friendconnect.model;
 
 public abstract class Person implements ILoadable, ILocatable {
-	private long id;
-	private String nickname;
-	private String firstname;
-	private String surname;
-	private Location currentPosition;
-
+	protected long id;
+	protected String nickname;
+	protected String firstname;
+	protected String surname;
+	protected String statusMessage;
+	protected Location position;
+	
 	public long getId() {
 		return this.id;
 	}
@@ -57,12 +58,20 @@ public abstract class Person implements ILoadable, ILocatable {
 		this.surname = surname;
 	}
 	
+	public String getStatusMessage() {
+		return statusMessage;
+	}
+
+	public void setStatusMessage(String statusMessage) {
+		this.statusMessage = statusMessage;
+	}
+
 	public Location getPosition(){
-		return this.currentPosition;
+		return this.position;
 	}
 	
 	public void setPosition(Location location) {
-		this.currentPosition = location;
+		this.position = location;
 	}
 
 }

@@ -37,7 +37,6 @@ public abstract class AbstractController implements Observer {
 		return this.model;
 	}
 	
-	
 	public void update(Observable observable, Object data) {		
 		for (IView view : this.views) {
 			view.update(observable, data);
