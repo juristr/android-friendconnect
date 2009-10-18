@@ -19,28 +19,40 @@
 package com.friendconnect.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class User extends Person {
-	private ArrayList<Person> friends;
-	private ArrayList<POIAlert> poiAlert;
+	private List<Person> friends;
+	private List<POIAlert> poiAlert;
 	
 	public User() {
-		
+		this.friends = new ArrayList<Person>();
+		this.poiAlert = new ArrayList<POIAlert>();
 	}
 
-	public ArrayList<Person> getFriends() {
+	//TODO bad, could be modified without being able to notice
+	//and fire change events!!!
+	public List<Person> getFriends() {
 		return friends;
 	}
 
-	public void setFriends(ArrayList<Person> friends) {
-		this.friends = friends;
+//	public void setFriends(List<Person> friends) {
+//		this.friends = friends;
+//	}
+	
+	public void addFriend(Friend friend){
+		if(!this.friends.contains(friend)){
+			this.friends.add(friend);
+			setChanged();
+			notifyObservers();
+		}
 	}
 
-	public ArrayList<POIAlert> getPoiAlert() {
+	public List<POIAlert> getPoiAlert() {
 		return poiAlert;
 	}
 
-	public void setPoiAlert(ArrayList<POIAlert> poiAlert) {
+	public void setPoiAlert(List<POIAlert> poiAlert) {
 		this.poiAlert = poiAlert;
 	}
 

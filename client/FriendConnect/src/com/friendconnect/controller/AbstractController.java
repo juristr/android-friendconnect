@@ -4,14 +4,18 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import android.content.Context;
+import android.widget.BaseAdapter;
+
 import com.friendconnect.view.IView;
 
-public abstract class AbstractController implements Observer {
+public abstract class AbstractController<T extends Observable> implements Observer {
 	private ArrayList<IView> views;
-	private Observable model;
+	protected T model;
 	
-	public AbstractController() {
+	public AbstractController(T model) {
 		this.views = new ArrayList<IView>();
+		this.model = model;
 	}
 	
 	public void registerObserver(IView observer){
@@ -28,14 +32,16 @@ public abstract class AbstractController implements Observer {
 		this.views.remove(observer);
 	}
 	
-	public void registerModel(Observable model){
+	public void registerModel(T model){
 		this.model = model;
 		this.model.addObserver(this);
 	}
 	
-	public Observable getModel(){
+	public T getModel(){
 		return this.model;
 	}
+	
+	public abstract <T extends BaseAdapter> T getAdapter(Context context);
 	
 	public void update(Observable observable, Object data) {		
 		for (IView view : this.views) {
