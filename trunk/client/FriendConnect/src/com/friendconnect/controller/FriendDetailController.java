@@ -16,16 +16,21 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.model;
+package com.friendconnect.controller;
 
-public class Friend extends Person {
-	
-	
-	
-	public Friend(long id, String firstname, String surname, String statusMessage) {
-		this.id = id;
-		this.firstname = firstname;
-		this.surname = surname;
-		this.statusMessage = statusMessage;
+import android.content.Context;
+import android.widget.BaseAdapter;
+
+import com.friendconnect.model.Person;
+
+public class FriendDetailController extends AbstractController<Person> {
+
+	public FriendDetailController() {
+		
+	}
+
+	@Override
+	public <T extends BaseAdapter> T getAdapter(Context context) {
+		return null;
 	}
 }

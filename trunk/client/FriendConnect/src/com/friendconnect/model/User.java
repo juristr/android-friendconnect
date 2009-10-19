@@ -22,17 +22,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User extends Person {
-	private List<Person> friends;
+	private List<Friend> friends;
 	private List<POIAlert> poiAlert;
 	
 	public User() {
-		this.friends = new ArrayList<Person>();
+		this.friends = new ArrayList<Friend>();
 		this.poiAlert = new ArrayList<POIAlert>();
 	}
 
 	//TODO bad, could be modified without being able to notice
 	//and fire change events!!!
-	public List<Person> getFriends() {
+	public List<Friend> getFriends() {
 		return friends;
 	}
 
