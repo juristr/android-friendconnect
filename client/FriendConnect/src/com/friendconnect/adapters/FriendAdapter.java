@@ -20,9 +20,6 @@ package com.friendconnect.adapters;
 
 import java.util.List;
 
-import com.friendconnect.main.R;
-import com.friendconnect.model.Person;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,16 +29,20 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.friendconnect.main.R;
+import com.friendconnect.model.Friend;
+import com.friendconnect.model.Person;
+
 /**
  * Adapter for binding a list of {@link Person} objects
  * to a {@link ListView}
  *
  */
-public class PersonAdapter extends ArrayAdapter<Person> {
+public class FriendAdapter extends ArrayAdapter<Friend> {
 	private int resourceId;
 	
-	public PersonAdapter(Context context, int resourceId,
-			List<Person> persons) {
+	public FriendAdapter(Context context, int resourceId,
+			List<Friend> persons) {
 		super(context, resourceId, persons);
 		this.resourceId = resourceId;
 	}
@@ -50,7 +51,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LinearLayout friendListView;
 		
-		Person person = getItem(position);
+		Friend person = getItem(position);
 		
 		//TODO check the following lines
 		if(convertView == null){

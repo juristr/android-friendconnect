@@ -20,23 +20,21 @@ package com.friendconnect.controller;
 
 import android.content.Context;
 
-import com.friendconnect.adapters.PersonAdapter;
+import com.friendconnect.adapters.FriendAdapter;
 import com.friendconnect.model.Friend;
 import com.friendconnect.model.User;
 
 public class FriendListController extends AbstractController<User> {
 	private int layoutId; // TODO find better solution of passing this value
 
-	public FriendListController(User model, int layoutId) {
-		super(model);
-		registerModel(model); // TODO put this directly inside
-								// AbstractController ??
+	public FriendListController(int layoutId) {
+		super();
 		this.layoutId = layoutId;
-
-		initializeUserWithDummyFriends();	}
+	
+	}
 
 	// TODO just dummy
-	private void initializeUserWithDummyFriends() {
+	public void initializeUserWithDummyFriends() {
 		this.model.addFriend(new Friend(1, "Juri", "Strumpflohner",
 				"Hello World!"));
 		this.model.addFriend(new Friend(2, "Matthias", "Braunhofer",
@@ -44,8 +42,8 @@ public class FriendListController extends AbstractController<User> {
 	}
 
 	@Override
-	public PersonAdapter getAdapter(Context context) {
-		return new PersonAdapter(context, this.layoutId, this.model
+	public FriendAdapter getAdapter(Context context) {
+		return new FriendAdapter(context, this.layoutId, this.model
 				.getFriends());
 	}
 
@@ -55,5 +53,9 @@ public class FriendListController extends AbstractController<User> {
 
 	public void simulateFriendsStatusMessageChange(String string) {
 		this.model.getFriends().get(1).setStatusMessage(string);
+	}
+
+	public Friend getFriend(int position) {
+		return this.model.getFriends().get(position);
 	}
 }
