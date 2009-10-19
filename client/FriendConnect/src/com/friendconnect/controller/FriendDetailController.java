@@ -26,7 +26,7 @@ import com.friendconnect.model.Person;
 public class FriendDetailController extends AbstractController<Person> {
 
 	public FriendDetailController() {
-		
+		super();
 	}
 
 	@Override
