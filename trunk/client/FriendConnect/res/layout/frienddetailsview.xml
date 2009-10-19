@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/layout_root" android:orientation="vertical"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:padding="10dp">
+
+	<TextView android:text="@+id/textViewNickname"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:textStyle="bold" />
+
+	<TextView android:id="@+id/textViewNickname" android:text="Matthias"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:paddingBottom="10dp" />
+
+	<TextView android:text="@+id/textViewFirstname"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:textStyle="bold" />
+
+	<TextView android:id="@+id/textViewFirstname" android:text="Matthias"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:paddingBottom="10dp" />
+
+	<TextView android:text="@+id/textViewSurname"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:textStyle="bold" />
+
+	<TextView android:id="@+id/textViewSurname" android:text="Braunhofer"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:paddingBottom="10dp" />
+
+	<TextView android:text="@+id/textViewStatusmessage"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:textStyle="bold" />
+
+	<TextView android:id="@+id/textViewStatusmessage"
+		android:text="Statusmessage" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" />
+</LinearLayout>
