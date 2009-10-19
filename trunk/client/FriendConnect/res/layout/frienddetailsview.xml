@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/layout_root" android:orientation="vertical"
-	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:layout_width="fill_parent" android:layout_height="wrap_content" 
 	android:padding="10dp">
 
-	<TextView android:text="@+id/textViewNickname"
+	<TextView android:text="Nickname:"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:textStyle="bold" />
 
@@ -12,7 +12,7 @@
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:paddingBottom="10dp" />
 
-	<TextView android:text="@+id/textViewFirstname"
+	<TextView android:text="Firstname:"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:textStyle="bold" />
 
@@ -20,7 +20,7 @@
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:paddingBottom="10dp" />
 
-	<TextView android:text="@+id/textViewSurname"
+	<TextView android:text="Surname:"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:textStyle="bold" />
 
@@ -28,7 +28,7 @@
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:paddingBottom="10dp" />
 
-	<TextView android:text="@+id/textViewStatusmessage"
+	<TextView android:text="Statusmessage:"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:textStyle="bold" />
 
