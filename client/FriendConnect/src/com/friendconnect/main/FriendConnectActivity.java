@@ -21,13 +21,18 @@ package com.friendconnect.main;
 import java.util.Observable;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.friendconnect.controller.FriendListController;
@@ -64,7 +69,18 @@ public class FriendConnectActivity extends Activity implements IView {
 					long id) {
 				Friend selectedUser = controller.getFriend(position);
 				
-				//TODO show the dialog here
+				Dialog dialog = new Dialog(view.getContext());
+
+				dialog.setContentView(R.layout.frienddetailsview);
+				dialog.setTitle("Details");
+				
+//				((TextView)findViewById(R.id.textViewNickname)).setText(selectedUser.getNickname());
+//				((TextView)findViewById(R.id.textViewFirstname)).setText(selectedUser.getFirstname());
+//				((TextView)findViewById(R.id.textViewSurname)).setText(selectedUser.getSurname());
+//				((TextView)findViewById(R.id.textViewStatusmessage)).setText(selectedUser.getStatusMessage());
+				
+				dialog.show();
+				//TODO: set fields on dialog
 			}
 		});
 	}
