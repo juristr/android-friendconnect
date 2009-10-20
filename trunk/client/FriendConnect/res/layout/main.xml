@@ -17,7 +17,7 @@
 	</LinearLayout>
 
 	<TextView android:id="@+id/textViewContacts"
-		android:layout_width="fill_parent" android:text="@string/contacts"
+		android:layout_width="fill_parent" android:text="@string/friends"
 		android:layout_height="wrap_content" android:paddingTop="2dip"
 		android:paddingBottom="2dip" android:paddingLeft="5dip"
 		style="?android:attr/listSeparatorTextViewStyle" />
