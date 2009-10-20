@@ -35,9 +35,9 @@ public class FriendListController extends AbstractController<User> {
 
 	// TODO just dummy
 	public void initializeUserWithDummyFriends() {
-		this.model.addFriend(new Friend(1, "Juri", "Strumpflohner",
+		this.model.addFriend(new Friend(1, "Juri", "Juri", "Strumpflohner",
 				"Hello World!"));
-		this.model.addFriend(new Friend(2, "Matthias", "Braunhofer",
+		this.model.addFriend(new Friend(2, "Matthias", "Matthias", "Braunhofer",
 				"Hello FriendConnect!"));
 	}
 

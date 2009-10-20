@@ -21,14 +21,13 @@ package com.friendconnect.main;
 import java.util.Observable;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
@@ -46,6 +45,9 @@ public class FriendConnectActivity extends Activity implements IView {
 	private FriendListController controller;
 	private ListView listViewFriends;
 	private BaseAdapter adapter;
+	private Friend selectedUser;
+	
+	static final private int FRIENDDETAILS_DIALOG = 1; 
 
 	/** Called when the activity is first created. */
 	@Override
@@ -65,26 +67,42 @@ public class FriendConnectActivity extends Activity implements IView {
 		listViewFriends.setAdapter(this.adapter);
 		listViewFriends.setOnItemClickListener(new OnItemClickListener() {
 
-			public void onItemClick(AdapterView<?> parent, View view, int position,
-					long id) {
-				Friend selectedUser = controller.getFriend(position);
-				
-				Dialog dialog = new Dialog(view.getContext());
-
-				dialog.setContentView(R.layout.frienddetailsview);
-				dialog.setTitle("Details");
-				
-//				((TextView)findViewById(R.id.textViewNickname)).setText(selectedUser.getNickname());
-//				((TextView)findViewById(R.id.textViewFirstname)).setText(selectedUser.getFirstname());
-//				((TextView)findViewById(R.id.textViewSurname)).setText(selectedUser.getSurname());
-//				((TextView)findViewById(R.id.textViewStatusmessage)).setText(selectedUser.getStatusMessage());
-				
-				dialog.show();
-				//TODO: set fields on dialog
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				selectedUser = controller.getFriend(position);
+				showDialog(FRIENDDETAILS_DIALOG);
 			}
 		});
 	}
-
+	
+	@Override
+	public Dialog onCreateDialog(int id) {
+		switch (id) {
+		case (FRIENDDETAILS_DIALOG):
+			LayoutInflater li = LayoutInflater.from(this);
+			View friendDetailsView = li.inflate(R.layout.frienddetailsview, null);
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			AlertDialog friendDetailsDialog = builder.create();	
+			friendDetailsDialog.setTitle(R.string.details);
+			friendDetailsDialog.setView(friendDetailsView);
+			friendDetailsDialog.setCanceledOnTouchOutside(true);
+			friendDetailsDialog.setIcon(R.drawable.icon);
+			return friendDetailsDialog;
+		}
+		return null;
+	}
+	
+	@Override
+	public void onPrepareDialog(int id, Dialog dialog) {
+		switch (id) {
+		case (FRIENDDETAILS_DIALOG):
+			((TextView) dialog.findViewById(R.id.textViewNickname)).setText(selectedUser.getNickname());
+			((TextView) dialog.findViewById(R.id.textViewFirstname)).setText(selectedUser.getFirstname());
+			((TextView) dialog.findViewById(R.id.textViewSurname)).setText(selectedUser.getSurname());
+			((TextView) dialog.findViewById(R.id.textViewStatusmessage)).setText(selectedUser.getStatusMessage());
+			break;
+		}
+	}
+	
 	public void update(Observable observable, Object data) {
 		// provocate rebinding of the friendlist
 		this.adapter.notifyDataSetChanged();
@@ -122,7 +140,7 @@ public class FriendConnectActivity extends Activity implements IView {
 	 * same model instance
 	 */
 	private void simulateMVCBindings() {
-		this.controller.addFriend(new Friend(3, "Test friend", "some",
+		this.controller.addFriend(new Friend(3, "Test friend", "Test friend", "some",
 				"Hi there, I'm new here!"));
 		this.controller
 				.simulateFriendsStatusMessageChange("FriendConnect rocks!!");

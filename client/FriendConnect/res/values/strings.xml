@@ -7,4 +7,10 @@
 
 
 
+<string name="nickname">Nickname</string>
+<string name="firstname">First Name</string>
+<string name="surname">Surname</string>
+<string name="statusmessage">Status Message</string>
+<string name="details">Details</string>
+<string name="contacts">Contacts</string>
 </resources>
