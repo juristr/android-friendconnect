@@ -20,6 +20,8 @@ package com.friendconnect.main;
 
 import java.util.Observable;
 
+import org.xmlrpc.android.IXMLRPCCallback;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -37,6 +39,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.friendconnect.controller.FriendListController;
 import com.friendconnect.model.Friend;
 import com.friendconnect.model.User;
+import com.friendconnect.model.XMLRPCComunicator;
 import com.friendconnect.view.IView;
 
 public class FriendConnectActivity extends Activity implements IView {
@@ -46,8 +49,8 @@ public class FriendConnectActivity extends Activity implements IView {
 	private ListView listViewFriends;
 	private BaseAdapter adapter;
 	private Friend selectedUser;
-	
-	static final private int FRIENDDETAILS_DIALOG = 1; 
+
+	static final private int FRIENDDETAILS_DIALOG = 1;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -67,21 +70,23 @@ public class FriendConnectActivity extends Activity implements IView {
 		listViewFriends.setAdapter(this.adapter);
 		listViewFriends.setOnItemClickListener(new OnItemClickListener() {
 
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
 				selectedUser = controller.getFriend(position);
 				showDialog(FRIENDDETAILS_DIALOG);
 			}
 		});
 	}
-	
+
 	@Override
 	public Dialog onCreateDialog(int id) {
 		switch (id) {
 		case (FRIENDDETAILS_DIALOG):
 			LayoutInflater li = LayoutInflater.from(this);
-			View friendDetailsView = li.inflate(R.layout.frienddetailsview, null);
+			View friendDetailsView = li.inflate(R.layout.frienddetailsview,
+					null);
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			AlertDialog friendDetailsDialog = builder.create();	
+			AlertDialog friendDetailsDialog = builder.create();
 			friendDetailsDialog.setTitle(R.string.details);
 			friendDetailsDialog.setView(friendDetailsView);
 			friendDetailsDialog.setCanceledOnTouchOutside(true);
@@ -90,19 +95,23 @@ public class FriendConnectActivity extends Activity implements IView {
 		}
 		return null;
 	}
-	
+
 	@Override
 	public void onPrepareDialog(int id, Dialog dialog) {
 		switch (id) {
 		case (FRIENDDETAILS_DIALOG):
-			((TextView) dialog.findViewById(R.id.textViewNickname)).setText(selectedUser.getNickname());
-			((TextView) dialog.findViewById(R.id.textViewFirstname)).setText(selectedUser.getFirstname());
-			((TextView) dialog.findViewById(R.id.textViewSurname)).setText(selectedUser.getSurname());
-			((TextView) dialog.findViewById(R.id.textViewStatusmessage)).setText(selectedUser.getStatusMessage());
+			((TextView) dialog.findViewById(R.id.textViewNickname))
+					.setText(selectedUser.getNickname());
+			((TextView) dialog.findViewById(R.id.textViewFirstname))
+					.setText(selectedUser.getFirstname());
+			((TextView) dialog.findViewById(R.id.textViewSurname))
+					.setText(selectedUser.getSurname());
+			((TextView) dialog.findViewById(R.id.textViewStatusmessage))
+					.setText(selectedUser.getStatusMessage());
 			break;
 		}
 	}
-	
+
 	public void update(Observable observable, Object data) {
 		// provocate rebinding of the friendlist
 		this.adapter.notifyDataSetChanged();
@@ -126,11 +135,24 @@ public class FriendConnectActivity extends Activity implements IView {
 		super.onOptionsItemSelected(item);
 		// int index = this.listViewFriends.getSelectedItemPosition();
 		switch (item.getItemId()) {
-		case (MVC_TEST): {
-			// simulate some common operations to test the MVC binding
-			simulateMVCBindings();
-			return true;
-		}
+			case (MVC_TEST): {
+				// simulate some common operations to test the MVC binding
+				simulateMVCBindings();
+				XMLRPCComunicator comm = new XMLRPCComunicator();
+				comm.sendXMLRPC(new Object[]{3}, new IXMLRPCCallback(){
+
+					public void callFinished(Object result) {
+												
+					}
+
+					public void onError(Throwable throwable) {
+					
+					}
+				});
+				
+				
+				return true;
+			}
 		}
 		return false;
 	}
@@ -140,8 +162,8 @@ public class FriendConnectActivity extends Activity implements IView {
 	 * same model instance
 	 */
 	private void simulateMVCBindings() {
-		this.controller.addFriend(new Friend(3, "Test friend", "Test friend", "some",
-				"Hi there, I'm new here!"));
+		this.controller.addFriend(new Friend(3, "Test friend", "Test friend",
+				"some", "Hi there, I'm new here!"));
 		this.controller
 				.simulateFriendsStatusMessageChange("FriendConnect rocks!!");
 	}
