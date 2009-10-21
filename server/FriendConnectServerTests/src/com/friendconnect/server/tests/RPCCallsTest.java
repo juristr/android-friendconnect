@@ -44,7 +44,7 @@ public class RPCCallsTest extends TestCase {
 
         int startInt = 3;
         Object[] params = new Object[]{startInt};
-        int result = Integer.parseInt(client.execute("XMLRPCGateway.getSimpleRCPTestString", params).toString());
+        int result = Integer.parseInt(client.execute("XMLRPCGateway.getSimpleRCPTestResult", params).toString());
         
         assertEquals(startInt++, result);   
 	}
