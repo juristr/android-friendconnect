@@ -29,7 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.friendconnect.main.R;
+import com.friendconnect.activities.R;
 import com.friendconnect.model.Friend;
 import com.friendconnect.model.Person;
 
