@@ -41,7 +41,7 @@ public class FriendConnectActivity extends Activity {
 		signInButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				//TODO verify user's credentials
-				startActivity(new Intent(getApplicationContext(), FriendListActivity.class));
+				startActivity(new Intent(FriendConnectActivity.this, FriendListActivity.class));
 			}
 		});
 	}
