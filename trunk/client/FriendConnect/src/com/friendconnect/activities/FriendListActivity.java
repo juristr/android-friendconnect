@@ -145,8 +145,10 @@ public class FriendListActivity extends Activity implements IView {
 												
 					}
 
-					public void onError(Throwable throwable) {
-					
+
+					public void onFailure(Throwable throwable) {
+						// TODO Auto-generated method stub
+						
 					}
 				});
 				

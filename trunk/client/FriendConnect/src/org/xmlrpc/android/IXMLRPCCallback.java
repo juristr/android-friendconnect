@@ -18,18 +18,18 @@
 
 package org.xmlrpc.android;
 
-public interface IXMLRPCCallback {
+public interface IXMLRPCCallback<T> {
 	/**
 	 * On successful outcome
 	 * @param result the result object
 	 */
-	public void callFinished(Object result);
+	public void callFinished(T result);
 	
 	/**
 	 * In case of an error
 	 * @param throwable the exception
 	 */
-	public void onError(Throwable throwable);
+	public void onFailure(Throwable throwable);
 	
 	//TODO Juri: define this
 	/**
