@@ -83,7 +83,7 @@ public class XMLRPCMethod extends Thread {
 //					status.setText("Fault message: " + e.getFaultString()
 //							+ "\nFault code: " + e.getFaultCode());
 					Log.d("Test", "error", e);
-					callBack.onError(e);
+					callBack.onFailure(e);
 				}
 			});
 		} catch (final XMLRPCException e) {
@@ -103,7 +103,7 @@ public class XMLRPCMethod extends Thread {
 //						status.setText("Error " + e.getMessage());
 //					}
 					Log.d("Test", "error", e);
-					callBack.onError(e);
+					callBack.onFailure(e);
 				}
 			});
 		}
