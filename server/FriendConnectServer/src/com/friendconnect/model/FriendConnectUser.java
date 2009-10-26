@@ -18,10 +18,12 @@
 
 package com.friendconnect.model;
 
-import java.util.Observable;
+import java.io.Serializable;
 
 public abstract class FriendConnectUser implements ILoadable,
-		ILocatable {
+		ILocatable, Serializable {
+	private static final long serialVersionUID = 1;
+	
 	protected long id;
 	protected String emailAddress;
 	protected String firstname;

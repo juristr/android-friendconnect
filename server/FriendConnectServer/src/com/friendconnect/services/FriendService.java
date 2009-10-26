@@ -28,7 +28,7 @@ public class FriendService implements IFriendService {
 	
 	@Override
 	public List<Friend> getFriends() {
-		
+		 
 		// TODO Auto-generated method stub
 		return null;
 	}

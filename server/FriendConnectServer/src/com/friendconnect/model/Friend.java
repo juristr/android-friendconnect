@@ -18,9 +18,8 @@
 
 package com.friendconnect.model;
 
-
 public class Friend extends FriendConnectUser {
-	
+
 	public Friend(){
 		
 	}
