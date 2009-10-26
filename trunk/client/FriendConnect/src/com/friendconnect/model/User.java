@@ -21,7 +21,7 @@ package com.friendconnect.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User extends Person {
+public class User extends FriendConnectUser {
 	private List<Friend> friends;
 	private List<POIAlert> poiAlert;
 	

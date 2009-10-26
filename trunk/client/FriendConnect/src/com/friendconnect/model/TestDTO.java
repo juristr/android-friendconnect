@@ -18,15 +18,21 @@
 
 package com.friendconnect.model;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.Serializable;
 
-import org.xmlrpc.android.XMLRPCSerializable;
+public class TestDTO implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-public class TestDTO implements XMLRPCSerializable {
 	private String firstname;
 	private String lastname;
 
+	public TestDTO(){
+		
+	}
+	
 	public TestDTO(String firstname, String lastname) {
 		this.firstname = firstname;
 		this.lastname = lastname;
@@ -48,11 +54,11 @@ public class TestDTO implements XMLRPCSerializable {
 		this.lastname = lastname;
 	}
 
-	public Object getSerializable() {
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("Firstname", this.firstname);
-		map.put("Lastname", this.lastname);
-		return map;
-	}
+//	public Object getSerializable() {
+//		Map<String, String> map = new HashMap<String, String>();
+//		map.put("Firstname", this.firstname);
+//		map.put("Lastname", this.lastname);
+//		return map;
+//	}
 
 }

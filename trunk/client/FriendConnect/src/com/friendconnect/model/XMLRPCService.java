@@ -16,21 +16,37 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.controller;
+package com.friendconnect.model;
 
-import android.content.Context;
-import android.widget.BaseAdapter;
+import java.net.URI;
 
-import com.friendconnect.model.FriendConnectUser;
+import org.xmlrpc.android.IAsyncCallback;
+import org.xmlrpc.android.XMLRPCClient;
+import org.xmlrpc.android.XMLRPCMethod;
 
-public class FriendDetailController extends AbstractController<FriendConnectUser> {
+public class XMLRPCService {
+	private URI baseURI;
+	private XMLRPCClient client;
 
-	public FriendDetailController() {
-		super();
+	public XMLRPCService() {
+		// String baseUrl =
+		// Resources.getString(com.friendconnect.activities.R.string.friendConnectServerUrl);
+		String baseUrl = "http://0-1.latest.android-friendconnect.appspot.com/xmlrpc"; // TODO
+																						// BAD,
+																						// inject
+																						// this
+																						// later
+		this.baseURI = URI.create(baseUrl);
+		this.client = new XMLRPCClient(baseURI); // TODO BAD, inject this later
 	}
 
-	@Override
-	public <T extends BaseAdapter> T getAdapter(Context context) {
-		return null;
+	public void sendRequest(Object[] params, IAsyncCallback callback) {
+		XMLRPCMethod method = new XMLRPCMethod(client,
+				"XMLRPCGateway.getFirstname", callback);
+		if (params != null)
+			method.call(params);
+		else
+			method.call();
 	}
+
 }

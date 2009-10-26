@@ -31,10 +31,10 @@ import android.widget.TextView;
 
 import com.friendconnect.activities.R;
 import com.friendconnect.model.Friend;
-import com.friendconnect.model.Person;
+import com.friendconnect.model.FriendConnectUser;
 
 /**
- * Adapter for binding a list of {@link Person} objects
+ * Adapter for binding a list of {@link FriendConnectUser} objects
  * to a {@link ListView}
  *
  */
