@@ -19,10 +19,13 @@
 package com.friendconnect.model;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 public class TestDTO implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private String firstname;
 	private String lastname;
 
@@ -51,11 +54,11 @@ public class TestDTO implements Serializable {
 		this.lastname = lastname;
 	}
 
-	public Object getSerializable() {
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("firstname", this.firstname);
-		map.put("lastname", this.lastname);
-		return map;
-	}
+//	public Object getSerializable() {
+//		Map<String, String> map = new HashMap<String, String>();
+//		map.put("Firstname", this.firstname);
+//		map.put("Lastname", this.lastname);
+//		return map;
+//	}
 
 }
