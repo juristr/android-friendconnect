@@ -16,28 +16,33 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.model;
+package com.friendconnect.dto;
 
-import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.xmlrpc.android.IAsyncCallback;
-import org.xmlrpc.android.XMLRPCClient;
-import org.xmlrpc.android.XMLRPCMethod;
+import org.xmlrpc.android.XMLRPCSerializable;
 
-public class XMLRPCComunicator {
-	private URI baseURI;
-	private XMLRPCClient client;
+public class RequestDTO<T extends XMLRPCSerializable> implements XMLRPCSerializable {
+	//header info
+	private String username;
+	private String token;
 	
-	public XMLRPCComunicator() {
-//		String baseUrl = Resources.getString(com.friendconnect.activities.R.string.friendConnectServerUrl);
-		String baseUrl = "http://0-1.latest.android-friendconnect.appspot.com/xmlrpc";
-		this.baseURI = URI.create(baseUrl);
-		this.client = new XMLRPCClient(baseURI);
-	}
+	//server-side method to invoke
+	private String method;
 	
-	public void sendXMLRPC(Object[] params, IAsyncCallback callback){
-		XMLRPCMethod method = new XMLRPCMethod(client, "XMLRPCGateway.modifyObject", callback);
-        method.call(params);
+	//content
+	private T value;
+	
+	public RequestDTO(T value) {
+		this.value = value;
 	}
 
+	public Object getSerializable() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("username", this.username);
+		map.put("token", this.token);
+		map.put("value", this.value.getSerializable());
+		return map;
+	}
 }

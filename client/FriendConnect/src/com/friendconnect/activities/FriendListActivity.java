@@ -18,6 +18,14 @@
 
 package com.friendconnect.activities;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
+import java.io.StreamCorruptedException;
+import java.util.Map;
 import java.util.Observable;
 
 import org.xmlrpc.android.IAsyncCallback;
@@ -40,7 +48,7 @@ import com.friendconnect.controller.FriendListController;
 import com.friendconnect.model.Friend;
 import com.friendconnect.model.TestDTO;
 import com.friendconnect.model.User;
-import com.friendconnect.model.XMLRPCComunicator;
+import com.friendconnect.model.XMLRPCService;
 import com.friendconnect.view.IView;
 
 public class FriendListActivity extends Activity implements IView {
@@ -102,7 +110,7 @@ public class FriendListActivity extends Activity implements IView {
 		switch (id) {
 		case (FRIENDDETAILS_DIALOG):
 			((TextView) dialog.findViewById(R.id.textViewNickname))
-					.setText(selectedUser.getNickname());
+					.setText(selectedUser.getEmailAddress());
 			((TextView) dialog.findViewById(R.id.textViewFirstname))
 					.setText(selectedUser.getFirstname());
 			((TextView) dialog.findViewById(R.id.textViewSurname))
@@ -140,19 +148,34 @@ public class FriendListActivity extends Activity implements IView {
 				// simulate some common operations to test the MVC binding
 				simulateMVCBindings();
 				TestDTO testDto = new TestDTO("Juri", "Str");
-//				Object[] params = new Object[]{"Hallo"};
 				Object[] params = new Object[]{testDto};
-				XMLRPCComunicator comm = new XMLRPCComunicator();
-				comm.sendXMLRPC(params, new IAsyncCallback(){
+				XMLRPCService xmlRPCServ = new XMLRPCService();
+				xmlRPCServ.sendRequest(null, new IAsyncCallback(){
 
+					@SuppressWarnings("unchecked")
 					public void onSuccess(Object result) {
-//							TestDTO dto = (TestDTO)result;
+//						Map<String, Serializable> map = (Map<String, Serializable>)result;
+//						
+						Friend friend = null;
+						
+						try {
+//							Friend friend = (Friend)deserialize((byte[])map.get("juri.strumpflohner@gmail.com"));
+							friend = (Friend)deserialize((byte[])result);
+						} catch (StreamCorruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (ClassNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 
 
 					public void onFailure(Throwable throwable) {
-						// TODO Auto-generated method stub
-						
+						// TODO Auto-generated method stub						
 					}
 				});
 				
@@ -161,6 +184,14 @@ public class FriendListActivity extends Activity implements IView {
 			}
 		}
 		return false;
+	}
+	
+	private Object deserialize(byte[] value) throws StreamCorruptedException, IOException, ClassNotFoundException{
+		InputStream stream = new ByteArrayInputStream(value);
+		ObjectInput input = new ObjectInputStream(stream);
+		
+		Object obj = input.readObject();
+		return obj;
 	}
 
 	/*

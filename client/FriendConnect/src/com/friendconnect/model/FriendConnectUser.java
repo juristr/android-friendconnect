@@ -20,10 +20,11 @@ package com.friendconnect.model;
 
 import java.util.Observable;
 
-public abstract class Person extends Observable implements ILoadable,
+public abstract class FriendConnectUser extends Observable implements ILoadable,
 		ILocatable {
+	private static final long serialVersionUID = 1;
 	protected long id;
-	protected String nickname;
+	protected String emailAddress;
 	protected String firstname;
 	protected String surname;
 	protected String statusMessage;
@@ -37,13 +38,13 @@ public abstract class Person extends Observable implements ILoadable,
 		this.id = id;
 	}
 
-	public String getNickname() {
-		return nickname;
+	public String getEmailAddress() {
+		return emailAddress;
 	}
 
-	public void setNickname(String nickname) {
-		if (!this.nickname.equals(nickname)) {
-			this.nickname = nickname;
+	public void setEmailAddress(String emailAddress) {
+		if (!this.emailAddress.equals(emailAddress)) {
+			this.emailAddress = emailAddress;
 			setChanged();
 			notifyObservers();
 		}

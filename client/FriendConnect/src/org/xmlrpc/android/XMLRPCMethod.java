@@ -52,10 +52,6 @@ public class XMLRPCMethod extends Thread {
 	}
 
 	public void call(Object[] params) {
-//		status.setTextColor(0xff80ff80);
-//		status.setError(null);
-//		status.setText("Calling host " + uri.getHost());
-//		tests.setEnabled(false);
 		this.params = params;
 		start();
 	}
@@ -64,12 +60,14 @@ public class XMLRPCMethod extends Thread {
 	public void run() {
 		try {
 			//invoke the XML-RPC client for doing the actual call
+			//TODO serialization
 			final Object result = client.callEx(method, params);
 			
 			handler.post(new Runnable() {
 				public void run() {
 //					tests.setEnabled(true);
 //					status.setText("XML-RPC call took " + (t1 - t0) + "ms");
+					//TODO de-serialization
 					callBack.onSuccess(result);
 				}
 			});

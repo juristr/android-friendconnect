@@ -19,11 +19,16 @@
 package com.friendconnect.model;
 
 
-public class Friend extends Person {
-	
-	public Friend(long id, String nickname, String firstname, String surname, String statusMessage) {
+public class Friend extends FriendConnectUser {
+
+	public Friend() {
+
+	}
+
+	public Friend(long id, String nickname, String firstname, String surname,
+			String statusMessage) {
 		this.id = id;
-		this.nickname = nickname;
+		this.emailAddress = nickname;
 		this.firstname = firstname;
 		this.surname = surname;
 		this.statusMessage = statusMessage;
