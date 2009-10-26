@@ -18,6 +18,8 @@
 
 package com.friendconnect.services;
 
+import com.google.gdata.util.AuthenticationException;
+
 /**
  * Manages the user authentication
  *
@@ -28,9 +30,10 @@ public interface IAuthenticationService {
 	 * Accesses the Google server for authenticating the user
 	 * @param username the username, i.e. the Google Account email of the user
 	 * @param password the password, i.e. the Google Account password
-	 * @return true, if the authentication was successful
+	 * @return token, if the authentication was successful, null otherwise
+	 * @throws AuthenticationException 
 	 */
-	public boolean authenticate(String username, String password);
+	public String authenticate(String username, String password) throws AuthenticationException;
 	
 	/**
 	 * Validates the received token against the username. This method will

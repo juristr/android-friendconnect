@@ -18,19 +18,32 @@
 
 package com.friendconnect.services;
 
-public class AuthenticationService implements IAuthenticationService {
+import com.google.gdata.client.GoogleService;
+import com.google.gdata.client.GoogleAuthTokenFactory.UserToken;
+import com.google.gdata.client.GoogleService.InvalidCredentialsException;
+import com.google.gdata.client.contacts.ContactsService;
+import com.google.gdata.util.AuthenticationException;
 
+public class AuthenticationService implements IAuthenticationService {
+	private final String applicationName = "FriendConnect";
+	
 	@Override
-	public boolean authenticate(String username, String password) {
-		// TODO Call google server and do authentication, handle
-		//the returned token appropriately etc...
-		return true;
+	public String authenticate(String username, String password) throws AuthenticationException {
+		GoogleService contactsService = new ContactsService(applicationName);
+		try {
+			contactsService.setUserCredentials(username, password);
+			UserToken auth_token = (UserToken) contactsService.getAuthTokenFactory().getAuthToken();
+			String token = auth_token.getValue();	
+			//TODO save username and token into DB
+			return token;
+		} catch (InvalidCredentialsException e) {
+			return null;
+		}
 	}
 
 	@Override
 	public boolean validateToken(String username, String token) {
-		// TODO Call the google server for validating the user token
+		//TODO check in DB whether username has given token
 		return true;
 	}
-
 }
