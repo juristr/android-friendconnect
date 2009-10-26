@@ -18,6 +18,7 @@
 
 package com.friendconnect.model;
 
+
 public class Friend extends Person {
 	
 	public Friend(long id, String nickname, String firstname, String surname, String statusMessage) {

@@ -16,26 +16,43 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package org.xmlrpc.android;
+package com.friendconnect.model;
 
-public interface IXMLRPCCallback<T> {
-	/**
-	 * On successful outcome
-	 * @param result the result object
-	 */
-	public void callFinished(T result);
-	
-	/**
-	 * In case of an error
-	 * @param throwable the exception
-	 */
-	public void onFailure(Throwable throwable);
-	
-	//TODO Juri: define this
-	/**
-	 * A callback getting messages about the ongoing
-	 * processing.
-	 * @param message
-	 */
-//	public void onProgressNotifyMsg(String message);
+import java.util.HashMap;
+import java.util.Map;
+
+import org.xmlrpc.android.XMLRPCSerializable;
+
+public class TestDTO implements XMLRPCSerializable {
+	private String firstname;
+	private String lastname;
+
+	public TestDTO(String firstname, String lastname) {
+		this.firstname = firstname;
+		this.lastname = lastname;
+	}
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public Object getSerializable() {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("Firstname", this.firstname);
+		map.put("Lastname", this.lastname);
+		return map;
+	}
+
 }

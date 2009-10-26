@@ -16,28 +16,26 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.model;
+package org.xmlrpc.android;
 
-import java.net.URI;
-
-import org.xmlrpc.android.IAsyncCallback;
-import org.xmlrpc.android.XMLRPCClient;
-import org.xmlrpc.android.XMLRPCMethod;
-
-public class XMLRPCComunicator {
-	private URI baseURI;
-	private XMLRPCClient client;
+public interface IAsyncCallback<T> {
+	/**
+	 * On successful outcome
+	 * @param result the result object
+	 */
+	public void onSuccess(T result);
 	
-	public XMLRPCComunicator() {
-//		String baseUrl = Resources.getString(com.friendconnect.activities.R.string.friendConnectServerUrl);
-		String baseUrl = "http://0-1.latest.android-friendconnect.appspot.com/xmlrpc";
-		this.baseURI = URI.create(baseUrl);
-		this.client = new XMLRPCClient(baseURI);
-	}
+	/**
+	 * In case of an error
+	 * @param throwable the exception
+	 */
+	public void onFailure(Throwable throwable);
 	
-	public void sendXMLRPC(Object[] params, IAsyncCallback callback){
-		XMLRPCMethod method = new XMLRPCMethod(client, "XMLRPCGateway.modifyObject", callback);
-        method.call(params);
-	}
-
+	//TODO Juri: define this
+	/**
+	 * A callback getting messages about the ongoing
+	 * processing.
+	 * @param message
+	 */
+//	public void onProgressNotifyMsg(String message);
 }
