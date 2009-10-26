@@ -25,10 +25,10 @@ public class XMLRPCMethod extends Thread {
 	private String method;
 	private Object[] params;
 	private Handler handler;
-	private IXMLRPCCallback callBack;
+	private IAsyncCallback callBack;
 	private XMLRPCClient client;
 
-	public XMLRPCMethod(XMLRPCClient client, String method, IXMLRPCCallback callBack) {
+	public XMLRPCMethod(XMLRPCClient client, String method, IAsyncCallback callBack) {
 		this.client = client;
 		this.method = method;
 		this.callBack = callBack;
@@ -70,7 +70,7 @@ public class XMLRPCMethod extends Thread {
 				public void run() {
 //					tests.setEnabled(true);
 //					status.setText("XML-RPC call took " + (t1 - t0) + "ms");
-					callBack.callFinished(result);
+					callBack.onSuccess(result);
 				}
 			});
 		} catch (final XMLRPCFault e) {

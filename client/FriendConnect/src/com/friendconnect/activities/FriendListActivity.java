@@ -20,7 +20,7 @@ package com.friendconnect.activities;
 
 import java.util.Observable;
 
-import org.xmlrpc.android.IXMLRPCCallback;
+import org.xmlrpc.android.IAsyncCallback;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -38,6 +38,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.friendconnect.controller.FriendListController;
 import com.friendconnect.model.Friend;
+import com.friendconnect.model.TestDTO;
 import com.friendconnect.model.User;
 import com.friendconnect.model.XMLRPCComunicator;
 import com.friendconnect.view.IView;
@@ -138,11 +139,14 @@ public class FriendListActivity extends Activity implements IView {
 			case (MVC_TEST): {
 				// simulate some common operations to test the MVC binding
 				simulateMVCBindings();
+				TestDTO testDto = new TestDTO("Juri", "Str");
+//				Object[] params = new Object[]{"Hallo"};
+				Object[] params = new Object[]{testDto};
 				XMLRPCComunicator comm = new XMLRPCComunicator();
-				comm.sendXMLRPC(new Object[]{3}, new IXMLRPCCallback(){
+				comm.sendXMLRPC(params, new IAsyncCallback(){
 
-					public void callFinished(Object result) {
-												
+					public void onSuccess(Object result) {
+//							TestDTO dto = (TestDTO)result;
 					}
 
 
