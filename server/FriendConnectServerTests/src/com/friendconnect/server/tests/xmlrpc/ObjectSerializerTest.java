@@ -18,27 +18,6 @@
 
 package com.friendconnect.server.tests.xmlrpc;
 
-import junit.framework.TestCase;
-/*   **********************************************************************  **
- **   Copyright notice                                                       **
- **                                                                          **
- **   (c) 2009, FriendConnect			                       				 **
- **   All rights reserved.                                                   **
- **                                                                          **
- **	  This program and the accompanying materials are made available under   **
- **   the terms of the GPLv3 license which accompanies this	    			 **
- **   distribution. A copy is found in the textfile LICENSE.txt				 **
- **                                                                          **
- **   This copyright notice MUST APPEAR in all copies of the file!           **
- **                                                                          **
- **   Main developers:                                                       **
- **     Juri Strumpflohner		http://blog.js-development.com	             **
- **     Matthias Braunhofer		http://matthias.jimdo.com	                 **
- **                                                                          **
- **  **********************************************************************  */
-
-package com.friendconnect.server.xmlrpc;
-
 import java.io.IOException;
 import junit.framework.TestCase;
 import com.friendconnect.model.Friend;
@@ -54,7 +33,7 @@ public class ObjectSerializerTest extends TestCase {
 		super.tearDown();
 	}
 	
-	public void serializeDeserializeFriendTest() throws IOException, ClassNotFoundException{
+	public void testSerializeDeserializeFriend() throws IOException, ClassNotFoundException{
 		Friend friend = new Friend(1, "juri.strumpflohner@gmail.com", "Juri", "Strumpflohner", "");
 		
 		ObjectSerializer<Friend> friendSerializer = new ObjectSerializer<Friend>();
