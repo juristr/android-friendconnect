@@ -1,4 +1,4 @@
-package com.friendconnect.server.tests;
+package com.friendconnect.server.tests.xmlrpc;
 
 import java.net.MalformedURLException;
 import java.net.URL;
