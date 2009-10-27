@@ -2,12 +2,10 @@ package com.friendconnect.xmlrpc;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.friendconnect.model.Friend;
-import com.friendconnect.model.Location;
 import com.friendconnect.services.AuthenticationService;
 import com.friendconnect.services.FriendService;
 import com.friendconnect.services.IAuthenticationService;
@@ -28,20 +26,9 @@ public class XMLRPCGateway {
 		authService = new AuthenticationService();
 	}
 
-	public Map<String, Object> getFriend() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		Friend friend = new Friend(1, "juri.strumpflohner@gmail.com", "Juri",
-				"Strumpflohner", "");
-		Location location = new Location();
-		location.setLatitude(10.34);
-		location.setLongitude(112.3);
-		friend.setPosition(location);
-		
-		return new ObjectSerializer().serialize(friend);
-	}
-
-	public Map<String, Object> getFriends() throws IOException, IllegalArgumentException,
+	public List getFriends() throws IOException, IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException {
-		 Map<String, Object> result = new HashMap<String, Object>();
+		 List result = new ArrayList();
 
 		ObjectSerializer serializer = new ObjectSerializer();
 
@@ -52,7 +39,7 @@ public class XMLRPCGateway {
 
 			// serialize
 			for (Friend friend : friends) {
-				result.put(friend.getEmailAddress(), serializer.serialize(friend));
+				result.add(serializer.serialize(friend));
 			}
 		} else {
 			// TODO handle authentication failure appropriately, once for all
