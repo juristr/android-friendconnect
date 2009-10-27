@@ -16,26 +16,31 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.services;
+package com.friendconnect.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import com.friendconnect.dao.FriendDao;
-import com.friendconnect.dao.IFriendDao;
 import com.friendconnect.model.Friend;
 
-public class FriendService implements IFriendService {
-
-	private IFriendDao friendDao; //TODO inject
+public class FriendDao implements IFriendDao {
+	private Map<String, Friend> dummyFriends;
 	
-	public FriendService() {
-		friendDao = new FriendDao();
+	public FriendDao() {
+		this.dummyFriends = new HashMap<String, Friend>();
+		initWithSomeFriends();
+	}
+	
+	private void initWithSomeFriends(){
+		dummyFriends.put("matthias.braunhofer@gmail.com", new Friend(1, "matthias.braunhofer@gmail.com", "Matthias", "Braunhofer", ""));
+		dummyFriends.put("stephi050385@gmail.com", new Friend(2, "stephi050385@gmail.com", "Steffi", "", ""));
 	}
 	
 	
 	@Override
-	public List<Friend> getFriends() {
-		return friendDao.readAllFriends();
+	public List<Friend> readAllFriends() {
+		return (List<Friend>) dummyFriends.values();
 	}
 
 }

@@ -16,49 +16,13 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.model;
+package com.friendconnect.dao;
 
-import java.io.Serializable;
+import java.util.List;
 
-public class TestDTO implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+import com.friendconnect.model.Friend;
+
+public interface IFriendDao {
 	
-	private String firstname;
-	private String lastname;
-
-	public TestDTO(){
-		
-	}
-	
-	public TestDTO(String firstname, String lastname) {
-		this.firstname = firstname;
-		this.lastname = lastname;
-	}
-
-	public String getFirstname() {
-		return firstname;
-	}
-
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-
-	public String getLastname() {
-		return lastname;
-	}
-
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
-
-//	public Object getSerializable() {
-//		Map<String, String> map = new HashMap<String, String>();
-//		map.put("Firstname", this.firstname);
-//		map.put("Lastname", this.lastname);
-//		return map;
-//	}
-
+	public List<Friend> readAllFriends();
 }
