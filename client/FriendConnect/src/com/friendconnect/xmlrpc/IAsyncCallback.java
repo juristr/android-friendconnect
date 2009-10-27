@@ -16,7 +16,7 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package org.xmlrpc.android;
+package com.friendconnect.xmlrpc;
 
 public interface IAsyncCallback<T> {
 	/**

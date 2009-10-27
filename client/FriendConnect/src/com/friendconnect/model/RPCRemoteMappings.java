@@ -19,7 +19,8 @@
 package com.friendconnect.model;
 
 public class RPCRemoteMappings {
-	private static final String baseMapping = "XMLRPCGateway";
+	private static final String baseMapping = "XMLRPCGateway.";
 	
 	public static final String GETFRIENDS =  baseMapping + "getFriends";
+	public static final String GETFRIEND =  baseMapping + "getFriend";
 }

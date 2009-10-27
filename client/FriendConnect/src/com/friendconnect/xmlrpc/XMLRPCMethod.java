@@ -16,7 +16,11 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package org.xmlrpc.android;
+package com.friendconnect.xmlrpc;
+
+import org.xmlrpc.android.XMLRPCClient;
+import org.xmlrpc.android.XMLRPCException;
+import org.xmlrpc.android.XMLRPCFault;
 
 import android.os.Handler;
 import android.util.Log;

@@ -19,17 +19,14 @@
 package com.friendconnect.controller;
 
 import java.util.Map;
-
-import org.xmlrpc.android.IAsyncCallback;
-import org.xmlrpc.android.ObjectSerializer;
-
 import android.content.Context;
-
 import com.friendconnect.adapters.FriendAdapter;
 import com.friendconnect.model.Friend;
 import com.friendconnect.model.RPCRemoteMappings;
 import com.friendconnect.model.User;
 import com.friendconnect.services.XMLRPCService;
+import com.friendconnect.xmlrpc.IAsyncCallback;
+import com.friendconnect.xmlrpc.ObjectSerializer;
 import com.google.inject.Inject;
 
 public class FriendListController extends AbstractController<User> {
@@ -43,20 +40,27 @@ public class FriendListController extends AbstractController<User> {
 	public void loadFriends() {
 		xmlRPCService.sendRequest(RPCRemoteMappings.GETFRIENDS, null, new IAsyncCallback<Object>() {
 
+			@SuppressWarnings("unchecked")
 			public void onSuccess(Object result) {
 				if(result == null){
 					//TODO ???
 				}
 				
-				//TODO change to get ArrayList<byte[]> or something similar
-				//assuming to get a HashMap<String, byte[]>
-				ObjectSerializer<Friend> friendSerializer = new ObjectSerializer<Friend>();
+				ObjectSerializer friendSerializer = new ObjectSerializer();
+//				Friend friend = null;
+//				try {
+//					friend = friendSerializer.deSerialize((Map<String, Object>) result, Friend.class);
+//					model.addFriend(friend);
+//				} catch (Exception e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
 				
-				Map<String, byte[]> encodedDataMap = (Map<String, byte[]>)result;
-				for (Map.Entry<String, byte[]> entry :encodedDataMap.entrySet()) {
+				Map<String, Object> encodedDataMap = (Map<String, Object>)result;
+				for (Map.Entry<String, Object> entry :encodedDataMap.entrySet()) {
 					Friend friend = null;
 					try {
-						friend = friendSerializer.deserialize(entry.getValue());
+						friend = friendSerializer.deSerialize((Map<String, Object>) entry.getValue(), Friend.class);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

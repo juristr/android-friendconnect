@@ -21,21 +21,23 @@ package com.friendconnect.model;
 import java.io.Serializable;
 import java.util.Observable;
 
+import com.friendconnect.xmlrpc.ComplexSerializableType;
+
 public abstract class FriendConnectUser extends Observable implements ILoadable,
 		ILocatable, Serializable {
 	private static final long serialVersionUID = 1;
-	protected long id;
+	protected int id;
 	protected String emailAddress;
 	protected String firstname;
 	protected String surname;
 	protected String statusMessage;
 	protected Location position;
 	
-	public long getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -44,14 +46,7 @@ public abstract class FriendConnectUser extends Observable implements ILoadable,
 	}
 
 	public void setEmailAddress(String emailAddress) {
-		String oldValue = this.emailAddress;
 		this.emailAddress = emailAddress;
-		
-		if(oldValue == null || !oldValue.equals(this.emailAddress))
-		{
-			setChanged();
-			notifyObservers();
-		}
 	}
 
 	public String getFirstname() {
@@ -59,13 +54,7 @@ public abstract class FriendConnectUser extends Observable implements ILoadable,
 	}
 
 	public void setFirstname(String firstname) {
-		String oldValue = this.firstname;
 		this.firstname = firstname;
-		
-		if(oldValue == null || !oldValue.equals(this.firstname)){
-			setChanged();
-			notifyObservers();
-		}
 	}
 
 	public String getSurname() {
@@ -73,13 +62,7 @@ public abstract class FriendConnectUser extends Observable implements ILoadable,
 	}
 
 	public void setSurname(String surname) {
-		String oldValue = this.surname;
 		this.surname = surname;
-		
-		if(oldValue == null || !oldValue.equals(this.surname)){
-			setChanged();
-			notifyObservers();
-		}
 	}
 
 	public String getStatusMessage() {
@@ -87,19 +70,15 @@ public abstract class FriendConnectUser extends Observable implements ILoadable,
 	}
 
 	public void setStatusMessage(String statusMessage) {
-		String oldValue = this.statusMessage;
 		this.statusMessage = statusMessage;
-		
-		if(oldValue == null || !oldValue.equals(this.statusMessage)){
-			setChanged();
-			notifyObservers();
-		}
 	}
 
+	@ComplexSerializableType(clazz = Location.class)
 	public Location getPosition() {
 		return this.position;
 	}
 
+	@ComplexSerializableType(clazz = Location.class)
 	public void setPosition(Location location) {
 		this.position = location;
 	}
