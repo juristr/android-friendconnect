@@ -7,9 +7,9 @@ import junit.framework.TestCase;
 
 import com.friendconnect.model.Friend;
 import com.friendconnect.model.Location;
-import com.friendconnect.xmlrpc.ObjectDeserializer;
+import com.friendconnect.xmlrpc.ObjectSerializer;
 
-public class ObjectDeserializerTest extends TestCase {
+public class ObjectSerializerTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -26,7 +26,7 @@ public class ObjectDeserializerTest extends TestCase {
 		location.setLongitude(112.3);
 		friend.setPosition(location);
 		
-		ObjectDeserializer serializer = new ObjectDeserializer();
+		ObjectSerializer serializer = new ObjectSerializer();
 		Map<String, Object> serialized = serializer.serialize(friend);
 		
 		assertNotNull("the serialized object shouldn't be null", serialized);
