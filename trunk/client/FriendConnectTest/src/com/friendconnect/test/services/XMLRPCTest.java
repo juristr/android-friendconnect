@@ -2,11 +2,12 @@ package com.friendconnect.test.services;
 
 import java.net.URI;
 
-import org.xmlrpc.android.IAsyncCallback;
 import org.xmlrpc.android.XMLRPCClient;
-import org.xmlrpc.android.XMLRPCMethod;
 
 import android.test.AndroidTestCase;
+
+import com.friendconnect.xmlrpc.IAsyncCallback;
+import com.friendconnect.xmlrpc.XMLRPCMethod;
 
 public class XMLRPCTest extends AndroidTestCase {
 	private XMLRPCClient xmlrpcClient;
