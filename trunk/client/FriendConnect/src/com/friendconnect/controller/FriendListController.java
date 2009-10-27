@@ -29,21 +29,18 @@ import com.friendconnect.adapters.FriendAdapter;
 import com.friendconnect.model.Friend;
 import com.friendconnect.model.RPCRemoteMappings;
 import com.friendconnect.model.User;
-import com.friendconnect.model.XMLRPCService;
+import com.friendconnect.services.XMLRPCService;
+import com.google.inject.Inject;
 
 public class FriendListController extends AbstractController<User> {
 	private int layoutId; // TODO find better solution of passing this value
 	private XMLRPCService xmlRPCService;
 
-	public FriendListController(int layoutId) {
+	public FriendListController() {
 		super();
-		this.layoutId = layoutId;
-		
-		//TODO inject
-		xmlRPCService = new XMLRPCService();
 	}
 	
-	public void loadFriends(){
+	public void loadFriends() {
 		xmlRPCService.sendRequest(RPCRemoteMappings.GETFRIENDS, null, new IAsyncCallback<Object>() {
 
 			public void onSuccess(Object result) {
@@ -101,5 +98,22 @@ public class FriendListController extends AbstractController<User> {
 
 	public Friend getFriend(int position) {
 		return this.model.getFriends().get(position);
+	}
+
+	public int getLayoutId() {
+		return layoutId;
+	}
+
+	public void setLayoutId(int layoutId) {
+		this.layoutId = layoutId;
+	}
+
+	public XMLRPCService getXmlRPCService() {
+		return xmlRPCService;
+	}
+
+	@Inject
+	public void setXmlRPCService(XMLRPCService xmlRPCService) {
+		this.xmlRPCService = xmlRPCService;
 	}
 }

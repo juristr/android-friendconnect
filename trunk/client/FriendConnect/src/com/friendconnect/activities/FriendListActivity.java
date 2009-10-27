@@ -18,17 +18,7 @@
 
 package com.friendconnect.activities;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
-import java.io.StreamCorruptedException;
-import java.util.Map;
 import java.util.Observable;
-
-import org.xmlrpc.android.IAsyncCallback;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -45,11 +35,12 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.friendconnect.controller.FriendListController;
+import com.friendconnect.main.IoC;
 import com.friendconnect.model.Friend;
-import com.friendconnect.model.TestDTO;
 import com.friendconnect.model.User;
-import com.friendconnect.model.XMLRPCService;
 import com.friendconnect.view.IView;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 public class FriendListActivity extends Activity implements IView {
 	static final private int MVC_TEST = Menu.FIRST;
@@ -70,7 +61,8 @@ public class FriendListActivity extends Activity implements IView {
 		this.listViewFriends = (ListView) findViewById(R.id.listViewFriends);
 
 		// TODO just dummy instantiation here
-		this.controller = new FriendListController(R.layout.friendlistrowitem);
+		this.controller = IoC.getInstance(FriendListController.class);
+		this.controller.setLayoutId(R.layout.friendlistrowitem);
 		this.controller.registerModel(new User()); // TODO just dummy
 		this.controller.initializeUserWithDummyFriends();
 		this.controller.registerObserver(this);

@@ -16,37 +16,15 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.model;
+package com.friendconnect.main;
 
-import java.net.URI;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
-import org.xmlrpc.android.IAsyncCallback;
-import org.xmlrpc.android.XMLRPCClient;
-import org.xmlrpc.android.XMLRPCMethod;
-
-public class XMLRPCService {
-	private URI baseURI;
-	private XMLRPCClient client;
-
-	public XMLRPCService() {
-		// String baseUrl =
-		// Resources.getString(com.friendconnect.activities.R.string.friendConnectServerUrl);
-		String baseUrl = "http://10.7.196.6/xmlrpc"; // TODO
-																						// BAD,
-																						// inject
-																						// this
-																						// later
-		this.baseURI = URI.create(baseUrl);
-		this.client = new XMLRPCClient(baseURI); // TODO BAD, inject this later
+public class IoC {
+	private static Injector injector = Guice.createInjector();
+	
+	public static <T> T getInstance(Class<T> clazz) {
+		return injector.getInstance(clazz);
 	}
-
-	public void sendRequest(String remoteMethod, Object[] params, IAsyncCallback callback) {
-		XMLRPCMethod method = new XMLRPCMethod(client,
-				remoteMethod, callback);
-		if (params != null)
-			method.call(params);
-		else
-			method.call();
-	}
-
 }
