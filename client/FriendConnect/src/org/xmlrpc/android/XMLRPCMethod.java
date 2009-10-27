@@ -27,6 +27,7 @@ public class XMLRPCMethod extends Thread {
 	private Handler handler;
 	private IAsyncCallback callBack;
 	private XMLRPCClient client;
+	
 
 	public XMLRPCMethod(XMLRPCClient client, String method, IAsyncCallback callBack) {
 		this.client = client;
