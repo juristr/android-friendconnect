@@ -21,21 +21,23 @@ package com.friendconnect.model;
 import java.io.Serializable;
 import java.util.Observable;
 
+import com.friendconnect.xmlrpc.ComplexSerializableType;
+
 public abstract class FriendConnectUser extends Observable implements ILoadable,
 		ILocatable, Serializable {
 	private static final long serialVersionUID = 1;
-	protected long id;
+	protected int id;
 	protected String emailAddress;
 	protected String firstname;
 	protected String surname;
 	protected String statusMessage;
 	protected Location position;
 	
-	public long getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

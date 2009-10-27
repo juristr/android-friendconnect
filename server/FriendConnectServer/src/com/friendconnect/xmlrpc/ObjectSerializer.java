@@ -24,12 +24,11 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.friendconnect.model.ComplexSerializableType;
 
-public class ObjectDeserializer {
+public class ObjectSerializer {
 	// private Class<T> clazz;
 
-	public ObjectDeserializer() {
+	public ObjectSerializer() {
 		// this.clazz = clazz;
 	}
 
