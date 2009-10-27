@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:component-scan base-package="com.friendconnect" />
+
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<value>
+				/xmlrpc=xmlRpcController
+			</value>
+		</property>
+	</bean>
+
+	<bean name="xmlRpcController" class="com.friendconnect.main.XmlRpcController">
+		<property name="mapping" ref="xmlRpcHandlerMapping" />
+	</bean>
+
+	<bean id="xmlRpcHandlerMapping" class="com.friendconnect.main.SimpleHandlerMapping">
+		<property name="services">
+			<map>
+				<entry key="XmlRpcGateway" value-ref="xmlRpcService" />
+			</map>
+		</property>
+	</bean>
+
+	<!-- Services -->
+	<bean id="xmlRpcService" class="com.friendconnect.services.XmlRpcService">
+		<property name="serializer" ref="objectSerializer"/>
+		<property name="authService" ref="authenticationService"/>
+		<property name="friendService" ref="friendService"/>
+	</bean>
+
+	<bean id="authenticationService" class="com.friendconnect.services.AuthenticationService"/>
+	<bean id="friendService" class="com.friendconnect.services.FriendService"/>
+	<bean id="objectSerializer" class="com.friendconnect.xmlrpc.ObjectSerializer"/>
+
+</beans>

@@ -1,37 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xmlns="http://java.sun.com/xml/ns/javaee"
-xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
-	<!-- 
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5">
+	
 	<servlet>
-		<servlet-name>FriendConnectServer</servlet-name>
-		<servlet-class>com.friendconnect.main.FriendConnectServerServlet</servlet-class>
+		<servlet-name>spring</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+
 	<servlet-mapping>
-		<servlet-name>FriendConnectServer</servlet-name>
-		<url-pattern>/friendconnectserver</url-pattern>
+		<servlet-name>spring</servlet-name>
+		<url-pattern>/xmlrpc</url-pattern>
 	</servlet-mapping>
-	 -->
-	 
-    <servlet>
-        <servlet-name>XmlRpcServlet</servlet-name>
-        <servlet-class>org.apache.xmlrpc.webserver.XmlRpcServlet</servlet-class>
-        <init-param>
-          <param-name>enabledForExtensions</param-name>
-          <param-value>true</param-value>
-          <description>
-            Sets, whether the servlet supports vendor extensions for XML-RPC.
-          </description>
-        </init-param>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>XmlRpcServlet</servlet-name>
-        <url-pattern>/xmlrpc</url-pattern>
-    </servlet-mapping>
-	
+
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>

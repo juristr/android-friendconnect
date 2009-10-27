@@ -16,7 +16,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/org.springframework.orm-3.0.0.M3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/org.springframework.web-3.0.0.M3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/org.springframework.web.servlet-3.0.0.M3.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlrpc-client-3.1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-httpclient-3.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-codec-1.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gdata-client-1.0.jar"/>
@@ -25,5 +24,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gdata-contacts-meta-3.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gdata-core-1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/google-collect-1.0-rc1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/antlr-3.0.1.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
