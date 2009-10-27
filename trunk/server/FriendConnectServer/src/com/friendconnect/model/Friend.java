@@ -24,7 +24,7 @@ public class Friend extends FriendConnectUser {
 		
 	}
 	
-	public Friend(long id, String nickname, String firstname, String surname, String statusMessage) {
+	public Friend(int id, String nickname, String firstname, String surname, String statusMessage) {
 		this.id = id;
 		this.emailAddress = nickname;
 		this.firstname = firstname;

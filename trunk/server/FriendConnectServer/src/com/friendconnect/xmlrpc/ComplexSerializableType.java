@@ -16,7 +16,7 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.model;
+package com.friendconnect.xmlrpc;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
