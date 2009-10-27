@@ -63,7 +63,7 @@ public abstract class AbstractController<T extends Observable> implements Observ
 		return this.model;
 	}
 	
-	public abstract <T extends BaseAdapter> T getAdapter(Context context);
+	public abstract <X extends BaseAdapter> X getAdapter(Context context);
 	
 	public void update(Observable observable, Object data) {		
 		for (IView view : this.views) {

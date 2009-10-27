@@ -24,7 +24,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,11 +39,9 @@ import com.friendconnect.main.IoC;
 import com.friendconnect.model.Friend;
 import com.friendconnect.model.User;
 import com.friendconnect.view.IView;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 
 public class FriendListActivity extends Activity implements IView {
-	static final private int MVC_TEST = Menu.FIRST;
+	static final private int FETCH_FRIENDS_TEST = Menu.FIRST;
 
 	private FriendListController controller;
 	private ListView listViewFriends;
@@ -65,7 +62,6 @@ public class FriendListActivity extends Activity implements IView {
 		this.controller = IoC.getInstance(FriendListController.class);
 		this.controller.setLayoutId(R.layout.friendlistrowitem);
 		this.controller.registerModel(new User()); // TODO just dummy
-		this.controller.initializeUserWithDummyFriends();
 		this.controller.registerObserver(this);
 
 		this.adapter = controller.getAdapter(this);
@@ -124,7 +120,7 @@ public class FriendListActivity extends Activity implements IView {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		// Create and add new menu items.
-		MenuItem itemAdd = menu.add(0, MVC_TEST, Menu.NONE, "MVC test");
+		MenuItem itemAdd = menu.add(0, FETCH_FRIENDS_TEST, Menu.NONE, "fetch friends test");
 
 		// Allocate shortcuts to each of them.
 		itemAdd.setShortcut('0', 'a');
@@ -137,44 +133,8 @@ public class FriendListActivity extends Activity implements IView {
 		super.onOptionsItemSelected(item);
 		// int index = this.listViewFriends.getSelectedItemPosition();
 		switch (item.getItemId()) {
-			case (MVC_TEST): {
-				// simulate some common operations to test the MVC binding
-				simulateMVCBindings();
+			case (FETCH_FRIENDS_TEST): {
 				controller.loadFriends();
-				
-				
-				
-//				XMLRPCService xmlRPCServ = new XMLRPCService();
-//				xmlRPCServ.sendRequest(null, new IAsyncCallback(){
-//
-//					@SuppressWarnings("unchecked")
-//					public void onSuccess(Object result) {
-////						Map<String, Serializable> map = (Map<String, Serializable>)result;
-////						
-//						Friend friend = null;
-//						
-//						try {
-////							Friend friend = (Friend)deserialize((byte[])map.get("juri.strumpflohner@gmail.com"));
-//							friend = (Friend)deserialize((byte[])result);
-//						} catch (StreamCorruptedException e) {
-//							// TODO Auto-generated catch block
-//							e.printStackTrace();
-//						} catch (IOException e) {
-//							// TODO Auto-generated catch block
-//							e.printStackTrace();
-//						} catch (ClassNotFoundException e) {
-//							// TODO Auto-generated catch block
-//							e.printStackTrace();
-//						}
-//					}
-//
-//
-//					public void onFailure(Throwable throwable) {
-//						// TODO Auto-generated method stub						
-//					}
-//				});
-				
-				
 				return true;
 			}
 		}
@@ -183,16 +143,5 @@ public class FriendListActivity extends Activity implements IView {
 	
 	public FriendListController getController() {
 		return controller;
-	}
-
-	/*
-	 * These operations could potentially take place in another class having the
-	 * same model instance
-	 */
-	private void simulateMVCBindings() {
-		this.controller.addFriend(new Friend(3, "Test friend", "Test friend",
-				"some", "Hi there, I'm new here!"));
-		this.controller
-				.simulateFriendsStatusMessageChange("FriendConnect rocks!!");
 	}
 }

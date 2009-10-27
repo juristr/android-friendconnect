@@ -32,7 +32,7 @@ import com.friendconnect.xmlrpc.ObjectSerializer;
 import com.google.inject.Inject;
 
 public class FriendListController extends AbstractController<User> {
-	private int layoutId; // TODO find better solution of passing this value
+	private int layoutId;
 	private XMLRPCService xmlRPCService;
 
 	public FriendListController() {
@@ -45,7 +45,8 @@ public class FriendListController extends AbstractController<User> {
 			@SuppressWarnings("unchecked")
 			public void onSuccess(Object result) {
 				if(result == null){
-					//TODO ???
+					//TODO show a message that nothing has been fetched!
+					return;
 				}
 				
 				ObjectSerializer friendSerializer = new ObjectSerializer();
@@ -72,13 +73,6 @@ public class FriendListController extends AbstractController<User> {
 		});
 	}
 
-	// TODO just dummy
-	public void initializeUserWithDummyFriends() {
-		this.model.addFriend(new Friend(1, "Juri", "Juri", "Strumpflohner",
-				"Hello World!"));
-		this.model.addFriend(new Friend(2, "Matthias", "Matthias", "Braunhofer",
-				"Hello FriendConnect!"));
-	}
 
 	@Override
 	public FriendAdapter getAdapter(Context context) {
@@ -90,24 +84,13 @@ public class FriendListController extends AbstractController<User> {
 		this.model.addFriend(friend);
 	}
 
-	public void simulateFriendsStatusMessageChange(String string) {
-		this.model.getFriends().get(1).setStatusMessage(string);
-	}
-
 	public Friend getFriend(int position) {
 		return this.model.getFriends().get(position);
 	}
 
-	public int getLayoutId() {
-		return layoutId;
-	}
 
 	public void setLayoutId(int layoutId) {
 		this.layoutId = layoutId;
-	}
-
-	public XMLRPCService getXmlRPCService() {
-		return xmlRPCService;
 	}
 
 	@Inject
