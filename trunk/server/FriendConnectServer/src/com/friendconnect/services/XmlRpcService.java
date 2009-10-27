@@ -1,4 +1,4 @@
-package com.friendconnect.xmlrpc;
+package com.friendconnect.services;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -6,17 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.friendconnect.model.Friend;
-import com.friendconnect.services.AuthenticationService;
-import com.friendconnect.services.FriendService;
-import com.friendconnect.services.IAuthenticationService;
-import com.friendconnect.services.IFriendService;
+import com.friendconnect.xmlrpc.ObjectSerializer;
 
-public class XMLRPCGateway {
-	private IAuthenticationService authService; // TODO inject this
-	private IFriendService friendService; // TODO inject this
+public class XmlRpcService {
+	private IAuthenticationService authService;
+	private IFriendService friendService;
+	private ObjectSerializer serializer;
 
-	public XMLRPCGateway() {
-		init();
+	public XmlRpcService() {
+//		init();
 	}
 
 	// TODO just dummy of course :)
@@ -51,5 +49,18 @@ public class XMLRPCGateway {
 
 	public int getSimpleRCPTestResult(int x) {
 		return x++;
+	}
+	
+
+	public void setAuthService(IAuthenticationService authService) {
+		this.authService = authService;
+	}
+
+	public void setFriendService(IFriendService friendService) {
+		this.friendService = friendService;
+	}
+
+	public void setSerializer(ObjectSerializer serializer) {
+		this.serializer = serializer;
 	}
 }
