@@ -1,4 +1,4 @@
-package com.friendconnect.server.tests;
+package com.friendconnect.server.tests.xmlrpc;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -6,6 +6,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import com.friendconnect.server.tests.Person;
 import com.friendconnect.xmlrpc.ObjectDeserializer;
 
 public class ObjectDeserializerTest extends TestCase {
