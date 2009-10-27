@@ -35,7 +35,7 @@ public abstract class FriendConnectUser extends Observable implements ILoadable,
 		return this.id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -44,8 +44,11 @@ public abstract class FriendConnectUser extends Observable implements ILoadable,
 	}
 
 	public void setEmailAddress(String emailAddress) {
-		if (!this.emailAddress.equals(emailAddress)) {
-			this.emailAddress = emailAddress;
+		String oldValue = this.emailAddress;
+		this.emailAddress = emailAddress;
+		
+		if(oldValue == null || !oldValue.equals(this.emailAddress))
+		{
 			setChanged();
 			notifyObservers();
 		}
@@ -56,8 +59,10 @@ public abstract class FriendConnectUser extends Observable implements ILoadable,
 	}
 
 	public void setFirstname(String firstname) {
-		if (!this.firstname.equals(firstname)) {
-			this.firstname = firstname;
+		String oldValue = this.firstname;
+		this.firstname = firstname;
+		
+		if(oldValue == null || !oldValue.equals(this.firstname)){
 			setChanged();
 			notifyObservers();
 		}
@@ -68,8 +73,10 @@ public abstract class FriendConnectUser extends Observable implements ILoadable,
 	}
 
 	public void setSurname(String surname) {
-		if (!this.surname.equals(surname)) {
-			this.surname = surname;
+		String oldValue = this.surname;
+		this.surname = surname;
+		
+		if(oldValue == null || !oldValue.equals(this.surname)){
 			setChanged();
 			notifyObservers();
 		}
@@ -80,8 +87,10 @@ public abstract class FriendConnectUser extends Observable implements ILoadable,
 	}
 
 	public void setStatusMessage(String statusMessage) {
-		if (!this.statusMessage.equals(statusMessage)) {
-			this.statusMessage = statusMessage;
+		String oldValue = this.statusMessage;
+		this.statusMessage = statusMessage;
+		
+		if(oldValue == null || !oldValue.equals(this.statusMessage)){
 			setChanged();
 			notifyObservers();
 		}
