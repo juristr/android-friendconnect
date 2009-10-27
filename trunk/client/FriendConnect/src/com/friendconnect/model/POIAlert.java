@@ -19,18 +19,18 @@
 package com.friendconnect.model;
 
 public class POIAlert implements ILoadable, ILocatable {
-	private long id;
+	private int id;
 	private String title;
 	private int radius;
 	private Location position;
 
 	// expiration date
 
-	public long getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(Long value) {
+	public void setId(Integer value) {
 		this.id = value;
 	}
 

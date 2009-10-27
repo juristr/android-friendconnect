@@ -20,10 +20,10 @@ package com.friendconnect.services;
 
 import java.net.URI;
 
-import org.xmlrpc.android.IAsyncCallback;
 import org.xmlrpc.android.XMLRPCClient;
-import org.xmlrpc.android.XMLRPCMethod;
 
+import com.friendconnect.xmlrpc.IAsyncCallback;
+import com.friendconnect.xmlrpc.XMLRPCMethod;
 import com.google.inject.Singleton;
 
 @Singleton
@@ -34,11 +34,9 @@ public class XMLRPCService {
 	public XMLRPCService() {
 		// String baseUrl =
 		// Resources.getString(com.friendconnect.activities.R.string.friendConnectServerUrl);
-		String baseUrl = "http://10.7.196.6/xmlrpc"; // TODO
-																						// BAD,
-																						// inject
-																						// this
-																						// later
+//		String baseUrl = "http://10.7.196.6/xmlrpc"; 
+		String baseUrl = "http://0-1.latest.android-friendconnect.appspot.com/xmlrpc";
+		
 		this.baseURI = URI.create(baseUrl);
 		
 		this.client = new XMLRPCClient(baseURI); // TODO BAD, inject this later
