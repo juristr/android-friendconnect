@@ -1,11 +1,12 @@
 package com.friendconnect.server.tests.xmlrpc;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.TestCase;
 
+import com.friendconnect.model.Friend;
+import com.friendconnect.model.Location;
 import com.friendconnect.xmlrpc.ObjectDeserializer;
 
 public class ObjectDeserializerTest extends TestCase {
@@ -19,20 +20,30 @@ public class ObjectDeserializerTest extends TestCase {
 	}
 
 	public void testObjectDeserializer() throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("Firstname", "Juri");
-		map.put("lastname", "Strumpflohner");
-//		map.put("Age", 24);
+		Friend friend = new Friend(1, "juri.strumpflohner@gmail.com", "Juri", "Strumpflohner", "");
+		Location location = new Location();
+		location.setLatitude(10.34);
+		location.setLongitude(112.3);
+		friend.setPosition(location);
 		
-//		ObjectDeserializer<Person> deserializer = new ObjectDeserializer<Person>(
-//				Person.class);
-
-//		Person personInstance = deserializer.deSerialize(map);
-//		
-//		assertNotNull(personInstance);
-//		assertEquals("Juri",personInstance.getFirstname());
-//		assertEquals("Strumpflohner", personInstance.getLastname());
-//		assertEquals(24, personInstance.getAge());
+		ObjectDeserializer serializer = new ObjectDeserializer();
+		Map<String, Object> serialized = serializer.serialize(friend);
+		
+		assertNotNull("the serialized object shouldn't be null", serialized);
+		assertEquals("The ids should match", friend.getId(), serialized.get("Id"));
+		assertEquals("The firstnames should match", friend.getFirstname(), serialized.get("Firstname"));
+		assertEquals("The surnames should match", friend.getSurname(), serialized.get("Surname"));
+		assertNotNull("The hashmap should have an object value for the subobj", serialized.get("Position"));
+		
+		
+		//deserialize
+		Friend deserializedFriend = serializer.deSerialize(serialized, Friend.class);
+		assertNotNull(deserializedFriend);
+		assertEquals(friend.getId(), deserializedFriend.getId());
+		assertEquals(friend.getFirstname(), deserializedFriend.getFirstname());
+		assertEquals(friend.getSurname(), deserializedFriend.getSurname());
+		assertEquals(friend.getPosition().getLatitude(), deserializedFriend.getPosition().getLatitude());
+		assertEquals(friend.getPosition().getLongitude(), deserializedFriend.getPosition().getLongitude());
 	}
 
 }
