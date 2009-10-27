@@ -25,6 +25,6 @@ package com.friendconnect.model;
 public interface ILoadable {
 	
 	public long getId();
-	public void setId(long value);
+	public void setId(Long value);
 	
 }

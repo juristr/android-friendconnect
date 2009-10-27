@@ -30,7 +30,7 @@ public class POIAlert implements ILoadable, ILocatable {
 		return this.id;
 	}
 
-	public void setId(long value) {
+	public void setId(Long value) {
 		this.id = value;
 	}
 
