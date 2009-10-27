@@ -19,7 +19,9 @@
 package com.friendconnect.controller;
 
 import java.util.Map;
+
 import android.content.Context;
+
 import com.friendconnect.adapters.FriendAdapter;
 import com.friendconnect.model.Friend;
 import com.friendconnect.model.RPCRemoteMappings;
@@ -47,20 +49,12 @@ public class FriendListController extends AbstractController<User> {
 				}
 				
 				ObjectSerializer friendSerializer = new ObjectSerializer();
-//				Friend friend = null;
-//				try {
-//					friend = friendSerializer.deSerialize((Map<String, Object>) result, Friend.class);
-//					model.addFriend(friend);
-//				} catch (Exception e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
 				
-				Map<String, Object> encodedDataMap = (Map<String, Object>)result;
-				for (Map.Entry<String, Object> entry :encodedDataMap.entrySet()) {
+				Object[] encodedDataMap = (Object[])result;
+				for (Object entry : encodedDataMap) {
 					Friend friend = null;
 					try {
-						friend = friendSerializer.deSerialize((Map<String, Object>) entry.getValue(), Friend.class);
+						friend = friendSerializer.deSerialize((Map<String, Object>) entry, Friend.class);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
