@@ -18,6 +18,7 @@
 
 package com.friendconnect.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +41,6 @@ public class FriendDao implements IFriendDao {
 	
 	@Override
 	public List<Friend> readAllFriends() {
-		return (List<Friend>) dummyFriends.values();
+		return new ArrayList<Friend>(dummyFriends.values());
 	}
-
 }
