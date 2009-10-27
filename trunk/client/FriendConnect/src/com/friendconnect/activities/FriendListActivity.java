@@ -24,6 +24,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -178,6 +179,10 @@ public class FriendListActivity extends Activity implements IView {
 			}
 		}
 		return false;
+	}
+	
+	public FriendListController getController() {
+		return controller;
 	}
 
 	/*
