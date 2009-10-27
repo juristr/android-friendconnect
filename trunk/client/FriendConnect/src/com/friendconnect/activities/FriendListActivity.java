@@ -147,51 +147,45 @@ public class FriendListActivity extends Activity implements IView {
 			case (MVC_TEST): {
 				// simulate some common operations to test the MVC binding
 				simulateMVCBindings();
-				TestDTO testDto = new TestDTO("Juri", "Str");
-				Object[] params = new Object[]{testDto};
-				XMLRPCService xmlRPCServ = new XMLRPCService();
-				xmlRPCServ.sendRequest(null, new IAsyncCallback(){
-
-					@SuppressWarnings("unchecked")
-					public void onSuccess(Object result) {
-//						Map<String, Serializable> map = (Map<String, Serializable>)result;
+				controller.loadFriends();
+				
+				
+				
+//				XMLRPCService xmlRPCServ = new XMLRPCService();
+//				xmlRPCServ.sendRequest(null, new IAsyncCallback(){
+//
+//					@SuppressWarnings("unchecked")
+//					public void onSuccess(Object result) {
+////						Map<String, Serializable> map = (Map<String, Serializable>)result;
+////						
+//						Friend friend = null;
 //						
-						Friend friend = null;
-						
-						try {
-//							Friend friend = (Friend)deserialize((byte[])map.get("juri.strumpflohner@gmail.com"));
-							friend = (Friend)deserialize((byte[])result);
-						} catch (StreamCorruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (ClassNotFoundException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-
-
-					public void onFailure(Throwable throwable) {
-						// TODO Auto-generated method stub						
-					}
-				});
+//						try {
+////							Friend friend = (Friend)deserialize((byte[])map.get("juri.strumpflohner@gmail.com"));
+//							friend = (Friend)deserialize((byte[])result);
+//						} catch (StreamCorruptedException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						} catch (IOException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						} catch (ClassNotFoundException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//					}
+//
+//
+//					public void onFailure(Throwable throwable) {
+//						// TODO Auto-generated method stub						
+//					}
+//				});
 				
 				
 				return true;
 			}
 		}
 		return false;
-	}
-	
-	private Object deserialize(byte[] value) throws StreamCorruptedException, IOException, ClassNotFoundException{
-		InputStream stream = new ByteArrayInputStream(value);
-		ObjectInput input = new ObjectInputStream(stream);
-		
-		Object obj = input.readObject();
-		return obj;
 	}
 
 	/*

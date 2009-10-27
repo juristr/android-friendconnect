@@ -16,37 +16,41 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.model;
+package org.xmlrpc.android;
 
-import java.net.URI;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.io.StreamCorruptedException;
 
-import org.xmlrpc.android.IAsyncCallback;
-import org.xmlrpc.android.XMLRPCClient;
-import org.xmlrpc.android.XMLRPCMethod;
+public class ObjectSerializer<T extends Serializable> {
 
-public class XMLRPCService {
-	private URI baseURI;
-	private XMLRPCClient client;
-
-	public XMLRPCService() {
-		// String baseUrl =
-		// Resources.getString(com.friendconnect.activities.R.string.friendConnectServerUrl);
-		String baseUrl = "http://10.7.196.6/xmlrpc"; // TODO
-																						// BAD,
-																						// inject
-																						// this
-																						// later
-		this.baseURI = URI.create(baseUrl);
-		this.client = new XMLRPCClient(baseURI); // TODO BAD, inject this later
+	public ObjectSerializer() {
+		
 	}
-
-	public void sendRequest(String remoteMethod, Object[] params, IAsyncCallback callback) {
-		XMLRPCMethod method = new XMLRPCMethod(client,
-				remoteMethod, callback);
-		if (params != null)
-			method.call(params);
-		else
-			method.call();
+	
+	@SuppressWarnings("unchecked")
+	public T deserialize(byte[] value) throws StreamCorruptedException, IOException, ClassNotFoundException{
+		InputStream stream = new ByteArrayInputStream(value);
+		ObjectInput input = new ObjectInputStream(stream);
+		
+		Object obj = input.readObject();
+		return (T)obj;
 	}
-
+	
+	public byte[] serialize(T object) throws IOException{
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ObjectOutputStream oos = new ObjectOutputStream(bos);
+		oos.writeObject(object);
+		oos.flush();
+		oos.close();
+		bos.close();
+		byte[] data = bos.toByteArray();
+		return data;
+	}
 }
