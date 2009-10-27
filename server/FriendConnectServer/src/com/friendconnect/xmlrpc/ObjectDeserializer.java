@@ -18,39 +18,108 @@
 
 package com.friendconnect.xmlrpc;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ObjectDeserializer<T> {
-	private Class<T> clazz;
+import com.friendconnect.model.ComplexSerializableType;
 
-	public ObjectDeserializer(Class<T> clazz) {
-		this.clazz = clazz;
+public class ObjectDeserializer {
+	// private Class<T> clazz;
+
+	public ObjectDeserializer() {
+		// this.clazz = clazz;
 	}
 
-	public T deSerialize(Map<String, Object> map)
+	@SuppressWarnings("unchecked")
+	public <T> T deSerialize(Map<String, Object> map, Class clazz)
 			throws NoSuchMethodException, InvocationTargetException,
 			IllegalArgumentException, IllegalAccessException {
-		T instance = createInstance();
+		T instance = (T) createInstance(clazz);
 
 		for (Map.Entry<String, Object> entry : map.entrySet()) {
-			Method setter = this.clazz.getMethod("set"
-					+ correctFieldName(entry.getKey()), entry.getValue()
-					.getClass());
-			setter.invoke(instance, entry.getValue());
+			String propertyName = correctFieldName(entry.getKey());
+			Object propertyValue = entry.getValue();
+			
+			Method setter = getMethodByName("set" + propertyName, clazz);
+
+			if (propertyValue instanceof HashMap) {
+				Class subClazz = getClassFromAnnotation(setter);
+				propertyValue = deSerialize(
+						(Map<String, Object>) propertyValue, subClazz);
+			}
+
+			setter.invoke(instance, propertyValue);
 		}
 
 		return instance;
 	}
-	
-	public Map<String, Object> serialize(T object){
+
+	private Method getMethodByName(String methodName, Class clazz) {
+		Method[] methods = clazz.getMethods();
+		for (Method method : methods) {
+			if(method.getName().equals(methodName))
+				return method;
+		}
+		
+		return null;
+	}
+
+	public Map<String, Object> serialize(Object object)
+			throws IllegalArgumentException, IllegalAccessException,
+			InvocationTargetException {
 		Map<String, Object> result = new HashMap<String, Object>();
-		
-		//TODO deserialize into the HashMap
-		
+
+		Method[] methods = object.getClass().getMethods();
+		for (Method method : methods) {
+			if (isValidGetter(method)) {
+				String propertyName = method.getName().replace("get", "");
+				Object propertyValue = (Object) method.invoke(object, null);
+
+				// is complex serializable?
+				if (isComplexSerializable(method) && propertyValue != null) {
+					propertyValue = serialize(propertyValue);
+				}
+
+				if (propertyValue != null)
+					result.put(propertyName, propertyValue);
+			}
+		}
+
 		return result;
+	}
+
+	private Class getClassFromAnnotation(Method setter) {
+		ComplexSerializableType ann = (ComplexSerializableType) getSerializableAnnotation(setter);
+		return ann.clazz();
+	}
+
+	private boolean isComplexSerializable(Method method) {
+		return getSerializableAnnotation(method) != null;
+	}
+
+	private Annotation getSerializableAnnotation(Method method) {
+		Annotation[] annotations = method.getAnnotations();
+		for (Annotation annotation : annotations) {
+			if (annotation instanceof ComplexSerializableType)
+				return annotation;
+		}
+
+		return null;
+	}
+
+	private boolean isValidGetter(Method method) {
+		if (method.getName().contains("Class"))
+			return false;
+		if (!method.getName().startsWith("get"))
+			return false;
+		if (method.getParameterTypes().length != 0)
+			return false;
+		if (void.class.equals(method.getReturnType()))
+			return false;
+		return true;
 	}
 
 	private String correctFieldName(String fieldName) {
@@ -58,9 +127,9 @@ public class ObjectDeserializer<T> {
 				+ fieldName.substring(1, fieldName.length());
 	}
 
-	private T createInstance() {
+	private Object createInstance(Class clazz) {
 		try {
-			return this.clazz.newInstance();
+			return clazz.newInstance();
 		} catch (Exception ex) {
 			// TODO dangerous
 		}

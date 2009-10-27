@@ -19,11 +19,11 @@
 package com.friendconnect.model;
 
 import java.io.Serializable;
+import java.util.Observable;
 
-public abstract class FriendConnectUser implements ILoadable,
+public abstract class FriendConnectUser extends Observable implements ILoadable,
 		ILocatable, Serializable {
 	private static final long serialVersionUID = 1;
-	
 	protected long id;
 	protected String emailAddress;
 	protected String firstname;
@@ -35,7 +35,7 @@ public abstract class FriendConnectUser implements ILoadable,
 		return this.id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -44,9 +44,7 @@ public abstract class FriendConnectUser implements ILoadable,
 	}
 
 	public void setEmailAddress(String emailAddress) {
-		if (!this.emailAddress.equals(emailAddress)) {
-			this.emailAddress = emailAddress;
-		}
+		this.emailAddress = emailAddress;
 	}
 
 	public String getFirstname() {
@@ -54,9 +52,7 @@ public abstract class FriendConnectUser implements ILoadable,
 	}
 
 	public void setFirstname(String firstname) {
-		if (!this.firstname.equals(firstname)) {
-			this.firstname = firstname;
-		}
+		this.firstname = firstname;
 	}
 
 	public String getSurname() {
@@ -64,9 +60,7 @@ public abstract class FriendConnectUser implements ILoadable,
 	}
 
 	public void setSurname(String surname) {
-		if (!this.surname.equals(surname)) {
-			this.surname = surname;
-		}
+		this.surname = surname;
 	}
 
 	public String getStatusMessage() {
@@ -74,15 +68,15 @@ public abstract class FriendConnectUser implements ILoadable,
 	}
 
 	public void setStatusMessage(String statusMessage) {
-		if (!this.statusMessage.equals(statusMessage)) {
-			this.statusMessage = statusMessage;
-		}
+		this.statusMessage = statusMessage;
 	}
 
+	@ComplexSerializableType(clazz = Location.class)
 	public Location getPosition() {
 		return this.position;
 	}
 
+	@ComplexSerializableType(clazz = Location.class)
 	public void setPosition(Location location) {
 		this.position = location;
 	}

@@ -29,20 +29,20 @@ public class XMLRPCGateway {
 	public Map<String, byte[]> getFriends(String username, String token) throws IOException {
 		Map<String, byte[]> result = new HashMap<String, byte[]>();
 		
-		ObjectSerializer<Friend> serializer = new ObjectSerializer<Friend>();
-		
-		boolean isAuthenticated = authService.validateToken(username, token);
-		if (isAuthenticated) {
-			List<Friend> friends = friendService.getFriends();
-
-			//serialize
-			for (Friend friend : friends) {
-				result.put(friend.getEmailAddress(), serializer.serialize(friend));
-			}
-		} else {
-			// TODO handle authentication failure appropriately, once for all
-			// method calls
-		}
+//		ObjectSerializer<Friend> serializer = new ObjectSerializer<Friend>();
+//		
+//		boolean isAuthenticated = authService.validateToken(username, token);
+//		if (isAuthenticated) {
+//			List<Friend> friends = friendService.getFriends();
+//
+//			//serialize
+//			for (Friend friend : friends) {
+//				result.put(friend.getEmailAddress(), serializer.serialize(friend));
+//			}
+//		} else {
+//			// TODO handle authentication failure appropriately, once for all
+//			// method calls
+//		}
 		
 		return result;
 	}
