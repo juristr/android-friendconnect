@@ -16,26 +16,41 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.services;
+package com.friendconnect.xmlrpc;
 
-import java.util.List;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.io.StreamCorruptedException;
 
-import com.friendconnect.dao.FriendDao;
-import com.friendconnect.dao.IFriendDao;
-import com.friendconnect.model.Friend;
+public class ObjectSerializer<T extends Serializable> {
 
-public class FriendService implements IFriendService {
-
-	private IFriendDao friendDao; //TODO inject
-	
-	public FriendService() {
-		friendDao = new FriendDao();
+	public ObjectSerializer() {
+		
 	}
 	
-	
-	@Override
-	public List<Friend> getFriends() {
-		return friendDao.readAllFriends();
+	@SuppressWarnings("unchecked")
+	public T deserialize(byte[] value) throws StreamCorruptedException, IOException, ClassNotFoundException{
+		InputStream stream = new ByteArrayInputStream(value);
+		ObjectInput input = new ObjectInputStream(stream);
+		
+		Object obj = input.readObject();
+		return (T)obj;
 	}
-
+	
+	public byte[] serialize(T object) throws IOException{
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ObjectOutputStream oos = new ObjectOutputStream(bos);
+		oos.writeObject(object);
+		oos.flush();
+		oos.close();
+		bos.close();
+		byte[] data = bos.toByteArray();
+		return data;
+	}
 }
