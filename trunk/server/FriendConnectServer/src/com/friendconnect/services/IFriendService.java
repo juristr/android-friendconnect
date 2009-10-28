@@ -18,10 +18,14 @@
 
 package com.friendconnect.services;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.List;
 
 import com.friendconnect.model.Friend;
+import com.google.gdata.util.ServiceException;
 
 public interface IFriendService {
-	List<Friend> getFriends();
+	List<Friend> getFriends(String username, String token) throws MalformedURLException, IOException, ServiceException;
+	List<Friend> getDummyFriends();
 }
