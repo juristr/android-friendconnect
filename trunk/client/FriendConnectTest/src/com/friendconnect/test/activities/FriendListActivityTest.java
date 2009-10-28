@@ -1,6 +1,8 @@
 package com.friendconnect.test.activities;
 
-import android.test.SingleLaunchActivityTestCase;
+import android.content.Intent;
+import android.test.ActivityUnitTestCase;
+import android.test.suitebuilder.annotation.MediumTest;
 import android.widget.ListView;
 
 import com.friendconnect.activities.FriendListActivity;
@@ -8,37 +10,46 @@ import com.friendconnect.activities.R;
 import com.friendconnect.controller.FriendListController;
 import com.friendconnect.model.Friend;
 
-public class FriendListActivityTest extends SingleLaunchActivityTestCase<FriendListActivity> {
-	private ListView friendListView;
-	private FriendListController friendListController;
+public class FriendListActivityTest extends ActivityUnitTestCase<FriendListActivity> {
+	private Intent startIntent;
 	
 	public FriendListActivityTest() {
-		super("com.friendconnect.activities", FriendListActivity.class);
+		super(FriendListActivity.class);
 	}
 
 	@Override
     public void setUp() throws Exception {
       super.setUp();
-      friendListController = ((FriendListActivity)getActivity()).getController();
-      friendListView = (ListView) getActivity().findViewById(R.id.listViewFriends);
-    }
+      startIntent = new Intent(getInstrumentation().getContext(), FriendListActivity.class);
+	}
 	
 	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		friendListController = null;
-		friendListView = null;
 	}
 	
+    @MediumTest
+    public void testPreconditions(){
+		startActivity(startIntent, null, null);
+		assertNotNull(getActivity());
+		assertNotNull(getActivity().findViewById(R.id.listViewFriends));
+	}
+	
+	@MediumTest
 	public void testMVCBindings() throws Exception {
+		startActivity(startIntent, null, null);
+		
+		ListView friendListView = (ListView) getActivity().findViewById(R.id.listViewFriends);
+		FriendListController friendListController = ((FriendListActivity)getActivity()).getController();
+		
 		Friend friend = new Friend(1, "matthias.braunhofer@gmail.com", "Matthias", "Braunhofer", "");
 		
-		int initialNumberOfChildViews = friendListView.getChildCount();
+		int initialNumberOfItems = friendListView.getCount();
 		
 		friendListController.addFriend(friend);
+						
+		int numberOfItems = friendListView.getCount();
 		
-		int numberOfChildViews = friendListView.getChildCount();
-		
-		assertTrue("Number of childviews should have increased", numberOfChildViews == (initialNumberOfChildViews + 1));
+		assertTrue("Number of childviews should have increased", numberOfItems == initialNumberOfItems + 1);
     }
 }
