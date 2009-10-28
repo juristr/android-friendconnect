@@ -33,7 +33,7 @@ public class XmlRpcService {
 		boolean isAuthenticated = true; // authService.validateToken(username,
 										// token);
 		if (isAuthenticated) {
-			List<Friend> friends = friendService.getFriends();
+			List<Friend> friends = friendService.getDummyFriends();
 
 			// serialize
 			for (Friend friend : friends) {

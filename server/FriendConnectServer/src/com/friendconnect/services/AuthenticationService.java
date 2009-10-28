@@ -25,7 +25,7 @@ import com.google.gdata.client.contacts.ContactsService;
 import com.google.gdata.util.AuthenticationException;
 
 public class AuthenticationService implements IAuthenticationService {
-	private final String applicationName = "FriendConnect";
+	private final String applicationName = "FriendConnect";//TODO inject
 	
 	@Override
 	public String authenticate(String username, String password) throws AuthenticationException {
