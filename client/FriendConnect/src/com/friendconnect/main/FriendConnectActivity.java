@@ -18,18 +18,25 @@
 
 package com.friendconnect.main;
 
+import java.util.Observable;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.friendconnect.activities.FriendListActivity;
 import com.friendconnect.activities.R;
+import com.friendconnect.controller.LoginController;
+import com.friendconnect.model.LoginResult;
+import com.friendconnect.view.IView;
 
-public class FriendConnectActivity extends Activity {
+public class FriendConnectActivity extends Activity implements IView {
 	private Button signInButton;
+	private LoginController controller;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -37,12 +44,25 @@ public class FriendConnectActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.loginview);
 		
+		this.controller = IoC.getInstance(LoginController.class);
+		this.controller.registerObserver(this);
+		
 		signInButton = (Button)this.findViewById(R.id.buttonSignIn);
 		signInButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				//TODO verify user's credentials
-				startActivity(new Intent(FriendConnectActivity.this, FriendListActivity.class));
+				String username = ((EditText)findViewById(R.id.editTextEmail)).getText().toString();
+				String password = ((EditText)findViewById(R.id.editTextPassword)).getText().toString();
+				
+				controller.login(username, password);
 			}
 		});
+	}
+
+	public void update(Observable observable, Object data) {
+		LoginResult result = (LoginResult)observable;
+		
+		if(result.isLoginSucceeded()){
+			startActivity(new Intent(FriendConnectActivity.this, FriendListActivity.class));
+		}
 	}
 }

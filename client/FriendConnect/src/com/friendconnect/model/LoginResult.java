@@ -18,10 +18,24 @@
 
 package com.friendconnect.model;
 
-public class RPCRemoteMappings {
-	private static final String baseMapping = "XmlRpcGateway.";
+import java.util.Observable;
 
-	public static final String LOGIN = baseMapping + "login";
-	public static final String GETFRIENDS =  baseMapping + "getFriends";
+public class LoginResult extends Observable {
+
+	private boolean loginSucceeded = false;
+
+	public LoginResult() {
+
+	}
+
+	public boolean isLoginSucceeded() {
+		return loginSucceeded;
+	}
+
+	public void setLoginSucceeded(boolean loginSucceeded) {
+		this.loginSucceeded = loginSucceeded;
+		setChanged();
+		notifyObservers();
+	}
 
 }
