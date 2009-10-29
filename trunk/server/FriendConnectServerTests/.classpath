@@ -9,5 +9,11 @@
 	<classpathentry kind="lib" path="libs/ws-commons-util-1.0.2.jar"/>
 	<classpathentry kind="lib" path="libs/xmlrpc-client-3.1.2.jar"/>
 	<classpathentry kind="lib" path="libs/xmlrpc-common-3.1.2.jar"/>
+	<classpathentry kind="lib" path="libs/gdata-client-1.0.jar"/>
+	<classpathentry kind="lib" path="libs/gdata-client-meta-1.0.jar"/>
+	<classpathentry kind="lib" path="libs/gdata-contacts-3.0.jar"/>
+	<classpathentry kind="lib" path="libs/gdata-contacts-meta-3.0.jar"/>
+	<classpathentry kind="lib" path="libs/gdata-core-1.0.jar"/>
+	<classpathentry kind="lib" path="libs/google-collect-1.0-rc1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
