@@ -16,44 +16,44 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.server.tests.xmlrpc;
+package com.friendconnect.server.tests.services;
 
 import junit.framework.TestCase;
 
 import com.friendconnect.services.AuthenticationService;
-import com.friendconnect.services.XmlRpcService;
+import com.friendconnect.services.IAuthenticationService;
 import com.google.gdata.util.AuthenticationException;
 
-public class XmlRpcServiceTest extends TestCase {
-	private AuthenticationService authService;
-	private XmlRpcService xmlRpcService;
+public class AuthenticationServiceTest extends TestCase {
+	private IAuthenticationService authService;
 	
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		
 		authService = new AuthenticationService();
-		xmlRpcService = new XmlRpcService();
-		xmlRpcService.setAuthService(authService);
 	}
 
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		
-		xmlRpcService = null;
 		authService = null;
 	}
 	
-	
-	public void testAuthentication() throws AuthenticationException{
+	public void testAuthenticate() throws AuthenticationException{
 		String username = "";
 		String password = "";
+				
+		fail("provide some username + password for this test to succeed!");
 		
-		fail("Provide appropriate passwords!");
-		
-		String token = xmlRpcService.login(username, password);
+		String token = authService.authenticate(username, password);
 		
 		assertNotNull(token);
+		assertTrue(!token.equals(""));
+		
+		username = "someImgUser@gmail.com";
+		password = "someImaginedPass";
+			
+		token = authService.authenticate(username, password);
+		assertNull(token);
 	}
 
 }
