@@ -61,7 +61,6 @@ public class FriendListActivity extends Activity implements IView {
 		// TODO just dummy instantiation here
 		this.controller = IoC.getInstance(FriendListController.class);
 		this.controller.setLayoutId(R.layout.friendlistrowitem);
-		this.controller.registerModel(new User()); // TODO just dummy
 		this.controller.registerObserver(this);
 
 		this.adapter = controller.getAdapter(this);
@@ -111,7 +110,6 @@ public class FriendListActivity extends Activity implements IView {
 	}
 
 	public void update(Observable observable, Object data) {
-		// provocate rebinding of the friendlist
 		this.adapter.notifyDataSetChanged();
 	}
 
