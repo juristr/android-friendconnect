@@ -16,21 +16,71 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.controller;
+package com.friendconnect.services;
 
-import android.content.Context;
-import android.widget.BaseAdapter;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import com.friendconnect.model.FriendConnectUser;
+import android.app.Service;
+import android.content.Intent;
+import android.os.IBinder;
+import android.util.Log;
 
-public class FriendDetailController extends AbstractController<FriendConnectUser> {
+import com.friendconnect.controller.FriendListController;
+import com.google.inject.Inject;
 
-	public FriendDetailController() {
-		super();
+public class FriendUpdateService extends Service {
+
+	private FriendListController controller;
+	private Timer timer = new Timer();
+	private final int UPDATE_INTERVAL = 5000; // TODO make configurable??
+
+	@Override
+	public IBinder onBind(Intent arg0) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public <T extends BaseAdapter> T getAdapter(Context context) {
-		return null;
+	public void onCreate() {
+		super.onCreate();
+		
+		startService();
 	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		
+		shutdownService();
+	}
+
+	private void startService() {
+		timer.scheduleAtFixedRate(
+				new TimerTask() {
+					@Override
+					public void run() {
+						controller.updateFriendList();	
+					}
+				}, 
+				0, 
+				UPDATE_INTERVAL
+		);
+		
+		Log.i(getClass().getSimpleName(), "FriendUpdateService launched");
+	}
+	
+	private void shutdownService(){
+		if(timer != null)
+			timer.cancel();
+		
+		Log.i(getClass().getSimpleName(), "FriendUpdateService stopped");
+	}
+
+
+	@Inject
+	public void setController(FriendListController controller) {
+		this.controller = controller;
+	}
+
 }

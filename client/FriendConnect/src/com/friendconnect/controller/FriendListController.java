@@ -18,6 +18,8 @@
 
 package com.friendconnect.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
@@ -30,10 +32,13 @@ import com.friendconnect.services.XMLRPCService;
 import com.friendconnect.xmlrpc.IAsyncCallback;
 import com.friendconnect.xmlrpc.ObjectSerializer;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
+@Singleton
 public class FriendListController extends AbstractController<User> {
 	private int layoutId;
 	private XMLRPCService xmlRPCService;
+	private ObjectSerializer friendSerializer = new ObjectSerializer(); //TODO inject this
 
 	public FriendListController() {
 		super();
@@ -49,20 +54,9 @@ public class FriendListController extends AbstractController<User> {
 					return;
 				}
 				
-				ObjectSerializer friendSerializer = new ObjectSerializer();
-				
-				Object[] encodedDataMap = (Object[])result;
-				for (Object entry : encodedDataMap) {
-					Friend friend = null;
-					try {
-						friend = friendSerializer.deSerialize((Map<String, Object>) entry, Friend.class);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					
-					if(friend != null){
-						model.addFriend(friend);
-					}
+				List<Friend> friends = processSerializedFriendList((Object[])result);
+				for (Friend friend : friends) {
+					model.addFriend(friend);
 				}
 			}
 			
@@ -71,6 +65,52 @@ public class FriendListController extends AbstractController<User> {
 			}
 			
 		});
+	}
+	
+
+	/**
+	 * This method will be called by the FriendUpdateService for actualizing
+	 * the list of friends and their according attributes such as possible
+	 * status message changes or changes in their position.
+	 */
+	public void updateFriendList() {
+		xmlRPCService.sendRequest(RPCRemoteMappings.GETFRIENDS, null, new IAsyncCallback<Object>() {
+
+			@SuppressWarnings("unchecked")
+			public void onSuccess(Object result) {
+				if(result == null){
+					//TODO show a message that nothing has been fetched!
+					return;
+				}
+				
+				List<Friend> friends = processSerializedFriendList((Object[])result);
+				//TODO synch changes in the existing list of friends
+			}
+			
+			public void onFailure(Throwable throwable) {
+				//TODO react properly
+			}
+			
+		});
+	}
+	
+	private List<Friend> processSerializedFriendList(Object[] list){
+		List<Friend> result = new ArrayList<Friend>();
+		
+		for (Object entry : list) {
+			Friend friend = null;
+			try {
+				friend = friendSerializer.deSerialize((Map<String, Object>) entry, Friend.class);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			if(friend != null){
+				result.add(friend);
+			}
+		}
+		
+		return result;
 	}
 
 
