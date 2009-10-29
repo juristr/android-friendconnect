@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.friendconnect.model.Friend;
 import com.friendconnect.xmlrpc.ObjectSerializer;
+import com.google.gdata.util.AuthenticationException;
 
 public class XmlRpcService {
 	private IAuthenticationService authService;
@@ -14,16 +15,22 @@ public class XmlRpcService {
 	private ObjectSerializer serializer;
 
 	public XmlRpcService() {
-//		init();
 	}
 
-	// TODO just dummy of course :)
-	private void init() {
-		// TODO these initializations will be injected!!!
-		friendService = new FriendService();
-		authService = new AuthenticationService();
+	/**
+	 * 
+	 * @param username
+	 * @param password
+	 * @return
+	 * @throws AuthenticationException
+	 */
+	public String login(String username, String password) throws AuthenticationException{
+		String resultToken = null;
+		resultToken = authService.authenticate(username, password);
+		
+		return resultToken;
 	}
-
+	
 	public List getFriends() throws IOException, IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException {
 		 List result = new ArrayList();

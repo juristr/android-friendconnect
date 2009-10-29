@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.xmlrpc.server.XmlRpcHandlerMapping;
+import org.apache.xmlrpc.server.XmlRpcServerConfigImpl;
 import org.apache.xmlrpc.webserver.XmlRpcServletServer;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,9 +32,14 @@ public class XmlRpcController extends AbstractController {
 
 	private XmlRpcServletServer server = new XmlRpcServletServer();
 	
+	public void initialize(){
+		XmlRpcServerConfigImpl serverConfig = (XmlRpcServerConfigImpl) server.getConfig();
+		serverConfig.setEnabledForExtensions(true);
+	}
+	
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {		
+			HttpServletResponse response) throws Exception {	
 		server.execute(request, response);
 		return null;
 	}

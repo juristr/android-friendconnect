@@ -16,10 +16,10 @@
 
 package com.friendconnect.gdata;
 
+import java.io.PrintStream;
+
 import com.google.gdata.data.contacts.ContactEntry;
 import com.google.gdata.data.contacts.ContactGroupEntry;
-
-import java.io.PrintStream;
 
 /**
  * Interface to define the common methods of the {@link ElementHelper}.
