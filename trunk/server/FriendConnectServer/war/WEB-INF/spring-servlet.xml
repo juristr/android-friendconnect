@@ -15,7 +15,7 @@
 		</property>
 	</bean>
 
-	<bean name="xmlRpcController" class="com.friendconnect.main.XmlRpcController">
+	<bean name="xmlRpcController" class="com.friendconnect.controller.XmlRpcController">
 		<property name="mapping" ref="xmlRpcHandlerMapping" />
 	</bean>
 
