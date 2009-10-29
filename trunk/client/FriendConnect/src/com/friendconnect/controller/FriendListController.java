@@ -42,6 +42,7 @@ public class FriendListController extends AbstractController<User> {
 
 	public FriendListController() {
 		super();
+		registerModel(new User());
 	}
 	
 	public void loadFriends() {
