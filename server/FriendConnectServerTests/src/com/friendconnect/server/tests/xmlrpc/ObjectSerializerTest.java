@@ -20,7 +20,7 @@ public class ObjectSerializerTest extends TestCase {
 	}
 
 	public void testObjectDeserializer() throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-		Friend friend = new Friend(1, "juri.strumpflohner@gmail.com", "Juri", "Strumpflohner", "");
+		Friend friend = new Friend(1, "Juri", "", "juri.strumpflohner@gmail.com", "", "");
 		Location location = new Location();
 		location.setLatitude(10.34);
 		location.setLongitude(112.3);
@@ -31,8 +31,7 @@ public class ObjectSerializerTest extends TestCase {
 		
 		assertNotNull("the serialized object shouldn't be null", serialized);
 		assertEquals("The ids should match", friend.getId(), serialized.get("Id"));
-		assertEquals("The firstnames should match", friend.getFirstname(), serialized.get("Firstname"));
-		assertEquals("The surnames should match", friend.getSurname(), serialized.get("Surname"));
+		assertEquals("The names should match", friend.getName(), serialized.get("Name"));
 		assertNotNull("The hashmap should have an object value for the subobj", serialized.get("Position"));
 		
 		
@@ -40,8 +39,7 @@ public class ObjectSerializerTest extends TestCase {
 		Friend deserializedFriend = serializer.deSerialize(serialized, Friend.class);
 		assertNotNull(deserializedFriend);
 		assertEquals(friend.getId(), deserializedFriend.getId());
-		assertEquals(friend.getFirstname(), deserializedFriend.getFirstname());
-		assertEquals(friend.getSurname(), deserializedFriend.getSurname());
+		assertEquals(friend.getName(), deserializedFriend.getName());
 		assertEquals(friend.getPosition().getLatitude(), deserializedFriend.getPosition().getLatitude());
 		assertEquals(friend.getPosition().getLongitude(), deserializedFriend.getPosition().getLongitude());
 	}

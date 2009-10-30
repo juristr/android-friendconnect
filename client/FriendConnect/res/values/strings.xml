@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">Friend Connect</string>
-	<string name="nickname">Nickname</string>
-	<string name="firstname">First Name</string>
-	<string name="surname">Surname</string>
-	<string name="statusmessage">Status Message</string>
+	<string name="name">Name:</string>
+	<string name="statusmessage">Status Message:</string>
+	<string name="phone">Phone Number:</string>
+	<string name="website">Website:</string>
 	<string name="details">Details</string>
 	<string name="friends">Friends</string>
 	<string name="email">Email:</string>

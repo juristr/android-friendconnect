@@ -34,10 +34,9 @@ public class FriendDao implements IFriendDao {
 	}
 	
 	private void initWithSomeFriends(){
-		dummyFriends.put("matthias.braunhofer@gmail.com", new Friend(1, "matthias.braunhofer@gmail.com", "Matthias", "Braunhofer", ""));
-		dummyFriends.put("stephi050385@gmail.com", new Friend(2, "stephi050385@gmail.com", "Steffi", "", ""));
+		dummyFriends.put("matthias.braunhofer@gmail.com", new Friend(1, "Matthias", "", "matthias.braunhofer@gmail.com", "", ""));
+		dummyFriends.put("stephi050385@gmail.com", new Friend(2, "Steffi","", "stephi050385@gmail.com", "", ""));
 	}
-	
 	
 	@Override
 	public List<Friend> readAllFriends() {

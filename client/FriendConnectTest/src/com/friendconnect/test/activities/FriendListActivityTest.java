@@ -42,7 +42,7 @@ public class FriendListActivityTest extends ActivityUnitTestCase<FriendListActiv
 		ListView friendListView = (ListView) getActivity().findViewById(R.id.listViewFriends);
 		FriendListController friendListController = ((FriendListActivity)getActivity()).getController();
 		
-		Friend friend = new Friend(1, "matthias.braunhofer@gmail.com", "Matthias", "Braunhofer", "");
+		Friend friend = new Friend(1, "Matthias", "", "matthias.braunhofer@gmail.com", "", "");
 		
 		int initialNumberOfItems = friendListView.getCount();
 		

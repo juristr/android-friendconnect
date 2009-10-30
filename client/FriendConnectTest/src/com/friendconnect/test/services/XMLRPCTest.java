@@ -49,7 +49,7 @@ public class XMLRPCTest extends AndroidTestCase {
 			public void onFailure(Throwable throwable) {
 				fail(throwable.getMessage());
 			}
-        });
+        }, Object.class);
         Object[] params = {
         		param
         };
