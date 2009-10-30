@@ -19,6 +19,7 @@
 package com.friendconnect.xmlrpc;
 
 public interface IAsyncCallback<T> {
+	
 	/**
 	 * On successful outcome
 	 * @param result the result object
@@ -30,6 +31,7 @@ public interface IAsyncCallback<T> {
 	 * @param throwable the exception
 	 */
 	public void onFailure(Throwable throwable);
+
 	
 	//TODO Juri: define this
 	/**

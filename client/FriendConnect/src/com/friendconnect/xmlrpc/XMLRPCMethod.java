@@ -18,26 +18,40 @@
 
 package com.friendconnect.xmlrpc;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import org.xmlrpc.android.XMLRPCClient;
 import org.xmlrpc.android.XMLRPCException;
 import org.xmlrpc.android.XMLRPCFault;
-
 import android.os.Handler;
 import android.util.Log;
 
-public class XMLRPCMethod extends Thread {
+public class XMLRPCMethod<T> extends Thread {
 	private String method;
 	private Object[] params;
 	private Handler handler;
-	private IAsyncCallback callBack;
+	private IAsyncCallback<T> callBack;
+	private Class clazz;
 	private XMLRPCClient client;
+	private ObjectSerializer serializer;
 	
 
-	public XMLRPCMethod(XMLRPCClient client, String method, IAsyncCallback callBack) {
+	/**
+	 * 
+	 * @param client the {@link XMLRPCClient} object
+	 * @param method the identifier of the method to invoke on the server
+	 * @param callBack the {@link IAsyncCallback}
+	 * @param clazz the Class of the base type object to be de-serialized
+	 */
+	public XMLRPCMethod(XMLRPCClient client, String method, IAsyncCallback<T> callBack, Class clazz) {
 		this.client = client;
 		this.method = method;
 		this.callBack = callBack;
 		handler = new Handler();
+		serializer = new ObjectSerializer();
+		this.clazz = clazz;
 	}
 	
 	/**
@@ -46,11 +60,11 @@ public class XMLRPCMethod extends Thread {
 	 * @param method
 	 * @param params
 	 */
-	public XMLRPCMethod(XMLRPCClient client, String method, Object[] params){
-		this.client = client;
-		this.method = method;
-		this.params = params;
-	}
+//	public XMLRPCMethod(XMLRPCClient client, String method, Object[] params){
+//		this.client = client;
+//		this.method = method;
+//		this.params = params;
+//	}
 
 	public void call() {
 		call(null);
@@ -64,27 +78,51 @@ public class XMLRPCMethod extends Thread {
 	@Override
 	public void run() {
 		try {
-			//invoke the XML-RPC client for doing the actual call
-			//TODO serialization
+			//TODO serialization of objects??
 			final Object result = client.callEx(method, params);
 			
 			handler.post(new Runnable() {
 				public void run() {
-//					tests.setEnabled(true);
-//					status.setText("XML-RPC call took " + (t1 - t0) + "ms");
-					//TODO de-serialization
-					callBack.onSuccess(result);
+					T deserializedResult = null;
+					try {
+						deserializedResult = deserializeResult(result);
+					} catch (Exception ex) {
+						Log.e(ex.getClass().getCanonicalName(), ex.getMessage());
+						callBack.onFailure(ex);
+					}
+					
+					callBack.onSuccess(deserializedResult);
+				}
+
+				/**
+				 * Deserialize the received object using the ObjectSerializer
+				 * @param result
+				 * @return
+				 * @throws IllegalArgumentException
+				 * @throws NoSuchMethodException
+				 * @throws InvocationTargetException
+				 * @throws IllegalAccessException
+				 * @throws InstantiationException
+				 */
+				private T deserializeResult(Object result) throws IllegalArgumentException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
+					if(result instanceof Map<?, ?>){
+						//we have a single serialized object probably of type T
+						return serializer.deSerialize((Map<String, Object>) result, clazz);
+					}else if(result instanceof Object[]){
+						List<Object> list = new ArrayList<Object>();
+						for (Object obj : (Object[])result) {
+							Object deserializedObj = serializer.deSerialize((Map<String, Object>) obj, clazz);
+							list.add(deserializedObj);
+						}
+						return (T) list;
+					}
+					
+					return null;
 				}
 			});
 		} catch (final XMLRPCFault e) {
 			handler.post(new Runnable() {
 				public void run() {
-//					testResult.setText("");
-//					tests.setEnabled(true);
-//					status.setTextColor(0xffff8080);
-//					status.setError("", errorDrawable);
-//					status.setText("Fault message: " + e.getFaultString()
-//							+ "\nFault code: " + e.getFaultCode());
 					Log.d("Test", "error", e);
 					callBack.onFailure(e);
 				}
@@ -92,10 +130,6 @@ public class XMLRPCMethod extends Thread {
 		} catch (final XMLRPCException e) {
 			handler.post(new Runnable() {
 				public void run() {
-//					testResult.setText("");
-//					tests.setEnabled(true);
-//					status.setTextColor(0xffff8080);
-//					status.setError("", errorDrawable);
 //					Throwable couse = e.getCause();
 //					if (couse instanceof HttpHostConnectException) {
 //						status
