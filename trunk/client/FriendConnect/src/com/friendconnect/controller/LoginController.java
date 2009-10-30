@@ -38,20 +38,22 @@ public class LoginController extends AbstractController<LoginResult> {
 	}
 	
 	public void login(String username, String password){
-		xmlRpcService.sendRequest(RPCRemoteMappings.LOGIN, new Object[]{username, password}, new IAsyncCallback<Object>() {
-
-			public void onSuccess(Object result) {
-				@SuppressWarnings("unused")
-				String token = (String)result;
-				
-				model.setLoginSucceeded(true);
-			}
-			
-			public void onFailure(Throwable throwable) {
-				
-			}
-			
-		});
+//		xmlRpcService.sendRequest(RPCRemoteMappings.LOGIN, new Object[]{username, password}, new IAsyncCallback<Object>() {
+//
+//			public void onSuccess(Object result) {
+//				@SuppressWarnings("unused")
+//				String token = (String)result;
+//				
+//				model.setLoginSucceeded(true);
+//			}
+//			
+//			public void onFailure(Throwable throwable) {
+//				
+//			}
+//			
+//		});
+		
+		model.setLoginSucceeded(true);
 	}
 	
 	@Override

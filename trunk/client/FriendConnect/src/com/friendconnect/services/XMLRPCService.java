@@ -41,9 +41,9 @@ public class XMLRPCService {
 		this.client = new XMLRPCClient(baseURI); // TODO BAD, inject this later
 	}
 
-	public void sendRequest(String remoteMethod, Object[] params, IAsyncCallback callback) {
-		XMLRPCMethod method = new XMLRPCMethod(client,
-				remoteMethod, callback);
+	public <T> void sendRequest(String remoteMethod, Object[] params, IAsyncCallback<T> callback, Class clazz) {
+		XMLRPCMethod<T> method = new XMLRPCMethod<T>(client,
+				remoteMethod, callback, clazz);
 		if (params != null)
 			method.call(params);
 		else
