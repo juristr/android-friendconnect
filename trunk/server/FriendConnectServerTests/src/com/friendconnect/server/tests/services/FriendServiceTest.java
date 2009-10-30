@@ -18,45 +18,51 @@
 
 package com.friendconnect.server.tests.services;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.List;
 import java.util.Properties;
 
 import junit.framework.TestCase;
 
+import com.friendconnect.model.Friend;
 import com.friendconnect.server.tests.utils.PropsUtils;
 import com.friendconnect.services.AuthenticationService;
+import com.friendconnect.services.FriendService;
 import com.friendconnect.services.IAuthenticationService;
-import com.google.gdata.util.AuthenticationException;
+import com.friendconnect.services.IFriendService;
+import com.google.gdata.util.ServiceException;
 
-public class AuthenticationServiceTest extends TestCase {
-	private IAuthenticationService authService;
+public class FriendServiceTest extends TestCase {
+	private IAuthenticationService authenticationService;
+	private IFriendService friendService;
 	private Properties properties;
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		authService = new AuthenticationService();
+		authenticationService = new AuthenticationService();
+		friendService = new FriendService();
 		properties = PropsUtils.load("config.properties");
 	}
 
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		authService = null;
+		authenticationService = null;
+		friendService = null;
 		properties = null;
 	}
 	
-	public void testAuthenticate() throws AuthenticationException{
+	public void testGetFriends() throws MalformedURLException, IOException, ServiceException {
 		String username = properties.getProperty("username");
 		String password = properties.getProperty("password");
-		
-		String token = authService.authenticate(username, password);
+				
+		String token = authenticationService.authenticate(username, password);
 		
 		assertNotNull("Token should not be null", token);
 		assertTrue("Token should not be equal to empty string", !token.equals(""));
 		
-		username = "someImgUser@gmail.com";
-		password = "someImaginedPass";
+		List<Friend> friends = friendService.getFriends(username, token);
 		
-		token = authService.authenticate(username, password);
-		assertNull("Token should be null", token);
+		assertNotNull("List should not be null", friends);		
 	}
-
 }

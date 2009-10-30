@@ -24,11 +24,12 @@ public class Friend extends FriendConnectUser {
 		
 	}
 	
-	public Friend(int id, String nickname, String firstname, String surname, String statusMessage) {
+	public Friend(int id, String name, String phone, String emailAddress, String website, String statusMessage) {
 		this.id = id;
-		this.emailAddress = nickname;
-		this.firstname = firstname;
-		this.surname = surname;
+		this.name = name;
+		this.phone = phone;
+		this.emailAddress = emailAddress;
+		this.website = website;
 		this.statusMessage = statusMessage;
 	}
 }

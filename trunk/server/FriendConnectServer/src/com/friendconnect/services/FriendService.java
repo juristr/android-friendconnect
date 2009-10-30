@@ -70,6 +70,11 @@ public class FriendService implements IFriendService {
             email = contact.getEmailAddresses().get(0).getAddress();
         }	
         
+        friend.setName(name);
+        friend.setEmailAddress(email);
+        friend.setWebsite(website);
+        friend.setPhone(phone);
+       
         System.out.println("Email: " + email);
         System.out.println("Website: " + website);
         System.out.println("Phone: " + phone);

@@ -28,8 +28,9 @@ public abstract class FriendConnectUser extends Observable implements ILoadable,
 	private static final long serialVersionUID = 1;
 	protected int id;
 	protected String emailAddress;
-	protected String firstname;
-	protected String surname;
+	protected String phone;
+	protected String website;
+	protected String name;
 	protected String statusMessage;
 	protected Location position;
 	
@@ -49,20 +50,28 @@ public abstract class FriendConnectUser extends Observable implements ILoadable,
 		this.emailAddress = emailAddress;
 	}
 
-	public String getFirstname() {
-		return firstname;
+	public String getPhone() {
+		return phone;
 	}
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
-	public String getSurname() {
-		return surname;
+	public String getName() {
+		return name;
+	}
+	
+	public String getWebsite() {
+		return website;
 	}
 
-	public void setSurname(String surname) {
-		this.surname = surname;
+	public void setWebsite(String website) {
+		this.website = website;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getStatusMessage() {

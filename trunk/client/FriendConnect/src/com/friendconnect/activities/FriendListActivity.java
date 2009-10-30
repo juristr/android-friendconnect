@@ -37,7 +37,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.friendconnect.controller.FriendListController;
 import com.friendconnect.main.IoC;
 import com.friendconnect.model.Friend;
-import com.friendconnect.model.User;
 import com.friendconnect.view.IView;
 
 public class FriendListActivity extends Activity implements IView {
@@ -97,12 +96,12 @@ public class FriendListActivity extends Activity implements IView {
 	public void onPrepareDialog(int id, Dialog dialog) {
 		switch (id) {
 		case (FRIENDDETAILS_DIALOG):
-			((TextView) dialog.findViewById(R.id.textViewNickname))
+			((TextView) dialog.findViewById(R.id.textViewName))
+					.setText(selectedUser.getName());
+			((TextView) dialog.findViewById(R.id.textViewPhone))
+					.setText(selectedUser.getPhone());
+			((TextView) dialog.findViewById(R.id.textViewEmail))
 					.setText(selectedUser.getEmailAddress());
-			((TextView) dialog.findViewById(R.id.textViewFirstname))
-					.setText(selectedUser.getFirstname());
-			((TextView) dialog.findViewById(R.id.textViewSurname))
-					.setText(selectedUser.getSurname());
 			((TextView) dialog.findViewById(R.id.textViewStatusmessage))
 					.setText(selectedUser.getStatusMessage());
 			break;
