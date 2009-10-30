@@ -16,47 +16,41 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.server.tests.services;
+package com.friendconnect.server.tests.utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Properties;
 
-import junit.framework.TestCase;
-
-import com.friendconnect.server.tests.utils.PropsUtils;
-import com.friendconnect.services.AuthenticationService;
-import com.friendconnect.services.IAuthenticationService;
-import com.google.gdata.util.AuthenticationException;
-
-public class AuthenticationServiceTest extends TestCase {
-	private IAuthenticationService authService;
-	private Properties properties;
+public class PropsUtils {
 	
-	protected void setUp() throws Exception {
-		super.setUp();
-		authService = new AuthenticationService();
-		properties = PropsUtils.load("config.properties");
-	}
+    /**
+     * Load a properties file from the classpath
+     * @param propsName
+     * @return Properties
+     * @throws Exception
+     */
+    public static Properties load(String propsName) throws Exception {
+    	Properties props = new Properties();
+        URL url = ClassLoader.getSystemResource(propsName);
+        System.out.println(url.getPath());
+        props.load(url.openStream());
+        return props;
+    }
 
-	protected void tearDown() throws Exception {
-		super.tearDown();
-		authService = null;
-		properties = null;
-	}
-	
-	public void testAuthenticate() throws AuthenticationException{
-		String username = properties.getProperty("username");
-		String password = properties.getProperty("password");
-		
-		String token = authService.authenticate(username, password);
-		
-		assertNotNull(token);
-		assertTrue(!token.equals(""));
-		
-		username = "someImgUser@gmail.com";
-		password = "someImaginedPass";
-		
-		token = authService.authenticate(username, password);
-		assertNull(token);
-	}
-
+    /**
+     * Load a Properties File
+     * @param propsFile
+     * @return Properties
+     * @throws IOException
+     */
+    public static Properties load(File propsFile) throws IOException {
+        Properties props = new Properties();
+        FileInputStream fis = new FileInputStream(propsFile);
+        props.load(fis);    
+        fis.close();
+        return props;
+    }
 }
