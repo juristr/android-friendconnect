@@ -20,8 +20,20 @@ package com.friendconnect.services;
 
 import com.friendconnect.xmlrpc.IAsyncCallback;
 
+/**
+ * Interface for the XMLRPCService
+ *
+ */
 public interface IXMLRPCService {
 
+	/**
+	 * Issues an XML-RPC request
+	 * @param <T>
+	 * @param remoteMethod the server-side method to be called
+	 * @param params {@link Object[]} representing the method parameters
+	 * @param callback {@link IAsyncCallback} callback
+	 * @param baseClazz the base Class of the object that should be deserialized
+	 */
 	public <T> void sendRequest(String remoteMethod, Object[] params, IAsyncCallback<T> callback, Class baseClazz);
 
 }

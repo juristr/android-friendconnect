@@ -20,6 +20,11 @@ package com.friendconnect.activities;
 
 import java.util.Observable;
 
+/**
+ * Defines the interfaces to the View part 
+ * in the MVC relationship
+ *
+ */
 public interface IView {
 	
 	/**

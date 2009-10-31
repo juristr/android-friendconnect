@@ -62,7 +62,7 @@ public class FriendListActivity extends Activity implements IView {
 
 		this.controller = IoC.getInstance(FriendListController.class);
 		this.controller.setLayoutId(R.layout.friendlistrowitem);
-		this.controller.registerObserver(this);
+		this.controller.registerView(this);
 
 		this.adapter = controller.getAdapter(this);
 		listViewFriends.setAdapter(this.adapter);
@@ -141,7 +141,7 @@ public class FriendListActivity extends Activity implements IView {
 			case (FETCH_FRIENDS_TEST): {
 				progressDialog.setMessage(getText(R.string.uiMessageLoadingFriends));
 				progressDialog.show();
-				controller.loadFriends();
+				controller.updateFriendList();
 				return true;
 			}
 		}

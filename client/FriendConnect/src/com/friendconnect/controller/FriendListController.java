@@ -33,6 +33,10 @@ import com.friendconnect.xmlrpc.IAsyncCallback;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+/**
+ * Controller for handling the Friend lists
+ *
+ */
 @Singleton
 public class FriendListController extends AbstractController<User> {
 	private int layoutId;
@@ -43,29 +47,6 @@ public class FriendListController extends AbstractController<User> {
 		super();
 		registerModel(new User());
 	}
-	
-	//TODO could be eliminated and just use the updateFriendList() method which is called by the service
-	public void loadFriends() {
-		xmlRPCService.sendRequest(RPCRemoteMappings.GETFRIENDS, null, new IAsyncCallback<List<Friend>>() {
-
-			public void onSuccess(List<Friend> result) {
-				if(result == null){
-					//TODO show a message that nothing has been fetched!
-					return;
-				}
-				
-				for (Friend friend : result) {
-					model.addFriend(friend);
-				}
-			}
-			
-			public void onFailure(Throwable throwable) {
-				//TODO react properly
-			}
-			
-		}, Friend.class);
-	}
-	
 
 	/**
 	 * This method will be called by the FriendUpdateService for actualizing

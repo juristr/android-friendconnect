@@ -20,6 +20,12 @@ package com.friendconnect.model;
 
 import java.util.Observable;
 
+/**
+ * Represents the model part for the Login Activity. Contains
+ * information about the successful outcome of a login
+ * action.
+ *
+ */
 public class LoginResult extends Observable {
 
 	private boolean loginSucceeded = false;

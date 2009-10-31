@@ -22,6 +22,11 @@ import com.friendconnect.services.IXMLRPCService;
 import com.friendconnect.services.XMLRPCService;
 import com.google.inject.AbstractModule;
 
+/**
+ * Module class for defining the interface->implementation
+ * mapping for the Giuce DI's IoC container
+ *
+ */
 public class FriendConnectModule extends AbstractModule {
 
 	@Override

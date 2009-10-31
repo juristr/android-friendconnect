@@ -18,6 +18,11 @@
 
 package com.friendconnect.model;
 
+/**
+ * Class containing the mappings of the server-side method
+ * names that are being invoked by issuing the XML-RPC calls
+ *
+ */
 public class RPCRemoteMappings {
 	private static final String baseMapping = "XmlRpcGateway.";
 

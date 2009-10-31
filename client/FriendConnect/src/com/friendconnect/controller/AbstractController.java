@@ -27,6 +27,11 @@ import android.widget.BaseAdapter;
 
 import com.friendconnect.activities.IView;
 
+/**
+ * Abstracts the common operations done by the Controller 
+ *
+ * @param <T> the model
+ */
 public abstract class AbstractController<T extends Observable> implements Observer {
 	private ArrayList<IView> views;
 	protected T model;
@@ -40,20 +45,32 @@ public abstract class AbstractController<T extends Observable> implements Observ
 		this.model = model;
 	}
 	
-	public void registerObserver(IView observer){
-		if(observer == null)
+	/**
+	 * Register views
+	 * @param view the {@link IView}
+	 */
+	public void registerView(IView view){
+		if(view == null)
 			throw new IllegalArgumentException("View cannot be null");
 		
-		this.views.add(observer);
+		this.views.add(view);
 	}
 	
-	public void removeObserver(IView observer){
-		if(observer == null)
+	/**
+	 * Removes a registered view
+	 * @param view the {@link IView}
+	 */
+	public void removeView(IView view){
+		if(view == null)
 			throw new IllegalArgumentException("View cannot be null");
 
-		this.views.remove(observer);
+		this.views.remove(view);
 	}
 	
+	/**
+	 * Registering a model
+	 * @param model
+	 */
 	public void registerModel(T model){
 		this.model = model;
 		this.model.addObserver(this);
@@ -63,12 +80,15 @@ public abstract class AbstractController<T extends Observable> implements Observ
 		return this.model;
 	}
 	
-	public abstract <X extends BaseAdapter> X getAdapter(Context context);
-	
+	/**
+	 * The main update method which notifies all registerd views about
+	 * the model changes
+	 */
 	public void update(Observable observable, Object data) {		
 		for (IView view : this.views) {
 			view.update(observable, data);
 		}
 	}
 	
+	public abstract <X extends BaseAdapter> X getAdapter(Context context);
 }
