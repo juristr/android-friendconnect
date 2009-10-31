@@ -29,6 +29,11 @@ import android.util.Log;
 import com.friendconnect.controller.FriendListController;
 import com.google.inject.Inject;
 
+/**
+ * Background Android service which continuously queries for
+ * updated friend's data from the server.
+ *
+ */
 public class FriendUpdateService extends Service {
 
 	private FriendListController controller;

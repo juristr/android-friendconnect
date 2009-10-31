@@ -28,6 +28,11 @@ import org.xmlrpc.android.XMLRPCFault;
 import android.os.Handler;
 import android.util.Log;
 
+/**
+ * Abstracts a XML-RPC method call
+ *
+ * @param <T>
+ */
 public class XMLRPCMethod<T> extends Thread {
 	private String method;
 	private Object[] params;
@@ -37,7 +42,6 @@ public class XMLRPCMethod<T> extends Thread {
 	private XMLRPCClient client;
 	private ObjectSerializer serializer;
 	
-
 	/**
 	 * 
 	 * @param client the {@link XMLRPCClient} object
@@ -53,18 +57,6 @@ public class XMLRPCMethod<T> extends Thread {
 		serializer = new ObjectSerializer();
 		this.clazz = clazz;
 	}
-	
-	/**
-	 * Just intended for testing purposes (synchronous)
-	 * @param client
-	 * @param method
-	 * @param params
-	 */
-//	public XMLRPCMethod(XMLRPCClient client, String method, Object[] params){
-//		this.client = client;
-//		this.method = method;
-//		this.params = params;
-//	}
 
 	public void call() {
 		call(null);

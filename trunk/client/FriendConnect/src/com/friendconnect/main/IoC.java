@@ -21,9 +21,19 @@ package com.friendconnect.main;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
+/**
+ * Wrapper for the Giuce dependency injection IoC container
+ *
+ */
 public class IoC {
 	private static Injector injector = Guice.createInjector(new FriendConnectModule());
 	
+	/**
+	 * Gets an instance of the given class
+	 * @param <T> the type to instantiate
+	 * @param clazz the class to instantiate
+	 * @return
+	 */
 	public static <T> T getInstance(Class<T> clazz) {
 		return injector.getInstance(clazz);
 	}

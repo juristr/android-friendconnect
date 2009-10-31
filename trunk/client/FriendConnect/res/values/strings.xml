@@ -13,6 +13,7 @@
 	<string name="signinwith">Sign in with your</string>
 	<string name="account">Account</string>
 	<string name="donthave">Don\'t have a Google Account?</string>
+	<string name="savePrefs">Remember me</string>
 	<string name="googlelink">https://www.google.com/accounts/NewAccount</string>
 	<string name="friendConnectServerUrl">http://1.latest.android-friendconnect.appspot.com/</string>
 	<string name="uiMessageLogin">Logging in...</string>

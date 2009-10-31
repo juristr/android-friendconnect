@@ -18,6 +18,12 @@
 
 package com.friendconnect.xmlrpc;
 
+/**
+ * Callback for notifying about the outcome
+ * of asynchronous calls (to the server)
+ *
+ * @param <T>
+ */
 public interface IAsyncCallback<T> {
 	
 	/**
@@ -33,11 +39,11 @@ public interface IAsyncCallback<T> {
 	public void onFailure(Throwable throwable);
 
 	
-	//TODO Juri: define this
+	//TODO Juri: define this, just if needed
 	/**
 	 * A callback getting messages about the ongoing
 	 * processing.
 	 * @param message
 	 */
-//	public void onProgressNotifyMsg(String message);
+//	public void onProgressChange(String message);
 }
