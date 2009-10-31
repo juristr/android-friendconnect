@@ -21,5 +21,18 @@ package com.friendconnect.activities;
 import java.util.Observable;
 
 public interface IView {
+	
+	/**
+	 * Fired when the controller forwards changes from the model to
+	 * update the registered views
+	 * @param observable the {@link Observable} object
+	 * @param data the data used for updating
+	 */
 	public void update(Observable observable, Object data);
+	
+	/**
+	 * Notifies about changes in the progress
+	 * @param message
+	 */
+	public void onProgressChanged(String message);
 }
