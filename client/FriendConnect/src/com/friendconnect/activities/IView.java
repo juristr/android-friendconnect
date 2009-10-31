@@ -16,53 +16,10 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.services;
+package com.friendconnect.activities;
 
-import java.net.URI;
+import java.util.Observable;
 
-import org.xmlrpc.android.XMLRPCClient;
-
-import com.friendconnect.xmlrpc.IAsyncCallback;
-import com.friendconnect.xmlrpc.XMLRPCMethod;
-import com.google.inject.Singleton;
-
-@Singleton
-public class XMLRPCService implements IXMLRPCService {
-	private URI baseURI;
-	private XMLRPCClient client;
-
-	public XMLRPCService() {
-		// Resources.getString(com.friendconnect.activities.R.string.friendConnectServerUrl);
-		String baseUrl = "http://10.0.2.2:8080/xmlrpc";  //works always
-//		String baseUrl = "http://0-1.latest.android-friendconnect.appspot.com/xmlrpc";
-		
-		this.baseURI = URI.create(baseUrl);
-		
-		this.client = new XMLRPCClient(baseURI); // TODO BAD, inject this later
-	}
-
-	public <T> void sendRequest(String remoteMethod, Object[] params, IAsyncCallback<T> callback, Class clazz) {
-		XMLRPCMethod<T> method = new XMLRPCMethod<T>(client,
-				remoteMethod, callback, clazz);
-		if (params != null)
-			method.call(params);
-		else
-			method.call();
-	}
-
-	public URI getBaseURI() {
-		return baseURI;
-	}
-
-	public void setBaseURI(URI baseURI) {
-		this.baseURI = baseURI;
-	}
-
-	public XMLRPCClient getClient() {
-		return client;
-	}
-
-	public void setClient(XMLRPCClient client) {
-		this.client = client;
-	}
+public interface IView {
+	public void update(Observable observable, Object data);
 }

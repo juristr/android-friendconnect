@@ -107,6 +107,15 @@ public class ObjectSerializer {
 		return null;
 	}
 
+	/**
+	 * Checks whether the given method is a valid getter. Valid
+	 * getters are
+	 * 	- belonging to the implemented model
+	 * 	- not JRE native getters like "getClass"
+	 * 	- comply with the Java getter standard (i.e. return type, no parameters)
+	 * @param method
+	 * @return
+	 */
 	private boolean isValidGetter(Method method) {
 		if (method.getName().contains("Class"))
 			return false;

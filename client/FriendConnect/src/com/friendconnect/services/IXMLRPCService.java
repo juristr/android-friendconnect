@@ -16,33 +16,12 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.dto;
+package com.friendconnect.services;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.friendconnect.xmlrpc.IAsyncCallback;
 
-import org.xmlrpc.android.XMLRPCSerializable;
+public interface IXMLRPCService {
 
-public class RequestDTO<T extends XMLRPCSerializable> implements XMLRPCSerializable {
-	//header info
-	private String username;
-	private String token;
-	
-	//server-side method to invoke
-	private String method;
-	
-	//content
-	private T value;
-	
-	public RequestDTO(T value) {
-		this.value = value;
-	}
+	public <T> void sendRequest(String remoteMethod, Object[] params, IAsyncCallback<T> callback, Class baseClazz);
 
-	public Object getSerializable() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("username", this.username);
-		map.put("token", this.token);
-		map.put("value", this.value.getSerializable());
-		return map;
-	}
 }

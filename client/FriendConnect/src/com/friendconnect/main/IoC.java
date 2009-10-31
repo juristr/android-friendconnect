@@ -22,7 +22,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 public class IoC {
-	private static Injector injector = Guice.createInjector();
+	private static Injector injector = Guice.createInjector(new FriendConnectModule());
 	
 	public static <T> T getInstance(Class<T> clazz) {
 		return injector.getInstance(clazz);
