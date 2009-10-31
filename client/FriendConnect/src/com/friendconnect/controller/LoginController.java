@@ -18,15 +18,13 @@
 
 package com.friendconnect.controller;
 
-import com.friendconnect.model.LoginResult;
-import com.friendconnect.model.RPCRemoteMappings;
-import com.friendconnect.services.XMLRPCService;
-import com.friendconnect.xmlrpc.IAsyncCallback;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-
 import android.content.Context;
 import android.widget.BaseAdapter;
+
+import com.friendconnect.model.LoginResult;
+import com.friendconnect.services.XMLRPCService;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 @Singleton
 public class LoginController extends AbstractController<LoginResult> {
@@ -65,6 +63,5 @@ public class LoginController extends AbstractController<LoginResult> {
 	public void setXmlRpcService(XMLRPCService xmlRpcService) {
 		this.xmlRpcService = xmlRpcService;
 	}
-
 	
 }

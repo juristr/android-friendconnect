@@ -23,6 +23,7 @@ import java.util.Observable;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -43,6 +44,7 @@ public class FriendListActivity extends Activity implements IView {
 
 	private FriendListController controller;
 	private ListView listViewFriends;
+	private ProgressDialog progressDialog;
 	private BaseAdapter adapter;
 	private Friend selectedUser;
 
@@ -56,6 +58,8 @@ public class FriendListActivity extends Activity implements IView {
 
 		this.listViewFriends = (ListView) findViewById(R.id.listViewFriends);
 
+		progressDialog = new ProgressDialog(this);
+
 		this.controller = IoC.getInstance(FriendListController.class);
 		this.controller.setLayoutId(R.layout.friendlistrowitem);
 		this.controller.registerObserver(this);
@@ -63,7 +67,6 @@ public class FriendListActivity extends Activity implements IView {
 		this.adapter = controller.getAdapter(this);
 		listViewFriends.setAdapter(this.adapter);
 		listViewFriends.setOnItemClickListener(new OnItemClickListener() {
-
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				selectedUser = controller.getFriend(position);
@@ -107,7 +110,13 @@ public class FriendListActivity extends Activity implements IView {
 	}
 
 	public void update(Observable observable, Object data) {
+		progressDialog.cancel();
 		this.adapter.notifyDataSetChanged();
+	}
+
+	public void onProgressChanged(String message) {
+		if (!message.equals(""))
+			progressDialog.setMessage(message);
 	}
 
 	/** Triggered the first time activity’s menu is displayed. */
@@ -115,7 +124,8 @@ public class FriendListActivity extends Activity implements IView {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		// Create and add new menu items.
-		MenuItem itemAdd = menu.add(0, FETCH_FRIENDS_TEST, Menu.NONE, "fetch friends test");
+		MenuItem itemAdd = menu.add(0, FETCH_FRIENDS_TEST, Menu.NONE,
+				"fetch friends test");
 
 		// Allocate shortcuts to each of them.
 		itemAdd.setShortcut('0', 'a');
@@ -129,13 +139,15 @@ public class FriendListActivity extends Activity implements IView {
 		// int index = this.listViewFriends.getSelectedItemPosition();
 		switch (item.getItemId()) {
 			case (FETCH_FRIENDS_TEST): {
+				progressDialog.setMessage(getText(R.string.uiMessageLoadingFriends));
+				progressDialog.show();
 				controller.loadFriends();
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public FriendListController getController() {
 		return controller;
 	}

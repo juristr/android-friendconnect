@@ -44,6 +44,7 @@ public class FriendListController extends AbstractController<User> {
 		registerModel(new User());
 	}
 	
+	//TODO could be eliminated and just use the updateFriendList() method which is called by the service
 	public void loadFriends() {
 		xmlRPCService.sendRequest(RPCRemoteMappings.GETFRIENDS, null, new IAsyncCallback<List<Friend>>() {
 
