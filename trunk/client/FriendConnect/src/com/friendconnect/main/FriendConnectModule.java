@@ -16,10 +16,17 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.view;
+package com.friendconnect.main;
 
-import java.util.Observable;
+import com.friendconnect.services.IXMLRPCService;
+import com.friendconnect.services.XMLRPCService;
+import com.google.inject.AbstractModule;
 
-public interface IView {
-	public void update(Observable observable, Object data);
+public class FriendConnectModule extends AbstractModule {
+
+	@Override
+	protected void configure() {
+		bind(IXMLRPCService.class).to(XMLRPCService.class);	
+	}
+
 }

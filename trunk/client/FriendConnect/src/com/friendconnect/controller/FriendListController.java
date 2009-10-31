@@ -21,12 +21,14 @@ package com.friendconnect.controller;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.friendconnect.adapters.FriendAdapter;
 import com.friendconnect.model.Friend;
 import com.friendconnect.model.RPCRemoteMappings;
 import com.friendconnect.model.User;
-import com.friendconnect.services.XMLRPCService;
+import com.friendconnect.services.IXMLRPCService;
+import com.friendconnect.utils.ObjectHelper;
 import com.friendconnect.xmlrpc.IAsyncCallback;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -34,7 +36,8 @@ import com.google.inject.Singleton;
 @Singleton
 public class FriendListController extends AbstractController<User> {
 	private int layoutId;
-	private XMLRPCService xmlRPCService;
+	private IXMLRPCService xmlRPCService;
+	private ObjectHelper objectHelper;
 
 	public FriendListController() {
 		super();
@@ -72,16 +75,45 @@ public class FriendListController extends AbstractController<User> {
 		xmlRPCService.sendRequest(RPCRemoteMappings.GETFRIENDS, null, new IAsyncCallback<List<Friend>>() {
 
 			public void onSuccess(List<Friend> result) {
-				//TODO sync the received list with the already existing Friend collection
+				for (Friend friend : result) {
+					Friend friendInModel = getFriendFromModel(friend.getId());
+					if(friendInModel == null){
+						//new friend
+						model.addFriend(friend);
+					}else{
+						//sync properties
+						try {
+							objectHelper.syncObjectGraph(friendInModel, friend);
+						} catch (Exception ex) {
+							Log.e(objectHelper.getClass().getCanonicalName(), ex.getMessage());
+							onFailure(ex);
+						}
+					}
+				}
 			}
-			
+
 			public void onFailure(Throwable throwable) {
-				// TODO Auto-generated method stub
-				
+				// TODO Auto-generated method stub	
 			}
 			
 			
 		}, Friend.class);
+	}
+	
+	/**
+	 * Retrieves a {@link Friend} object from the existing
+	 * list of friends in the model
+	 * @param id the identifier to be matched
+	 * @return the corresponding {@link Friend} object, null otherwise
+	 */
+	private Friend getFriendFromModel(int id) {
+		
+		for (Friend friend : model.getFriends()) {
+			if(friend.getId() == id)
+				return friend;
+		}
+		
+		return null;
 	}
 
 	@Override
@@ -104,7 +136,13 @@ public class FriendListController extends AbstractController<User> {
 	}
 
 	@Inject
-	public void setXmlRPCService(XMLRPCService xmlRPCService) {
+	public void setXmlRPCService(IXMLRPCService xmlRPCService) {
 		this.xmlRPCService = xmlRPCService;
 	}
+
+	@Inject
+	public void setObjectHelper(ObjectHelper objectHelper) {
+		this.objectHelper = objectHelper;
+	}
+	
 }

@@ -29,10 +29,10 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.friendconnect.activities.FriendListActivity;
+import com.friendconnect.activities.IView;
 import com.friendconnect.activities.R;
 import com.friendconnect.controller.LoginController;
 import com.friendconnect.model.LoginResult;
-import com.friendconnect.view.IView;
 
 public class FriendConnectActivity extends Activity implements IView {
 	private Button signInButton;

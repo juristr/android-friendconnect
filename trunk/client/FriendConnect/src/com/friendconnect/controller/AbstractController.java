@@ -25,7 +25,7 @@ import java.util.Observer;
 import android.content.Context;
 import android.widget.BaseAdapter;
 
-import com.friendconnect.view.IView;
+import com.friendconnect.activities.IView;
 
 public abstract class AbstractController<T extends Observable> implements Observer {
 	private ArrayList<IView> views;

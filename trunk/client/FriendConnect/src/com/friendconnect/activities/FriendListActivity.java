@@ -37,7 +37,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.friendconnect.controller.FriendListController;
 import com.friendconnect.main.IoC;
 import com.friendconnect.model.Friend;
-import com.friendconnect.view.IView;
 
 public class FriendListActivity extends Activity implements IView {
 	static final private int FETCH_FRIENDS_TEST = Menu.FIRST;
@@ -57,7 +56,6 @@ public class FriendListActivity extends Activity implements IView {
 
 		this.listViewFriends = (ListView) findViewById(R.id.listViewFriends);
 
-		// TODO just dummy instantiation here
 		this.controller = IoC.getInstance(FriendListController.class);
 		this.controller.setLayoutId(R.layout.friendlistrowitem);
 		this.controller.registerObserver(this);
