@@ -29,17 +29,6 @@ public class FriendListControllerTest extends TestCase {
 		this.model = null;
 	}
 
-	public void testLoadFriends() {
-		assertTrue("There should be no friends initially", model.getFriends()
-				.size() == 0);
-		this.controller.loadFriends();
-
-		assertTrue("The model should contain some friends", model.getFriends()
-				.size() > 0);
-		assertEquals("Juri", model.getFriends().get(0).getName());
-		assertEquals("Matthias", model.getFriends().get(1).getName());
-	}
-
 	public void testUpdateFriendList() {
 		// preload list with some friends
 		Friend friend = new Friend();
