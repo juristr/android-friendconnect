@@ -18,18 +18,121 @@
 
 package com.friendconnect.model;
 
-public class Friend extends FriendConnectUser {
+import java.io.Serializable;
 
-	public Friend(){
-		
-	}
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.NotPersistent;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+
+@PersistenceCapable(identityType = IdentityType.APPLICATION)
+public class Friend implements ILoadable, ILocatable, Serializable {
+	private static final long serialVersionUID = 1;
 	
-	public Friend(int id, String name, String phone, String emailAddress, String website, String statusMessage) {
+	@PrimaryKey
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	private String id;
+	
+	@Persistent
+	private String emailAddress;
+	
+	@Persistent
+	private String phone;
+	
+	@Persistent
+	private String website;
+	
+	@Persistent
+	private String name;
+	
+	@NotPersistent
+	private boolean online;
+	
+	@NotPersistent
+	private String statusMessage;
+	
+	@NotPersistent
+	private Location position;
+	
+	public Friend() {
+	}
+		
+	public Friend(String id, String name, String phone, String emailAddress, String website, String statusMessage) {
 		this.id = id;
 		this.name = name;
 		this.phone = phone;
 		this.emailAddress = emailAddress;
 		this.website = website;
 		this.statusMessage = statusMessage;
+	}
+
+	@Override
+	public String getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getName() {
+		return name;
+	}
+	
+	public String getWebsite() {
+		return website;
+	}
+
+	public void setWebsite(String website) {
+		this.website = website;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setOnline(boolean online) {
+		this.online = online;
+	}
+
+	public boolean isOnline() {
+		return online;
+	}
+
+	public String getStatusMessage() {
+		return statusMessage;
+	}
+
+	public void setStatusMessage(String statusMessage) {
+		this.statusMessage = statusMessage;
+	}
+
+	@Override
+	public Location getPosition() {
+		return this.position;
+	}
+
+	@Override
+	public void setPosition(Location location) {
+		this.position = location;
 	}
 }
