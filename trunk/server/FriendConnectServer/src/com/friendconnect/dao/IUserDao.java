@@ -20,16 +20,17 @@ package com.friendconnect.dao;
 
 import java.util.List;
 
-import com.friendconnect.model.Friend;
+import com.friendconnect.model.User;
 
-public interface IFriendDao {
+public interface IUserDao {
 	
-	public Friend getFriend(String friendId) throws Exception;
+	public void saveUser(User user) throws Exception;
 	
-	public List<Friend> getFriends(String userId) throws Exception;
+	public User getUserById(String userId, boolean loadFriends) throws Exception;
 	
-	public void addFriend(String userId, Friend friend) throws Exception;
+	public User getUserByEmailAddress(String emailAddress, boolean loadFriends) throws Exception;
 	
-	public void removeFriend(String userId, String friendId) throws Exception;
+	public void removeUser(String userId) throws Exception;
 	
+	public List<User> searchUsers(String searchText) throws Exception;
 }

@@ -21,73 +21,66 @@ package com.friendconnect.dao;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
 
-import com.friendconnect.model.Friend;
 import com.friendconnect.model.User;
 
-public class FriendDao implements IFriendDao {
-	private IUserDao userDao;
+public class UserDao implements IUserDao {
+
+	@Override
+	public User getUserById(String userId, boolean loadFriends) throws Exception {
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		User user = pm.getObjectById(User.class, userId);
+		if (loadFriends) {
+			loadFriends(user);
+		}
+		pm.close();
+		return user;
+	}
 	
-	public FriendDao() {
+	private void loadFriends(User user) {
+		user.setFriends(user.getFriends());
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public User getUserByEmailAddress(String emailAddress, boolean loadFriends) throws Exception {
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		Query query = pm.newQuery(User.class);
+	    query.setFilter("emailAddress == emailAddressParam");
+	    query.declareParameters("String emailAddressParam");
+	    List<User> result = (List<User>) query.execute(emailAddress);
+		if (result == null || result.isEmpty()) {
+			return null;
+		}
+		User user = result.get(0);
+		if (loadFriends) {
+			loadFriends(user);
+		}
+		pm.close();
+		return user;
 	}
 
 	@Override
-	public Friend getFriend(String friendId) throws Exception {
+	public void removeUser(String userId) throws Exception {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
-		Friend friend = pm.getObjectById(Friend.class, friendId);
-		if (friend != null) {
-			User user = userDao.getUserByEmailAddress(friend.getEmailAddress(), false);
-			if (user != null) {
-				friend.setPosition(user.getPosition());
-				friend.setStatusMessage(user.getStatusMessage());
-				friend.setOnline(user.isOnline());
-			}
+		User user = pm.getObjectById(User.class, userId);
+		if (user != null) {
+			pm.deletePersistent(user);
 		}
 		pm.close();
-		return friend;
 	}
-	
+
 	@Override
-	public List<Friend> getFriends(String userId) throws Exception {
-		User user = userDao.getUserById(userId, true);
-		List<Friend> friends = user.getFriends();
-		for (Friend friend : friends) {
-			User friendUser = userDao.getUserByEmailAddress(friend.getEmailAddress(), false);
-			if (friendUser != null) {
-				friend.setPosition(friendUser.getPosition());
-				friend.setStatusMessage(friendUser.getStatusMessage());
-				friend.setOnline(friendUser.isOnline());
-			}
-		}
-		return friends;
-	}
-	
-	@Override
-	public void addFriend(String userId, Friend friend) throws Exception {
+	public void saveUser(User user) throws Exception {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
-		User user = userDao.getUserById(userId, true);
-		user.getFriends().add(friend);
 		pm.makePersistent(user);
 		pm.close();
 	}
-	
+
 	@Override
-	public void removeFriend(String userId, String friendId) throws Exception {
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		User user = pm.getObjectById(User.class, userId);
-		Friend friend = pm.getObjectById(Friend.class, friendId);
-		if (user != null && friend != null) {
-			user.getFriends().remove(friend);
-			pm.makePersistent(user);
-		}
-		pm.close();
-	}
-
-	public IUserDao getUserDao() {
-		return userDao;
-	}
-
-	public void setUserDao(IUserDao userDao) {
-		this.userDao = userDao;
+	public List<User> searchUsers(String searchText) throws Exception {
+		//TODO implement search
+		return null;
 	}
 }
