@@ -18,6 +18,7 @@
 
 package com.friendconnect.services;
 
+import com.friendconnect.dao.IUserDao;
 import com.google.gdata.client.GoogleService;
 import com.google.gdata.client.GoogleAuthTokenFactory.UserToken;
 import com.google.gdata.client.GoogleService.InvalidCredentialsException;
@@ -26,6 +27,7 @@ import com.google.gdata.util.AuthenticationException;
 
 public class AuthenticationService implements IAuthenticationService {
 	private final String applicationName = "FriendConnect";//TODO inject
+	private IUserDao userDao;
 	
 	@Override
 	public String authenticate(String username, String password) throws AuthenticationException {
@@ -45,5 +47,13 @@ public class AuthenticationService implements IAuthenticationService {
 	public boolean validateToken(String username, String token) {
 		//TODO check in DB whether username has given token
 		return true;
+	}
+
+	public void setUserDao(IUserDao userDao) {
+		this.userDao = userDao;
+	}
+
+	public IUserDao getUserDao() {
+		return userDao;
 	}
 }

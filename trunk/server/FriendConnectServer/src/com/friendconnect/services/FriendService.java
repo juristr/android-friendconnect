@@ -23,7 +23,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.friendconnect.dao.FriendDao;
 import com.friendconnect.dao.IFriendDao;
 import com.friendconnect.model.Friend;
 import com.google.gdata.client.contacts.ContactsService;
@@ -37,10 +36,9 @@ public class FriendService implements IFriendService {
 	private final String baseURL = "http://www.google.com/m8/feeds/contacts"; //TODO inject
 	private final String projection = "thin";
 	
-	private IFriendDao friendDao; //TODO inject
+	private IFriendDao friendDao;
 	
 	public FriendService() {
-		friendDao = new FriendDao();
 	}
 	
 	/**
@@ -125,7 +123,22 @@ public class FriendService implements IFriendService {
 	}
 	
 	public List<Friend> getDummyFriends() {
-		return friendDao.readAllFriends();
+		List<Friend> friends = new ArrayList<Friend>();
+		Friend friend = new Friend();
+		friend.setId("1");
+		friend.setEmailAddress("matthias.braunhofer@gmail.com");
+		friend.setName("Matthias");
+		friend.setStatusMessage("My status");
+		friends.add(friend);
+		return friends;
+	}
+
+	public void setFriendDao(IFriendDao friendDao) {
+		this.friendDao = friendDao;
+	}
+
+	public IFriendDao getFriendDao() {
+		return friendDao;
 	}
 
 }
