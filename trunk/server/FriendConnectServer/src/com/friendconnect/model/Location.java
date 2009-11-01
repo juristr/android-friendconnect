@@ -18,16 +18,24 @@
 
 package com.friendconnect.model;
 
+import javax.jdo.annotations.EmbeddedOnly;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+
 /**
  * Representing a location on the earth (lat/lng)
  *
  */
+@PersistenceCapable
+@EmbeddedOnly
 public class Location {
+    @Persistent
 	private double latitude;
+    
+    @Persistent
 	private double longitude;
 	
 	public Location() {
-		//TODO check whether to wrap directly a com.google.android.maps.GeoPoint here
 	}
 
 	public double getLatitude() {
@@ -45,5 +53,4 @@ public class Location {
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
-	
 }

@@ -18,30 +18,55 @@
 
 package com.friendconnect.model;
 
-import java.io.Serializable;
-import java.util.Observable;
+import java.util.List;
 
-import com.friendconnect.xmlrpc.ComplexSerializableType;
+import javax.jdo.annotations.Embedded;
+import javax.jdo.annotations.Extension;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 
-public abstract class FriendConnectUser extends Observable implements ILoadable,
-		ILocatable, Serializable {
-	private static final long serialVersionUID = 1;
-	protected int id;
-	protected String emailAddress;
-	protected String phone;
-	protected String website;
-	protected String name;
-	protected String statusMessage;
-	protected Location position;
+@PersistenceCapable(identityType = IdentityType.APPLICATION)
+public class User implements ILoadable, ILocatable {
+	@PrimaryKey
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+    @Extension(vendorName="datanucleus", key="gae.encoded-pk", value="true")
+    private String id;
 	
-	public int getId() {
-		return this.id;
+	@Persistent
+	private String emailAddress;
+	
+	@Persistent
+	private String token;
+	
+	@Persistent
+	private boolean online;
+	
+	@Persistent
+	private String statusMessage;
+	
+	@Persistent
+	@Embedded
+	private Location position;
+	
+    @Persistent
+	private List<Friend> friends;
+	
+	public User() {	
+	}
+	
+	@Override
+	public String getId() {
+		return id;
 	}
 
-	public void setId(Integer id) {
+	@Override
+	public void setId(String id) {
 		this.id = id;
 	}
-
+	
 	public String getEmailAddress() {
 		return emailAddress;
 	}
@@ -50,46 +75,45 @@ public abstract class FriendConnectUser extends Observable implements ILoadable,
 		this.emailAddress = emailAddress;
 	}
 
-	public String getPhone() {
-		return phone;
+	public String getToken() {
+		return token;
 	}
 
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setToken(String token) {
+		this.token = token;
 	}
 
-	public String getName() {
-		return name;
-	}
-	
-	public String getWebsite() {
-		return website;
+	public void setOnline(boolean online) {
+		this.online = online;
 	}
 
-	public void setWebsite(String website) {
-		this.website = website;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getStatusMessage() {
-		return statusMessage;
+	public boolean isOnline() {
+		return online;
 	}
 
 	public void setStatusMessage(String statusMessage) {
 		this.statusMessage = statusMessage;
 	}
 
-	@ComplexSerializableType(clazz = Location.class)
+	public String getStatusMessage() {
+		return statusMessage;
+	}
+
+	@Override
+	public void setPosition(Location position) {
+		this.position = position;
+	}
+
+	@Override
 	public Location getPosition() {
-		return this.position;
+		return position;
 	}
 
-	@ComplexSerializableType(clazz = Location.class)
-	public void setPosition(Location location) {
-		this.position = location;
+	public void setFriends(List<Friend> friends) {
+		this.friends = friends;
 	}
 
+	public List<Friend> getFriends() {
+		return friends;
+	}
 }
