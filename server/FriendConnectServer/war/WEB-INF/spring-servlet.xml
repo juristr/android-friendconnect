@@ -34,8 +34,21 @@
 		<property name="friendService" ref="friendService"/>
 	</bean>
 
-	<bean id="authenticationService" class="com.friendconnect.services.AuthenticationService"/>
-	<bean id="friendService" class="com.friendconnect.services.FriendService"/>
-	<bean id="objectSerializer" class="com.friendconnect.xmlrpc.ObjectSerializer"/>
+	<bean id="authenticationService" class="com.friendconnect.services.AuthenticationService">
+		<property name="userDao" ref="userDao"/>
+	</bean>
+	
+	<bean id="friendService" class="com.friendconnect.services.FriendService">
+		<property name="friendDao" ref="friendDao"/>
+	</bean>
 
+	<bean id="objectSerializer" class="com.friendconnect.xmlrpc.ObjectSerializer"/>
+	
+	
+	<!--  DAOs -->
+	<bean id="userDao" class="com.friendconnect.dao.UserDao"/>
+	<bean id="friendDao" class="com.friendconnect.dao.FriendDao">
+		<property name="userDao" ref="userDao"/>
+	</bean>
+	
 </beans>
