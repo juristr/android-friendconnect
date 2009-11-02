@@ -22,14 +22,37 @@ import java.util.List;
 
 import com.friendconnect.model.Friend;
 
+/**
+ * Interface of a DAO object to store and retrieve friend data into/from a JDO Datastore
+ */
 public interface IFriendDao {
 	
+	/**
+	 * Fetches a friend from the JDO Datastore passing its id
+	 * @param friendId
+	 * @return
+	 */
 	public Friend getFriend(String friendId);
 	
+	/**
+	 * Fetches all friends for a certain user from the JDO Datastore
+	 * @param userId
+	 * @return
+	 */
 	public List<Friend> getFriends(String userId);
 	
+	/**
+	 * Adds a friend to a certain user in the JDO Datastore
+	 * @param userId
+	 * @param friend
+	 */
 	public void addFriend(String userId, Friend friend);
 	
+	/**
+	 * Removes a friend from a certain user in the JDO Datastore
+	 * @param userId
+	 * @param friendId
+	 */
 	public void removeFriend(String userId, String friendId);
 	
 }
