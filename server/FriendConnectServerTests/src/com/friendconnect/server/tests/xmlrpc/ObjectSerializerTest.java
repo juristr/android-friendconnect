@@ -20,7 +20,9 @@ public class ObjectSerializerTest extends TestCase {
 	}
 
 	public void testObjectDeserializer() throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-		Friend friend = new Friend(1, "Juri", "", "juri.strumpflohner@gmail.com", "", "");
+		Friend friend = new Friend();
+		friend.setId("123456");
+		friend.setEmailAddress("juri.strumpflohner@gmail.com");
 		Location location = new Location();
 		location.setLatitude(10.34);
 		location.setLongitude(112.3);
