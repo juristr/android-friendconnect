@@ -22,33 +22,32 @@ import java.util.List;
 
 import javax.jdo.PersistenceManager;
 
+import org.springframework.orm.jdo.support.JdoDaoSupport;
+
 import com.friendconnect.model.Friend;
 import com.friendconnect.model.User;
 
-public class FriendDao implements IFriendDao {
+public class FriendDao extends JdoDaoSupport implements IFriendDao {
 	private IUserDao userDao;
 	
 	public FriendDao() {
 	}
 
 	@Override
-	public Friend getFriend(String friendId) throws Exception {
-		PersistenceManager pm = PMF.get().getPersistenceManager();
+	public Friend getFriend(String friendId) {
+		PersistenceManager pm = getPersistenceManager();
 		Friend friend = pm.getObjectById(Friend.class, friendId);
-		if (friend != null) {
-			User user = userDao.getUserByEmailAddress(friend.getEmailAddress(), false);
-			if (user != null) {
-				friend.setPosition(user.getPosition());
-				friend.setStatusMessage(user.getStatusMessage());
-				friend.setOnline(user.isOnline());
-			}
+		User user = userDao.getUserByEmailAddress(friend.getEmailAddress(), false);
+		if (user != null) {
+			friend.setPosition(user.getPosition());
+			friend.setStatusMessage(user.getStatusMessage());
+			friend.setOnline(user.isOnline());
 		}
-		pm.close();
-		return friend;
+		return pm.detachCopy(friend);
 	}
 	
 	@Override
-	public List<Friend> getFriends(String userId) throws Exception {
+	public List<Friend> getFriends(String userId) {
 		User user = userDao.getUserById(userId, true);
 		List<Friend> friends = user.getFriends();
 		for (Friend friend : friends) {
@@ -63,24 +62,19 @@ public class FriendDao implements IFriendDao {
 	}
 	
 	@Override
-	public void addFriend(String userId, Friend friend) throws Exception {
-		PersistenceManager pm = PMF.get().getPersistenceManager();
+	public void addFriend(String userId, Friend friend) {
 		User user = userDao.getUserById(userId, true);
 		user.getFriends().add(friend);
-		pm.makePersistent(user);
-		pm.close();
+		getPersistenceManager().makePersistent(user);
 	}
 	
 	@Override
-	public void removeFriend(String userId, String friendId) throws Exception {
-		PersistenceManager pm = PMF.get().getPersistenceManager();
+	public void removeFriend(String userId, String friendId) {
+		PersistenceManager pm = getPersistenceManager();
 		User user = pm.getObjectById(User.class, userId);
 		Friend friend = pm.getObjectById(Friend.class, friendId);
-		if (user != null && friend != null) {
-			user.getFriends().remove(friend);
-			pm.makePersistent(user);
-		}
-		pm.close();
+		user.getFriends().remove(friend);
+		pm.makePersistent(user);
 	}
 
 	public IUserDao getUserDao() {

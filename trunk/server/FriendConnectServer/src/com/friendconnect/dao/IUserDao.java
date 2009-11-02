@@ -24,13 +24,13 @@ import com.friendconnect.model.User;
 
 public interface IUserDao {
 	
-	public void saveUser(User user) throws Exception;
+	public void saveUser(User user);
 	
-	public User getUserById(String userId, boolean loadFriends) throws Exception;
+	public User getUserById(String userId, boolean loadFriends);
 	
-	public User getUserByEmailAddress(String emailAddress, boolean loadFriends) throws Exception;
+	public User getUserByEmailAddress(String emailAddress, boolean loadFriends);
 	
-	public void removeUser(String userId) throws Exception;
+	public void removeUser(String userId);
 	
-	public List<User> searchUsers(String searchText) throws Exception;
+	public List<User> searchUsers(String searchText);
 }

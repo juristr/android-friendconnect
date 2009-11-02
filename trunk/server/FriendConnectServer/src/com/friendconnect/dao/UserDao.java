@@ -23,19 +23,20 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
+import org.springframework.orm.jdo.support.JdoDaoSupport;
+
 import com.friendconnect.model.User;
 
-public class UserDao implements IUserDao {
-
+public class UserDao extends JdoDaoSupport implements IUserDao {
+	
 	@Override
-	public User getUserById(String userId, boolean loadFriends) throws Exception {
-		PersistenceManager pm = PMF.get().getPersistenceManager();
+	public User getUserById(String userId, boolean loadFriends) {
+		PersistenceManager pm = getPersistenceManager();
 		User user = pm.getObjectById(User.class, userId);
 		if (loadFriends) {
 			loadFriends(user);
 		}
-		pm.close();
-		return user;
+		return pm.detachCopy(user);
 	}
 	
 	private void loadFriends(User user) {
@@ -44,42 +45,36 @@ public class UserDao implements IUserDao {
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public User getUserByEmailAddress(String emailAddress, boolean loadFriends) throws Exception {
-		PersistenceManager pm = PMF.get().getPersistenceManager();
+	public User getUserByEmailAddress(String emailAddress, boolean loadFriends) {
+		PersistenceManager pm = getPersistenceManager();
 		Query query = pm.newQuery(User.class);
 	    query.setFilter("emailAddress == emailAddressParam");
 	    query.declareParameters("String emailAddressParam");
 	    List<User> result = (List<User>) query.execute(emailAddress);
-		if (result == null || result.isEmpty()) {
+		if (result.isEmpty()) {
 			return null;
 		}
 		User user = result.get(0);
 		if (loadFriends) {
 			loadFriends(user);
 		}
-		pm.close();
-		return user;
+		return pm.detachCopy(user);
 	}
 
 	@Override
-	public void removeUser(String userId) throws Exception {
-		PersistenceManager pm = PMF.get().getPersistenceManager();
+	public void removeUser(String userId) {
+		PersistenceManager pm = getPersistenceManager();
 		User user = pm.getObjectById(User.class, userId);
-		if (user != null) {
-			pm.deletePersistent(user);
-		}
-		pm.close();
+		pm.deletePersistent(user);
 	}
 
 	@Override
-	public void saveUser(User user) throws Exception {
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		pm.makePersistent(user);
-		pm.close();
+	public void saveUser(User user) {
+		getPersistenceManager().makePersistent(user);
 	}
 
 	@Override
-	public List<User> searchUsers(String searchText) throws Exception {
+	public List<User> searchUsers(String searchText) {
 		//TODO implement search
 		return null;
 	}
