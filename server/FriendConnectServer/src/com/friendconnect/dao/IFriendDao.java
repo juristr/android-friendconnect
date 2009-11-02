@@ -24,12 +24,12 @@ import com.friendconnect.model.Friend;
 
 public interface IFriendDao {
 	
-	public Friend getFriend(String friendId) throws Exception;
+	public Friend getFriend(String friendId);
 	
-	public List<Friend> getFriends(String userId) throws Exception;
+	public List<Friend> getFriends(String userId);
 	
-	public void addFriend(String userId, Friend friend) throws Exception;
+	public void addFriend(String userId, Friend friend);
 	
-	public void removeFriend(String userId, String friendId) throws Exception;
+	public void removeFriend(String userId, String friendId);
 	
 }

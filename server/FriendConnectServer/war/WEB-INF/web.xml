@@ -15,6 +15,18 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>spring</servlet-name>
 		<url-pattern>/xmlrpc</url-pattern>
 	</servlet-mapping>
+	
+    <context-param>
+    	<param-name>contextConfigLocation</param-name>
+      	<param-value>
+          		/WEB-INF/spring-service.xml
+          		/WEB-INF/spring-data.xml
+    	</param-value>
+    </context-param>
+
+    <listener>
+    	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
 
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
