@@ -20,6 +20,7 @@ package com.friendconnect.model;
 
 import java.io.Serializable;
 
+import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.NotPersistent;
@@ -27,12 +28,15 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.friendconnect.xmlrpc.ComplexSerializableType;
+
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Friend implements ILoadable, ILocatable, Serializable {
 	private static final long serialVersionUID = 1;
 	
 	@PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+    @Extension(vendorName="datanucleus", key="gae.encoded-pk", value="true")
 	private String id;
 	
 	@Persistent
@@ -127,11 +131,13 @@ public class Friend implements ILoadable, ILocatable, Serializable {
 	}
 
 	@Override
+	@ComplexSerializableType(clazz = Location.class)
 	public Location getPosition() {
 		return this.position;
 	}
 
 	@Override
+	@ComplexSerializableType(clazz = Location.class)
 	public void setPosition(Location location) {
 		this.position = location;
 	}
