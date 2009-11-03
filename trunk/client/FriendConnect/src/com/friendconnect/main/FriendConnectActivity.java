@@ -30,6 +30,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.friendconnect.activities.FriendListActivity;
 import com.friendconnect.activities.IView;
@@ -39,7 +40,7 @@ import com.friendconnect.model.LoginResult;
 
 /**
  * View for performing the user login
- *
+ * 
  */
 public class FriendConnectActivity extends Activity implements IView {
 	private Button signInButton;
@@ -58,21 +59,27 @@ public class FriendConnectActivity extends Activity implements IView {
 		this.controller.registerView(this);
 
 		loadActivityPreferences();
+		final Toast toast = Toast.makeText(this,
+				R.string.uiMessageProvideUsernamePassword, 3000);
 
 		signInButton = (Button) this.findViewById(R.id.buttonSignIn);
 		signInButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				progressDialog.setMessage(getText(R.string.uiMessageLogin));
-				progressDialog.show();
-
 				String username = ((EditText) findViewById(R.id.editTextEmail))
 						.getText().toString();
 				String password = ((EditText) findViewById(R.id.editTextPassword))
 						.getText().toString();
 
-				controller.login(username, password);
+				if (username.equals("") || password.equals("")) {
+					toast.show();
+				} else {
+					progressDialog.setMessage(getText(R.string.uiMessageLogin));
+					progressDialog.show();
 
-				saveActivityPreferences();
+					controller.login(username, password);
+					
+					saveActivityPreferences();
+				}
 			}
 		});
 	}
@@ -122,8 +129,6 @@ public class FriendConnectActivity extends Activity implements IView {
 	}
 
 	public void update(Observable observable, Object data) {
-		progressDialog.cancel();
-
 		LoginResult result = (LoginResult) observable;
 
 		if (result.isLoginSucceeded()) {
@@ -136,5 +141,9 @@ public class FriendConnectActivity extends Activity implements IView {
 		if (message != null && !message.equals("")) {
 			progressDialog.setMessage(message);
 		}
+	}
+	
+	public void stopProgess() {
+		progressDialog.cancel();
 	}
 }

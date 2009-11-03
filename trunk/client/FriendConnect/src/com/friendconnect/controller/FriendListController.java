@@ -72,13 +72,14 @@ public class FriendListController extends AbstractController<User> {
 						}
 					}
 				}
+				
+				notifyStopProgress();
 			}
 
 			public void onFailure(Throwable throwable) {
 				// TODO Auto-generated method stub	
+				notifyStopProgress();
 			}
-			
-			
 		}, Friend.class);
 	}
 	

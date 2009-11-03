@@ -40,4 +40,10 @@ public interface IView {
 	 * @param message
 	 */
 	public void onProgressChanged(String message);
+	
+	/**
+	 * Event for listening to commands for stopping progress notifications
+	 * on views
+	 */
+	public void stopProgess();
 }
