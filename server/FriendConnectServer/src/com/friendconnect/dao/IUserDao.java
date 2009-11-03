@@ -53,19 +53,47 @@ public interface IUserDao {
 	 */
 	public void removeUser(String userId);
 	
-		
+	/**
+	 * Fetches all friends of a certain user from the JDO Datastore
+	 * @param userId
+	 * @return
+	 */
 	public List<User> getFriends(String userId);
 	
-	public List<User> getPendingFriendRequests(String userId);
+	/**
+	 * Fetches all pending friends of a certain user from the JDO Datastore
+	 * @param userId
+	 * @return
+	 */
+	public List<User> getPendingFriends(String userId);
 	
+	/**
+	 * Adds a friend to a user in the JDO Datastore
+	 * @param userId
+	 * @param friendId
+	 */
 	public void addFriend(String userId, String friendId);
 	
+	/**
+	 * Removes a friend from a user in the JDO Datastore
+	 * @param userId
+	 * @param friendId
+	 */
 	public void removeFriend(String userId, String friendId);
 	
+	/**
+	 * Adds a pending friend to a user in the JDO Datastore
+	 * @param userId
+	 * @param friendId
+	 */
+	public void addPendingFriend(String userId, String friendId);
 	
-	public void addPendingFriendRequest(String userId, String friendId);
-	
-	public void removePendingFriendRequest(String userId, String friendId);
+	/**
+	 * Removes a pending friend from a user in the JDO Datastore
+	 * @param userId
+	 * @param friendId
+	 */
+	public void removePendingFriend(String userId, String friendId);
 	
 	/**
 	 * Returns all users from the JDO Datastore that match the specified search criteria
