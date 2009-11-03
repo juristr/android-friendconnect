@@ -18,4 +18,5 @@
 	<string name="friendConnectServerUrl">http://1.latest.android-friendconnect.appspot.com/</string>
 	<string name="uiMessageLogin">Logging in...</string>
 	<string name="uiMessageLoadingFriends">Loading Friends...</string>
+	<string name="uiMessageProvideUsernamePassword">You have to provide both, username and password</string>
 </resources>

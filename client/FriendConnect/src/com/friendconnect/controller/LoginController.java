@@ -22,36 +22,39 @@ import android.content.Context;
 import android.widget.BaseAdapter;
 
 import com.friendconnect.model.LoginResult;
-import com.friendconnect.services.XMLRPCService;
+import com.friendconnect.model.RPCRemoteMappings;
+import com.friendconnect.services.IXMLRPCService;
+import com.friendconnect.xmlrpc.IAsyncCallback;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
 public class LoginController extends AbstractController<LoginResult> {
 	
-	private XMLRPCService xmlRpcService; 
+	private IXMLRPCService xmlRpcService; 
 	
 	public LoginController() {
 		registerModel(new LoginResult());
 	}
 	
 	public void login(String username, String password){
-//		xmlRpcService.sendRequest(RPCRemoteMappings.LOGIN, new Object[]{username, password}, new IAsyncCallback<Object>() {
-//
-//			public void onSuccess(Object result) {
-//				@SuppressWarnings("unused")
-//				String token = (String)result;
-//				
-//				model.setLoginSucceeded(true);
-//			}
-//			
-//			public void onFailure(Throwable throwable) {
-//				
-//			}
-//			
-//		});
+		xmlRpcService.sendRequest(RPCRemoteMappings.LOGIN, new Object[]{username, password}, new IAsyncCallback<String>() {
+
+			public void onSuccess(String result) {
+				@SuppressWarnings("unused")
+				String token = result;
+				
+				model.setLoginSucceeded(true);
+				notifyStopProgress();
+			}
+			
+			public void onFailure(Throwable throwable) {
+				notifyStopProgress();
+			}
+			
+		}, String.class);
 		
-		model.setLoginSucceeded(true);
+//		model.setLoginSucceeded(true);
 	}
 	
 	@Override
@@ -60,7 +63,7 @@ public class LoginController extends AbstractController<LoginResult> {
 	}
 
 	@Inject
-	public void setXmlRpcService(XMLRPCService xmlRpcService) {
+	public void setXmlRpcService(IXMLRPCService xmlRpcService) {
 		this.xmlRpcService = xmlRpcService;
 	}
 	

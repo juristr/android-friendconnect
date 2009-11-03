@@ -110,13 +110,16 @@ public class FriendListActivity extends Activity implements IView {
 	}
 
 	public void update(Observable observable, Object data) {
-		progressDialog.cancel();
 		this.adapter.notifyDataSetChanged();
 	}
 
 	public void onProgressChanged(String message) {
 		if (!message.equals(""))
 			progressDialog.setMessage(message);
+	}
+	
+	public void stopProgess() {
+		progressDialog.cancel();	
 	}
 
 	/** Triggered the first time activity’s menu is displayed. */

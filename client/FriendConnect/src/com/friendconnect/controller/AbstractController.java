@@ -81,12 +81,31 @@ public abstract class AbstractController<T extends Observable> implements Observ
 	}
 	
 	/**
-	 * The main update method which notifies all registerd views about
+	 * The main update method which notifies all registered views about
 	 * the model changes
 	 */
 	public void update(Observable observable, Object data) {		
 		for (IView view : this.views) {
 			view.update(observable, data);
+		}
+	}
+	
+	/**
+	 * Notifies about changes in the progress
+	 * @param message
+	 */
+	protected void notifyProgressChange(String message){
+		for (IView view : this.views) {
+			view.onProgressChanged(message);
+		}
+	}
+	
+	/**
+	 * Notifies views to stop their progress indications
+	 */
+	protected void notifyStopProgress(){
+		for (IView view : this.views) {
+			view.stopProgess();
 		}
 	}
 	
