@@ -30,22 +30,16 @@ import com.friendconnect.model.User;
 public class UserDao extends JdoDaoSupport implements IUserDao {
 	
 	@Override
-	public User getUserById(String userId, boolean loadFriends) {
-		PersistenceManager pm = getPersistenceManager();
-		User user = pm.getObjectById(User.class, userId);
-		if (loadFriends) {
-			loadFriends(user);
-		}
-		return pm.detachCopy(user);
-	}
-	
-	private void loadFriends(User user) {
-		user.setFriends(user.getFriends());
+	public User getUserById(String userId) {
+//		PersistenceManager pm = getPersistenceManager();
+//		User user = pm.getObjectById(User.class, userId);
+//		return pm.detachCopy(user);
+		return (User)getJdoTemplate().getObjectById(User.class, userId);
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public User getUserByEmailAddress(String emailAddress, boolean loadFriends) {
+	public User getUserByEmailAddress(String emailAddress) {
 		PersistenceManager pm = getPersistenceManager();
 		Query query = pm.newQuery(User.class);
 	    query.setFilter("emailAddress == emailAddressParam");
@@ -54,11 +48,7 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 		if (result.isEmpty()) {
 			return null;
 		}
-		User user = result.get(0);
-		if (loadFriends) {
-			loadFriends(user);
-		}
-		return pm.detachCopy(user);
+		return pm.detachCopy(result.get(0));
 	}
 
 	@Override
@@ -71,6 +61,56 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 	@Override
 	public void saveUser(User user) {
 		getPersistenceManager().makePersistent(user);
+	}
+	
+	@Override
+	public List<User> getFriends(String userId) {
+		PersistenceManager pm = getPersistenceManager();
+		User user = pm.getObjectById(User.class, userId);
+		return pm.detachCopy(user.getFriends());
+	}
+	
+	@Override
+	public List<User> getPendingFriendRequests(String userId) {
+		PersistenceManager pm = getPersistenceManager();
+		User user = pm.getObjectById(User.class, userId);
+		return pm.detachCopy(user.getFriends());
+	}
+	
+	@Override
+	public void addFriend(String userId, String friendId) {
+		PersistenceManager pm = getPersistenceManager();
+		User user = pm.getObjectById(User.class, userId);
+		User friend = pm.getObjectById(User.class, friendId);
+		user.getFriends().add(friend);
+		pm.makePersistent(user);
+	}
+	
+	@Override
+	public void removeFriend(String userId, String friendId) {
+		PersistenceManager pm = getPersistenceManager();
+		User user = pm.getObjectById(User.class, userId);
+		User friend = pm.getObjectById(User.class, friendId);
+		user.getFriends().remove(friend);
+		pm.makePersistent(user);
+	}
+	
+	@Override
+	public void addPendingFriendRequest(String userId, String friendId) {
+		PersistenceManager pm = getPersistenceManager();
+		User user = pm.getObjectById(User.class, userId);
+		User friend = pm.getObjectById(User.class, friendId);
+		user.getFriends().add(friend);
+		pm.makePersistent(user);
+	}
+	
+	@Override
+	public void removePendingFriendRequest(String userId, String friendId) {
+		PersistenceManager pm = getPersistenceManager();
+		User user = pm.getObjectById(User.class, userId);
+		User friend = pm.getObjectById(User.class, friendId);
+		user.getFriends().remove(friend);
+		pm.makePersistent(user);
 	}
 
 	@Override

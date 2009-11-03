@@ -36,24 +36,36 @@ public interface IUserDao {
 	/**
 	 * Fetches a user from the JDO Datastore passing its id
 	 * @param userId
-	 * @param loadFriends
 	 * @return
 	 */
-	public User getUserById(String userId, boolean loadFriends);
+	public User getUserById(String userId);
 	
 	/**
 	 * Fetches a user from the JDO Datastore passing its email address
 	 * @param emailAddress
-	 * @param loadFriends
 	 * @return
 	 */
-	public User getUserByEmailAddress(String emailAddress, boolean loadFriends);
+	public User getUserByEmailAddress(String emailAddress);
 	
 	/**
 	 * Deletes a user from the JDO Datastore
 	 * @param userId
 	 */
 	public void removeUser(String userId);
+	
+		
+	public List<User> getFriends(String userId);
+	
+	public List<User> getPendingFriendRequests(String userId);
+	
+	public void addFriend(String userId, String friendId);
+	
+	public void removeFriend(String userId, String friendId);
+	
+	
+	public void addPendingFriendRequest(String userId, String friendId);
+	
+	public void removePendingFriendRequest(String userId, String friendId);
 	
 	/**
 	 * Returns all users from the JDO Datastore that match the specified search criteria
