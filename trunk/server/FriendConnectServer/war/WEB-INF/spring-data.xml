@@ -8,11 +8,6 @@
 		<property name="persistenceManagerFactory" ref="persistenceManagerFactory" />
 	</bean>
 
-	<bean id="friendDao" class="com.friendconnect.dao.FriendDao">
-		<property name="userDao" ref="userDao" />
-		<property name="persistenceManagerFactory" ref="persistenceManagerFactory" />
-	</bean>
-
 	<bean id="persistenceManagerFactory"
 		class="org.springframework.orm.jdo.LocalPersistenceManagerFactoryBean">
 		<property name="persistenceManagerFactoryName" value="transactions-optional" />

@@ -15,7 +15,7 @@
 	</bean>
 
 	<bean id="friendService" class="com.friendconnect.services.FriendService">
-		<property name="friendDao" ref="friendDao" />
+		<property name="userDao" ref="userDao" />
 	</bean>
 
 	<bean id="objectSerializer" class="com.friendconnect.xmlrpc.ObjectSerializer" />

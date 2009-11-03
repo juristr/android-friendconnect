@@ -5,7 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.friendconnect.model.Friend;
+import com.friendconnect.model.User;
 import com.friendconnect.xmlrpc.ObjectSerializer;
 import com.google.gdata.util.AuthenticationException;
 
@@ -40,10 +40,10 @@ public class XmlRpcService {
 		boolean isAuthenticated = true; // authService.validateToken(username,
 										// token);
 		if (isAuthenticated) {
-			List<Friend> friends = friendService.getDummyFriends();
+			List<User> friends = friendService.getDummyFriends();
 
 			// serialize
-			for (Friend friend : friends) {
+			for (User friend : friends) {
 				result.add(serializer.serialize(friend));
 			}
 		} else {

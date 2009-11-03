@@ -39,6 +39,15 @@ public class User {
 	private String emailAddress;
 	
 	@Persistent
+	private String name;
+	
+	@Persistent 
+	private String website;
+	
+	@Persistent 
+	private String phone;
+		
+	@Persistent
 	private String token;
 	
 	@Persistent
@@ -52,7 +61,10 @@ public class User {
 	private Location position;
 	
     @Persistent
-	private List<Friend> friends;
+	private List<User> friends;
+    
+    @Persistent
+    private List<User> pendingFriendRequests;
 	
 	public User() {	
 	}
@@ -71,6 +83,30 @@ public class User {
 
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setWebsite(String website) {
+		this.website = website;
+	}
+
+	public String getWebsite() {
+		return website;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getPhone() {
+		return phone;
 	}
 
 	public String getToken() {
@@ -105,11 +141,19 @@ public class User {
 		return position;
 	}
 
-	public void setFriends(List<Friend> friends) {
+	public void setFriends(List<User> friends) {
 		this.friends = friends;
 	}
 
-	public List<Friend> getFriends() {
+	public List<User> getFriends() {
 		return friends;
+	}
+	
+	public void setPendingFriends(List<User> pendingFriendRequests) {
+		this.pendingFriendRequests = pendingFriendRequests;
+	}
+
+	public List<User> getPendingFriendRequests() {
+		return pendingFriendRequests;
 	}
 }

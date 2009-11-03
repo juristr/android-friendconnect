@@ -23,8 +23,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.friendconnect.dao.IFriendDao;
-import com.friendconnect.model.Friend;
+import com.friendconnect.dao.IUserDao;
+import com.friendconnect.model.User;
 import com.google.gdata.client.contacts.ContactsService;
 import com.google.gdata.data.contacts.ContactEntry;
 import com.google.gdata.data.contacts.ContactFeed;
@@ -36,7 +36,7 @@ public class FriendService implements IFriendService {
 	private final String baseURL = "http://www.google.com/m8/feeds/contacts"; //TODO inject
 	private final String projection = "thin";
 	
-	private IFriendDao friendDao;
+	private IUserDao userDao;
 	
 	public FriendService() {
 	}
@@ -46,8 +46,8 @@ public class FriendService implements IFriendService {
 	 * @param contact to convert
 	 * @return friend
 	 */
-	private Friend convertToFriend(ContactEntry contact) {
-		Friend friend = new Friend();
+	private User convertToFriend(ContactEntry contact) {
+		User friend = new User();
 		String email = "";
 		String website = "";
 		String phone = "";
@@ -90,9 +90,9 @@ public class FriendService implements IFriendService {
 	 * @throws IOException
 	 * @throws ServiceException
 	 */
-	private List<Friend> readFriendsFromFeed(ContactsService service, ContactFeed feed, URL feedUri) throws IOException, ServiceException {
-		List<Friend> friends = new ArrayList<Friend>();
-		Friend friend;
+	private List<User> readFriendsFromFeed(ContactsService service, ContactFeed feed, URL feedUri) throws IOException, ServiceException {
+		List<User> friends = new ArrayList<User>();
+		User friend;
 		for (ContactEntry entry : feed.getEntries()) {
 			friend = convertToFriend(entry);
 			//TODO read further friend information from DB
@@ -114,7 +114,7 @@ public class FriendService implements IFriendService {
 	 * Returns all friends of a certain user
 	 */
 	@Override
-	public List<Friend> getFriends(String username, String token) throws IOException, ServiceException {
+	public List<User> getFriends(String username, String token) throws IOException, ServiceException {
 		ContactsService service = new ContactsService(applicationName);
 		service.setUserToken(token);
 		URL feedUri = new URL(baseURL + "/" + username + "/" + projection);
@@ -122,9 +122,9 @@ public class FriendService implements IFriendService {
 		return readFriendsFromFeed(service, contactFeed, feedUri);
 	}
 	
-	public List<Friend> getDummyFriends() {
-		List<Friend> friends = new ArrayList<Friend>();
-		Friend friend = new Friend();
+	public List<User> getDummyFriends() {
+		List<User> friends = new ArrayList<User>();
+		User friend = new User();
 		friend.setId("1");
 		friend.setEmailAddress("matthias.braunhofer@gmail.com");
 		friend.setName("Matthias");
@@ -133,12 +133,12 @@ public class FriendService implements IFriendService {
 		return friends;
 	}
 
-	public void setFriendDao(IFriendDao friendDao) {
-		this.friendDao = friendDao;
+	public void setUserDao(IUserDao userDao) {
+		this.userDao = userDao;
 	}
 
-	public IFriendDao getFriendDao() {
-		return friendDao;
+	public IUserDao getUserDao() {
+		return userDao;
 	}
 
 }

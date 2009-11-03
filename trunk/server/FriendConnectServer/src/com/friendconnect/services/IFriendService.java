@@ -22,10 +22,10 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 
-import com.friendconnect.model.Friend;
+import com.friendconnect.model.User;
 import com.google.gdata.util.ServiceException;
 
 public interface IFriendService {
-	List<Friend> getFriends(String username, String token) throws MalformedURLException, IOException, ServiceException;
-	List<Friend> getDummyFriends();
+	List<User> getFriends(String username, String token) throws MalformedURLException, IOException, ServiceException;
+	List<User> getDummyFriends();
 }
