@@ -19,6 +19,7 @@
 package com.friendconnect.services;
 
 import com.friendconnect.dao.IUserDao;
+import com.friendconnect.model.User;
 import com.google.gdata.client.GoogleService;
 import com.google.gdata.client.GoogleAuthTokenFactory.UserToken;
 import com.google.gdata.client.GoogleService.InvalidCredentialsException;
@@ -31,14 +32,37 @@ public class AuthenticationService implements IAuthenticationService {
 	
 	@Override
 	public String authenticate(String username, String password) throws AuthenticationException {
-		GoogleService contactsService = new ContactsService(applicationName);
+		//GoogleService contactsService = new ContactsService(applicationName);
 		try {
-			contactsService.setUserCredentials(username, password);
-			UserToken auth_token = (UserToken) contactsService.getAuthTokenFactory().getAuthToken();
-			String token = auth_token.getValue();	
+			//contactsService.setUserCredentials(username, password);
+			//UserToken auth_token = (UserToken) contactsService.getAuthTokenFactory().getAuthToken();
+			String token = "123";//auth_token.getValue();	
 			//TODO save username and token into DB
+			User user = new User();
+			user.setEmailAddress(username);
+			user.setToken(token);
+			user.setName("Test");
+			user.setOnline(true);
+			user.setPhone("1234");
+			user.setWebsite("jfdaksl");
+			
+			userDao.saveUser(user);
+			
+//			User friend = new User();
+//			user.setEmailAddress("bla@gmail.com");
+//			List<User> friends = new ArrayList<User>();
+//			friends.add(friend);
+//			
+//			user.setFriends(friends);
+//			
+//			userDao.saveUser(user);
+			
+			user = userDao.getUserById(user.getId());
+			//friends = user.getFriends();
+			
+			userDao.removeUser(user.getId());
 			return token;
-		} catch (InvalidCredentialsException e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}
