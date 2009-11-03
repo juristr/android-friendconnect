@@ -125,7 +125,7 @@ public class FriendService implements IFriendService {
 	public List<User> getDummyFriends() {
 		List<User> friends = new ArrayList<User>();
 		User friend = new User();
-		friend.setId("1");
+		//friend.setId("1");
 		friend.setEmailAddress("matthias.braunhofer@gmail.com");
 		friend.setName("Matthias");
 		friend.setStatusMessage("My status");

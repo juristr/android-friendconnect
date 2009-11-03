@@ -60,11 +60,11 @@ public class User {
 	@Embedded
 	private Location position;
 	
-    @Persistent
-	private List<User> friends;
+	@Persistent(defaultFetchGroup = "true")
+	private List<String> friends;
     
-    @Persistent
-    private List<User> pendingFriendRequests;
+	@Persistent(defaultFetchGroup = "true")
+    private List<String> pendingFriends;
 	
 	public User() {	
 	}
@@ -141,19 +141,19 @@ public class User {
 		return position;
 	}
 
-	public void setFriends(List<User> friends) {
+	public void setFriends(List<String> friends) {
 		this.friends = friends;
 	}
 
-	public List<User> getFriends() {
+	public List<String> getFriends() {
 		return friends;
 	}
 	
-	public void setPendingFriends(List<User> pendingFriendRequests) {
-		this.pendingFriendRequests = pendingFriendRequests;
+	public void setPendingFriends(List<String> pendingFriends) {
+		this.pendingFriends = pendingFriends;
 	}
 
-	public List<User> getPendingFriendRequests() {
-		return pendingFriendRequests;
+	public List<String> getPendingFriends() {
+		return pendingFriends;
 	}
 }
