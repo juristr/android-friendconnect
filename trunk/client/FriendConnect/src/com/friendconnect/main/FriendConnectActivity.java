@@ -32,11 +32,12 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.friendconnect.R;
 import com.friendconnect.activities.FriendListActivity;
 import com.friendconnect.activities.IView;
-import com.friendconnect.activities.R;
 import com.friendconnect.controller.LoginController;
 import com.friendconnect.model.LoginResult;
+import com.friendconnect.services.FriendUpdateService;
 
 /**
  * View for performing the user login
@@ -134,6 +135,8 @@ public class FriendConnectActivity extends Activity implements IView {
 		if (result.isLoginSucceeded()) {
 			startActivity(new Intent(FriendConnectActivity.this,
 					FriendListActivity.class));
+			
+			finish();
 		}
 	}
 

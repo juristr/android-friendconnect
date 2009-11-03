@@ -18,16 +18,19 @@
 
 package com.friendconnect.model;
 
+import java.util.Observable;
+
 /**
  * Representing a location on the earth (lat/lng)
- *
+ * 
  */
-public class Location {
+public class Location extends Observable {
 	private double latitude;
 	private double longitude;
-	
+
 	public Location() {
-		//TODO check whether to wrap directly a com.google.android.maps.GeoPoint here
+		// TODO check whether to wrap directly a
+		// com.google.android.maps.GeoPoint here
 	}
 
 	public double getLatitude() {
@@ -36,6 +39,9 @@ public class Location {
 
 	public void setLatitude(double latitude) {
 		this.latitude = latitude;
+
+		setChanged();
+		notifyObservers();
 	}
 
 	public double getLongitude() {
@@ -44,6 +50,9 @@ public class Location {
 
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
+		
+		setChanged();
+		notifyObservers();
 	}
-	
+
 }

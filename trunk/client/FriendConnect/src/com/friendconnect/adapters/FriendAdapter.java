@@ -29,20 +29,19 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.friendconnect.activities.R;
-import com.friendconnect.model.Friend;
-import com.friendconnect.model.FriendConnectUser;
+import com.friendconnect.R;
+import com.friendconnect.model.User;
 
 /**
- * Adapter for binding a list of {@link FriendConnectUser} objects
+ * Adapter for binding a list of {@link User} objects
  * to a {@link ListView}
  *
  */
-public class FriendAdapter extends ArrayAdapter<Friend> {
+public class FriendAdapter extends ArrayAdapter<User> {
 	private int resourceId;
 	
 	public FriendAdapter(Context context, int resourceId,
-			List<Friend> persons) {
+			List<User> persons) {
 		super(context, resourceId, persons);
 		this.resourceId = resourceId;
 	}
@@ -51,7 +50,7 @@ public class FriendAdapter extends ArrayAdapter<Friend> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LinearLayout friendListView;
 		
-		Friend person = getItem(position);
+		User person = getItem(position);
 		
 		//TODO check the following lines
 		if(convertView == null){
