@@ -24,7 +24,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.friendconnect.adapters.FriendAdapter;
-import com.friendconnect.model.Friend;
+import com.friendconnect.model.FriendConnectUser;
 import com.friendconnect.model.RPCRemoteMappings;
 import com.friendconnect.model.User;
 import com.friendconnect.services.IXMLRPCService;
@@ -38,14 +38,14 @@ import com.google.inject.Singleton;
  *
  */
 @Singleton
-public class FriendListController extends AbstractController<User> {
+public class FriendListController extends AbstractController<FriendConnectUser> {
 	private int layoutId;
 	private IXMLRPCService xmlRPCService;
 	private ObjectHelper objectHelper;
 
 	public FriendListController() {
 		super();
-		registerModel(new User());
+		registerModel(new FriendConnectUser());
 	}
 
 	/**
@@ -54,11 +54,11 @@ public class FriendListController extends AbstractController<User> {
 	 * status message changes or changes in their position.
 	 */
 	public void updateFriendList() {
-		xmlRPCService.sendRequest(RPCRemoteMappings.GETFRIENDS, null, new IAsyncCallback<List<Friend>>() {
+		xmlRPCService.sendRequest(RPCRemoteMappings.GETFRIENDS, null, new IAsyncCallback<List<User>>() {
 
-			public void onSuccess(List<Friend> result) {
-				for (Friend friend : result) {
-					Friend friendInModel = getFriendFromModel(friend.getId());
+			public void onSuccess(List<User> result) {
+				for (User friend : result) {
+					User friendInModel = getFriendFromModel(friend.getId());
 					if(friendInModel == null){
 						//new friend
 						model.addFriend(friend);
@@ -80,7 +80,7 @@ public class FriendListController extends AbstractController<User> {
 				// TODO Auto-generated method stub	
 				notifyStopProgress();
 			}
-		}, Friend.class);
+		}, User.class);
 	}
 	
 	/**
@@ -89,9 +89,9 @@ public class FriendListController extends AbstractController<User> {
 	 * @param id the identifier to be matched
 	 * @return the corresponding {@link Friend} object, null otherwise
 	 */
-	private Friend getFriendFromModel(int id) {
+	private User getFriendFromModel(String id) {
 		
-		for (Friend friend : model.getFriends()) {
+		for (User friend : model.getFriends()) {
 			if(friend.getId() == id)
 				return friend;
 		}
@@ -101,15 +101,14 @@ public class FriendListController extends AbstractController<User> {
 
 	@Override
 	public FriendAdapter getAdapter(Context context) {
-		return new FriendAdapter(context, this.layoutId, this.model
-				.getFriends());
+		return new FriendAdapter(context, this.layoutId, this.model.getFriends());
 	}
 
-	public void addFriend(Friend friend) {
+	public void addFriend(User friend) {
 		this.model.addFriend(friend);
 	}
 
-	public Friend getFriend(int position) {
+	public User getFriend(int position) {
 		return this.model.getFriends().get(position);
 	}
 

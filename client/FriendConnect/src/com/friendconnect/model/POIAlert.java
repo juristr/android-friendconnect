@@ -18,7 +18,7 @@
 
 package com.friendconnect.model;
 
-public class POIAlert implements ILoadable, ILocatable {
+public class POIAlert {
 	private int id;
 	private String title;
 	private int radius;

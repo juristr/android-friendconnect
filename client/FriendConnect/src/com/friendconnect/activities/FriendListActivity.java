@@ -24,6 +24,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -35,9 +36,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.friendconnect.R;
 import com.friendconnect.controller.FriendListController;
 import com.friendconnect.main.IoC;
-import com.friendconnect.model.Friend;
+import com.friendconnect.model.User;
+import com.friendconnect.services.FriendUpdateService;
 
 public class FriendListActivity extends Activity implements IView {
 	static final private int FETCH_FRIENDS_TEST = Menu.FIRST;
@@ -46,7 +49,7 @@ public class FriendListActivity extends Activity implements IView {
 	private ListView listViewFriends;
 	private ProgressDialog progressDialog;
 	private BaseAdapter adapter;
-	private Friend selectedUser;
+	private User selectedUser;
 
 	static final private int FRIENDDETAILS_DIALOG = 1;
 
@@ -63,6 +66,8 @@ public class FriendListActivity extends Activity implements IView {
 		this.controller = IoC.getInstance(FriendListController.class);
 		this.controller.setLayoutId(R.layout.friendlistrowitem);
 		this.controller.registerView(this);
+		
+//		startService(new Intent(this, FriendUpdateService.class));
 
 		this.adapter = controller.getAdapter(this);
 		listViewFriends.setAdapter(this.adapter);

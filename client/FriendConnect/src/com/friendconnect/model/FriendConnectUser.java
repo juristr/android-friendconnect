@@ -18,77 +18,42 @@
 
 package com.friendconnect.model;
 
-import java.io.Serializable;
-import java.util.Observable;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.friendconnect.xmlrpc.ComplexSerializableType;
-
-public abstract class FriendConnectUser extends Observable implements ILoadable,
-		ILocatable, Serializable {
-	private static final long serialVersionUID = 1;
-	protected int id;
-	protected String emailAddress;
-	protected String phone;
-	protected String website;
-	protected String name;
-	protected String statusMessage;
-	protected Location position;
+public class FriendConnectUser extends User {
+	private List<User> friends;
+	private List<POIAlert> poiAlert;
 	
-	public int getId() {
-		return this.id;
+	public FriendConnectUser() {
+		this.friends = new ArrayList<User>();
+		this.poiAlert = new ArrayList<POIAlert>();
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	//TODO bad, could be modified without being able to notice
+	//and fire change events!!!
+	public List<User> getFriends() {
+		return friends;
 	}
 
-	public String getEmailAddress() {
-		return emailAddress;
-	}
-
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public String getName() {
-		return name;
-	}
+//	public void setFriends(List<Person> friends) {
+//		this.friends = friends;
+//	}
 	
-	public String getWebsite() {
-		return website;
+	public void addFriend(User friend){
+		if(!this.friends.contains(friend)){
+			this.friends.add(friend);
+			setChanged();
+			notifyObservers();
+		}
 	}
 
-	public void setWebsite(String website) {
-		this.website = website;
+	public List<POIAlert> getPoiAlert() {
+		return poiAlert;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setPoiAlert(List<POIAlert> poiAlert) {
+		this.poiAlert = poiAlert;
 	}
 
-	public String getStatusMessage() {
-		return statusMessage;
-	}
-
-	public void setStatusMessage(String statusMessage) {
-		this.statusMessage = statusMessage;
-	}
-
-	@ComplexSerializableType(clazz = Location.class)
-	public Location getPosition() {
-		return this.position;
-	}
-
-	@ComplexSerializableType(clazz = Location.class)
-	public void setPosition(Location location) {
-		this.position = location;
-	}
 }

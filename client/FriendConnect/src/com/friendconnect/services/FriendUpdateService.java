@@ -27,7 +27,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.friendconnect.controller.FriendListController;
-import com.google.inject.Inject;
+import com.friendconnect.main.IoC;
 
 /**
  * Background Android service which continuously queries for
@@ -35,10 +35,9 @@ import com.google.inject.Inject;
  *
  */
 public class FriendUpdateService extends Service {
-
 	private FriendListController controller;
 	private Timer timer = new Timer();
-	private final int UPDATE_INTERVAL = 5000; // TODO make configurable??
+	private final int UPDATE_INTERVAL = 20000; // TODO make configurable??
 
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -50,6 +49,7 @@ public class FriendUpdateService extends Service {
 	public void onCreate() {
 		super.onCreate();
 		
+		this.controller = IoC.getInstance(FriendListController.class);
 		startService();
 	}
 
@@ -65,6 +65,7 @@ public class FriendUpdateService extends Service {
 				new TimerTask() {
 					@Override
 					public void run() {
+						Log.i(FriendUpdateService.class.getCanonicalName(), "Fetching updated friend list");
 						controller.updateFriendList();	
 					}
 				}, 
@@ -82,8 +83,6 @@ public class FriendUpdateService extends Service {
 		Log.i(getClass().getSimpleName(), "FriendUpdateService stopped");
 	}
 
-
-	@Inject
 	public void setController(FriendListController controller) {
 		this.controller = controller;
 	}

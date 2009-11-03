@@ -18,42 +18,105 @@
 
 package com.friendconnect.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Observable;
 
-public class User extends FriendConnectUser {
-	private List<Friend> friends;
-	private List<POIAlert> poiAlert;
-	
-	public User() {
-		this.friends = new ArrayList<Friend>();
-		this.poiAlert = new ArrayList<POIAlert>();
+import com.friendconnect.xmlrpc.ComplexSerializableType;
+
+public class User extends Observable {
+	private static final long serialVersionUID = 1;
+	protected String id;
+	protected String emailAddress;
+	protected String phone;
+	protected String website;
+	protected String name;
+	protected String statusMessage;
+	protected Location position;
+
+	public String getId() {
+		return this.id;
 	}
 
-	//TODO bad, could be modified without being able to notice
-	//and fire change events!!!
-	public List<Friend> getFriends() {
-		return friends;
+	public void setId(String id) {
+		this.id = id;
 	}
 
-//	public void setFriends(List<Person> friends) {
-//		this.friends = friends;
-//	}
-	
-	public void addFriend(Friend friend){
-		if(!this.friends.contains(friend)){
-			this.friends.add(friend);
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+
+	public void setEmailAddress(String emailAddress) {
+		String oldValue = this.emailAddress;
+		this.emailAddress = emailAddress;
+
+		if (oldValue == null || !oldValue.equals(this.emailAddress)) {
 			setChanged();
 			notifyObservers();
 		}
 	}
 
-	public List<POIAlert> getPoiAlert() {
-		return poiAlert;
+	public String getPhone() {
+		return phone;
 	}
 
-	public void setPoiAlert(List<POIAlert> poiAlert) {
-		this.poiAlert = poiAlert;
+	public void setPhone(String phone) {
+		String oldValue = this.phone;
+		this.phone = phone;
+
+		if (oldValue == null || !oldValue.equals(this.phone)) {
+			setChanged();
+			notifyObservers();
+		}
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public String getWebsite() {
+		return website;
+	}
+
+	public void setWebsite(String website) {
+		String oldValue = this.website;
+		this.website = website;
+
+		if (oldValue == null || !oldValue.equals(this.website)) {
+			setChanged();
+			notifyObservers();
+		}
+	}
+
+	public void setName(String name) {
+		String oldValue = this.name;
+		this.name = name;
+
+		if (oldValue == null || !oldValue.equals(this.name)) {
+			setChanged();
+			notifyObservers();
+		}
+	}
+
+	public String getStatusMessage() {
+		return statusMessage;
+	}
+
+	public void setStatusMessage(String statusMessage) {
+		String oldValue = this.statusMessage;
+		this.statusMessage = statusMessage;
+
+		if (oldValue == null || !oldValue.equals(this.statusMessage)) {
+			setChanged();
+			notifyObservers();
+		}
+	}
+
+	@ComplexSerializableType(clazz = Location.class)
+	public Location getPosition() {
+		return this.position;
+	}
+
+	@ComplexSerializableType(clazz = Location.class)
+	public void setPosition(Location location) {
+		this.position = location;
+	}
 }
