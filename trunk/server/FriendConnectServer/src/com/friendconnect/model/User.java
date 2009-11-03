@@ -29,7 +29,7 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class User implements ILoadable, ILocatable {
+public class User {
 	@PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     @Extension(vendorName="datanucleus", key="gae.encoded-pk", value="true")
@@ -57,12 +57,10 @@ public class User implements ILoadable, ILocatable {
 	public User() {	
 	}
 	
-	@Override
 	public String getId() {
 		return id;
 	}
 
-	@Override
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -99,12 +97,10 @@ public class User implements ILoadable, ILocatable {
 		return statusMessage;
 	}
 
-	@Override
 	public void setPosition(Location position) {
 		this.position = position;
 	}
 
-	@Override
 	public Location getPosition() {
 		return position;
 	}

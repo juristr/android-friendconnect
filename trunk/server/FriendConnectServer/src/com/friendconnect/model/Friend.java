@@ -31,7 +31,7 @@ import javax.jdo.annotations.PrimaryKey;
 import com.friendconnect.xmlrpc.ComplexSerializableType;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class Friend implements ILoadable, ILocatable, Serializable {
+public class Friend implements Serializable {
 	private static final long serialVersionUID = 1;
 	
 	@PrimaryKey
@@ -72,12 +72,10 @@ public class Friend implements ILoadable, ILocatable, Serializable {
 		this.statusMessage = statusMessage;
 	}
 
-	@Override
 	public String getId() {
 		return id;
 	}
 
-	@Override
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -130,13 +128,11 @@ public class Friend implements ILoadable, ILocatable, Serializable {
 		this.statusMessage = statusMessage;
 	}
 
-	@Override
 	@ComplexSerializableType(clazz = Location.class)
 	public Location getPosition() {
 		return this.position;
 	}
 
-	@Override
 	@ComplexSerializableType(clazz = Location.class)
 	public void setPosition(Location location) {
 		this.position = location;
