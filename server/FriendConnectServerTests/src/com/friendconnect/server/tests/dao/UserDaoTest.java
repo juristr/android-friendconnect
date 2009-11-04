@@ -30,8 +30,8 @@ import com.friendconnect.server.tests.utils.BaseTest;
 public class UserDaoTest extends BaseTest {
 	private PersistenceManagerFactory factory;
 	private UserDao userDao;
-	private String userEmailAddress;
-	private String friendEmailAddress;
+	private User user;
+	private User friend;
 	
 	@Override
 	protected void setUp() throws Exception {
@@ -40,8 +40,13 @@ public class UserDaoTest extends BaseTest {
 		userDao = new UserDao();
 		userDao.setPersistenceManagerFactory(factory);
 		
-		userEmailAddress = "matthias.braunhofer@gmail.com";
-		friendEmailAddress = "juri.strumpflohner@gmail.com";
+		user = new User();
+		user.setEmailAddress("matthias.braunhofer@gmail.com");
+		user.setName("Matthias");
+		
+		friend = new User();
+		friend.setEmailAddress("juri.strumpflohner@gmail.com");
+		friend.setName("Juri");
 	}
 	
 	@Override
@@ -50,15 +55,11 @@ public class UserDaoTest extends BaseTest {
 		factory = null;
 		userDao = null;
 		
-		userEmailAddress = null;
-		friendEmailAddress = null;
+		user = null;
+		friend = null;
 	}
 	
 	public void testSaveGetRemoveUser() {
-		User user = new User();
-		user.setEmailAddress(userEmailAddress);
-		user.setName("Matthias");
-		
 		userDao.saveUser(user);
 		
 		User aUser = userDao.getUserById(user.getId());
@@ -86,14 +87,7 @@ public class UserDaoTest extends BaseTest {
 	}
 	
 	public void testAddGetRemoveFriends() {
-		User user = new User();
-		user.setEmailAddress(userEmailAddress);
-		user.setName("Matthias");
 		userDao.saveUser(user);
-		
-		User friend = new User();
-		friend.setEmailAddress(friendEmailAddress);
-		friend.setName("Juri");
 		userDao.saveUser(friend);
 		
 		userDao.addFriend(user.getId(), friend.getId());
@@ -106,23 +100,16 @@ public class UserDaoTest extends BaseTest {
 	}
 	
 	public void testAddGetRemovePendingFriends() {
-		User user = new User();
-		user.setEmailAddress(userEmailAddress);
-		user.setName("Matthias");
 		userDao.saveUser(user);
+		userDao.saveUser(friend);
 		
-		User pendingFriend = new User();
-		pendingFriend.setEmailAddress(friendEmailAddress);
-		pendingFriend.setName("Juri");
-		userDao.saveUser(pendingFriend);
-		
-		userDao.addPendingFriend(user.getId(), pendingFriend.getId());
+		userDao.addPendingFriend(user.getId(), friend.getId());
 		List<User> pendingFriends = userDao.getPendingFriends(user.getId());
-		assertTrue("Pending friend list should contain friend", contains(pendingFriends, pendingFriend.getId()));
+		assertTrue("Pending friend list should contain friend", contains(pendingFriends, friend.getId()));
 		
-		userDao.removePendingFriend(user.getId(), pendingFriend.getId());
+		userDao.removePendingFriend(user.getId(), friend.getId());
 		pendingFriends = userDao.getPendingFriends(user.getId());
-		assertFalse("Pending friend list should not contain friend", contains(pendingFriends, pendingFriend.getId()));	
+		assertFalse("Pending friend list should not contain friend", contains(pendingFriends, friend.getId()));	
 	}
 	
 	private boolean contains(List<User> users, String userId) {
