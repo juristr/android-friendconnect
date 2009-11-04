@@ -24,14 +24,17 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -40,10 +43,10 @@ import com.friendconnect.R;
 import com.friendconnect.controller.FriendListController;
 import com.friendconnect.main.IoC;
 import com.friendconnect.model.User;
-import com.friendconnect.services.FriendUpdateService;
 
 public class FriendListActivity extends Activity implements IView {
 	static final private int FETCH_FRIENDS_TEST = Menu.FIRST;
+	static final private int ADD_FRIEND = Menu.FIRST + 1;
 
 	private FriendListController controller;
 	private ListView listViewFriends;
@@ -52,6 +55,7 @@ public class FriendListActivity extends Activity implements IView {
 	private User selectedUser;
 
 	static final private int FRIENDDETAILS_DIALOG = 1;
+	static final private int ADDFRIEND_DIALOG = 2;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -83,34 +87,53 @@ public class FriendListActivity extends Activity implements IView {
 	@Override
 	public Dialog onCreateDialog(int id) {
 		switch (id) {
-		case (FRIENDDETAILS_DIALOG):
-			LayoutInflater li = LayoutInflater.from(this);
-			View friendDetailsView = li.inflate(R.layout.frienddetailsview,
-					null);
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			AlertDialog friendDetailsDialog = builder.create();
-			friendDetailsDialog.setTitle(R.string.details);
-			friendDetailsDialog.setView(friendDetailsView);
-			friendDetailsDialog.setCanceledOnTouchOutside(true);
-			friendDetailsDialog.setIcon(R.drawable.icon);
-			return friendDetailsDialog;
-		}
+			case (FRIENDDETAILS_DIALOG): {
+				LayoutInflater li = LayoutInflater.from(this);
+				View friendDetailsView = li.inflate(R.layout.frienddetailsview, null);
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				AlertDialog friendDetailsDialog = builder.create();
+				friendDetailsDialog.setTitle(R.string.details);
+				friendDetailsDialog.setView(friendDetailsView);
+				friendDetailsDialog.setCanceledOnTouchOutside(true);
+				friendDetailsDialog.setIcon(R.drawable.icon);
+				return friendDetailsDialog;
+			} case (ADD_FRIEND): {
+				LayoutInflater li = LayoutInflater.from(this);
+				View inviteFriendView = li.inflate(R.layout.friendinvite, null);
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				AlertDialog inviteFriendDialog = builder.create();
+				inviteFriendDialog.setTitle(R.string.invitation);
+				inviteFriendDialog.setView(inviteFriendView);
+				inviteFriendDialog.setCanceledOnTouchOutside(true);
+				inviteFriendDialog.setIcon(R.drawable.icon);
+				return inviteFriendDialog;
+			}
+		}	
 		return null;
 	}
 
 	@Override
-	public void onPrepareDialog(int id, Dialog dialog) {
+	public void onPrepareDialog(int id, final Dialog dialog) {
 		switch (id) {
-		case (FRIENDDETAILS_DIALOG):
-			((TextView) dialog.findViewById(R.id.textViewName))
-					.setText(selectedUser.getName());
-			((TextView) dialog.findViewById(R.id.textViewPhone))
-					.setText(selectedUser.getPhone());
-			((TextView) dialog.findViewById(R.id.textViewEmail))
-					.setText(selectedUser.getEmailAddress());
-			((TextView) dialog.findViewById(R.id.textViewStatusmessage))
-					.setText(selectedUser.getStatusMessage());
-			break;
+			case (FRIENDDETAILS_DIALOG): {
+				((TextView) dialog.findViewById(R.id.textViewName))
+						.setText(selectedUser.getName());
+				((TextView) dialog.findViewById(R.id.textViewPhone))
+						.setText(selectedUser.getPhone());
+				((TextView) dialog.findViewById(R.id.textViewEmail))
+						.setText(selectedUser.getEmailAddress());
+				((TextView) dialog.findViewById(R.id.textViewStatusmessage))
+						.setText(selectedUser.getStatusMessage());
+				break;
+			} case (ADDFRIEND_DIALOG): {
+				((Button) dialog.findViewById(R.id.buttonInvite)).setOnClickListener(new OnClickListener() {
+					public void onClick(View v) {
+						//TODO send add request to the server
+						String emailAddress = ((EditText) dialog.findViewById(R.id.editTextInviteeEmail)).getText().toString();
+						dialog.dismiss();
+					}
+				});
+			}
 		}
 	}
 
@@ -134,9 +157,11 @@ public class FriendListActivity extends Activity implements IView {
 		// Create and add new menu items.
 		MenuItem itemAdd = menu.add(0, FETCH_FRIENDS_TEST, Menu.NONE,
 				"fetch friends test");
+		MenuItem itemInviteFriend = menu.add(0, ADD_FRIEND, Menu.NONE, this.getString(R.string.addFriend));
 
 		// Allocate shortcuts to each of them.
 		itemAdd.setShortcut('0', 'a');
+		itemInviteFriend.setShortcut('1', 'b');
 		return true;
 	}
 
@@ -150,6 +175,10 @@ public class FriendListActivity extends Activity implements IView {
 				progressDialog.setMessage(getText(R.string.uiMessageLoadingFriends));
 				progressDialog.show();
 				controller.updateFriendList();
+				return true;
+			}
+			case (ADD_FRIEND): {
+				showDialog(ADDFRIEND_DIALOG);
 				return true;
 			}
 		}
