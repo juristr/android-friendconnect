@@ -91,6 +91,11 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 	
 	@Override
 	public void addFriend(String userId, String friendId) {
+		addFriendTo(userId, friendId);
+		addFriendTo(friendId, userId);
+	}
+	
+	private void addFriendTo(String userId, String friendId) {
 		PersistenceManager pm = getPersistenceManager();
 		try {
 			pm.currentTransaction().begin();
@@ -113,6 +118,11 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 	
 	@Override
 	public void removeFriend(String userId, String friendId) {
+		removeFriendFrom(userId, friendId);
+		removeFriendFrom(friendId, userId);
+	}
+	
+	private void removeFriendFrom(String userId, String friendId) {
 		PersistenceManager pm = getPersistenceManager();
 		try {
 			pm.currentTransaction().begin();
