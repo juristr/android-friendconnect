@@ -161,7 +161,7 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 			if (user.getPendingFriends() != null) {
 				List<String> pendingFriends = user.getPendingFriends();
 				pendingFriends.remove(pendingFriends.indexOf(friendId));
-				user.setFriends(pendingFriends);
+				user.setPendingFriends(pendingFriends);
 			}
 			pm.currentTransaction().commit();
 		} finally {
