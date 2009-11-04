@@ -15,5 +15,10 @@
 	<classpathentry kind="lib" path="libs/gdata-contacts-meta-3.0.jar"/>
 	<classpathentry kind="lib" path="libs/gdata-core-1.0.jar"/>
 	<classpathentry kind="lib" path="libs/google-collect-1.0-rc1.jar"/>
+	<classpathentry kind="lib" path="libs/appengine-api-stubs.jar"/>
+	<classpathentry kind="lib" path="libs/appengine-local-runtime.jar"/>
+	<classpathentry kind="lib" path="libs/appengine-api.jar"/>
+	<classpathentry kind="lib" path="libs/jdo2-api-2.3-eb.jar"/>
+	<classpathentry kind="lib" path="libs/spring-2.5.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
