@@ -19,4 +19,6 @@
 	<string name="uiMessageLogin">Logging in...</string>
 	<string name="uiMessageLoadingFriends">Loading Friends...</string>
 	<string name="uiMessageProvideUsernamePassword">You have to provide both, username and password</string>
+	<string name="sendInvite">Send Invite</string>
+	<string name="inviteFriend">Type the email address of another person you would like to invite:</string>
 </resources>
