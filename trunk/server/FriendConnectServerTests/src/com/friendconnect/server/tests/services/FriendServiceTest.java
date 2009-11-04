@@ -25,7 +25,7 @@ import java.util.Properties;
 
 import junit.framework.TestCase;
 
-import com.friendconnect.model.Friend;
+import com.friendconnect.model.User;
 import com.friendconnect.server.tests.utils.PropsUtils;
 import com.friendconnect.services.AuthenticationService;
 import com.friendconnect.services.FriendService;
@@ -61,7 +61,7 @@ public class FriendServiceTest extends TestCase {
 		assertNotNull("Token should not be null", token);
 		assertTrue("Token should not be equal to empty string", !token.equals(""));
 		
-		List<Friend> friends = friendService.getFriends(username, token);
+		List<User> friends = friendService.getFriends(username, token);
 		
 		assertNotNull("List should not be null", friends);		
 	}

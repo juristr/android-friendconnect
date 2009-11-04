@@ -5,8 +5,8 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import com.friendconnect.model.Friend;
 import com.friendconnect.model.Location;
+import com.friendconnect.model.User;
 import com.friendconnect.xmlrpc.ObjectSerializer;
 
 public class ObjectSerializerTest extends TestCase {
@@ -20,7 +20,7 @@ public class ObjectSerializerTest extends TestCase {
 	}
 
 	public void testObjectDeserializer() throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-		Friend friend = new Friend();
+		User friend = new User();
 		friend.setId("123456");
 		friend.setEmailAddress("juri.strumpflohner@gmail.com");
 		Location location = new Location();
@@ -38,12 +38,12 @@ public class ObjectSerializerTest extends TestCase {
 		
 		
 		//deserialize
-		Friend deserializedFriend = serializer.deSerialize(serialized, Friend.class);
-		assertNotNull(deserializedFriend);
-		assertEquals(friend.getId(), deserializedFriend.getId());
-		assertEquals(friend.getName(), deserializedFriend.getName());
-		assertEquals(friend.getPosition().getLatitude(), deserializedFriend.getPosition().getLatitude());
-		assertEquals(friend.getPosition().getLongitude(), deserializedFriend.getPosition().getLongitude());
+		User deserializedUser = serializer.deSerialize(serialized, User.class);
+		assertNotNull(deserializedUser);
+		assertEquals(friend.getId(), deserializedUser.getId());
+		assertEquals(friend.getName(), deserializedUser.getName());
+		assertEquals(friend.getPosition().getLatitude(), deserializedUser.getPosition().getLatitude());
+		assertEquals(friend.getPosition().getLongitude(), deserializedUser.getPosition().getLongitude());
 	}
 
 }
