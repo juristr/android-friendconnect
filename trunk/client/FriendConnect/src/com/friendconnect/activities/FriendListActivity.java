@@ -25,7 +25,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,6 +46,7 @@ import com.friendconnect.model.User;
 public class FriendListActivity extends Activity implements IView {
 	static final private int FETCH_FRIENDS_TEST = Menu.FIRST;
 	static final private int ADD_FRIEND = Menu.FIRST + 1;
+	static final private int REMOVE_FRIEND = Menu.FIRST + 2;
 
 	private FriendListController controller;
 	private ListView listViewFriends;
@@ -155,13 +155,14 @@ public class FriendListActivity extends Activity implements IView {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		// Create and add new menu items.
-		MenuItem itemAdd = menu.add(0, FETCH_FRIENDS_TEST, Menu.NONE,
-				"fetch friends test");
-		MenuItem itemInviteFriend = menu.add(0, ADD_FRIEND, Menu.NONE, this.getString(R.string.addFriend));
-
+		MenuItem itemAdd = menu.add(0, FETCH_FRIENDS_TEST, Menu.NONE, "fetch friends test");
+		MenuItem itemInviteFriend = menu.add(1, ADD_FRIEND, Menu.NONE, this.getString(R.string.addFriend));
+		MenuItem itemRemoveFriend = menu.add(1, REMOVE_FRIEND, Menu.NONE, this.getString(R.string.removeFriend));
+		
 		// Allocate shortcuts to each of them.
 		itemAdd.setShortcut('0', 'a');
 		itemInviteFriend.setShortcut('1', 'b');
+		itemRemoveFriend.setShortcut('2', 'c');
 		return true;
 	}
 
