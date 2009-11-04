@@ -18,10 +18,12 @@
 
 package com.friendconnect.server.main;
 
-import com.friendconnect.server.tests.xmlrpc.ObjectSerializerTest;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
+
+import com.friendconnect.server.tests.dao.UserDaoTest;
+import com.friendconnect.server.tests.services.FriendServiceTest;
+import com.friendconnect.server.tests.xmlrpc.ObjectSerializerTest;
 
 public class AllTests {
 
@@ -30,6 +32,8 @@ public class AllTests {
 				"Test for com.friendconnect.server");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(ObjectSerializerTest.class);
+		suite.addTestSuite(UserDaoTest.class);
+		suite.addTestSuite(FriendServiceTest.class);
 		//$JUnit-END$
 		return suite;
 	}
