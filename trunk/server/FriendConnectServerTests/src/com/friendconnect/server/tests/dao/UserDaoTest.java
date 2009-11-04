@@ -92,11 +92,17 @@ public class UserDaoTest extends BaseTest {
 		
 		userDao.addFriend(user.getId(), friend.getId());
 		List<User> friends = userDao.getFriends(user.getId());
-		assertTrue("Friend list should contain friend", contains(friends, friend.getId()));
+		assertTrue("User's friend list should contain friend", contains(friends, friend.getId()));
+		
+		friends = userDao.getFriends(friend.getId());
+		assertTrue("Friend's friend list list should contain user", contains(friends, user.getId()));
 		
 		userDao.removeFriend(user.getId(), friend.getId());
 		friends = userDao.getFriends(user.getId());
-		assertFalse("Friend list should not contain friend", contains(friends, friend.getId()));	
+		assertFalse("User's friend list should not contain friend", contains(friends, friend.getId()));	
+	
+		friends = userDao.getFriends(friend.getId());
+		assertFalse("Friend's friend list should not contain user", contains(friends, user.getId()));	
 	}
 	
 	public void testAddGetRemovePendingFriends() {
