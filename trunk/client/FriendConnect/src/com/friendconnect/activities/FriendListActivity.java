@@ -27,7 +27,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,14 +42,15 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.friendconnect.R;
 import com.friendconnect.controller.FriendListController;
+import com.friendconnect.main.IFriendConnectApplication;
 import com.friendconnect.main.IoC;
+import com.friendconnect.model.FriendConnectUser;
 import com.friendconnect.model.User;
 import com.friendconnect.services.FriendUpdateService;
 
 public class FriendListActivity extends Activity implements IView {
-	static final private int FETCH_FRIENDS_TEST = Menu.FIRST;
-	static final private int ADD_FRIEND = Menu.FIRST + 1;
-	static final private int REMOVE_FRIEND = Menu.FIRST + 2;
+	static final private int ADD_FRIEND = Menu.FIRST;
+	static final private int REMOVE_FRIEND = Menu.FIRST + 1;
 
 	private Handler handler;
 	private FriendListController controller;
@@ -59,8 +59,8 @@ public class FriendListActivity extends Activity implements IView {
 	private BaseAdapter adapter;
 	private User selectedUser;
 
-	static final private int FRIENDDETAILS_DIALOG = 1;
-	static final private int ADDFRIEND_DIALOG = 2;
+	static final private int FRIENDDETAILS_DIALOG = 10;
+	static final private int ADDFRIEND_DIALOG = 20;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -76,6 +76,8 @@ public class FriendListActivity extends Activity implements IView {
 		this.controller = IoC.getInstance(FriendListController.class);
 		this.controller.setLayoutId(R.layout.friendlistrowitem);
 		this.controller.registerView(this);
+//		FriendConnectUser applicationModel = ((IFriendConnectApplication)getApplication()).getApplicationModel();
+//		this.controller.registerModel(applicationModel);
 		this.adapter = controller.getAdapter(this);
 		listViewFriends.setAdapter(this.adapter);
 		listViewFriends.setOnItemClickListener(new OnItemClickListener() {
@@ -142,11 +144,17 @@ public class FriendListActivity extends Activity implements IView {
 		}
 	}
 
-	public void update(Observable observable, Object data) {
+	public void update(final Observable observable, final Object data) {
 		handler.post(new Runnable() {
 			public void run() {
 				adapter.notifyDataSetChanged();
-				listViewFriends.refreshDrawableState();	
+				listViewFriends.refreshDrawableState();
+				
+				FriendConnectUser user = (FriendConnectUser)observable;
+				TextView myUserName = (TextView)findViewById(R.id.textViewMyUsername);
+				myUserName.setText(user.getEmailAddress());
+				TextView myStatusMsg = (TextView)findViewById(R.id.textViewMyStatus);
+				myStatusMsg.setText(user.getStatusMessage());
 			}
 		});
 	}
@@ -165,14 +173,12 @@ public class FriendListActivity extends Activity implements IView {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		// Create and add new menu items.
-		MenuItem itemAdd = menu.add(0, FETCH_FRIENDS_TEST, Menu.NONE, "fetch friends test");
-		MenuItem itemInviteFriend = menu.add(1, ADD_FRIEND, Menu.NONE, this.getString(R.string.addFriend));
+		MenuItem itemInviteFriend = menu.add(0, ADD_FRIEND, Menu.NONE, this.getString(R.string.addFriend));
 		MenuItem itemRemoveFriend = menu.add(1, REMOVE_FRIEND, Menu.NONE, this.getString(R.string.removeFriend));
 		
 		// Allocate shortcuts to each of them.
-		itemAdd.setShortcut('0', 'a');
-		itemInviteFriend.setShortcut('1', 'b');
-		itemRemoveFriend.setShortcut('2', 'c');
+		itemInviteFriend.setShortcut('0', 'a');
+		itemRemoveFriend.setShortcut('1', 'b');
 		return true;
 	}
 
@@ -182,12 +188,6 @@ public class FriendListActivity extends Activity implements IView {
 		super.onOptionsItemSelected(item);
 		// int index = this.listViewFriends.getSelectedItemPosition();
 		switch (item.getItemId()) {
-			case (FETCH_FRIENDS_TEST): {
-				progressDialog.setMessage(getText(R.string.uiMessageLoadingFriends));
-				progressDialog.show();
-				controller.updateFriendList();
-				return true;
-			}
 			case (ADD_FRIEND): {
 				showDialog(ADDFRIEND_DIALOG);
 				return true;

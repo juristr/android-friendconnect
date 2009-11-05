@@ -31,7 +31,8 @@ public class FriendConnectModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		bind(IXMLRPCService.class).to(XMLRPCService.class);	
+		bind(IXMLRPCService.class).to(XMLRPCService.class);
+		bind(IFriendConnectApplication.class).to(FriendConnectApplication.class);
 	}
 
 }

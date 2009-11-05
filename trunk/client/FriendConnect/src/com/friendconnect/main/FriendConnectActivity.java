@@ -89,8 +89,7 @@ public class FriendConnectActivity extends Activity implements IView {
 	}
 
 	protected void loadActivityPreferences() {
-		SharedPreferences activityPreferences = getSharedPreferences(Constants.USER_PREFS, Activity.MODE_PRIVATE);
-		// SharedPreferences.Editor editor = activityPreferences.
+		SharedPreferences activityPreferences = ((IFriendConnectApplication)getApplication()).getGlobalApplicationPreferences();
 
 		String username = activityPreferences.getString("username", "");
 		String password = activityPreferences.getString("password", "");
@@ -106,7 +105,7 @@ public class FriendConnectActivity extends Activity implements IView {
 	}
 
 	protected void saveActivityPreferences() {
-		SharedPreferences activityPreferences = getSharedPreferences(Constants.USER_PREFS, Activity.MODE_PRIVATE);
+		SharedPreferences activityPreferences = ((IFriendConnectApplication)getApplication()).getGlobalApplicationPreferences();
 		SharedPreferences.Editor editor = activityPreferences.edit();
 
 		if (doSavePreferences()) {
