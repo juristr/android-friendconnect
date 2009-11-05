@@ -24,7 +24,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,12 +45,14 @@ import com.friendconnect.R;
 import com.friendconnect.controller.FriendListController;
 import com.friendconnect.main.IoC;
 import com.friendconnect.model.User;
+import com.friendconnect.services.FriendUpdateService;
 
 public class FriendListActivity extends Activity implements IView {
 	static final private int FETCH_FRIENDS_TEST = Menu.FIRST;
 	static final private int ADD_FRIEND = Menu.FIRST + 1;
 	static final private int REMOVE_FRIEND = Menu.FIRST + 2;
 
+	private Handler handler;
 	private FriendListController controller;
 	private ListView listViewFriends;
 	private ProgressDialog progressDialog;
@@ -62,6 +67,7 @@ public class FriendListActivity extends Activity implements IView {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.friendlist);
+		handler = new Handler();
 
 		this.listViewFriends = (ListView) findViewById(R.id.listViewFriends);
 
@@ -70,9 +76,6 @@ public class FriendListActivity extends Activity implements IView {
 		this.controller = IoC.getInstance(FriendListController.class);
 		this.controller.setLayoutId(R.layout.friendlistrowitem);
 		this.controller.registerView(this);
-		
-//		startService(new Intent(this, FriendUpdateService.class));
-
 		this.adapter = controller.getAdapter(this);
 		listViewFriends.setAdapter(this.adapter);
 		listViewFriends.setOnItemClickListener(new OnItemClickListener() {
@@ -82,6 +85,8 @@ public class FriendListActivity extends Activity implements IView {
 				showDialog(FRIENDDETAILS_DIALOG);
 			}
 		});
+		
+		startService(new Intent(this, FriendUpdateService.class));
 	}
 
 	@Override
@@ -138,7 +143,12 @@ public class FriendListActivity extends Activity implements IView {
 	}
 
 	public void update(Observable observable, Object data) {
-		this.adapter.notifyDataSetChanged();
+		handler.post(new Runnable() {
+			public void run() {
+				adapter.notifyDataSetChanged();
+				listViewFriends.refreshDrawableState();	
+			}
+		});
 	}
 
 	public void onProgressChanged(String message) {

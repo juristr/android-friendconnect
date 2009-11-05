@@ -18,7 +18,9 @@
 
 package com.friendconnect.controller;
 
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.UUID;
 
 import android.content.Context;
 import android.util.Log;
@@ -55,8 +57,8 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 	 */
 	public void updateFriendList() {
 		xmlRPCService.sendRequest(RPCRemoteMappings.GETFRIENDS, null, new IAsyncCallback<List<User>>() {
-
 			public void onSuccess(List<User> result) {
+				Log.i(FriendListController.class.getCanonicalName(), "Got updated friendlist!");
 				for (User friend : result) {
 					User friendInModel = getFriendFromModel(friend.getId());
 					if(friendInModel == null){
@@ -77,10 +79,16 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 			}
 
 			public void onFailure(Throwable throwable) {
+				Log.e(FriendListController.class.getCanonicalName(), "Problem updating friendlist:" + throwable.getMessage());
 				// TODO Auto-generated method stub	
 				notifyStopProgress();
 			}
 		}, User.class);
+		
+//		User user = new User();
+//		user.setName("Juri");
+//		this.model.addFriend(user);
+//		Log.i(FriendListController.class.getCanonicalName(), "updating list (controller)");
 	}
 	
 	/**

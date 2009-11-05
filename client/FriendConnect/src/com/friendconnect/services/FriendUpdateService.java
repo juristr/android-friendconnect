@@ -20,12 +20,11 @@ package com.friendconnect.services;
 
 import java.util.Timer;
 import java.util.TimerTask;
-
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
-
 import com.friendconnect.controller.FriendListController;
 import com.friendconnect.main.IoC;
 
@@ -36,8 +35,9 @@ import com.friendconnect.main.IoC;
  */
 public class FriendUpdateService extends Service {
 	private FriendListController controller;
-	private Timer timer = new Timer();
-	private final int UPDATE_INTERVAL = 20000; // TODO make configurable??
+	private Timer timer;
+	private final int UPDATE_INTERVAL = 5000; // TODO make configurable??
+	private Handler mainHandler;
 
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -47,36 +47,32 @@ public class FriendUpdateService extends Service {
 
 	@Override
 	public void onCreate() {
-		super.onCreate();
-		
 		this.controller = IoC.getInstance(FriendListController.class);
-		startService();
-	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		
-		shutdownService();
-	}
-
-	private void startService() {
-		timer.scheduleAtFixedRate(
-				new TimerTask() {
-					@Override
-					public void run() {
-						Log.i(FriendUpdateService.class.getCanonicalName(), "Fetching updated friend list");
-						controller.updateFriendList();	
-					}
-				}, 
-				0, 
-				UPDATE_INTERVAL
-		);
-		
-		Log.i(getClass().getSimpleName(), "FriendUpdateService launched");
+		this.timer = new Timer("FriendUpdateTimer");
+		this.mainHandler = new Handler();
 	}
 	
-	private void shutdownService(){
+	@Override
+	public void onStart(Intent intent, int startId) {
+		timer.cancel();
+		timer = new Timer("FriendUpdateTimer");
+		timer.scheduleAtFixedRate(performUpdate, 0, UPDATE_INTERVAL);
+	}
+	
+	private TimerTask performUpdate = new TimerTask() {	
+		@Override
+		public void run() {
+			mainHandler.post(new Runnable(){
+				public void run() {
+					Log.i(FriendUpdateService.class.getCanonicalName(), "Starting new update!");
+					controller.updateFriendList();	
+				};
+			});
+		}
+	};
+	
+	@Override
+	public void onDestroy() {
 		if(timer != null)
 			timer.cancel();
 		
