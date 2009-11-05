@@ -56,7 +56,7 @@ public class FriendServiceTest extends TestCase {
 		String username = properties.getProperty("username");
 		String password = properties.getProperty("password");
 				
-		String token = authenticationService.authenticate(username, password);
+		String token = authenticationService.authenticate(username, password); 
 		
 		assertNotNull("Token should not be null", token);
 		assertTrue("Token should not be equal to empty string", !token.equals(""));
