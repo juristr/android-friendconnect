@@ -18,54 +18,30 @@
 
 package com.friendconnect.main;
 
-import android.app.Application;
 import android.content.SharedPreferences;
 
 import com.friendconnect.model.FriendConnectUser;
-import com.google.inject.Singleton;
 
-@Singleton
-public class FriendConnectApplication extends Application implements IFriendConnectApplication {
-
-	private boolean initialized = false;
-	private final String globalAppPrefKey = "glblPrefKey";
-	private FriendConnectUser friendConnectUser;
-	
-	@Override
-	public void onCreate() {
-		// TODO Auto-generated method stub
-		super.onCreate();
-	}
-	
-	@Override
-	public void onTerminate() {
-		// TODO Auto-generated method stub
-		super.onTerminate();
-	}
-	
-	@Override
-	public void onLowMemory() {
-		// TODO Auto-generated method stub
-		super.onLowMemory();
-	}
+public interface IFriendConnectApplication {
 
 	/**
-	 * this method will just set the model once. All subsequent
-	 * calls will have no effect in order to guarantee the integrity
+	 * Initializes the application model (after successful login)
+	 * @param user
 	 */
-	public void initializeApplicationModel(FriendConnectUser user) {
-		if(!initialized){
-			this.friendConnectUser = user;
-			initialized = true;
-		}
-	}
+	public void initializeApplicationModel(FriendConnectUser user);
 	
-	public FriendConnectUser getApplicationModel() {
-		return friendConnectUser;
-	}
-
-	public SharedPreferences getGlobalApplicationPreferences() {
-		return getSharedPreferences(globalAppPrefKey, MODE_PRIVATE);
-	}
+	/**
+	 * Gets the main model instance of the application. There can
+	 * just exist one instance per application instance
+	 * @return
+	 */
+	public FriendConnectUser getApplicationModel();
+	
+	/**
+	 * Retrieves an instance of {@link SharedPreferences} representing
+	 * the FriendConnect's global application preferences
+	 * @return
+	 */
+	public SharedPreferences getGlobalApplicationPreferences();
 	
 }

@@ -18,14 +18,11 @@
 
 package com.friendconnect.controller;
 
-import java.sql.Timestamp;
 import java.util.List;
-import java.util.UUID;
-
 import android.content.Context;
 import android.util.Log;
-
 import com.friendconnect.adapters.FriendAdapter;
+import com.friendconnect.main.IFriendConnectApplication;
 import com.friendconnect.model.FriendConnectUser;
 import com.friendconnect.model.RPCRemoteMappings;
 import com.friendconnect.model.User;
@@ -42,12 +39,16 @@ import com.google.inject.Singleton;
 @Singleton
 public class FriendListController extends AbstractController<FriendConnectUser> {
 	private int layoutId;
+	private IFriendConnectApplication application;
 	private IXMLRPCService xmlRPCService;
 	private ObjectHelper objectHelper;
 
 	public FriendListController() {
 		super();
-		registerModel(new FriendConnectUser());
+		FriendConnectUser user = new FriendConnectUser();
+		user.setEmailAddress("android.friendconnect@gmail.com");
+		user.setStatusMessage("Fake stat msg");
+		registerModel(user);
 	}
 
 	/**
@@ -84,11 +85,6 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 				notifyStopProgress();
 			}
 		}, User.class);
-		
-//		User user = new User();
-//		user.setName("Juri");
-//		this.model.addFriend(user);
-//		Log.i(FriendListController.class.getCanonicalName(), "updating list (controller)");
 	}
 	
 	/**
@@ -133,6 +129,11 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 	@Inject
 	public void setObjectHelper(ObjectHelper objectHelper) {
 		this.objectHelper = objectHelper;
+	}
+
+	@Inject
+	public void setApplication(IFriendConnectApplication application) {
+		this.application = application;
 	}
 	
 }

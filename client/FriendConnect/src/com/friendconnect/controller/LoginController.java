@@ -21,6 +21,8 @@ package com.friendconnect.controller;
 import android.content.Context;
 import android.widget.BaseAdapter;
 
+import com.friendconnect.main.IFriendConnectApplication;
+import com.friendconnect.model.FriendConnectUser;
 import com.friendconnect.model.LoginResult;
 import com.friendconnect.model.RPCRemoteMappings;
 import com.friendconnect.services.IXMLRPCService;
@@ -31,7 +33,8 @@ import com.google.inject.Singleton;
 @Singleton
 public class LoginController extends AbstractController<LoginResult> {
 	
-	private IXMLRPCService xmlRpcService; 
+	private IFriendConnectApplication application;
+	private IXMLRPCService xmlRpcService;
 	
 	public LoginController() {
 		registerModel(new LoginResult());
@@ -45,6 +48,13 @@ public class LoginController extends AbstractController<LoginResult> {
 				String token = result;
 				
 				model.setLoginSucceeded(true);
+				
+				//TODO initialize the application user...should login respond with FriendConnectUser object??
+				FriendConnectUser user = new FriendConnectUser();
+				user.setEmailAddress("android.friendconnect@gmail.com");
+				user.setStatusMessage("Fake stat msg");
+				application.initializeApplicationModel(user);
+				
 				notifyStopProgress();
 			}
 			
@@ -65,6 +75,11 @@ public class LoginController extends AbstractController<LoginResult> {
 	@Inject
 	public void setXmlRpcService(IXMLRPCService xmlRpcService) {
 		this.xmlRpcService = xmlRpcService;
+	}
+
+	@Inject
+	public void setApplication(IFriendConnectApplication application) {
+		this.application = application;
 	}
 	
 }
