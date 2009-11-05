@@ -36,8 +36,8 @@ import com.friendconnect.R;
 import com.friendconnect.activities.FriendListActivity;
 import com.friendconnect.activities.IView;
 import com.friendconnect.controller.LoginController;
+import com.friendconnect.model.Constants;
 import com.friendconnect.model.LoginResult;
-import com.friendconnect.services.FriendUpdateService;
 
 /**
  * View for performing the user login
@@ -78,8 +78,6 @@ public class FriendConnectActivity extends Activity implements IView {
 					progressDialog.show();
 
 					controller.login(username, password);
-					
-					saveActivityPreferences();
 				}
 			}
 		});
@@ -91,7 +89,7 @@ public class FriendConnectActivity extends Activity implements IView {
 	}
 
 	protected void loadActivityPreferences() {
-		SharedPreferences activityPreferences = getPreferences(Activity.MODE_PRIVATE);
+		SharedPreferences activityPreferences = getSharedPreferences(Constants.USER_PREFS, Activity.MODE_PRIVATE);
 		// SharedPreferences.Editor editor = activityPreferences.
 
 		String username = activityPreferences.getString("username", "");
@@ -108,7 +106,7 @@ public class FriendConnectActivity extends Activity implements IView {
 	}
 
 	protected void saveActivityPreferences() {
-		SharedPreferences activityPreferences = getPreferences(Activity.MODE_PRIVATE);
+		SharedPreferences activityPreferences = getSharedPreferences(Constants.USER_PREFS, Activity.MODE_PRIVATE);
 		SharedPreferences.Editor editor = activityPreferences.edit();
 
 		if (doSavePreferences()) {
@@ -133,9 +131,9 @@ public class FriendConnectActivity extends Activity implements IView {
 		LoginResult result = (LoginResult) observable;
 
 		if (result.isLoginSucceeded()) {
+			saveActivityPreferences();
 			startActivity(new Intent(FriendConnectActivity.this,
 					FriendListActivity.class));
-			
 			finish();
 		}
 	}
