@@ -28,6 +28,8 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.friendconnect.xmlrpc.DontSerialize;
+
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class User {
 	@PrimaryKey
@@ -145,6 +147,7 @@ public class User {
 		this.friends = friends;
 	}
 
+	@DontSerialize
 	public List<String> getFriends() {
 		return friends;
 	}
@@ -153,6 +156,7 @@ public class User {
 		this.pendingFriends = pendingFriends;
 	}
 
+	@DontSerialize
 	public List<String> getPendingFriends() {
 		return pendingFriends;
 	}
