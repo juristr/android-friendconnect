@@ -18,8 +18,6 @@
 
 package com.friendconnect.main;
 
-import android.content.SharedPreferences;
-
 import com.friendconnect.model.FriendConnectUser;
 
 public interface IFriendConnectApplication {
@@ -36,12 +34,5 @@ public interface IFriendConnectApplication {
 	 * @return
 	 */
 	public FriendConnectUser getApplicationModel();
-	
-	/**
-	 * Retrieves an instance of {@link SharedPreferences} representing
-	 * the FriendConnect's global application preferences
-	 * @return
-	 */
-	public SharedPreferences getGlobalApplicationPreferences();
 	
 }

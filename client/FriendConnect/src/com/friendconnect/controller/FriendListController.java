@@ -45,10 +45,6 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 
 	public FriendListController() {
 		super();
-		FriendConnectUser user = new FriendConnectUser();
-		user.setEmailAddress("android.friendconnect@gmail.com");
-		user.setStatusMessage("Fake stat msg");
-		registerModel(user);
 	}
 
 	/**
@@ -59,7 +55,6 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 	public void updateFriendList() {
 		xmlRPCService.sendRequest(RPCRemoteMappings.GETFRIENDS, null, new IAsyncCallback<List<User>>() {
 			public void onSuccess(List<User> result) {
-				Log.i(FriendListController.class.getCanonicalName(), "Got updated friendlist!");
 				for (User friend : result) {
 					User friendInModel = getFriendFromModel(friend.getId());
 					if(friendInModel == null){
@@ -134,6 +129,7 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 	@Inject
 	public void setApplication(IFriendConnectApplication application) {
 		this.application = application;
+		this.registerModel(application.getApplicationModel());
 	}
 	
 }

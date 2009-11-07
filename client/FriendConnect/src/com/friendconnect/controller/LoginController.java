@@ -40,7 +40,7 @@ public class LoginController extends AbstractController<LoginResult> {
 		registerModel(new LoginResult());
 	}
 	
-	public void login(String username, String password){
+	public void login(final String username, String password){
 		xmlRpcService.sendRequest(RPCRemoteMappings.LOGIN, new Object[]{username, password}, new IAsyncCallback<String>() {
 
 			public void onSuccess(String result) {
@@ -51,20 +51,19 @@ public class LoginController extends AbstractController<LoginResult> {
 				
 				//TODO initialize the application user...should login respond with FriendConnectUser object??
 				FriendConnectUser user = new FriendConnectUser();
-				user.setEmailAddress("android.friendconnect@gmail.com");
-				user.setStatusMessage("Fake stat msg");
-				application.initializeApplicationModel(user);
-				
+				user.setEmailAddress(username);
+				user.setLoginToken(token);
+				user.setStatusMessage("");
+				application.initializeApplicationModel(user);				
 				notifyStopProgress();
 			}
 			
 			public void onFailure(Throwable throwable) {
 				notifyStopProgress();
+				model.setLoginSucceeded(false);
 			}
 			
 		}, String.class);
-		
-//		model.setLoginSucceeded(true);
 	}
 	
 	@Override
