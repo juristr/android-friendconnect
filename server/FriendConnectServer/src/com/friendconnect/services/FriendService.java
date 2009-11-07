@@ -130,6 +130,13 @@ public class FriendService implements IFriendService {
 		friend.setName("Matthias");
 		friend.setStatusMessage("My status");
 		friends.add(friend);
+		
+		friend = new User();
+		//friend.setId("1");
+		friend.setEmailAddress("juri.strumpflohner@gmail.com");
+		friend.setName("Juri");
+		friend.setStatusMessage("Hey Android-FriendConnect");
+		friends.add(friend);
 		return friends;
 	}
 

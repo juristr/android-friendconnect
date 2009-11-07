@@ -16,38 +16,18 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.controller;
+package com.friendconnect.xmlrpc;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import org.apache.xmlrpc.server.XmlRpcHandlerMapping;
-import org.apache.xmlrpc.server.XmlRpcServerConfigImpl;
-import org.apache.xmlrpc.webserver.XmlRpcServletServer;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.AbstractController;
-
-public class XmlRpcController extends AbstractController {
-
-	private XmlRpcServletServer server = new XmlRpcServletServer();
-	
-	public void initialize(){
-		XmlRpcServerConfigImpl serverConfig = (XmlRpcServerConfigImpl) server.getConfig();
-		serverConfig.setEnabledForExtensions(true);
-		serverConfig.setEnabledForExceptions(true);
-	}
-	
-	@Override
-	protected ModelAndView handleRequestInternal(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {	
-		server.execute(request, response);
-		return null;
-	}
-	
-	@Required
-	public void setMapping(XmlRpcHandlerMapping mapping){
-		server.setHandlerMapping(mapping);
-	}
-
+/**
+ * Marker annotation for ignoring during the serialization phase
+ *
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface DontSerialize {
 }
