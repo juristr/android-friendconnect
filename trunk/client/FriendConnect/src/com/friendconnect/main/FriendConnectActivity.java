@@ -21,7 +21,9 @@ package com.friendconnect.main;
 import java.util.Observable;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -89,7 +91,8 @@ public class FriendConnectActivity extends Activity implements IView {
 	}
 
 	protected void loadActivityPreferences() {
-		SharedPreferences activityPreferences = ((IFriendConnectApplication)getApplication()).getGlobalApplicationPreferences();
+		SharedPreferences activityPreferences = getSharedPreferences(
+				Constants.USER_PREFS, MODE_PRIVATE);
 
 		String username = activityPreferences.getString("username", "");
 		String password = activityPreferences.getString("password", "");
@@ -105,7 +108,8 @@ public class FriendConnectActivity extends Activity implements IView {
 	}
 
 	protected void saveActivityPreferences() {
-		SharedPreferences activityPreferences = ((IFriendConnectApplication)getApplication()).getGlobalApplicationPreferences();
+		SharedPreferences activityPreferences = getSharedPreferences(
+				Constants.USER_PREFS, MODE_PRIVATE);
 		SharedPreferences.Editor editor = activityPreferences.edit();
 
 		if (doSavePreferences()) {
@@ -134,6 +138,17 @@ public class FriendConnectActivity extends Activity implements IView {
 			startActivity(new Intent(FriendConnectActivity.this,
 					FriendListActivity.class));
 			finish();
+		} else {
+			//TODO factor this out to a factory or somewhere?
+			AlertDialog.Builder ad = new AlertDialog.Builder(this); 
+			ad.setTitle(R.string.uiMessageLoginErrorTitle); 
+			ad.setMessage(R.string.uiMessageLoginErrorMsg); 
+			ad.setPositiveButton("Ok",
+					new android.content.DialogInterface.OnClickListener() { 
+						public void onClick(DialogInterface dialog,	int arg1) {
+						} 
+					});
+			ad.show();
 		}
 	}
 
@@ -142,7 +157,7 @@ public class FriendConnectActivity extends Activity implements IView {
 			progressDialog.setMessage(message);
 		}
 	}
-	
+
 	public void stopProgess() {
 		progressDialog.cancel();
 	}

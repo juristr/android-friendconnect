@@ -47,6 +47,7 @@ import com.friendconnect.main.IoC;
 import com.friendconnect.model.FriendConnectUser;
 import com.friendconnect.model.User;
 import com.friendconnect.services.FriendUpdateService;
+import com.google.inject.Inject;
 
 public class FriendListActivity extends Activity implements IView {
 	static final private int ADD_FRIEND = Menu.FIRST;
@@ -54,6 +55,7 @@ public class FriendListActivity extends Activity implements IView {
 
 	private Handler handler;
 	private FriendListController controller;
+	private IFriendConnectApplication application;
 	private ListView listViewFriends;
 	private ProgressDialog progressDialog;
 	private BaseAdapter adapter;
@@ -76,8 +78,6 @@ public class FriendListActivity extends Activity implements IView {
 		this.controller = IoC.getInstance(FriendListController.class);
 		this.controller.setLayoutId(R.layout.friendlistrowitem);
 		this.controller.registerView(this);
-//		FriendConnectUser applicationModel = ((IFriendConnectApplication)getApplication()).getApplicationModel();
-//		this.controller.registerModel(applicationModel);
 		this.adapter = controller.getAdapter(this);
 		listViewFriends.setAdapter(this.adapter);
 		listViewFriends.setOnItemClickListener(new OnItemClickListener() {
@@ -199,4 +199,12 @@ public class FriendListActivity extends Activity implements IView {
 	public FriendListController getController() {
 		return controller;
 	}
+
+	@Inject
+	public void setApplication(IFriendConnectApplication application) {
+		this.application = application;
+		FriendConnectUser applicationModel = this.application.getApplicationModel();
+		this.controller.registerModel(applicationModel);
+	}
+	
 }

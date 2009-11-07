@@ -18,36 +18,14 @@
 
 package com.friendconnect.main;
 
-import android.app.Application;
-import android.content.SharedPreferences;
-
 import com.friendconnect.model.FriendConnectUser;
 import com.google.inject.Singleton;
 
 @Singleton
-public class FriendConnectApplication extends Application implements IFriendConnectApplication {
+public class FriendConnectApplication implements IFriendConnectApplication {
 
 	private boolean initialized = false;
-	private final String globalAppPrefKey = "glblPrefKey";
 	private FriendConnectUser friendConnectUser;
-	
-	@Override
-	public void onCreate() {
-		// TODO Auto-generated method stub
-		super.onCreate();
-	}
-	
-	@Override
-	public void onTerminate() {
-		// TODO Auto-generated method stub
-		super.onTerminate();
-	}
-	
-	@Override
-	public void onLowMemory() {
-		// TODO Auto-generated method stub
-		super.onLowMemory();
-	}
 
 	/**
 	 * this method will just set the model once. All subsequent
@@ -63,9 +41,4 @@ public class FriendConnectApplication extends Application implements IFriendConn
 	public FriendConnectUser getApplicationModel() {
 		return friendConnectUser;
 	}
-
-	public SharedPreferences getGlobalApplicationPreferences() {
-		return getSharedPreferences(globalAppPrefKey, MODE_PRIVATE);
-	}
-	
 }
