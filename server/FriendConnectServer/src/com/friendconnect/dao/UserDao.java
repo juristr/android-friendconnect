@@ -31,22 +31,29 @@ import com.friendconnect.model.User;
 public class UserDao extends JdoDaoSupport implements IUserDao {
 	
 	@Override
-	public User getUserById(String userId) {
-		return getPersistenceManager().getObjectById(User.class, userId);
+	public void saveUser(User user) {
+		getPersistenceManager().makePersistent(user);
 	}
 	
 	@Override
+	public User getUserById(String userId) {
+		PersistenceManager pm = getPersistenceManager();
+		User user = pm.getObjectById(User.class, userId);
+		return pm.detachCopy(user);
+	}
+	
 	@SuppressWarnings("unchecked")
+	@Override
 	public User getUserByEmailAddress(String emailAddress) {
 		PersistenceManager pm = getPersistenceManager();
 		Query query = pm.newQuery(User.class);
 	    query.setFilter("emailAddress == emailAddressParam");
 	    query.declareParameters("String emailAddressParam");
 	    List<User> result = (List<User>) query.execute(emailAddress);
-		if (result.isEmpty()) {
+		if (result == null || result.isEmpty()) {
 			return null;
 		}
-		return result.get(0);
+		return pm.detachCopy(result.get(0));
 	}
 
 	@Override
@@ -54,11 +61,6 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 		PersistenceManager pm = getPersistenceManager();
 		User user = pm.getObjectById(User.class, userId);
 		pm.deletePersistent(user);
-	}
-
-	@Override
-	public void saveUser(User user) {
-		getPersistenceManager().makePersistent(user);
 	}
 	
 	@Override
@@ -81,8 +83,8 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 		User user = pm.getObjectById(User.class, userId);
 		List<User> pendingFriends = new ArrayList<User>();
 		if (user.getPendingFriends() != null) {
-			for (String pendingFriendId : user.getPendingFriends()) {
-				User pendingFriend = pm.getObjectById(User.class, pendingFriendId);
+			for (String pendingFriendEmailAddress : user.getPendingFriends()) {
+				User pendingFriend = pm.getObjectById(User.class, pendingFriendEmailAddress);
 				pendingFriends.add(pendingFriend);
 			}
 		}
