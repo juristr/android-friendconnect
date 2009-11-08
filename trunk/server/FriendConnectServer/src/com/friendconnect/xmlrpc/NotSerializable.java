@@ -24,10 +24,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marker annotation for ignoring during the serialization phase
+ * Marker annotation for detecting not serializable properties
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface DontSerialize {
+public @interface NotSerializable {
 }

@@ -10,15 +10,13 @@ import com.friendconnect.xmlrpc.ObjectSerializer;
 import com.google.gdata.util.AuthenticationException;
 
 public class XmlRpcService {
-	private IAuthenticationService authService;
-	private IFriendService friendService;
+	private IUserService userService;
 	private ObjectSerializer serializer;
 
 	public XmlRpcService() {
 	}
 
 	/**
-	 * 
 	 * @param username
 	 * @param password
 	 * @return
@@ -28,34 +26,27 @@ public class XmlRpcService {
 	 * @throws IllegalArgumentException 
 	 */
 	public Object login(String username, String password) throws AuthenticationException, IllegalArgumentException, IllegalAccessException, InvocationTargetException{
-		String resultToken = authService.authenticate(username, password);
+		User user = null;
+		user = userService.authenticate(username, password);
 		
-		if(resultToken != null){
-			User friendConnectUser; friendConnectUser = friendService.getFriendConnectUser(username);
-			if(friendConnectUser != null){
-				friendConnectUser.setToken(resultToken);
-				return serializer.serialize(friendConnectUser);
-			}else{
-				//register the user, i.e. put it into the FriendConnect DB
-				return null;
-			}
-		}else{
-			throw new AuthenticationException("Error logging in!");
-		}
+		return serializer.serialize(user);
 	}
 	
-	public List getFriends(String username, String token) throws IOException, IllegalArgumentException,
+	public List getFriends(String userId) throws IOException, IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException {
 		 List result = new ArrayList();
 
 		ObjectSerializer serializer = new ObjectSerializer();
-		
-		boolean isAuthenticated = authService.validateToken(username, token);
+
+		boolean isAuthenticated = true; // authService.validateToken(username,
+										// token);
 		if (isAuthenticated) {
-			List<User> friends = friendService.getDummyFriends();
+			List<User> friends = userService.getFriends(userId);
 
 			// serialize
 			for (User friend : friends) {
+				//erase token s.t. it is not send to clients
+				friend.setToken(null);
 				result.add(serializer.serialize(friend));
 			}
 		} else {
@@ -65,18 +56,40 @@ public class XmlRpcService {
 
 		return result;
 	}
+	
+	public boolean addFriend(String userId, String token, String friendEmailAddress) {
+		if (userService.validateToken(userId, token)) {
+			userService.addFriend(userId, friendEmailAddress);
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean removeFriend(String userId, String token, String friendId) {
+		if (userService.validateToken(userId, token)) {
+			userService.removeFriend(userId, friendId);
+			return true;
+		}
+		return false;
+	}
 
 	public int getSimpleRCPTestResult(int x) {
 		return x++;
 	}
 	
 
-	public void setAuthService(IAuthenticationService authService) {
-		this.authService = authService;
+	/* Getters and setters */
+	
+	public IUserService getUserService() {
+		return userService;
 	}
 
-	public void setFriendService(IFriendService friendService) {
-		this.friendService = friendService;
+	public void setUserService(IUserService userService) {
+		this.userService = userService;
+	}
+
+	public ObjectSerializer getSerializer() {
+		return serializer;
 	}
 
 	public void setSerializer(ObjectSerializer serializer) {

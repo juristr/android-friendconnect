@@ -23,22 +23,76 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jdo.JDOException;
+
 import com.friendconnect.dao.IUserDao;
 import com.friendconnect.model.User;
+import com.google.gdata.client.GoogleService;
+import com.google.gdata.client.GoogleAuthTokenFactory.UserToken;
 import com.google.gdata.client.contacts.ContactsService;
 import com.google.gdata.data.contacts.ContactEntry;
 import com.google.gdata.data.contacts.ContactFeed;
 import com.google.gdata.data.extensions.Name;
+import com.google.gdata.util.AuthenticationException;
 import com.google.gdata.util.ServiceException;
 
-public class FriendService implements IFriendService {
-	private final String applicationName = "FriendConnect";//TODO inject
-	private final String baseURL = "http://www.google.com/m8/feeds/contacts"; //TODO inject
-	private final String projection = "thin";
-	
+public class UserService implements IUserService {
 	private IUserDao userDao;
+	private String applicationName;
+	private String baseURL;
+	private String projection;
+
+	@Override
+	public User authenticate(String username, String password) throws AuthenticationException, JDOException {
+		GoogleService contactsService = new ContactsService(applicationName);
+		contactsService.setUserCredentials(username, password);
+		UserToken auth_token = (UserToken) contactsService.getAuthTokenFactory().getAuthToken();
+		String token = auth_token.getValue();
+		User user = userDao.getUserByEmailAddress(username);
+		if (user == null) {
+			user = new User();
+			user.setEmailAddress(username);
+		} 
+		user.setToken(token);
+		user.setOnline(true);
+		userDao.saveUser(user);
+		return user;
+	}
+
+	@Override
+	public boolean validateToken(String userId, String token) throws JDOException {
+		User user = userDao.getUserById(userId);
+		if (user.getToken().equals(token)) {
+			return true;
+		}
+		return false;
+	}
 	
-	public FriendService() {
+	@Override
+	public void addFriend(String userId, String friendEmailAddress) throws JDOException {
+		User friend = userDao.getUserByEmailAddress(friendEmailAddress);
+		if (friend != null) {
+			userDao.addFriend(userId, friend.getId());
+		}
+	}
+
+	@Override
+	public List<User> getFriends(String userId) throws JDOException {
+		return userDao.getFriends(userId);
+	}
+
+	@Override
+	public void removeFriend(String userId, String friendId) throws JDOException {
+		userDao.removeFriend(userId, friendId);
+	}
+	
+	@Override
+	public List<User> getGoogleContacts(String username, String token) throws IOException, ServiceException {
+		ContactsService service = new ContactsService(applicationName);
+		service.setUserToken(token);
+		URL feedUri = new URL(baseURL + "/" + username + "/" + projection);
+		ContactFeed contactFeed = service.getFeed(feedUri, ContactFeed.class);
+		return readFriendsFromFeed(service, contactFeed, feedUri);
 	}
 	
 	/**
@@ -72,12 +126,7 @@ public class FriendService implements IFriendService {
         friend.setEmailAddress(email);
         friend.setWebsite(website);
         friend.setPhone(phone);
-       
-        System.out.println("Email: " + email);
-        System.out.println("Website: " + website);
-        System.out.println("Phone: " + phone);
-        System.out.println("Name: " + name);
-	    
+        
 		return friend;
 	}
 	
@@ -95,7 +144,6 @@ public class FriendService implements IFriendService {
 		User friend;
 		for (ContactEntry entry : feed.getEntries()) {
 			friend = convertToFriend(entry);
-			//TODO read further friend information from DB
 			friends.add(friend);
 		}
 		while (feed.getNextLink() != null) {
@@ -103,58 +151,14 @@ public class FriendService implements IFriendService {
 			feed = service.getFeed(feedUri, ContactFeed.class);
 			for (ContactEntry entry : feed.getEntries()) {
 				friend = convertToFriend(entry);
-				//TODO read further friend information from DB
 				friends.add(friend);
 			}
 		}
 		return friends;
 	}
 	
-	/**
-	 * Returns all friends of a certain user
-	 */
-	@Override
-	public List<User> getFriends(String username, String token) throws IOException, ServiceException {
-		ContactsService service = new ContactsService(applicationName);
-		service.setUserToken(token);
-		URL feedUri = new URL(baseURL + "/" + username + "/" + projection);
-		ContactFeed contactFeed = service.getFeed(feedUri, ContactFeed.class);
-		return readFriendsFromFeed(service, contactFeed, feedUri);
-	}
+	/* Getters and setters */
 	
-	@Override
-	public User getFriendConnectUser(String emailAddress) {
-		// TODO Fetch friend from DB
-		User dummyUser = new User();
-		dummyUser.setEmailAddress(emailAddress);
-		
-		return dummyUser;
-	}
-	
-	@Override
-	public User registerFriendConnectUser(String emailAddress) {
-		//TODO insert into the friendconnect DB
-		return null;
-	}
-	
-	public List<User> getDummyFriends() {
-		List<User> friends = new ArrayList<User>();
-		User friend = new User();
-		//friend.setId("1");
-		friend.setEmailAddress("matthias.braunhofer@gmail.com");
-		friend.setName("Matthias");
-		friend.setStatusMessage("My status");
-		friends.add(friend);
-		
-		friend = new User();
-		//friend.setId("1");
-		friend.setEmailAddress("juri.strumpflohner@gmail.com");
-		friend.setName("Juri");
-		friend.setStatusMessage("Hey Android-FriendConnect");
-		friends.add(friend);
-		return friends;
-	}
-
 	public void setUserDao(IUserDao userDao) {
 		this.userDao = userDao;
 	}
@@ -162,5 +166,28 @@ public class FriendService implements IFriendService {
 	public IUserDao getUserDao() {
 		return userDao;
 	}
+	
+	public String getApplicationName() {
+		return applicationName;
+	}
 
+	public void setApplicationName(String applicationName) {
+		this.applicationName = applicationName;
+	}
+
+	public String getBaseURL() {
+		return baseURL;
+	}
+	
+	public void setBaseURL(String baseURL) {
+		this.baseURL = baseURL;
+	}
+
+	public String getProjection() {
+		return projection;
+	}
+	
+	public void setProjection(String projection) {
+		this.projection = projection;
+	}
 }

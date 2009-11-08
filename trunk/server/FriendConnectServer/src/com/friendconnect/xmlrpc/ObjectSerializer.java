@@ -77,13 +77,17 @@ public class ObjectSerializer {
 				String propertyName = method.getName().replace("get", "");
 				Object propertyValue = (Object) method.invoke(object, null);
 
-				// is complex serializable?
-				if (isComplexSerializable(method) && propertyValue != null) {
-					propertyValue = serialize(propertyValue);
-				}
+				// is serializable?
+				if(isSerializable(method)) {
+					
+					// is complex serializable?
+					if (isComplexSerializable(method) && propertyValue != null) {
+						propertyValue = serialize(propertyValue);
+					}
 
-				if (propertyValue != null)
-					result.put(propertyName, propertyValue);
+					if (propertyValue != null)
+						result.put(propertyName, propertyValue);
+				}
 			}
 		}
 
@@ -95,6 +99,19 @@ public class ObjectSerializer {
 		return ann.clazz();
 	}
 
+	private boolean isSerializable(Method method) {
+		return getNotSerializableAnnotation(method) == null;
+	}
+	
+	private Annotation getNotSerializableAnnotation(Method method) {
+		Annotation[] annotations = method.getAnnotations();
+		for (Annotation annotation : annotations) {
+			if (annotation instanceof NotSerializable)
+				return annotation;
+		}
+		return null;
+	}
+	
 	private boolean isComplexSerializable(Method method) {
 		return getSerializableAnnotation(method) != null;
 	}

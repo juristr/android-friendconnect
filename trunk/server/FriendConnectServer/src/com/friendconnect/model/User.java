@@ -28,7 +28,8 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-import com.friendconnect.xmlrpc.DontSerialize;
+import com.friendconnect.xmlrpc.ComplexSerializableType;
+import com.friendconnect.xmlrpc.NotSerializable;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class User {
@@ -38,10 +39,10 @@ public class User {
     private String id;
 	
 	@Persistent
-	private String emailAddress;
+	private String name;
 	
 	@Persistent
-	private String name;
+	private String emailAddress;
 	
 	@Persistent 
 	private String website;
@@ -78,14 +79,6 @@ public class User {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
-	public String getEmailAddress() {
-		return emailAddress;
-	}
-
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
-	}
 
 	public void setName(String name) {
 		this.name = name;
@@ -93,6 +86,14 @@ public class User {
 
 	public String getName() {
 		return name;
+	}
+	
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
 	}
 
 	public void setWebsite(String website) {
@@ -135,28 +136,32 @@ public class User {
 		return statusMessage;
 	}
 
+	@ComplexSerializableType(clazz = Location.class)
 	public void setPosition(Location position) {
 		this.position = position;
 	}
 
+	@ComplexSerializableType(clazz = Location.class)
 	public Location getPosition() {
 		return position;
 	}
 
+	@NotSerializable
 	public void setFriends(List<String> friends) {
 		this.friends = friends;
 	}
 
-	@DontSerialize
+	@NotSerializable
 	public List<String> getFriends() {
 		return friends;
 	}
 	
+	@NotSerializable
 	public void setPendingFriends(List<String> pendingFriends) {
 		this.pendingFriends = pendingFriends;
 	}
 
-	@DontSerialize
+	@NotSerializable
 	public List<String> getPendingFriends() {
 		return pendingFriends;
 	}
