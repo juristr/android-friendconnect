@@ -6,16 +6,14 @@
 
 	<bean id="xmlRpcService" class="com.friendconnect.services.XmlRpcService">
 		<property name="serializer" ref="objectSerializer" />
-		<property name="authService" ref="authenticationService" />
-		<property name="friendService" ref="friendService" />
+		<property name="userService" ref="userService" />
 	</bean>
 
-	<bean id="authenticationService" class="com.friendconnect.services.AuthenticationService">
-		<property name="userDao" ref="userDao" />
-	</bean>
-
-	<bean id="friendService" class="com.friendconnect.services.FriendService">
-		<property name="userDao" ref="userDao" />
+	<bean id="userService" class="com.friendconnect.services.UserService">
+		<property name="userDao" ref="userDao"/>
+		<property name="applicationName" value="FriendConnect"/>
+		<property name="baseURL" value="http://www.google.com/m8/feeds/contacts"/>
+		<property name="projection" value="thin"/>
 	</bean>
 
 	<bean id="objectSerializer" class="com.friendconnect.xmlrpc.ObjectSerializer" />
