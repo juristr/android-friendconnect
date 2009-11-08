@@ -71,6 +71,12 @@ public interface IUserService {
 	public void removeFriend(String userId, String friendId) throws JDOException;
 	
 	/**
+	 * Updates the information of an existing FriendConnectUser
+	 * @param user the {@link User} to be updated
+	 */
+	public void updateUser(User user);
+	
+	/**
 	 * Fetches all the Google contacts for a certain user
 	 * @param username the Google Account email of the user
 	 * @param token the user token 
