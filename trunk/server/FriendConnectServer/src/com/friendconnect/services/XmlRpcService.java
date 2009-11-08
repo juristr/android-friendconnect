@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.friendconnect.model.User;
 import com.friendconnect.xmlrpc.ObjectSerializer;
@@ -49,8 +50,7 @@ public class XmlRpcService {
 				result.add(serializer.serialize(friend));
 			}
 		} else {
-			// TODO handle authentication failure appropriately, once for all
-			// method calls
+			//TODO throw Exception
 		}
 
 		return result;
@@ -69,6 +69,16 @@ public class XmlRpcService {
 			userService.removeFriend(userId, friendId);
 			return true;
 		}
+		return false;
+	}
+	
+	public boolean updateUserProfile(String userId, String token, Map<String, Object> userData) throws IllegalArgumentException, NoSuchMethodException, InvocationTargetException, IllegalAccessException{
+		if(userService.validateToken(userId, token)){
+			User userToSave = serializer.deSerialize(userData, User.class);
+			userService.updateUser(userToSave);
+			return true;
+		}
+		
 		return false;
 	}
 	

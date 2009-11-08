@@ -87,6 +87,11 @@ public class UserService implements IUserService {
 	}
 	
 	@Override
+	public void updateUser(User user) {
+		userDao.saveUser(user);
+	}
+	
+	@Override
 	public List<User> getGoogleContacts(String username, String token) throws IOException, ServiceException {
 		ContactsService service = new ContactsService(applicationName);
 		service.setUserToken(token);
