@@ -21,6 +21,8 @@ package com.friendconnect.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.friendconnect.xmlrpc.NotSerializable;
+
 public class FriendConnectUser extends User {
 	private List<User> friends;
 	private List<POIAlert> poiAlert;
@@ -32,6 +34,7 @@ public class FriendConnectUser extends User {
 
 	//TODO bad, could be modified without being able to notice
 	//and fire change events!!!
+	@NotSerializable
 	public List<User> getFriends() {
 		return friends;
 	}

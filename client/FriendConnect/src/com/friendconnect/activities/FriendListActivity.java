@@ -45,6 +45,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.friendconnect.R;
 import com.friendconnect.controller.FriendListController;
+import com.friendconnect.main.FriendConnectActivity;
 import com.friendconnect.main.IFriendConnectApplication;
 import com.friendconnect.main.IoC;
 import com.friendconnect.model.FriendConnectUser;
@@ -55,6 +56,7 @@ public class FriendListActivity extends Activity implements IView {
 	private static final int ADD_FRIEND = Menu.FIRST;
 	private static final int REMOVE_FRIEND = Menu.FIRST + 1;
 	private static final int PENDINGINVITES_LIST = Menu.FIRST + 2;
+	private static final int PROFILE = Menu.FIRST + 3;
 
 	private Handler handler;
 	private FriendListController controller;
@@ -203,6 +205,7 @@ public class FriendListActivity extends Activity implements IView {
 		MenuItem itemAddFriend = menu.add(0, ADD_FRIEND, Menu.NONE, this.getString(R.string.menuAddFriend));
 		MenuItem itemRemoveFriend = menu.add(1, REMOVE_FRIEND, Menu.NONE, this.getString(R.string.menuRemoveFriend));
 		MenuItem itemPendingInvitesList = menu.add(2, PENDINGINVITES_LIST, Menu.NONE, this.getString(R.string.menuPendingInvitesListView));
+		MenuItem itemProfile = menu.add(3, PROFILE, Menu.NONE, this.getString(R.string.menuEditProfile));
 		
 		//Assign icons
 		itemAddFriend.setIcon(R.drawable.menu_invite); 
@@ -228,6 +231,12 @@ public class FriendListActivity extends Activity implements IView {
 				progressDialog.show();
 				int index = listViewFriends.getSelectedItemPosition();
 				controller.removeFriend(index);
+			} case (PENDINGINVITES_LIST):{
+				startActivity(new Intent(FriendListActivity.this,
+						PendingInvitesListActivity.class));
+			} case (PROFILE):{
+				startActivity(new Intent(FriendListActivity.this,
+						EditProfileActivity.class));
 			}
 		}
 		return false;
