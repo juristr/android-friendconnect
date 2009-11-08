@@ -52,7 +52,6 @@ public class FriendAdapter extends ArrayAdapter<User> {
 		
 		User person = getItem(position);
 		
-		//TODO check the following lines
 		if(convertView == null){
 			friendListView = new LinearLayout(getContext());
 			LayoutInflater layoutInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -64,7 +63,7 @@ public class FriendAdapter extends ArrayAdapter<User> {
 		TextView nicknameView = (TextView)friendListView.findViewById(R.id.textViewUsername);
 		TextView statusView = (TextView)friendListView.findViewById(R.id.textViewStatus);
 		
-		nicknameView.setText(person.getName());
+		nicknameView.setText(person.getName() == null ? person.getEmailAddress() : person.getName());
 		statusView.setText(person.getStatusMessage());
 		
 		return friendListView;
