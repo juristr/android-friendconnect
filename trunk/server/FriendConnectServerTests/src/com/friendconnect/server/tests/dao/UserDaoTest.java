@@ -118,6 +118,26 @@ public class UserDaoTest extends BaseTest {
 		assertFalse("Pending friend list should not contain friend", contains(pendingFriends, friend.getId()));	
 	}
 	
+	public void testSaveUser(){
+		userDao.saveUser(user);
+		
+		//retrieve it from DB
+		User persistedUser = userDao.getUserById(user.getId());
+		assertNotNull(persistedUser);
+		assertEquals("name should be the same", user.getName(), persistedUser.getName());
+		
+		//change name
+		persistedUser.setName("Matthias Braunhofer");
+		userDao.saveUser(persistedUser);
+		persistedUser = null;
+		
+		//retrieve again
+		persistedUser = userDao.getUserById(user.getId());
+		assertNotNull(persistedUser);
+		assertEquals("Matthias Braunhofer", persistedUser.getName());
+		
+	}
+	
 	private boolean contains(List<User> users, String userId) {
 		for (User u : users) {
 			if (u.getId().equals(userId)) {
