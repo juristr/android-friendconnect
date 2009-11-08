@@ -6,5 +6,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/FriendConnect"/>
 	<classpathentry kind="lib" path="/Applications/SDKs/android-sdk-mac_x86-1.6_r1/platforms/android-1.6/android.jar"/>
 	<classpathentry kind="lib" path="/Applications/SDKs/android-sdk-mac_x86-1.6_r1/add-ons/google_apis-4/libs/maps.jar"/>
+	<classpathentry kind="lib" path="libs/mockito-all-1.8.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

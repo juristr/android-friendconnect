@@ -4,8 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 
 import junit.framework.TestCase;
 
-import com.friendconnect.model.Friend;
 import com.friendconnect.model.Location;
+import com.friendconnect.model.User;
 import com.friendconnect.utils.ObjectHelper;
 
 public class ObjectHelperTest extends TestCase {
@@ -24,8 +24,8 @@ public class ObjectHelperTest extends TestCase {
 	public void testSyncObjectGraph() throws IllegalArgumentException,
 			SecurityException, IllegalAccessException,
 			InvocationTargetException, NoSuchMethodException {
-		Friend original = new Friend();
-		original.setId(1);
+		User original = new User();
+		original.setId("1");
 		original.setName("Juri Strumpflohner");
 		original.setStatusMessage("testing...");
 		Location location = new Location();
@@ -33,8 +33,8 @@ public class ObjectHelperTest extends TestCase {
 		location.setLongitude(112.4);
 		original.setPosition(location);
 
-		Friend updatedRecord = new Friend();
-		updatedRecord.setId(1);
+		User updatedRecord = new User();
+		updatedRecord.setId("1");
 		updatedRecord.setName("Juri Strumpflohner");
 		updatedRecord.setStatusMessage("testing...Android-FriendConnect");
 		Location locationUpdated = new Location();
@@ -54,8 +54,8 @@ public class ObjectHelperTest extends TestCase {
 		assertEquals(updatedRecord.getPosition().getLongitude(), original
 				.getPosition().getLongitude());
 
-		updatedRecord = new Friend();
-		updatedRecord.setId(1);
+		updatedRecord = new User();
+		updatedRecord.setId("1");
 		updatedRecord.setName("Juri Strumpflohner");
 		// no status message (= null)
 		// no location (= null

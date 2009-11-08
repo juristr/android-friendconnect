@@ -4,6 +4,8 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import com.friendconnect.client.tests.controller.FriendListControllerTest;
+import com.friendconnect.client.tests.controller.LoginControllerTest;
+import com.friendconnect.controller.LoginController;
 import com.friendconnect.test.utils.ObjectHelperTest;
 
 public class AllTests {
@@ -12,6 +14,7 @@ public class AllTests {
 		TestSuite suite = new TestSuite();
 		//$JUnit-BEGIN$
 		suite.addTestSuite(FriendListControllerTest.class);
+		suite.addTestSuite(LoginControllerTest.class);
 		suite.addTestSuite(ObjectHelperTest.class);
 		//$JUnit-END$
 		return suite;
