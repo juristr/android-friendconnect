@@ -24,34 +24,14 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Class for serializing/deserializing normal POJOs in a XML-RPC understandable
- * format.
- * 
- */
+
 public class ObjectSerializer {
+	// private Class<T> clazz;
 
 	public ObjectSerializer() {
-
+		// this.clazz = clazz;
 	}
 
-	/**
-	 * Deserializes a given {@link Map<String, Object>} representing a POJO
-	 * returned from a XML-RPC call into a POJO instance.
-	 * 
-	 * @param <T>
-	 *            the type of the object to be instantiated
-	 * @param map
-	 *            of type {@link Map<String, Object>} containing the encoded
-	 *            POJO object data
-	 * @param clazz
-	 *            the Class of the object to instantiate
-	 * @return an instance of the deserialized POJO
-	 * @throws NoSuchMethodException
-	 * @throws InvocationTargetException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 */
 	@SuppressWarnings("unchecked")
 	public <T> T deSerialize(Map<String, Object> map, Class clazz)
 			throws NoSuchMethodException, InvocationTargetException,
@@ -61,7 +41,7 @@ public class ObjectSerializer {
 		for (Map.Entry<String, Object> entry : map.entrySet()) {
 			String propertyName = correctFieldName(entry.getKey());
 			Object propertyValue = entry.getValue();
-
+			
 			Method setter = getMethodByName("set" + propertyName, clazz);
 
 			if (propertyValue instanceof HashMap) {
@@ -76,15 +56,16 @@ public class ObjectSerializer {
 		return instance;
 	}
 
-	/**
-	 * Serializes a given object into a XML-RPC understandable format,
-	 * namely a {@link Map<String, Object>}.
-	 * @param object
-	 * @return
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 * @throws InvocationTargetException
-	 */
+	private Method getMethodByName(String methodName, Class clazz) {
+		Method[] methods = clazz.getMethods();
+		for (Method method : methods) {
+			if(method.getName().equals(methodName))
+				return method;
+		}
+		
+		return null;
+	}
+
 	public Map<String, Object> serialize(Object object)
 			throws IllegalArgumentException, IllegalAccessException,
 			InvocationTargetException {
@@ -96,27 +77,21 @@ public class ObjectSerializer {
 				String propertyName = method.getName().replace("get", "");
 				Object propertyValue = (Object) method.invoke(object, null);
 
-				// is complex serializable?
-				if (isComplexSerializable(method) && propertyValue != null) {
-					propertyValue = serialize(propertyValue);
-				}
+				// is serializable?
+				if(isSerializable(method)) {
+					
+					// is complex serializable?
+					if (isComplexSerializable(method) && propertyValue != null) {
+						propertyValue = serialize(propertyValue);
+					}
 
-				if (propertyValue != null)
-					result.put(propertyName, propertyValue);
+					if (propertyValue != null)
+						result.put(propertyName, propertyValue);
+				}
 			}
 		}
 
 		return result;
-	}
-
-	private Method getMethodByName(String methodName, Class clazz) {
-		Method[] methods = clazz.getMethods();
-		for (Method method : methods) {
-			if (method.getName().equals(methodName))
-				return method;
-		}
-
-		return null;
 	}
 
 	private Class getClassFromAnnotation(Method setter) {
@@ -124,6 +99,19 @@ public class ObjectSerializer {
 		return ann.clazz();
 	}
 
+	private boolean isSerializable(Method method) {
+		return getNotSerializableAnnotation(method) == null;
+	}
+	
+	private Annotation getNotSerializableAnnotation(Method method) {
+		Annotation[] annotations = method.getAnnotations();
+		for (Annotation annotation : annotations) {
+			if (annotation instanceof NotSerializable)
+				return annotation;
+		}
+		return null;
+	}
+	
 	private boolean isComplexSerializable(Method method) {
 		return getSerializableAnnotation(method) != null;
 	}
@@ -138,15 +126,6 @@ public class ObjectSerializer {
 		return null;
 	}
 
-	/**
-	 * Checks whether the given method is a valid getter. Valid getters are -
-	 * belonging to the implemented model - not JRE native getters like
-	 * "getClass" - comply with the Java getter standard (i.e. return type, no
-	 * parameters)
-	 * 
-	 * @param method
-	 * @return
-	 */
 	private boolean isValidGetter(Method method) {
 		if (method.getName().contains("Class"))
 			return false;

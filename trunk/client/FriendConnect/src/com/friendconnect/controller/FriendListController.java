@@ -53,10 +53,8 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 	 * status message changes or changes in their position.
 	 */
 	public void updateFriendList() {
-		Object[] params = {model.getId()};
-		xmlRPCService.sendRequest(RPCRemoteMappings.GETFRIENDS, params, new IAsyncCallback<List<User>>() {
+		xmlRPCService.sendRequest(RPCRemoteMappings.GETFRIENDS, null, new IAsyncCallback<List<User>>() {
 			public void onSuccess(List<User> result) {
-				Log.i(FriendListController.class.getCanonicalName(), "Got updated friendlist!");
 				for (User friend : result) {
 					User friendInModel = getFriendFromModel(friend.getId());
 					if(friendInModel == null){
@@ -88,15 +86,16 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 	 * another user.
 	 */
 	public void inviteFriend(String inviteeEmailAddress) {
-		Object[] params = {model.getId(), model.getToken(), inviteeEmailAddress};
+		Object[] params = {inviteeEmailAddress};
 		xmlRPCService.sendRequest(RPCRemoteMappings.INVITEFRIEND, params, new IAsyncCallback<Boolean>() {
 
-			public void onFailure(Throwable throwable) {			
-				
-			}
-
 			public void onSuccess(Boolean result) {
-				
+				//nothing to do here
+				notifyStopProgress();
+			}
+			
+			public void onFailure(Throwable throwable) {			
+				notifyStopProgress();
 			}
 			
 		}, Boolean.class);

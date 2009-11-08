@@ -60,7 +60,7 @@ public class XMLRPCService implements IXMLRPCService {
 	/**
 	 * Adds the user credentials to the parameters that are being
 	 * sent to the server.
-	 * E.g.: params = {"test", 2} -> {username, token, "test", 2}
+	 * E.g.: params = {"test", 2} -> {userid, token, "test", 2}
 	 * @param params the original array of parameters
 	 * @return
 	 */
@@ -70,11 +70,11 @@ public class XMLRPCService implements IXMLRPCService {
 			return params;
 		
 		if(params == null || params.length == 0){
-			return new Object[]{user.getEmailAddress(), user.getToken()};
+			return new Object[]{user.getId(), user.getToken()};
 		}else{
 			int size = params.length + 2;
 			Object[] result = new Object[size];
-			result[0] = user.getEmailAddress();
+			result[0] = user.getId();
 			result[1] = user.getToken();
 			for(int i=2; i<size; i++){
 				result[i] = params[i-2];
