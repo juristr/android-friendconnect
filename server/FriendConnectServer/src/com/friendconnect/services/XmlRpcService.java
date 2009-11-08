@@ -23,22 +23,34 @@ public class XmlRpcService {
 	 * @param password
 	 * @return
 	 * @throws AuthenticationException
+	 * @throws InvocationTargetException 
+	 * @throws IllegalAccessException 
+	 * @throws IllegalArgumentException 
 	 */
-	public String login(String username, String password) throws AuthenticationException{
-		String resultToken = null;
-		resultToken = authService.authenticate(username, password);
+	public Object login(String username, String password) throws AuthenticationException, IllegalArgumentException, IllegalAccessException, InvocationTargetException{
 		
-		return resultToken;
+		String resultToken = authService.authenticate(username, password);
+		
+		if(resultToken != null){
+			User friendConnectUser; friendConnectUser = friendService.getFriendConnectUser(username);
+			if(friendConnectUser != null){
+				return serializer.serialize(friendConnectUser);
+			}else{
+				//register the user, i.e. put it into the FriendConnect DB
+				return null;
+			}
+		}else{
+			throw new AuthenticationException("Error logging in!");
+		}
 	}
 	
-	public List getFriends() throws IOException, IllegalArgumentException,
+	public List getFriends(String username, String token) throws IOException, IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException {
 		 List result = new ArrayList();
 
 		ObjectSerializer serializer = new ObjectSerializer();
-
-		boolean isAuthenticated = true; // authService.validateToken(username,
-										// token);
+		
+		boolean isAuthenticated = authService.validateToken(username, token);
 		if (isAuthenticated) {
 			List<User> friends = friendService.getDummyFriends();
 
