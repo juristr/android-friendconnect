@@ -32,14 +32,13 @@ public class XmlRpcService {
 		return serializer.serialize(user);
 	}
 	
-	public List getFriends(String userId) throws IOException, IllegalArgumentException,
+	public List getFriends(String userId, String token) throws IOException, IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException {
 		 List result = new ArrayList();
 
 		ObjectSerializer serializer = new ObjectSerializer();
 
-		boolean isAuthenticated = true; // authService.validateToken(username,
-										// token);
+		boolean isAuthenticated =  userService.validateToken(userId, token);
 		if (isAuthenticated) {
 			List<User> friends = userService.getFriends(userId);
 
@@ -71,10 +70,6 @@ public class XmlRpcService {
 			return true;
 		}
 		return false;
-	}
-
-	public int getSimpleRCPTestResult(int x) {
-		return x++;
 	}
 	
 
