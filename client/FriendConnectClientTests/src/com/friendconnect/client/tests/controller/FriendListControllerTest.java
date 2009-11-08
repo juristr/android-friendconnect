@@ -2,23 +2,23 @@ package com.friendconnect.client.tests.controller;
 
 import junit.framework.TestCase;
 
-import com.friendconnect.client.tests.mocks.MockXMLRPCService;
+import com.friendconnect.client.tests.mocks.MockXMLRPCServiceFriendList;
 import com.friendconnect.controller.FriendListController;
-import com.friendconnect.model.Friend;
+import com.friendconnect.model.FriendConnectUser;
 import com.friendconnect.model.User;
 import com.friendconnect.utils.ObjectHelper;
 
 public class FriendListControllerTest extends TestCase {
 	private FriendListController controller;
-	private User model;
+	private FriendConnectUser model;
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.controller = new FriendListController();
-		this.model = new User();
+		this.model = new FriendConnectUser();
 		this.controller.registerModel(model);
-		this.controller.setXmlRPCService(new MockXMLRPCService());
+		this.controller.setXmlRPCService(new MockXMLRPCServiceFriendList());
 		this.controller.setObjectHelper(new ObjectHelper());
 	}
 
@@ -31,8 +31,8 @@ public class FriendListControllerTest extends TestCase {
 
 	public void testUpdateFriendList() {
 		// preload list with some friends
-		Friend friend = new Friend();
-		friend.setId(11293884);
+		User friend = new User();
+		friend.setId("11293884");
 		friend.setEmailAddress("firstname.lastname@somedomain.com");
 		friend.setName("Juri");
 		friend.setPhone("01220 3020030");
