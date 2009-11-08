@@ -65,4 +65,16 @@ public class FriendServiceTest extends TestCase {
 		
 		assertNotNull("List should not be null", friends);		
 	}
+	
+	public void testGetFriendConnectUser(){
+		String emailAddress = properties.getProperty("username");
+		
+		User friendConnectUser = friendService.getFriendConnectUser(emailAddress);
+		assertNotNull(friendConnectUser);
+		assertEquals(emailAddress, friendConnectUser.getEmailAddress());
+	}
+	
+	public void testRegisterFriendConnectUser(){
+		fail("Not yet implemented!");
+	}
 }

@@ -20,30 +20,30 @@ public class ObjectSerializerTest extends TestCase {
 	}
 
 	public void testObjectDeserializer() throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-		User friend = new User();
-		friend.setId("123456");
-		friend.setEmailAddress("juri.strumpflohner@gmail.com");
+		User user = new User();
+		user.setId("123456");
+		user.setEmailAddress("juri.strumpflohner@gmail.com");
 		Location location = new Location();
 		location.setLatitude(10.34);
 		location.setLongitude(112.3);
-		friend.setPosition(location);
+		user.setPosition(location);
 		
 		ObjectSerializer serializer = new ObjectSerializer();
-		Map<String, Object> serialized = serializer.serialize(friend);
+		Map<String, Object> serialized = serializer.serialize(user);
 		
 		assertNotNull("the serialized object shouldn't be null", serialized);
-		assertEquals("The ids should match", friend.getId(), serialized.get("Id"));
-		assertEquals("The names should match", friend.getName(), serialized.get("Name"));
+		assertEquals("The ids should match", user.getId(), serialized.get("Id"));
+		assertEquals("The names should match", user.getName(), serialized.get("Name"));
 		assertNotNull("The hashmap should have an object value for the subobj", serialized.get("Position"));
 		
 		
 		//deserialize
 		User deserializedUser = serializer.deSerialize(serialized, User.class);
 		assertNotNull(deserializedUser);
-		assertEquals(friend.getId(), deserializedUser.getId());
-		assertEquals(friend.getName(), deserializedUser.getName());
-		assertEquals(friend.getPosition().getLatitude(), deserializedUser.getPosition().getLatitude());
-		assertEquals(friend.getPosition().getLongitude(), deserializedUser.getPosition().getLongitude());
+		assertEquals(user.getId(), deserializedUser.getId());
+		assertEquals(user.getName(), deserializedUser.getName());
+		assertEquals(user.getPosition().getLatitude(), deserializedUser.getPosition().getLatitude());
+		assertEquals(user.getPosition().getLongitude(), deserializedUser.getPosition().getLongitude());
 	}
 
 }
