@@ -5,10 +5,10 @@ import android.test.ActivityUnitTestCase;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.widget.ListView;
 
+import com.friendconnect.R;
 import com.friendconnect.activities.FriendListActivity;
-import com.friendconnect.activities.R;
 import com.friendconnect.controller.FriendListController;
-import com.friendconnect.model.Friend;
+import com.friendconnect.model.User;
 
 public class FriendListActivityTest extends ActivityUnitTestCase<FriendListActivity> {
 	private Intent startIntent;
@@ -42,7 +42,11 @@ public class FriendListActivityTest extends ActivityUnitTestCase<FriendListActiv
 		ListView friendListView = (ListView) getActivity().findViewById(R.id.listViewFriends);
 		FriendListController friendListController = ((FriendListActivity)getActivity()).getController();
 		
-		Friend friend = new Friend(1, "Matthias", "", "matthias.braunhofer@gmail.com", "", "");
+//		User friend = new User(1, "Matthias", "", "matthias.braunhofer@gmail.com", "", "");
+		User friend = new User();
+		friend.setId("1");
+		friend.setName("Matthias");
+		friend.setEmailAddress("matthias.braunhofer@gmail.com");
 		
 		int initialNumberOfItems = friendListView.getCount();
 		
