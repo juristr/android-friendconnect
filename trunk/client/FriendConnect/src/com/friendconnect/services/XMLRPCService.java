@@ -22,14 +22,20 @@ import java.net.URI;
 
 import org.xmlrpc.android.XMLRPCClient;
 
+import android.util.Log;
+
+import com.friendconnect.main.IFriendConnectApplication;
+import com.friendconnect.model.FriendConnectUser;
 import com.friendconnect.xmlrpc.IAsyncCallback;
 import com.friendconnect.xmlrpc.XMLRPCMethod;
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
 public class XMLRPCService implements IXMLRPCService {
 	private URI baseURI;
 	private XMLRPCClient client;
+	private IFriendConnectApplication application;
 
 	public XMLRPCService() {
 		// Resources.getString(com.friendconnect.activities.R.string.friendConnectServerUrl);
@@ -44,10 +50,38 @@ public class XMLRPCService implements IXMLRPCService {
 	public <T> void sendRequest(String remoteMethod, Object[] params, IAsyncCallback<T> callback, Class clazz) {
 		XMLRPCMethod<T> method = new XMLRPCMethod<T>(client,
 				remoteMethod, callback, clazz);
-		if (params != null)
-			method.call(params);
-		else
-			method.call();
+		
+		Log.i(XMLRPCService.class.getCanonicalName(), "Invoking remote method '" + remoteMethod + "'");
+		
+		Object[] callParams = addUserCredentials(params);
+		method.call(callParams);
+	}
+	
+	/**
+	 * Adds the user credentials to the parameters that are being
+	 * sent to the server.
+	 * E.g.: params = {"test", 2} -> {username, token, "test", 2}
+	 * @param params the original array of parameters
+	 * @return
+	 */
+	private Object[] addUserCredentials(Object[] params){
+		FriendConnectUser user = application.getApplicationModel();
+		if(user == null)
+			return params;
+		
+		if(params == null || params.length == 0){
+			return new Object[]{user.getEmailAddress(), user.getToken()};
+		}else{
+			int size = params.length + 2;
+			Object[] result = new Object[size];
+			result[0] = user.getEmailAddress();
+			result[1] = user.getToken();
+			for(int i=2; i<size; i++){
+				result[i] = params[i-2];
+			}
+			
+			return result;
+		}
 	}
 
 	public URI getBaseURI() {
@@ -65,4 +99,10 @@ public class XMLRPCService implements IXMLRPCService {
 	public void setClient(XMLRPCClient client) {
 		this.client = client;
 	}
+
+	@Inject
+	public void setApplication(IFriendConnectApplication application) {
+		this.application = application;
+	}
+	
 }

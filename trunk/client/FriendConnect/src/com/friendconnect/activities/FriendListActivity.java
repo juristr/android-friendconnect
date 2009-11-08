@@ -42,6 +42,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.friendconnect.R;
 import com.friendconnect.controller.FriendListController;
+import com.friendconnect.main.FriendConnectActivity;
 import com.friendconnect.main.IFriendConnectApplication;
 import com.friendconnect.main.IoC;
 import com.friendconnect.model.FriendConnectUser;
@@ -50,8 +51,9 @@ import com.friendconnect.services.FriendUpdateService;
 import com.google.inject.Inject;
 
 public class FriendListActivity extends Activity implements IView {
-	static final private int ADD_FRIEND = Menu.FIRST;
-	static final private int REMOVE_FRIEND = Menu.FIRST + 1;
+	private static final int ADD_FRIEND = Menu.FIRST;
+	private static final int REMOVE_FRIEND = Menu.FIRST + 1;
+	private static final int PENDINGINVITES_LIST = Menu.FIRST + 2;
 
 	private Handler handler;
 	private FriendListController controller;
@@ -140,6 +142,9 @@ public class FriendListActivity extends Activity implements IView {
 						dialog.dismiss();
 					}
 				});
+			} case (PENDINGINVITES_LIST):{
+				startActivity(new Intent(FriendListActivity.this,
+						PendingInvitesListActivity.class));
 			}
 		}
 	}
@@ -173,8 +178,9 @@ public class FriendListActivity extends Activity implements IView {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		// Create and add new menu items.
-		MenuItem itemInviteFriend = menu.add(0, ADD_FRIEND, Menu.NONE, this.getString(R.string.addFriend));
-		MenuItem itemRemoveFriend = menu.add(1, REMOVE_FRIEND, Menu.NONE, this.getString(R.string.removeFriend));
+		MenuItem itemInviteFriend = menu.add(0, ADD_FRIEND, Menu.NONE, this.getString(R.string.menuAddFriend));
+		MenuItem itemRemoveFriend = menu.add(1, REMOVE_FRIEND, Menu.NONE, this.getString(R.string.menuRemoveFriend));
+		MenuItem itemPendingInvitesList = menu.add(2, PENDINGINVITES_LIST, Menu.NONE, this.getString(R.string.menuPendingInvitesListView));
 		
 		// Allocate shortcuts to each of them.
 		itemInviteFriend.setShortcut('0', 'a');

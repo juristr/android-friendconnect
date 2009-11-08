@@ -19,6 +19,7 @@
 package com.friendconnect.controller;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.BaseAdapter;
 
 import com.friendconnect.main.IFriendConnectApplication;
@@ -41,29 +42,25 @@ public class LoginController extends AbstractController<LoginResult> {
 	}
 	
 	public void login(final String username, String password){
-		xmlRpcService.sendRequest(RPCRemoteMappings.LOGIN, new Object[]{username, password}, new IAsyncCallback<String>() {
+		xmlRpcService.sendRequest(RPCRemoteMappings.LOGIN, new Object[]{username, password}, new IAsyncCallback<FriendConnectUser>() {
 
-			public void onSuccess(String result) {
-				@SuppressWarnings("unused")
-				String token = result;
+			public void onSuccess(FriendConnectUser result) {
+				if(result == null)
+					onFailure(new Exception("User was null when returning from server!"));
 				
-				model.setLoginSucceeded(true);
+				application.initializeApplicationModel(result);
 				
-				//TODO initialize the application user...should login respond with FriendConnectUser object??
-				FriendConnectUser user = new FriendConnectUser();
-				user.setEmailAddress(username);
-				user.setLoginToken(token);
-				user.setStatusMessage("");
-				application.initializeApplicationModel(user);				
 				notifyStopProgress();
+				model.setLoginSucceeded(true);
 			}
 			
 			public void onFailure(Throwable throwable) {
+				Log.e(LoginController.class.getCanonicalName(), throwable.getMessage());
 				notifyStopProgress();
 				model.setLoginSucceeded(false);
 			}
 			
-		}, String.class);
+		}, FriendConnectUser.class);
 	}
 	
 	@Override
