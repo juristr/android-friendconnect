@@ -22,7 +22,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import com.friendconnect.server.tests.dao.UserDaoTest;
-import com.friendconnect.server.tests.services.FriendServiceTest;
+import com.friendconnect.server.tests.services.UserServiceTest;
 import com.friendconnect.server.tests.xmlrpc.ObjectSerializerTest;
 
 public class AllTests {
@@ -33,7 +33,7 @@ public class AllTests {
 		//$JUnit-BEGIN$
 		suite.addTestSuite(ObjectSerializerTest.class);
 		suite.addTestSuite(UserDaoTest.class);
-		suite.addTestSuite(FriendServiceTest.class);
+		suite.addTestSuite(UserServiceTest.class);
 		//$JUnit-END$
 		return suite;
 	}

@@ -18,45 +18,67 @@
 
 package com.friendconnect.server.tests.services;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.List;
 import java.util.Properties;
 
 import junit.framework.TestCase;
 
+import com.friendconnect.model.User;
 import com.friendconnect.server.tests.utils.PropsUtils;
-import com.friendconnect.services.AuthenticationService;
-import com.friendconnect.services.IAuthenticationService;
+import com.friendconnect.services.IUserService;
+import com.friendconnect.services.UserService;
 import com.google.gdata.util.AuthenticationException;
+import com.google.gdata.util.ServiceException;
 
-public class AuthenticationServiceTest extends TestCase {
-	private IAuthenticationService authService;
+public class UserServiceTest extends TestCase {
+	private IUserService userService;
 	private Properties properties;
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		authService = new AuthenticationService();
+		userService = new UserService();
 		properties = PropsUtils.load("config.properties");
 	}
 
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		authService = null;
+		userService = null;
 		properties = null;
 	}
 	
 	public void testAuthenticate() throws AuthenticationException{
-		String username = properties.getProperty("username");
+		String emailAddress = properties.getProperty("emailAddress");
 		String password = properties.getProperty("password");
 		
-		String token = authService.authenticate(username, password);
+		User user = userService.authenticate(emailAddress, password);
 		
-		assertNotNull("Token should not be null", token);
-		assertTrue("Token should not be equal to empty string", !token.equals(""));
+		assertNotNull("User should not be null", user);
+		assertNotNull("Token should not be null", user.getToken());
+		assertTrue("Token should not be equal to empty string", !user.getToken().equals(""));
 		
-		username = "someImgUser@gmail.com";
+		emailAddress = "someImgUser@gmail.com";
 		password = "someImaginedPass";
 		
-		token = authService.authenticate(username, password);
-		assertNull("Token should be null", token);
+		user = userService.authenticate(emailAddress, password);
+		assertNull("User should be null", user);
+		assertNull("User should be null", user.getToken());
 	}
-
+	
+	
+	public void testGetGoogleContacts() throws MalformedURLException, IOException, ServiceException {
+		String emailAddress = properties.getProperty("emailAddress");
+		String password = properties.getProperty("password");
+				
+		User user = userService.authenticate(emailAddress, password); 
+		
+		assertNotNull("User should not be null", user);
+		assertNotNull("Token should not be null", user.getToken());
+		assertTrue("Token should not be equal to empty string", !user.getToken().equals(""));
+		
+		List<User> friends = userService.getGoogleContacts(emailAddress, user.getToken());
+		
+		assertNotNull("List should not be null", friends);		
+	}
 }
