@@ -28,5 +28,7 @@ public class RPCRemoteMappings {
 
 	public static final String LOGIN = baseMapping + "login";
 	public static final String GETFRIENDS =  baseMapping + "getFriends";
+	public static final String INVITEFRIEND = baseMapping + "addFriend";
+	public static final String REMOVEFRIEND = baseMapping + "removeFriend";
 
 }

@@ -26,10 +26,10 @@ public class User extends Observable {
 	private static final long serialVersionUID = 1;
 	protected String id;
 	protected String emailAddress;
-	private String token;
 	protected String phone;
 	protected String website;
 	protected String name;
+	protected String token;
 	protected String statusMessage;
 	protected Location position;
 
@@ -53,15 +53,6 @@ public class User extends Observable {
 			setChanged();
 			notifyObservers();
 		}
-	}
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		//no event firing needed
-		this.token = token;
 	}
 
 	public String getPhone() {
@@ -118,6 +109,14 @@ public class User extends Observable {
 			setChanged();
 			notifyObservers();
 		}
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	@ComplexSerializableType(clazz = Location.class)

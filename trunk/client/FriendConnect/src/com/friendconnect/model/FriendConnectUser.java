@@ -37,11 +37,15 @@ public class FriendConnectUser extends User {
 	}
 	
 	public void addFriend(User friend){
-		if(!this.friends.contains(friend)){
-			this.friends.add(friend);
-			setChanged();
-			notifyObservers();
-		}
+		friends.add(friend);
+		setChanged();
+		notifyObservers();
+	}
+	
+	public void removeFriend(User friend) {
+		friends.remove(friend);
+		setChanged();
+		notifyObservers();
 	}
 
 	//possibly don't allow direct access

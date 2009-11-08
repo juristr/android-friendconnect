@@ -18,7 +18,9 @@
 	<string name="friendConnectServerUrl">http://1.latest.android-friendconnect.appspot.com/</string>
 	<string name="uiMessageLogin">Logging in...</string>
 	<string name="uiMessageLoadingFriends">Loading Friends...</string>
+	<string name="uiMessageRemovingFriend">Removing Friend...</string>
 	<string name="uiMessageProvideUsernamePassword">You have to provide both, username and password</string>
+	<string name="uiMessageProvideEmailAddress">You have to provide an email address</string>
 	<string name="uiMessageLoginErrorTitle">Login</string>
 	<string name="uiMessageLoginErrorMsg">Ohps, it seems as if there has been a problem when logging you in!</string>
 	<string name="menuAddFriend">Add Friend</string>

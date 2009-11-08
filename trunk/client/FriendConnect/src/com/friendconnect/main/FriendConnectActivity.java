@@ -58,20 +58,18 @@ public class FriendConnectActivity extends Activity implements IView {
 
 		progressDialog = new ProgressDialog(this);
 
-		this.controller = IoC.getInstance(LoginController.class);
-		this.controller.registerView(this);
+		controller = IoC.getInstance(LoginController.class);
+		controller.init();
+		controller.registerView(this);
 
 		loadActivityPreferences();
-		final Toast toast = Toast.makeText(this,
-				R.string.uiMessageProvideUsernamePassword, 3000);
+		final Toast toast = Toast.makeText(this, R.string.uiMessageProvideUsernamePassword, 3000);
 
 		signInButton = (Button) this.findViewById(R.id.buttonSignIn);
 		signInButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				String username = ((EditText) findViewById(R.id.editTextEmail))
-						.getText().toString();
-				String password = ((EditText) findViewById(R.id.editTextPassword))
-						.getText().toString();
+				String username = ((EditText) findViewById(R.id.editTextEmail)).getText().toString();
+				String password = ((EditText) findViewById(R.id.editTextPassword)).getText().toString();
 
 				if (username.equals("") || password.equals("")) {
 					toast.show();
@@ -114,10 +112,8 @@ public class FriendConnectActivity extends Activity implements IView {
 
 		if (doSavePreferences()) {
 
-			String username = ((EditText) findViewById(R.id.editTextEmail))
-					.getText().toString();
-			String password = ((EditText) findViewById(R.id.editTextPassword))
-					.getText().toString();
+			String username = ((EditText) findViewById(R.id.editTextEmail)).getText().toString();
+			String password = ((EditText) findViewById(R.id.editTextPassword)).getText().toString();
 
 			editor.putString("username", username);
 			editor.putString("password", password);
@@ -157,7 +153,7 @@ public class FriendConnectActivity extends Activity implements IView {
 			progressDialog.setMessage(message);
 		}
 	}
-
+	
 	public void stopProgess() {
 		progressDialog.cancel();
 	}

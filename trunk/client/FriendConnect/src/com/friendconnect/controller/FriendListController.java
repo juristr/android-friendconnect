@@ -53,8 +53,10 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 	 * status message changes or changes in their position.
 	 */
 	public void updateFriendList() {
-		xmlRPCService.sendRequest(RPCRemoteMappings.GETFRIENDS, null, new IAsyncCallback<List<User>>() {
+		Object[] params = {model.getId()};
+		xmlRPCService.sendRequest(RPCRemoteMappings.GETFRIENDS, params, new IAsyncCallback<List<User>>() {
 			public void onSuccess(List<User> result) {
+				Log.i(FriendListController.class.getCanonicalName(), "Got updated friendlist!");
 				for (User friend : result) {
 					User friendInModel = getFriendFromModel(friend.getId());
 					if(friendInModel == null){
@@ -76,10 +78,49 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 
 			public void onFailure(Throwable throwable) {
 				Log.e(FriendListController.class.getCanonicalName(), "Problem updating friendlist:" + throwable.getMessage());
-				// TODO Auto-generated method stub	
 				notifyStopProgress();
 			}
 		}, User.class);
+	}
+	
+	/**
+	 * This method will be called by the FriendListActivity for inviting
+	 * another user.
+	 */
+	public void inviteFriend(String inviteeEmailAddress) {
+		Object[] params = {model.getId(), model.getToken(), inviteeEmailAddress};
+		xmlRPCService.sendRequest(RPCRemoteMappings.INVITEFRIEND, params, new IAsyncCallback<Boolean>() {
+
+			public void onFailure(Throwable throwable) {			
+				
+			}
+
+			public void onSuccess(Boolean result) {
+				
+			}
+			
+		}, Boolean.class);
+	}
+	
+	/**
+	 * This method will be called by the FriendListActivity for removing
+	 * a friend from the friend list.
+	 */
+	public void removeFriend(int index) {
+		final User friend = model.getFriends().get(index);
+		Object[] params = {model.getId(), model.getToken(), friend.getId()};
+		xmlRPCService.sendRequest(RPCRemoteMappings.REMOVEFRIEND, params, new IAsyncCallback<Boolean>() {
+
+			public void onFailure(Throwable throwable) {
+				notifyStopProgress();
+				
+			}
+
+			public void onSuccess(Boolean result) {
+				model.removeFriend(friend);
+				notifyStopProgress();
+			}
+		}, Boolean.class);
 	}
 	
 	/**
@@ -91,13 +132,14 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 	private User getFriendFromModel(String id) {
 		
 		for (User friend : model.getFriends()) {
-			if(friend.getId() == id)
+			if(friend.getId().equals(id))
 				return friend;
 		}
 		
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public FriendAdapter getAdapter(Context context) {
 		return new FriendAdapter(context, this.layoutId, this.model.getFriends());
