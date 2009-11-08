@@ -34,7 +34,7 @@ public interface IUserDao {
 	public void saveUser(User user);
 	
 	/**
-	 * Fetches a user from the JDO Datastore passing its id
+	 * Fetches a user from the JDO Datastore passing its user id
 	 * @param userId
 	 * @return
 	 */
@@ -46,6 +46,7 @@ public interface IUserDao {
 	 * @return
 	 */
 	public User getUserByEmailAddress(String emailAddress);
+	
 	
 	/**
 	 * Deletes a user from the JDO Datastore
