@@ -109,7 +109,7 @@ public class XMLRPCMethod<T> extends Thread {
 						return (T) list;
 					}
 					
-					return null;
+					return (T)result;
 				}
 			});
 		} catch (final XMLRPCFault e) {
