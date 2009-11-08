@@ -59,7 +59,6 @@ public class FriendConnectActivity extends Activity implements IView {
 		progressDialog = new ProgressDialog(this);
 
 		controller = IoC.getInstance(LoginController.class);
-		controller.init();
 		controller.registerView(this);
 
 		loadActivityPreferences();

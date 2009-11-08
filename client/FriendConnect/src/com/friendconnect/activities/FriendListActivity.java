@@ -147,6 +147,7 @@ public class FriendListActivity extends Activity implements IView {
 						EditText editTextEmailAddress = (EditText) dialog.findViewById(R.id.editTextInviteeEmail);
 						String emailAddress = editTextEmailAddress.getText().toString();
 						if (!emailAddress.trim().equals("")) {
+							showProgressDialog(getText(R.string.uiMessageSendingInvite));
 							controller.inviteFriend(emailAddress);
 							editTextEmailAddress.setText("");
 							dialog.dismiss();
@@ -157,6 +158,11 @@ public class FriendListActivity extends Activity implements IView {
 				});
 			}
 		}
+	}
+	
+	private void showProgressDialog(CharSequence message){
+		progressDialog.setMessage(message);
+		progressDialog.show();
 	}
 
 	public void update(final Observable observable, final Object data) {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">Friend Connect</string>
+	<string name="app_name">Android FriendConnect</string>
 	<string name="name">Name:</string>
 	<string name="statusmessage">Status Message:</string>
 	<string name="phone">Phone Number:</string>
@@ -15,8 +15,10 @@
 	<string name="donthave">Don\'t have a Google Account?</string>
 	<string name="savePrefs">Remember me</string>
 	<string name="googlelink">https://www.google.com/accounts/NewAccount</string>
+	<string name="activityTitlePendingInvites">Pending invites</string>
 	<string name="friendConnectServerUrl">http://1.latest.android-friendconnect.appspot.com/</string>
 	<string name="uiMessageLogin">Logging in...</string>
+	<string name="uiMessageSendingInvite">Sending invite...</string>
 	<string name="uiMessageLoadingFriends">Loading Friends...</string>
 	<string name="uiMessageRemovingFriend">Removing Friend...</string>
 	<string name="uiMessageProvideUsernamePassword">You have to provide both, username and password</string>

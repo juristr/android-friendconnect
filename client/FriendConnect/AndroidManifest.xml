@@ -11,6 +11,7 @@
             </intent-filter>
         </activity>
 		<activity android:name=".activities.FriendListActivity" android:label="@string/app_name"/>
+		<activity android:name=".activities.PendingInvitesListActivity" android:label="@string/activityTitlePendingInvites"/>
 		<service android:name=".services.FriendUpdateService" android:enabled="true">
 			
 		</service>

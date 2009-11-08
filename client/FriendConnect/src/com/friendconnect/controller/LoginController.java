@@ -19,13 +19,13 @@
 package com.friendconnect.controller;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.BaseAdapter;
 
 import com.friendconnect.main.IFriendConnectApplication;
 import com.friendconnect.model.FriendConnectUser;
 import com.friendconnect.model.LoginResult;
 import com.friendconnect.model.RPCRemoteMappings;
-import com.friendconnect.model.User;
 import com.friendconnect.services.IXMLRPCService;
 import com.friendconnect.xmlrpc.IAsyncCallback;
 import com.google.inject.Inject;
@@ -38,37 +38,29 @@ public class LoginController extends AbstractController<LoginResult> {
 	private IXMLRPCService xmlRpcService;
 	
 	public LoginController() {
-	}
-	
-	public void init() {
 		registerModel(new LoginResult());
 	}
 	
 	public void login(final String emailAddress, String password){
-		xmlRpcService.sendRequest(RPCRemoteMappings.LOGIN, new Object[]{emailAddress, password}, new IAsyncCallback<User>() {
+		xmlRpcService.sendRequest(RPCRemoteMappings.LOGIN, new Object[]{emailAddress, password}, new IAsyncCallback<FriendConnectUser>() {
 
-			public void onSuccess(User result) {
-				FriendConnectUser user = new FriendConnectUser();
-				user.setId(result.getId());
-				user.setName(result.getName());
-				user.setToken(result.getToken());
-				user.setEmailAddress(result.getEmailAddress());
-				user.setPhone(result.getPhone());
-				user.setWebsite(result.getWebsite());
-				user.setPosition(result.getPosition());
-				user.setStatusMessage("Fake stat msg");
-				application.initializeApplicationModel(user);
+			public void onSuccess(FriendConnectUser result) {
+				if(result == null)
+					onFailure(new Exception("User was null when returning from server!"));
+				
+				application.initializeApplicationModel(result);
 				
 				notifyStopProgress();
-				
 				model.setLoginSucceeded(true);
 			}
 			
 			public void onFailure(Throwable throwable) {
+				Log.e(LoginController.class.getCanonicalName(), throwable.getMessage());
 				notifyStopProgress();
+				model.setLoginSucceeded(false);
 			}
 			
-		}, User.class);
+		}, FriendConnectUser.class);
 	}
 	
 	@SuppressWarnings("unchecked")
