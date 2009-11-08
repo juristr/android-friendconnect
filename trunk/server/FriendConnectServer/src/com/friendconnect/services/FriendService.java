@@ -122,6 +122,21 @@ public class FriendService implements IFriendService {
 		return readFriendsFromFeed(service, contactFeed, feedUri);
 	}
 	
+	@Override
+	public User getFriendConnectUser(String emailAddress) {
+		// TODO Fetch friend from DB
+		User dummyUser = new User();
+		dummyUser.setEmailAddress(emailAddress);
+		
+		return dummyUser;
+	}
+	
+	@Override
+	public User registerFriendConnectUser(String emailAddress) {
+		//TODO insert into the friendconnect DB
+		return null;
+	}
+	
 	public List<User> getDummyFriends() {
 		List<User> friends = new ArrayList<User>();
 		User friend = new User();
