@@ -72,7 +72,7 @@ public class XMLRPCService implements IXMLRPCService {
 		if(params == null || params.length == 0){
 			return new Object[]{user.getId(), user.getToken()};
 		}else{
-			int size = params.length + 2;
+			int size = params.length + 2;	
 			Object[] result = new Object[size];
 			result[0] = user.getId();
 			result[1] = user.getToken();
