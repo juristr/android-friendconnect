@@ -209,7 +209,9 @@ public class FriendListActivity extends Activity implements IView {
 		
 		//Assign icons
 		itemAddFriend.setIcon(R.drawable.menu_invite); 
-		itemRemoveFriend.setIcon(R.drawable.menu_delete); 
+		itemRemoveFriend.setIcon(R.drawable.menu_delete);
+		itemPendingInvitesList.setIcon(R.drawable.menu_invite);
+		itemProfile.setIcon(R.drawable.menu_preferences);
 		
 		// Allocate shortcuts to each of them.
 		itemAddFriend.setShortcut('0', 'a');
