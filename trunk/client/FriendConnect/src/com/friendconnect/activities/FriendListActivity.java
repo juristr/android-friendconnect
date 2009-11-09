@@ -203,7 +203,7 @@ public class FriendListActivity extends Activity implements IView {
 		super.onCreateOptionsMenu(menu);
 		// Create and add new menu items.
 		MenuItem itemAddFriend = menu.add(0, ADD_FRIEND, Menu.NONE, this.getString(R.string.menuAddFriend));
-		MenuItem itemRemoveFriend = menu.add(1, REMOVE_FRIEND, Menu.NONE, this.getString(R.string.menuRemoveFriend));
+		MenuItem itemRemoveFriend = menu.add(0, REMOVE_FRIEND, Menu.NONE, this.getString(R.string.menuRemoveFriend));
 		MenuItem itemPendingInvitesList = menu.add(2, PENDINGINVITES_LIST, Menu.NONE, this.getString(R.string.menuPendingInvitesListView));
 		MenuItem itemProfile = menu.add(3, PROFILE, Menu.NONE, this.getString(R.string.menuEditProfile));
 		
@@ -231,12 +231,15 @@ public class FriendListActivity extends Activity implements IView {
 				progressDialog.show();
 				int index = listViewFriends.getSelectedItemPosition();
 				controller.removeFriend(index);
+				return true;
 			} case (PENDINGINVITES_LIST):{
 				startActivity(new Intent(FriendListActivity.this,
 						PendingInvitesListActivity.class));
+				return true;
 			} case (PROFILE):{
 				startActivity(new Intent(FriendListActivity.this,
 						EditProfileActivity.class));
+				return true;
 			}
 		}
 		return false;
