@@ -39,6 +39,7 @@ import com.google.inject.Singleton;
 @Singleton
 public class FriendListController extends AbstractController<FriendConnectUser> {
 	private int layoutId;
+	@SuppressWarnings("unused")
 	private IFriendConnectApplication application;
 	private IXMLRPCService xmlRPCService;
 	private ObjectHelper objectHelper;
@@ -56,7 +57,7 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 		xmlRPCService.sendRequest(RPCRemoteMappings.GETFRIENDS, null, new IAsyncCallback<List<User>>() {
 			public void onSuccess(List<User> result) {
 				for (User friend : result) {
-					User friendInModel = getFriendFromModel(friend.getId());
+					User friendInModel = getFriend(model.getFriends(), friend.getId());
 					if(friendInModel == null){
 						//new friend
 						model.addFriend(friend);
@@ -68,6 +69,15 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 							Log.e(objectHelper.getClass().getCanonicalName(), ex.getMessage());
 							onFailure(ex);
 						}
+					}
+				}
+				
+				List<User> currentFriends = model.getFriends();
+				for (User friend : currentFriends) {
+					User friendInResult = getFriend(result, friend.getId());
+					if(friendInResult == null){
+						//remove friend
+						model.removeFriend(friend);
 					}
 				}
 				
@@ -107,7 +117,7 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 	 */
 	public void removeFriend(int index) {
 		final User friend = model.getFriends().get(index);
-		Object[] params = {model.getId(), model.getToken(), friend.getId()};
+		Object[] params = {friend.getId()};
 		xmlRPCService.sendRequest(RPCRemoteMappings.REMOVEFRIEND, params, new IAsyncCallback<Boolean>() {
 
 			public void onFailure(Throwable throwable) {
@@ -116,21 +126,21 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 			}
 
 			public void onSuccess(Boolean result) {
-				model.removeFriend(friend);
+				//nothing to do here
 				notifyStopProgress();
 			}
 		}, Boolean.class);
 	}
 	
 	/**
-	 * Retrieves a {@link Friend} object from the existing
-	 * list of friends in the model
+	 * Retrieves a {@link Friend} object from a list of friends
+	 * @param users users to search a friend in
 	 * @param id the identifier to be matched
 	 * @return the corresponding {@link Friend} object, null otherwise
 	 */
-	private User getFriendFromModel(String id) {
+	private User getFriend(List<User> users, String id) {
 		
-		for (User friend : model.getFriends()) {
+		for (User friend : users) {
 			if(friend.getId().equals(id))
 				return friend;
 		}
