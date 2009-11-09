@@ -25,6 +25,7 @@
 				<entry key="XmlRpcGateway" value-ref="xmlRpcService" />
 			</map>
 		</property>
-	</bean>
+	</bean>	
+	<bean id="org.springframework.context.annotation.internalPersistenceAnnotationProcessor" class="java.lang.String"/>
 	
 </beans>
