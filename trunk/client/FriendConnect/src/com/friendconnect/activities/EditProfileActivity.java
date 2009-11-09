@@ -39,23 +39,23 @@ public class EditProfileActivity extends Activity implements IView {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.friendlist);
+		setContentView(R.layout.editprofileview);
 
 		progressDialog = new ProgressDialog(this);
 
 		controller = IoC.getInstance(EditProfileController.class);
 		controller.registerView(this);
 
-		Button signInButton = (Button) this.findViewById(R.id.buttonSignIn);
-		signInButton.setOnClickListener(new OnClickListener() {
+		Button saveButton = (Button) this.findViewById(R.id.buttonSaveProfile);
+		saveButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				String username = ((EditText) findViewById(R.id.editTextEmail))
-						.getText().toString();
-				String password = ((EditText) findViewById(R.id.editTextPassword))
-						.getText().toString();
+//				String username = ((EditText) findViewById(R.id.editTextEmail))
+//						.getText().toString();
+//				String password = ((EditText) findViewById(R.id.editTextPassword))
+//						.getText().toString();
 
-				progressDialog.setMessage(getText(R.string.uiMessageLogin));
-				progressDialog.show();
+//				progressDialog.setMessage(getText(R.string.uiMessageLogin));
+//				progressDialog.show();
 
 				// controller.login(username, password);
 			}
