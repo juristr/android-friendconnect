@@ -25,25 +25,36 @@ import java.util.Properties;
 
 import junit.framework.TestCase;
 
+import com.friendconnect.dao.IUserDao;
 import com.friendconnect.model.User;
+import com.friendconnect.server.tests.mock.MockUserDao;
 import com.friendconnect.server.tests.utils.PropsUtils;
-import com.friendconnect.services.IUserService;
 import com.friendconnect.services.UserService;
 import com.google.gdata.util.AuthenticationException;
 import com.google.gdata.util.ServiceException;
 
 public class UserServiceTest extends TestCase {
-	private IUserService userService;
+	private UserService userService;
+	private IUserDao mockUserDao;
 	private Properties properties;
+	private String applicationName = "FriendConnect";
+	private String baseURL = "http://www.google.com/m8/feeds/contacts";
+	private String projection = "thin";
 	
 	protected void setUp() throws Exception {
 		super.setUp();
+		mockUserDao = new MockUserDao();
 		userService = new UserService();
+		userService.setUserDao(mockUserDao);
+		userService.setApplicationName(applicationName);
+		userService.setBaseURL(baseURL);
+		userService.setProjection(projection);
 		properties = PropsUtils.load("config.properties");
 	}
 
 	protected void tearDown() throws Exception {
 		super.tearDown();
+		mockUserDao = null;
 		userService = null;
 		properties = null;
 	}
@@ -61,9 +72,13 @@ public class UserServiceTest extends TestCase {
 		emailAddress = "someImgUser@gmail.com";
 		password = "someImaginedPass";
 		
-		user = userService.authenticate(emailAddress, password);
+		user = null;
+		try {
+			user = userService.authenticate(emailAddress, password);
+		} catch (AuthenticationException e) {
+			//ignore exception
+		}
 		assertNull("User should be null", user);
-		assertNull("User should be null", user.getToken());
 	}
 	
 	
