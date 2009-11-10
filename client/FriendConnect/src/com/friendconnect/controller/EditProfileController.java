@@ -18,8 +18,6 @@
 
 package com.friendconnect.controller;
 
-import java.lang.reflect.InvocationTargetException;
-
 import android.content.Context;
 import android.util.Log;
 import android.widget.BaseAdapter;
@@ -46,19 +44,16 @@ public class EditProfileController extends AbstractController<FriendConnectUser>
 		return null;
 	}
 
-	public void saveProfile(){
+	public void saveProfile(String name, String phone, String website, String statusMessage){
 		try {
-			Object serializedUser = serializer.serialize(this.getModel());
+			getModel().setName(name);
+			getModel().setPhone(phone);
+			getModel().setWebsite(website);
+			getModel().setStatusMessage(statusMessage);
+			Object serializedUser = serializer.serialize(getModel());
 			xmlRpcService.sendRequest(RPCRemoteMappings.UPDATEPROFILE, new Object[]{serializedUser}, new IAsyncCallback<Boolean>() {
 
 				public void onSuccess(Boolean result) {
-					//do what??
-//					if(result){
-//						
-//					}else{
-//						
-//					}
-					
 					notifyStopProgress();
 				}
 				
@@ -88,5 +83,4 @@ public class EditProfileController extends AbstractController<FriendConnectUser>
 	public void setSerializer(ObjectSerializer serializer) {
 		this.serializer = serializer;
 	}
-	
 }

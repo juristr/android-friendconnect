@@ -10,6 +10,7 @@
 	<string name="email">Email:</string>
 	<string name="password">Password:</string>
 	<string name="signin">Sign in</string>
+	<string name="save">Save</string>
 	<string name="signinwith">Sign in with your</string>
 	<string name="account">Account</string>
 	<string name="donthave">Don\'t have a Google Account?</string>

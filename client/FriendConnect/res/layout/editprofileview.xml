@@ -7,10 +7,6 @@
 		<EditText android:id="@+id/editTextEmail" android:layout_span="2" android:maxLines="1" android:editable="false" />
 	</TableRow>
 	<TableRow>
-		<TextView android:id="@+id/textViewStatusMsg" android:text="@string/statusmessage"  />
-		<EditText android:id="@+id/editTextStatusMsg" android:layout_span="2" android:maxLines="1" />
-	</TableRow>
-	<TableRow>
 		<TextView android:id="@+id/textViewName" android:text="@string/name"  />
 		<EditText android:id="@+id/editTextName" android:layout_span="2" android:maxLines="1" />
 	</TableRow>
@@ -21,9 +17,13 @@
 	<TableRow>
 		<TextView android:id="@+id/textViewPhone" android:text="@string/phone"  />
 		<EditText android:id="@+id/editTextPhone" android:layout_span="2" android:maxLines="1" />
+	</TableRow>
+	<TableRow>
+		<TextView android:id="@+id/textViewStatusMsg" android:text="@string/statusmessage"  />
+		<EditText android:id="@+id/editTextStatusMsg" android:layout_span="2" android:maxLines="1" />
 	</TableRow>			
 	<TableRow android:paddingBottom="20dp">
 		<Button android:layout_span="3" android:layout_gravity="center_horizontal" android:id="@+id/buttonSaveProfile"
-			android:text="@string/signin" />
+			android:text="@string/save" />
 	</TableRow>
 </TableLayout>
