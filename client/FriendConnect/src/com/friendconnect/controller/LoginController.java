@@ -42,13 +42,16 @@ public class LoginController extends AbstractController<LoginResult> {
 	}
 	
 	public void login(final String emailAddress, String password){
+		//Make sure application model is not initialized before doing the login
+		application.setApplicationModel(null);
+		
 		xmlRpcService.sendRequest(RPCRemoteMappings.LOGIN, new Object[]{emailAddress, password}, new IAsyncCallback<FriendConnectUser>() {
 
 			public void onSuccess(FriendConnectUser result) {
 				if(result == null)
 					onFailure(new Exception("User was null when returning from server!"));
 				
-				application.initializeApplicationModel(result);
+				application.setApplicationModel(result);
 				
 				notifyStopProgress();
 				model.setLoginSucceeded(true);

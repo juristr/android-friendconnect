@@ -23,21 +23,12 @@ import com.google.inject.Singleton;
 
 @Singleton
 public class FriendConnectApplication implements IFriendConnectApplication {
-
-	private boolean initialized = false;
 	private FriendConnectUser friendConnectUser;
-
-	/**
-	 * this method will just set the model once. All subsequent
-	 * calls will have no effect in order to guarantee the integrity
-	 */
-	public void initializeApplicationModel(FriendConnectUser user) {
-		if(!initialized){
-			this.friendConnectUser = user;
-			initialized = true;
-		}
-	}
 	
+	public void setApplicationModel(FriendConnectUser friendConnectUser) {
+		this.friendConnectUser = friendConnectUser;
+	}
+
 	public FriendConnectUser getApplicationModel() {
 		return friendConnectUser;
 	}

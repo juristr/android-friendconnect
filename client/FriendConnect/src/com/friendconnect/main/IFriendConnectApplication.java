@@ -26,7 +26,7 @@ public interface IFriendConnectApplication {
 	 * Initializes the application model (after successful login)
 	 * @param user
 	 */
-	public void initializeApplicationModel(FriendConnectUser user);
+	public void setApplicationModel(FriendConnectUser user);
 	
 	/**
 	 * Gets the main model instance of the application. There can
@@ -34,5 +34,4 @@ public interface IFriendConnectApplication {
 	 * @return
 	 */
 	public FriendConnectUser getApplicationModel();
-	
 }
