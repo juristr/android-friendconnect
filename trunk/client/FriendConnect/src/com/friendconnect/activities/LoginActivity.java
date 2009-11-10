@@ -16,7 +16,7 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.main;
+package com.friendconnect.activities;
 
 import java.util.Observable;
 
@@ -35,9 +35,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.friendconnect.R;
-import com.friendconnect.activities.FriendListActivity;
-import com.friendconnect.activities.IView;
 import com.friendconnect.controller.LoginController;
+import com.friendconnect.main.IoC;
 import com.friendconnect.model.Constants;
 import com.friendconnect.model.LoginResult;
 
@@ -45,7 +44,7 @@ import com.friendconnect.model.LoginResult;
  * View for performing the user login
  * 
  */
-public class FriendConnectActivity extends Activity implements IView {
+public class LoginActivity extends Activity implements IView {
 	private Button signInButton;
 	private ProgressDialog progressDialog;
 	private LoginController controller;
@@ -130,7 +129,7 @@ public class FriendConnectActivity extends Activity implements IView {
 
 		if (result.isLoginSucceeded()) {
 			saveActivityPreferences();
-			startActivity(new Intent(FriendConnectActivity.this,
+			startActivity(new Intent(LoginActivity.this,
 					FriendListActivity.class));
 			finish();
 		} else {

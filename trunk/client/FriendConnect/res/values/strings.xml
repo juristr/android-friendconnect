@@ -16,6 +16,7 @@
 	<string name="donthave">Don\'t have a Google Account?</string>
 	<string name="savePrefs">Remember me</string>
 	<string name="googlelink">https://www.google.com/accounts/NewAccount</string>
+	<string name="activityLogin">Login</string>
 	<string name="activityTitlePendingInvites">Pending invites</string>
 	<string name="activityEditProfile">Profile</string>
 	<string name="friendConnectServerUrl">http://1.latest.android-friendconnect.appspot.com/</string>
