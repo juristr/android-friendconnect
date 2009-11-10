@@ -65,6 +65,10 @@ public class MockUserDao implements IUserDao {
 	@Override
 	public void removeUser(String userId) {
 	}
+	
+	@Override
+	public void updateUser(User user) {
+	}
 
 	@Override
 	public void saveUser(User user) {
