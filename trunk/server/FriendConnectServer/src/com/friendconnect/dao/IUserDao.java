@@ -34,6 +34,12 @@ public interface IUserDao {
 	public void saveUser(User user);
 	
 	/**
+	 * Updates a user in the JDO Datastore
+	 * @param user
+	 */
+	public void updateUser(User user);
+	
+	/**
 	 * Fetches a user from the JDO Datastore passing its user id
 	 * @param userId
 	 * @return
