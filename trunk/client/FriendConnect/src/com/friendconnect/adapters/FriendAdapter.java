@@ -63,7 +63,7 @@ public class FriendAdapter extends ArrayAdapter<User> {
 		TextView nicknameView = (TextView)friendListView.findViewById(R.id.textViewUsername);
 		TextView statusView = (TextView)friendListView.findViewById(R.id.textViewStatus);
 		
-		nicknameView.setText(person.getName() == null ? person.getEmailAddress() : person.getName());
+		nicknameView.setText(person.toString());
 		statusView.setText(person.getStatusMessage());
 		
 		return friendListView;
