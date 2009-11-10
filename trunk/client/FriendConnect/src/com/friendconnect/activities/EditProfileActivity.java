@@ -24,9 +24,11 @@ import com.friendconnect.R;
 import com.friendconnect.controller.EditProfileController;
 import com.friendconnect.main.IoC;
 import com.friendconnect.model.FriendConnectUser;
+import com.friendconnect.services.FriendUpdateService;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -84,5 +86,17 @@ public class EditProfileActivity extends Activity implements IView {
 
 	public void stopProgess() {
 		progressDialog.cancel();
+	}
+	
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		startService(new Intent(EditProfileActivity.this, FriendUpdateService.class));	
+	}
+	
+	@Override
+	protected void onStop() {
+		super.onStop();
+        stopService(new Intent(EditProfileActivity.this, FriendUpdateService.class));
 	}
 }
