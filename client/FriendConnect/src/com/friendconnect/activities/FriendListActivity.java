@@ -89,6 +89,10 @@ public class FriendListActivity extends Activity implements IView {
 		controller.registerView(this);
 		
 		adapter = controller.getAdapter(this);
+		
+		FriendConnectUser user = controller.getModel();
+		((TextView) findViewById(R.id.textViewMyUsername)).setText(user.getEmailAddress());
+		((TextView) findViewById(R.id.textViewMyStatus)).setText(user.getStatusMessage());
 
 		listViewFriends.setAdapter(this.adapter);
 		listViewFriends.setOnItemClickListener(new OnItemClickListener() {
