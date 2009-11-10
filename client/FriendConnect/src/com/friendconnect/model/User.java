@@ -128,4 +128,12 @@ public class User extends Observable {
 	public void setPosition(Location location) {
 		this.position = location;
 	}
+	
+	public String toString(){
+		if(emailAddress == null || emailAddress.equals("")){
+			return name;
+		}else{
+			return emailAddress;
+		}
+	}
 }
