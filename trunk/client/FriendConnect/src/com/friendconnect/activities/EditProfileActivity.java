@@ -23,6 +23,7 @@ import java.util.Observable;
 import com.friendconnect.R;
 import com.friendconnect.controller.EditProfileController;
 import com.friendconnect.main.IoC;
+import com.friendconnect.model.FriendConnectUser;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -45,25 +46,36 @@ public class EditProfileActivity extends Activity implements IView {
 
 		controller = IoC.getInstance(EditProfileController.class);
 		controller.registerView(this);
+		
+		init();
 
 		Button saveButton = (Button) this.findViewById(R.id.buttonSaveProfile);
 		saveButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-//				String username = ((EditText) findViewById(R.id.editTextEmail))
-//						.getText().toString();
-//				String password = ((EditText) findViewById(R.id.editTextPassword))
-//						.getText().toString();
+				String name = ((EditText) findViewById(R.id.editTextName)).getText().toString();
+				String phone = ((EditText) findViewById(R.id.editTextPhone)).getText().toString();
+				String website = ((EditText) findViewById(R.id.editTextWebsite)).getText().toString();
+				String statusMessage = ((EditText) findViewById(R.id.editTextStatusMsg)).getText().toString();
 
-//				progressDialog.setMessage(getText(R.string.uiMessageLogin));
-//				progressDialog.show();
+				progressDialog.setMessage(getText(R.string.uiMessageLogin));
+				progressDialog.show();
 
-				// controller.login(username, password);
+				controller.saveProfile(name, phone, website, statusMessage);
 			}
 		});
 	}
+	
+	private void init() {
+		FriendConnectUser user = controller.getModel();
+		((EditText) findViewById(R.id.editTextEmail)).setText(user.getEmailAddress());
+		((EditText) findViewById(R.id.editTextName)).setText(user.getName());
+		((EditText) findViewById(R.id.editTextPhone)).setText(user.getPhone());
+		((EditText) findViewById(R.id.editTextWebsite)).setText(user.getWebsite());
+		((EditText) findViewById(R.id.editTextStatusMsg)).setText(user.getStatusMessage());
+	}
 
 	public void update(Observable observable, Object data) {
-		//close the activity??
+		//do nothing
 	}
 
 	public void onProgressChanged(String message) {
