@@ -118,7 +118,7 @@ public class UserDaoTest extends BaseTest {
 		assertFalse("Pending friend list should not contain friend", contains(pendingFriends, friend.getId()));	
 	}
 	
-	public void testSaveUser(){
+	public void testUpdateUser(){
 		userDao.saveUser(user);
 		
 		//retrieve it from DB
@@ -128,7 +128,7 @@ public class UserDaoTest extends BaseTest {
 		
 		//change name
 		persistedUser.setName("Matthias Braunhofer");
-		userDao.saveUser(persistedUser);
+		userDao.updateUser(persistedUser);
 		persistedUser = null;
 		
 		//retrieve again
