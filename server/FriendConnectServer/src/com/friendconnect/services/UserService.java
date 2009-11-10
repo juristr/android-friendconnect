@@ -88,7 +88,7 @@ public class UserService implements IUserService {
 	
 	@Override
 	public void updateUser(User user) {
-		userDao.saveUser(user);
+		userDao.updateUser(user);
 	}
 	
 	@Override

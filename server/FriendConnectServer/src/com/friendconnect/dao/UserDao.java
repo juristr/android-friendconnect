@@ -36,6 +36,27 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 	}
 	
 	@Override
+	public void updateUser(User user) {
+		PersistenceManager pm = getPersistenceManager();
+		try {
+			pm.currentTransaction().begin();
+			User storedUser = pm.getObjectById(User.class, user.getId());
+			storedUser.setEmailAddress(user.getEmailAddress());
+			storedUser.setName(user.getName());
+			storedUser.setPhone(user.getPhone());
+			storedUser.setWebsite(user.getWebsite());
+			storedUser.setStatusMessage(user.getStatusMessage());
+			storedUser.setOnline(user.isOnline());
+			storedUser.setPosition(user.getPosition());
+			pm.currentTransaction().commit();
+		} finally {
+			if (pm.currentTransaction().isActive()) {
+				pm.currentTransaction().rollback();
+			}
+		}
+	}
+	
+	@Override
 	public User getUserById(String userId) {
 		PersistenceManager pm = getPersistenceManager();
 		User user = pm.getObjectById(User.class, userId);
