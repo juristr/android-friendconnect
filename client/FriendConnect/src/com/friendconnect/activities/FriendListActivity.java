@@ -87,13 +87,7 @@ public class FriendListActivity extends Activity implements IView {
 		controller = IoC.getInstance(FriendListController.class);
 		controller.setLayoutId(R.layout.friendlistrowitem);
 		controller.registerView(this);
-
-		FriendConnectUser user = controller.getModel();
-		((TextView) findViewById(R.id.textViewMyUsername)).setText(user
-				.getEmailAddress());
-		((TextView) findViewById(R.id.textViewMyStatus)).setText(user
-				.getStatusMessage());
-
+		
 		adapter = controller.getAdapter(this);
 
 		listViewFriends.setAdapter(this.adapter);
@@ -184,10 +178,14 @@ public class FriendListActivity extends Activity implements IView {
 	public void update(final Observable observable, final Object data) {
 		handler.post(new Runnable() {
 			public void run() {
-				while (lock) {
-					adapter.notifyDataSetChanged();
-					listViewFriends.refreshDrawableState();
-				}
+				FriendConnectUser user = (FriendConnectUser)observable;
+				((TextView) findViewById(R.id.textViewMyUsername)).setText(user.getEmailAddress());
+				((TextView) findViewById(R.id.textViewMyStatus)).setText(user.getStatusMessage());
+				
+				while (lock);
+				
+				adapter.notifyDataSetChanged();
+				listViewFriends.refreshDrawableState();
 			}
 		});
 	}
@@ -230,7 +228,7 @@ public class FriendListActivity extends Activity implements IView {
 		// Assign icons
 		itemAddFriend.setIcon(R.drawable.menu_invite);
 		itemRemoveFriend.setIcon(R.drawable.menu_delete);
-		itemPendingInvitesList.setIcon(R.drawable.menu_invite);
+		itemPendingInvitesList.setIcon(R.drawable.menu_pendinginvites);
 		itemProfile.setIcon(R.drawable.menu_preferences);
 
 		// Allocate shortcuts to each of them.
