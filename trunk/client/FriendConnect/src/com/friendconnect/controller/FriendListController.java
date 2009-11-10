@@ -115,9 +115,8 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 	 * This method will be called by the FriendListActivity for removing
 	 * a friend from the friend list.
 	 */
-	public void removeFriend(int index) {
-		final User friend = model.getFriends().get(index);
-		Object[] params = {friend.getId()};
+	public void removeFriend(String friendId) {
+		Object[] params = {friendId};
 		xmlRPCService.sendRequest(RPCRemoteMappings.REMOVEFRIEND, params, new IAsyncCallback<Boolean>() {
 
 			public void onFailure(Throwable throwable) {
