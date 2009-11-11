@@ -87,16 +87,4 @@ public class EditProfileActivity extends Activity implements IView {
 	public void stopProgess() {
 		progressDialog.cancel();
 	}
-	
-	@Override
-	protected void onRestart() {
-		super.onRestart();
-		startService(new Intent(EditProfileActivity.this, FriendUpdateService.class));	
-	}
-	
-	@Override
-	protected void onStop() {
-		super.onStop();
-        stopService(new Intent(EditProfileActivity.this, FriendUpdateService.class));
-	}
 }

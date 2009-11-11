@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.friendconnect.R;
+import com.friendconnect.activities.FriendListActivity;
 import com.friendconnect.activities.LoginActivity;
 
 public class SplashScreenActivity extends Activity {
@@ -31,16 +32,25 @@ public class SplashScreenActivity extends Activity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        setContentView(R.layout.splash);
-        
-        /* New Handler to start the Menu-Activity
-         * and close this Splash-Screen after some seconds.*/
-        new Handler().postDelayed(new Runnable(){
-             public void run() {
-                  /* Create an Intent that will start the LoginActivity. */
-                  startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
-                  finish();
-             }
-        }, splashTime);
+		
+		FriendConnectApplication application = IoC.getInstance(FriendConnectApplication.class);
+		
+		if (application.getApplicationModel() == null) {
+		
+	        setContentView(R.layout.splash);
+	        
+	        /* New Handler to start the Menu-Activity
+	         * and close this Splash-Screen after some seconds.*/
+	        new Handler().postDelayed(new Runnable(){
+	             public void run() {
+	                  /* Create an Intent that will start the LoginActivity. */
+	                  startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
+	                  finish();
+	             }
+	        }, splashTime);
+		} else {
+			startActivity(new Intent(SplashScreenActivity.this, FriendListActivity.class));
+            finish();
+		}
 	}
 }
