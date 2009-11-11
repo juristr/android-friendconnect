@@ -23,7 +23,6 @@ import java.util.Observable;
 import com.friendconnect.xmlrpc.ComplexSerializableType;
 
 public class User extends Observable {
-	private static final long serialVersionUID = 1;
 	protected String id;
 	protected String emailAddress;
 	protected String phone;
@@ -130,10 +129,9 @@ public class User extends Observable {
 	}
 	
 	public String toString(){
-		if(emailAddress == null || emailAddress.equals("")){
-			return name;
-		}else{
+		if(name == null || name.equals(""))
 			return emailAddress;
-		}
+		
+		return name;
 	}
 }

@@ -89,10 +89,7 @@ public class FriendListActivity extends Activity implements IView {
 		controller.registerView(this);
 
 		FriendConnectUser user = controller.getModel();
-		((TextView) findViewById(R.id.textViewMyUsername)).setText(user
-				.getEmailAddress());
-		((TextView) findViewById(R.id.textViewMyStatus)).setText(user
-				.getStatusMessage());
+		showFriendConnectUserInfo(user);
 
 		adapter = controller.getAdapter(this);
 
@@ -108,6 +105,13 @@ public class FriendListActivity extends Activity implements IView {
 		registerForContextMenu(listViewFriends);
 
 		startService(new Intent(this, FriendUpdateService.class));
+	}
+	
+	private void showFriendConnectUserInfo(FriendConnectUser user){
+		((TextView) findViewById(R.id.textViewMyUsername)).setText(user
+				.toString());
+		((TextView) findViewById(R.id.textViewMyStatus)).setText(user
+				.getStatusMessage());
 	}
 
 	@Override
@@ -184,14 +188,11 @@ public class FriendListActivity extends Activity implements IView {
 	public void update(final Observable observable, final Object data) {
 		handler.post(new Runnable() {
 			public void run() {
-				FriendConnectUser user = (FriendConnectUser)observable;
-				((TextView) findViewById(R.id.textViewMyUsername)).setText(user.getEmailAddress());
-				((TextView) findViewById(R.id.textViewMyStatus)).setText(user.getStatusMessage());
+				showFriendConnectUserInfo((FriendConnectUser)observable);
 				
 				while (lock);
 				
 				adapter.notifyDataSetChanged();
-				listViewFriends.refreshDrawableState();
 			}
 		});
 	}
@@ -340,4 +341,5 @@ public class FriendListActivity extends Activity implements IView {
 	public FriendListController getController() {
 		return controller;
 	}
+	
 }
