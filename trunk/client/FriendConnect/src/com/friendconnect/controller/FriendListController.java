@@ -66,7 +66,6 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 						try {
 							objectHelper.syncObjectGraph(friendInModel, friend);
 						} catch (Exception ex) {
-							Log.e(objectHelper.getClass().getCanonicalName(), ex.getMessage());
 							onFailure(ex);
 						}
 					}

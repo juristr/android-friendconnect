@@ -28,11 +28,17 @@
 	<string name="uiMessageProvideEmailAddress">You have to provide an email address</string>
 	<string name="uiMessageLoginErrorTitle">Login</string>
 	<string name="uiMessageLoginErrorMsg">Ohps, it seems as if there has been a problem when logging you in!</string>
+	<string name="uiMessageAcceptingInvite">Accepting invite...</string>
+	<string name="uiMessageRejectingInvite">Rejecting invite...</string>
+	<string name="uiMessageLoadingInvites">Retrieving pending invites...</string>
 	<string name="uiMessageSaveProfile">Save Profile</string>
 	<string name="menuAddFriend">Add Friend</string>
 	<string name="menuRemoveFriend">Remove Friend</string>
 	<string name="menuPendingInvitesListView">Pending Invites</string>
 	<string name="menuEditProfile">Edit Profile</string>
+	<string name="menuAcceptInvite">Accept Invite</string>
+	<string name="menuRejectInvite">Reject Invite</string>
+	<string name="menuRefresh">Refresh</string>
 	<string name="invitation">FriendConnect Invitation</string>
 	<string name="sendInvite">Send Invite</string>
 	<string name="inviteFriend">Type the email address of the person you would like to invite:</string>

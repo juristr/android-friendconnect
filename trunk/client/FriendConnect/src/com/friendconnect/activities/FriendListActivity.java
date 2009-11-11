@@ -87,12 +87,14 @@ public class FriendListActivity extends Activity implements IView {
 		controller = IoC.getInstance(FriendListController.class);
 		controller.setLayoutId(R.layout.friendlistrowitem);
 		controller.registerView(this);
-		
-		adapter = controller.getAdapter(this);
-		
+
 		FriendConnectUser user = controller.getModel();
-		((TextView) findViewById(R.id.textViewMyUsername)).setText(user.getEmailAddress());
-		((TextView) findViewById(R.id.textViewMyStatus)).setText(user.getStatusMessage());
+		((TextView) findViewById(R.id.textViewMyUsername)).setText(user
+				.getEmailAddress());
+		((TextView) findViewById(R.id.textViewMyStatus)).setText(user
+				.getStatusMessage());
+
+		adapter = controller.getAdapter(this);
 
 		listViewFriends.setAdapter(this.adapter);
 		listViewFriends.setOnItemClickListener(new OnItemClickListener() {
@@ -252,7 +254,7 @@ public class FriendListActivity extends Activity implements IView {
 			return true;
 		}
 		case (REMOVE_FRIEND): {
-			doRemoveFriendActions();
+			doRemoveFriendActions(listViewFriends.getSelectedItemPosition());
 			return true;
 		}
 		case (PENDINGINVITES_LIST): {
@@ -285,18 +287,18 @@ public class FriendListActivity extends Activity implements IView {
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		super.onContextItemSelected(item);
+		
+		AdapterView.AdapterContextMenuInfo menuInfo;
+        menuInfo = (AdapterView.AdapterContextMenuInfo)
+        item.getMenuInfo();
+        int index = menuInfo.position;
+		
 		switch (item.getItemId()) {
 		case (REMOVE_FRIEND): {
 			progressDialog
 					.setMessage(getText(R.string.uiMessageRemovingFriend));
 			progressDialog.show();
-			// AdapterView.AdapterContextMenuInfo menuInfo;
-			// menuInfo = (AdapterView.AdapterContextMenuInfo)
-			// item.getMenuInfo();
-			// int index = menuInfo.position;
-
-//			controller.removeFriend(index);
-			doRemoveFriendActions();
+			doRemoveFriendActions(index);
 			return true;
 		}
 		}
@@ -304,14 +306,13 @@ public class FriendListActivity extends Activity implements IView {
 	}
 
 	/**
-	 * Does preparative actions for calling the controller's
-	 * removeFriend method
+	 * Does preparative actions for calling the controller's removeFriend method
 	 */
-	private void doRemoveFriendActions() {
+	private void doRemoveFriendActions(int index) {
 		progressDialog.setMessage(getText(R.string.uiMessageRemovingFriend));
 		progressDialog.show();
 
-		String userId = getFriendId();
+		String userId = getFriendId(index);
 		if (userId != null && !userId.equals("")) {
 			controller.removeFriend(userId);
 		}
@@ -323,11 +324,11 @@ public class FriendListActivity extends Activity implements IView {
 	 * 
 	 * @return the id of the friend to remove
 	 */
-	private String getFriendId() {
+	private String getFriendId(int index) {
 		String result;
 		lock = true;
 		try {
-			User user = (User) listViewFriends.getSelectedItem();
+			User user = (User) listViewFriends.getItemAtPosition(index);
 			result = user.getId();
 		} finally {
 			lock = false;
