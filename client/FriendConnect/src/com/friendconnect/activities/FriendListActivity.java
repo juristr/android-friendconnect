@@ -340,16 +340,4 @@ public class FriendListActivity extends Activity implements IView {
 	public FriendListController getController() {
 		return controller;
 	}
-	
-	@Override
-	protected void onRestart() {
-		super.onRestart();
-		startService(new Intent(FriendListActivity.this, FriendUpdateService.class));	
-	}
-	
-	@Override
-	protected void onStop() {
-		super.onStop();
-        stopService(new Intent(FriendListActivity.this, FriendUpdateService.class));
-	}
 }

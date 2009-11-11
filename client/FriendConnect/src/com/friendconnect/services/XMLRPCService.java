@@ -22,6 +22,7 @@ import java.net.URI;
 
 import org.xmlrpc.android.XMLRPCClient;
 
+import android.test.IsolatedContext;
 import android.util.Log;
 
 import com.friendconnect.main.IFriendConnectApplication;

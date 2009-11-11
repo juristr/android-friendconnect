@@ -38,6 +38,7 @@ public class FriendUpdateService extends Service {
 	private Timer timer;
 	private final int UPDATE_INTERVAL = 5000; // TODO make configurable??
 	private Handler mainHandler;
+//	private static boolean running = false;
 
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -48,15 +49,13 @@ public class FriendUpdateService extends Service {
 	@Override
 	public void onCreate() {
 		this.controller = IoC.getInstance(FriendListController.class);
-		this.timer = new Timer("FriendUpdateTimer");
 		this.mainHandler = new Handler();
+		this.timer = new Timer("FriendUpdateTimer");
+		timer.scheduleAtFixedRate(performUpdate, 0, UPDATE_INTERVAL);
 	}
 	
 	@Override
 	public void onStart(Intent intent, int startId) {
-		timer.cancel();
-		timer = new Timer("FriendUpdateTimer");
-		timer.scheduleAtFixedRate(performUpdate, 0, UPDATE_INTERVAL);
 	}
 	
 	private TimerTask performUpdate = new TimerTask() {	
