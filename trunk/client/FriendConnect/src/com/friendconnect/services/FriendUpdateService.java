@@ -38,7 +38,6 @@ public class FriendUpdateService extends Service {
 	private Timer timer;
 	private final int UPDATE_INTERVAL = 5000; // TODO make configurable??
 	private Handler mainHandler;
-//	private static boolean running = false;
 
 	@Override
 	public IBinder onBind(Intent arg0) {
