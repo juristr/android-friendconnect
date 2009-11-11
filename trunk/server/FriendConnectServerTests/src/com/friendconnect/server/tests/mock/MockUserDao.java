@@ -19,19 +19,32 @@
 package com.friendconnect.server.tests.mock;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.friendconnect.dao.IUserDao;
 import com.friendconnect.model.User;
 
 public class MockUserDao implements IUserDao {
-
+	
+	private Map<String, User> dummyUserStore = new HashMap<String, User>();
+	
+	
 	@Override
 	public void addFriend(String userId, String friendId) {
+		User user = dummyUserStore.get(userId);
+		if(user.getFriends() == null)
+			user.setFriends(new ArrayList<String>());
+		user.getFriends().add(friendId);
 	}
 
 	@Override
 	public void addPendingFriend(String userId, String friendId) {
+		User user = dummyUserStore.get(userId);
+		if(user.getPendingFriends() == null)
+			user.setPendingFriends(new ArrayList<String>());
+		user.getPendingFriends().add(friendId);
 	}
 
 	@Override
@@ -41,37 +54,55 @@ public class MockUserDao implements IUserDao {
 
 	@Override
 	public List<User> getPendingFriends(String userId) {
-		return new ArrayList<User>();
+		List<User> result = new ArrayList<User>();
+		List<String> pendingFriends =  dummyUserStore.get(userId).getPendingFriends();
+		for (String id : pendingFriends) {
+			result.add(dummyUserStore.get(id));
+		}
+		
+		return result;
 	}
 
 	@Override
 	public User getUserByEmailAddress(String emailAddress) {
+		for (User user : dummyUserStore.values()) {
+			if(user.getEmailAddress().equals(emailAddress))
+				return user;
+		}
 		return null;
 	}
 
 	@Override
 	public User getUserById(String userId) {
-		return null;
+		return dummyUserStore.get(userId);
 	}
 
 	@Override
 	public void removeFriend(String userId, String friendId) {
+		User user = dummyUserStore.get(userId);
+		user.getFriends().remove(friendId);
 	}
 
 	@Override
 	public void removePendingFriend(String userId, String friendId) {
+		User user = dummyUserStore.get(userId);
+		user.getPendingFriends().remove(friendId);
 	}
 
 	@Override
 	public void removeUser(String userId) {
+		dummyUserStore.remove(userId);
 	}
 	
 	@Override
 	public void updateUser(User user) {
+		dummyUserStore.remove(user.getId());
+		dummyUserStore.put(user.getId(), user);
 	}
 
 	@Override
 	public void saveUser(User user) {
+		dummyUserStore.put(user.getId(), user);
 	}
 
 	@Override

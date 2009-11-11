@@ -20,6 +20,7 @@ package com.friendconnect.server.tests.services;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -95,5 +96,103 @@ public class UserServiceTest extends TestCase {
 		List<User> friends = userService.getGoogleContacts(emailAddress, user.getToken());
 		
 		assertNotNull("List should not be null", friends);		
+	}
+	
+	public void testAddFriendInvite(){
+		User user = new User();
+		user.setId("12kl31j3kl12j3l13jjl1j32lk13o17");
+		user.setName("Juri");
+		user.setEmailAddress("android@gmail.com");
+		
+		User friend = new User();
+		friend.setId("daisdofu02198123akjsf7a07129013slf70");
+		friend.setName("Matthias");
+		friend.setEmailAddress("someother@gmail.com");
+		
+		mockUserDao.saveUser(user);
+		mockUserDao.saveUser(friend);
+		
+		userService.addFriendInvite(user.getId(), friend.getEmailAddress());
+		
+		//check
+		List<String> pendingFriends =  friend.getPendingFriends();
+		assertNotNull(pendingFriends);
+		assertTrue("the friend should contain the user in the pending list", pendingFriends.contains(user.getId()));
+		
+	}
+	
+	public void testRejectFriendInvite(){
+		User user = new User();
+		user.setId("12kl31j3kl12j3l13jjl1j32lk13o17");
+		user.setName("Juri");
+		user.setEmailAddress("android@gmail.com");
+		
+		User friend = new User();
+		friend.setId("daisdofu02198123akjsf7a07129013slf70");
+		friend.setName("Matthias");
+		friend.setEmailAddress("someother@gmail.com");
+		friend.setPendingFriends(new ArrayList<String>());
+		friend.getPendingFriends().add(user.getId());
+		
+		mockUserDao.saveUser(user);
+		mockUserDao.saveUser(friend);
+		
+		assertTrue("The user should be in the list of pending friends", friend.getPendingFriends().contains(user.getId()));
+		
+		//reject the user from the pending list
+		userService.rejectFriendInvite(friend.getId(), user.getId());
+		assertFalse("The user should be in the list of pending friends", friend.getPendingFriends().contains(user.getId()));
+	}
+	
+	public void testGetPendingInvites(){
+		User user = new User();
+		user.setId("12kl31j3kl12j3l13jjl1j32lk13o17");
+		user.setName("Juri");
+		user.setEmailAddress("android@gmail.com");
+		
+		User friend = new User();
+		friend.setId("daisdofu02198123akjsf7a07129013slf70");
+		friend.setName("Matthias");
+		friend.setEmailAddress("someother@gmail.com");
+		friend.setPendingFriends(new ArrayList<String>());
+		friend.getPendingFriends().add(user.getId());
+		
+		mockUserDao.saveUser(user);
+		mockUserDao.saveUser(friend);
+		
+		
+		List<User> pendingInvites = userService.getPendingInvites(friend.getId());
+		boolean found = false;
+		for (User invitedUser : pendingInvites) {
+			if(invitedUser.getId().equals(user.getId())){
+				found = true;
+				break;
+			}
+		}
+		
+		assertTrue("The user should be in the list of pending friends", found);
+	}
+	
+	public void testAddFriend(){
+		User user = new User();
+		user.setId("12kl31j3kl12j3l13jjl1j32lk13o17");
+		user.setName("Juri");
+		user.setEmailAddress("android@gmail.com");
+		
+		User friend = new User();
+		friend.setId("daisdofu02198123akjsf7a07129013slf70");
+		friend.setName("Matthias");
+		friend.setEmailAddress("someother@gmail.com");
+		friend.setPendingFriends(new ArrayList<String>());
+		friend.getPendingFriends().add(user.getId());
+		
+		mockUserDao.saveUser(user);
+		mockUserDao.saveUser(friend);
+		assertTrue("The user should be in the list of pending friends", friend.getPendingFriends().contains(user.getId()));
+		
+		userService.acceptFriendInvite(friend.getId(), user.getId());
+		
+		assertTrue("The user should be in the list of friends", friend.getFriends().contains(user.getId()));
+		assertFalse("The user should be in the list of pending friends", friend.getPendingFriends().contains(user.getId()));		
 	}
 }
