@@ -112,13 +112,8 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 		return pendingFriends;
 	}
 	
-	@Override
+	@Override	
 	public void addFriend(String userId, String friendId) {
-		addFriendTo(userId, friendId);
-		addFriendTo(friendId, userId);
-	}
-	
-	private void addFriendTo(String userId, String friendId) {
 		PersistenceManager pm = getPersistenceManager();
 		try {
 			pm.currentTransaction().begin();

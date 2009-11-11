@@ -37,7 +37,7 @@ public interface IUserService {
 	 * @throws AuthenticationException
 	 * @throws JDOException
 	 */
-	public User authenticate(String username, String password) throws AuthenticationException, JDOException;
+	public User authenticate(String username, String password) throws AuthenticationException;
 
 	/**
 	 * Validates the received token against the user id. This method will
@@ -46,21 +46,21 @@ public interface IUserService {
 	 * @param token the user token
 	 * @return
 	 */
-	public boolean validateToken(String userId, String token) throws JDOException;
+	public boolean validateToken(String userId, String token);
 	
 	/**
 	 * Returns the list of friends for a certain user
 	 * @param userId the id of the user
 	 * @return
 	 */
-	public List<User> getFriends(String userId) throws JDOException;
+	public List<User> getFriends(String userId);
 	
 	/**
 	 * Adds a friend to the friend list of a certain user
 	 * @param userId the id of the user
 	 * @param friendId the id of the friend to add
 	 */
-	public void addFriend(String userId, String friendId) throws JDOException;
+	public void acceptFriendInvite(String userId, String friendId);
 	
 	/**
 	 * Removes a friend from the friend list of a certain user
@@ -68,7 +68,21 @@ public interface IUserService {
 	 * @param friendId the id of the friend to remove
 	 * @throws JDOException
 	 */
-	public void removeFriend(String userId, String friendId) throws JDOException;
+	public void removeFriend(String userId, String friendId);
+
+	/**
+	 * Adds a new friend to the list of pending invites 
+	 * @param userId the user that will be added as pending friend invite
+	 * @param friendEmailAddress the friend to which the user with id userId will be added
+	 */
+	public void addFriendInvite(String userId, String friendEmailAddress);
+	
+	/**
+	 * Removes a friend from the list of pending invites
+	 * @param userId the user on which the pending invite should be deleted
+	 * @param friendId the friend which should be removed from the list of pending invites
+	 */
+	public void rejectFriendInvite(String userId, String friendId);
 	
 	/**
 	 * Updates the information of an existing FriendConnectUser
@@ -85,4 +99,6 @@ public interface IUserService {
 	 * @throws ServiceException
 	 */
 	public List<User> getGoogleContacts(String username, String token) throws IOException, ServiceException;
+
+	public List<User> getPendingInvites(String userId);
 }
