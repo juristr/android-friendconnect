@@ -35,5 +35,6 @@ public class AndroidApplication extends Application {
 	@Override
 	public void onTerminate() {
 		super.onTerminate();
+		//TODO stop service
 	}
 }

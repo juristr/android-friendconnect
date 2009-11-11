@@ -28,8 +28,11 @@ public class RPCRemoteMappings {
 
 	public static final String LOGIN = baseMapping + "login";
 	public static final String GETFRIENDS =  baseMapping + "getFriends";
-	public static final String INVITEFRIEND = baseMapping + "addFriend";
+	public static final String INVITEFRIEND = baseMapping + "addFriendInvite";
 	public static final String REMOVEFRIEND = baseMapping + "removeFriend";
 	public static final String UPDATEPROFILE = baseMapping + "updateUserProfile";
+	public static final String RETRIEVEPENDINGINVITES = baseMapping + "retrievePendingInvites";
+	public static final String ACCEPTINVITE = baseMapping + "acceptFriendInvite";
+	public static final String REJECTINVITE = baseMapping + "rejectFriendInvite";
 
 }

@@ -26,10 +26,12 @@ import com.friendconnect.xmlrpc.NotSerializable;
 public class FriendConnectUser extends User {
 	private List<User> friends;
 	private List<POIAlert> poiAlert;
+	private List<User> pendingInvites;
 	
 	public FriendConnectUser() {
 		this.friends = new ArrayList<User>();
 		this.poiAlert = new ArrayList<POIAlert>();
+		this.pendingInvites = new ArrayList<User>();
 	}
 
 	//TODO bad, could be modified without being able to notice
@@ -58,6 +60,29 @@ public class FriendConnectUser extends User {
 
 	public void setPoiAlert(List<POIAlert> poiAlert) {
 		this.poiAlert = poiAlert;
+	}
+
+	@NotSerializable
+	public List<User> getPendingInvites() {
+		return pendingInvites;
+	}
+
+//	public void setPendingInvites(List<User> pendingInvites) {
+//		this.pendingInvites = pendingInvites;
+//		setChanged();
+//		notifyObservers();		
+//	}
+	
+	public void addPendingInvite(User friend){
+		pendingInvites.add(friend);
+		setChanged();
+		notifyObservers();
+	}
+	
+	public void removePendingInvite(User friend) {
+		pendingInvites.remove(friend);
+		setChanged();
+		notifyObservers();
 	}
 
 }
