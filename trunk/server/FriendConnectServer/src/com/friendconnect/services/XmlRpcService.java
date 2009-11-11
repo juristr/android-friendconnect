@@ -22,48 +22,95 @@ public class XmlRpcService {
 	 * @param password
 	 * @return
 	 * @throws AuthenticationException
-	 * @throws InvocationTargetException 
-	 * @throws IllegalAccessException 
-	 * @throws IllegalArgumentException 
+	 * @throws InvocationTargetException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
 	 */
-	public Object login(String username, String password) throws AuthenticationException, IllegalArgumentException, IllegalAccessException, InvocationTargetException{
+	public Object login(String username, String password)
+			throws AuthenticationException, IllegalArgumentException,
+			IllegalAccessException, InvocationTargetException {
 		User user = null;
 		user = userService.authenticate(username, password);
-		
+
 		return serializer.serialize(user);
 	}
-	
-	public List getFriends(String userId, String token) throws IOException, IllegalArgumentException,
-			IllegalAccessException, InvocationTargetException {
-		 List result = new ArrayList();
+
+	public List getFriends(String userId, String token) throws IOException,
+			IllegalArgumentException, IllegalAccessException,
+			InvocationTargetException {
+		List result = new ArrayList();
 
 		ObjectSerializer serializer = new ObjectSerializer();
 
-		boolean isAuthenticated =  userService.validateToken(userId, token);
+		boolean isAuthenticated = userService.validateToken(userId, token);
 		if (isAuthenticated) {
 			List<User> friends = userService.getFriends(userId);
 
 			// serialize
 			for (User friend : friends) {
-				//erase token s.t. it is not send to clients
+				// erase token s.t. it is not send to clients
 				friend.setToken(null);
 				result.add(serializer.serialize(friend));
 			}
 		} else {
-			//TODO throw Exception
+			// TODO throw Exception
 		}
 
 		return result;
 	}
-	
-	public boolean addFriend(String userId, String token, String friendEmailAddress) {
+
+	public List retrievePendingInvites(String userId, String token) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+		List result = new ArrayList();
+
+		ObjectSerializer serializer = new ObjectSerializer();
+
+		boolean isAuthenticated = userService.validateToken(userId, token);
+		if (isAuthenticated) {
+			List<User> friends = userService.getPendingInvites(userId);
+
+			// serialize
+			for (User friend : friends) {
+				// erase token s.t. it is not send to clients
+				friend.setToken(null);
+				result.add(serializer.serialize(friend));
+			}
+		} else {
+			// TODO throw Exception
+		}
+
+		return result;
+
+	}
+
+	public boolean addFriendInvite(String userId, String token,
+			String friendEmailAddress) {
 		if (userService.validateToken(userId, token)) {
-			userService.addFriend(userId, friendEmailAddress);
+			userService.addFriendInvite(userId, friendEmailAddress);
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean rejectFriendInvite(String userId, String token,
+			String friendIdToReject) {
+		if (userService.validateToken(userId, token)) {
+			userService.rejectFriendInvite(userId, friendIdToReject);
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean acceptFriendInvite(String userId, String token,
+			String friendId) {
+		if (userService.validateToken(userId, token)) {
+			userService.acceptFriendInvite(userId, friendId);
 			return true;
 		}
 		return false;
 	}
-	
+
 	public boolean removeFriend(String userId, String token, String friendId) {
 		if (userService.validateToken(userId, token)) {
 			userService.removeFriend(userId, friendId);
@@ -71,20 +118,22 @@ public class XmlRpcService {
 		}
 		return false;
 	}
-	
-	public boolean updateUserProfile(String userId, String token, Map<String, Object> userData) throws IllegalArgumentException, NoSuchMethodException, InvocationTargetException, IllegalAccessException{
-		if(userService.validateToken(userId, token)){
+
+	public boolean updateUserProfile(String userId, String token,
+			Map<String, Object> userData) throws IllegalArgumentException,
+			NoSuchMethodException, InvocationTargetException,
+			IllegalAccessException {
+		if (userService.validateToken(userId, token)) {
 			User userToSave = serializer.deSerialize(userData, User.class);
 			userService.updateUser(userToSave);
 			return true;
 		}
-		
+
 		return false;
 	}
-	
 
 	/* Getters and setters */
-	
+
 	public IUserService getUserService() {
 		return userService;
 	}
