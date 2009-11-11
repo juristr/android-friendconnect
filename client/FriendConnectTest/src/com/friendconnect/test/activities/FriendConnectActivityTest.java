@@ -10,14 +10,14 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.friendconnect.R;
-import com.friendconnect.main.FriendConnectActivity;
+import com.friendconnect.activities.LoginActivity;
 
 public class FriendConnectActivityTest extends
-		ActivityUnitTestCase<FriendConnectActivity> {
+		ActivityUnitTestCase<LoginActivity> {
 	private Intent startIntent;
 
 	public FriendConnectActivityTest() {
-		super(FriendConnectActivity.class);
+		super(LoginActivity.class);
 	}
 
 	@Override
