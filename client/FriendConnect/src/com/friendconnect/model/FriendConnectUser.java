@@ -20,10 +20,12 @@ package com.friendconnect.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import com.friendconnect.xmlrpc.NotSerializable;
 
-public class FriendConnectUser extends User {
+public class FriendConnectUser extends User implements Observer {
 	private List<User> friends;
 	private List<POIAlert> poiAlert;
 	private List<User> pendingInvites;
@@ -43,12 +45,14 @@ public class FriendConnectUser extends User {
 	
 	public void addFriend(User friend){
 		friends.add(friend);
+		friend.addObserver(this);
 		setChanged();
 		notifyObservers();
 	}
 	
 	public void removeFriend(User friend) {
 		friends.remove(friend);
+		friend.deleteObserver(this);
 		setChanged();
 		notifyObservers();
 	}
@@ -81,6 +85,11 @@ public class FriendConnectUser extends User {
 	
 	public void removePendingInvite(User friend) {
 		pendingInvites.remove(friend);
+		setChanged();
+		notifyObservers();
+	}
+
+	public void update(Observable observable, Object data) {
 		setChanged();
 		notifyObservers();
 	}

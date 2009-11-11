@@ -59,7 +59,7 @@ public class EditProfileActivity extends Activity implements IView {
 				String website = ((EditText) findViewById(R.id.editTextWebsite)).getText().toString();
 				String statusMessage = ((EditText) findViewById(R.id.editTextStatusMsg)).getText().toString();
 
-				progressDialog.setMessage(getText(R.string.uiMessageLogin));
+				progressDialog.setMessage(getText(R.string.uiMessageSavingProfile));
 				progressDialog.show();
 
 				controller.saveProfile(name, phone, website, statusMessage);

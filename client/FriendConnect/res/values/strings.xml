@@ -31,6 +31,7 @@
 	<string name="uiMessageAcceptingInvite">Accepting invite...</string>
 	<string name="uiMessageRejectingInvite">Rejecting invite...</string>
 	<string name="uiMessageLoadingInvites">Retrieving pending invites...</string>
+	<string name="uiMessageSavingProfile">Saving profile...</string>
 	<string name="uiMessageSaveProfile">Save Profile</string>
 	<string name="menuAddFriend">Add Friend</string>
 	<string name="menuRemoveFriend">Remove Friend</string>

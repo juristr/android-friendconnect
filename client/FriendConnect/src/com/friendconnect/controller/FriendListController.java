@@ -61,6 +61,7 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 					if(friendInModel == null){
 						//new friend
 						model.addFriend(friend);
+						
 					}else{
 						//sync properties
 						try {
