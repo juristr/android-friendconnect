@@ -63,10 +63,8 @@ public class User {
 	@Embedded
 	private Location position;
 	
-	@Persistent(defaultFetchGroup = "true")
 	private List<String> friends;
     
-	@Persistent(defaultFetchGroup = "true")
     private List<String> pendingFriends;
 	
 	public User() {	
