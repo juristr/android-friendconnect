@@ -16,7 +16,7 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.xmlrpc;
+package com.friendconnect.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

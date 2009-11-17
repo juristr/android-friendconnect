@@ -16,7 +16,7 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.xmlrpc;
+package com.friendconnect.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -24,11 +24,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marker annotation for detecting complex serializable types
+ * Marker annotation for detecting properties which should not be synched recursively
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface ComplexSerializableType {
-	public Class clazz();
+public @interface NotRecursiveSync {
 }

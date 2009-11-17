@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import com.friendconnect.xmlrpc.NotSerializable;
+import com.friendconnect.annotations.NotSerializable;
 
 public class FriendConnectUser extends User implements Observer {
 	private List<User> friends;

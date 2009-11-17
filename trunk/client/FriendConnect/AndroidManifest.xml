@@ -4,6 +4,7 @@
       android:versionCode="1"
       android:versionName="1.0">
     <application android:name=".main.AndroidApplication" android:icon="@drawable/icon" android:label="@string/app_name">
+    	<uses-library android:name="com.google.android.maps"/>
         <activity android:clearTaskOnLaunch="true" android:label="@string/app_name" android:name=".main.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -14,6 +15,7 @@
 		<activity android:name=".activities.FriendListActivity" android:label="@string/app_name"/>
 		<activity android:name=".activities.PendingInvitesListActivity" android:label="@string/activityTitlePendingInvites"/>
 		<activity android:name=".activities.EditProfileActivity" android:label="@string/activityEditProfile"/>
+		<activity android:name=".activities.FriendMapActivity" android:label="@string/activityFriendMap"/>
 		<service android:name=".services.FriendUpdateService" android:enabled="true">
 			
 		</service>

@@ -46,11 +46,8 @@ public class LocationController extends AbstractController<FriendConnectUser> {
 	public BaseAdapter getAdapter(Context context) {
 		return null;
 	}
-
-	/* Getters and setters */
-	@Inject
-	public void setLocationService(final ILocationService locationService) {
-		this.locationService = locationService;
+	
+	public void startLocationTracking(){
 		handler = new Handler();
 		handler.post(new Runnable() {		
 			public void run() {
@@ -74,38 +71,37 @@ public class LocationController extends AbstractController<FriendConnectUser> {
 						}
 						model.getPosition().setLatitude(location.getLatitude());
 						model.getPosition().setLongitude(location.getLongitude());
-						xmlRPCService.sendRequest(RPCRemoteMappings.UPDATE_USERLOCATION, null, new IAsyncCallback<Boolean>() {
-							public void onFailure(Throwable throwable) {
-								Log.e(LocationController.class.getCanonicalName(), throwable.getMessage());
-							}
-
-							public void onSuccess(Boolean result) {
-								if (!result) {
-									onFailure(new Exception("Sending of location was successful!"));
-								}
-							}
-						}, Boolean.class);
+//						xmlRPCService.sendRequest(RPCRemoteMappings.UPDATE_USERLOCATION, null, new IAsyncCallback<Boolean>() {
+//							public void onFailure(Throwable throwable) {
+//								Log.e(LocationController.class.getCanonicalName(), throwable.getMessage());
+//							}
+//
+//							public void onSuccess(Boolean result) {
+//								if (!result) {
+//									onFailure(new Exception("Sending of location was successful!"));
+//								}
+//							}
+//						}, Boolean.class);
 					}
 				});
 			}
 		});
 	}
-
-	public ILocationService getLocationService() {
-		return locationService;
-	}
 	
+	/* Getters */
 	@Inject
 	public void setApplication(IFriendConnectApplication application) {
 		registerModel(application.getApplicationModel());
 	}
 
-	public IXMLRPCService getXmlRPCService() {
-		return xmlRPCService;
-	}
-	
 	@Inject
 	public void setXmlRPCService(IXMLRPCService xmlRPCService) {
 		this.xmlRPCService = xmlRPCService;
 	}
+	
+	@Inject
+	public void setLocationService(final ILocationService locationService) {
+		this.locationService = locationService;
+	}
+
 }

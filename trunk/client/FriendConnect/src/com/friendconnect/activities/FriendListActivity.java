@@ -56,6 +56,7 @@ public class FriendListActivity extends Activity implements IView {
 	private static final int REMOVE_FRIEND = Menu.FIRST + 1;
 	private static final int PENDINGINVITES_LIST = Menu.FIRST + 2;
 	private static final int PROFILE = Menu.FIRST + 3;
+	private static final int MAP_VIEW = Menu.FIRST + 4;
 
 	private boolean lock = false;
 
@@ -233,12 +234,15 @@ public class FriendListActivity extends Activity implements IView {
 				Menu.NONE, this.getString(R.string.menuPendingInvitesListView));
 		MenuItem itemProfile = menu.add(3, PROFILE, Menu.NONE, this
 				.getString(R.string.menuEditProfile));
+		MenuItem itemMapView = menu.add(4, MAP_VIEW, Menu.NONE, this
+				.getString(R.string.menuMapView));
 
 		// Assign icons
 		itemAddFriend.setIcon(R.drawable.menu_invite);
 		itemRemoveFriend.setIcon(R.drawable.menu_delete);
 		itemPendingInvitesList.setIcon(R.drawable.menu_pendinginvites);
 		itemProfile.setIcon(R.drawable.menu_preferences);
+		itemMapView.setIcon(R.drawable.menu_mapmode);
 
 		// Allocate shortcuts to each of them.
 		itemAddFriend.setShortcut('0', 'a');
@@ -270,6 +274,11 @@ public class FriendListActivity extends Activity implements IView {
 					EditProfileActivity.class));
 			return true;
 		}
+		case (MAP_VIEW): {
+			startActivity(new Intent(FriendListActivity.this,
+					FriendMapActivity.class));
+			return true;
+		}		
 		}
 		return false;
 	}
