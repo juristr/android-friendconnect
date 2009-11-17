@@ -27,6 +27,7 @@ import java.util.Properties;
 import junit.framework.TestCase;
 
 import com.friendconnect.dao.IUserDao;
+import com.friendconnect.model.Location;
 import com.friendconnect.model.User;
 import com.friendconnect.server.tests.mock.MockUserDao;
 import com.friendconnect.server.tests.utils.PropsUtils;
@@ -194,5 +195,28 @@ public class UserServiceTest extends TestCase {
 		
 		assertTrue("The user should be in the list of friends", friend.getFriends().contains(user.getId()));
 		assertFalse("The user should be in the list of pending friends", friend.getPendingFriends().contains(user.getId()));		
+	}
+	
+	public void testUpdateUserLocation(){
+		User user = new User();
+		user.setId("12kl31j3kl12j3l13jjl1j32lk13o17");
+		user.setName("Juri");
+		user.setEmailAddress("android@gmail.com");
+		
+		mockUserDao.saveUser(user); //init
+		assertNull(user.getPosition());
+		
+		Location location = new Location();
+		location.setLatitude(123.39);
+		location.setLongitude(12.3);
+		user.setPosition(location);
+		
+		userService.updateUser(user);
+		
+		User updatedUser = mockUserDao.getUserById(user.getId());
+		assertNotNull(updatedUser);
+		assertNotNull(updatedUser.getPosition());
+		assertEquals(location.getLatitude(), updatedUser.getPosition().getLatitude());
+		assertEquals(location.getLongitude(), updatedUser.getPosition().getLongitude());
 	}
 }
