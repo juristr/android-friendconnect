@@ -16,33 +16,39 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.main;
+package com.friendconnect.services;
 
-import com.friendconnect.services.ILocationService;
-import com.friendconnect.services.LocationService;
+import android.location.LocationManager;
 
-import android.app.Application;
-import android.content.Context;
+import com.friendconnect.model.Location;
+import com.google.inject.Singleton;
 
-public class AndroidApplication extends Application {
-	private ILocationService locationService;
-
-	@Override
-	public void onCreate() {
-		super.onCreate();
-		String location_context = Context.LOCATION_SERVICE;
-		locationService = IoC.getInstance(LocationService.class);
-		locationService.setSystemService(getSystemService(location_context));
+@Singleton
+public class LocationService implements ILocationService {
+	private LocationManager locationManager;
+	private String provider; 
+	
+	public LocationService() {
+		provider = LocationManager.GPS_PROVIDER;
 	}
 	
-	@Override
-	public void onLowMemory() {
-		super.onLowMemory();
+	public Location getLocation() {
+		android.location.Location loc = locationManager.getLastKnownLocation(provider);
+		Location location = new Location();
+		location.setLatitude(loc.getLatitude());
+		location.setLongitude(loc.getLongitude());
+		return location;
 	}
 	
-	@Override
-	public void onTerminate() {
-		super.onTerminate();
-		//TODO stop service
+	public String getProvider() {
+		return provider;
+	}
+
+	public void setSystemService(Object systemService) {
+		locationManager = (LocationManager)systemService;
+	}
+	
+	public LocationManager getLocationManager() {
+		return locationManager;
 	}
 }

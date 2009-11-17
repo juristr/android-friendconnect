@@ -19,10 +19,11 @@
 package com.friendconnect.model;
 
 import java.util.Observable;
+import java.util.Observer;
 
 import com.friendconnect.xmlrpc.ComplexSerializableType;
 
-public class User extends Observable {
+public class User extends Observable implements Observer {
 	protected String id;
 	protected String emailAddress;
 	protected String phone;
@@ -126,6 +127,9 @@ public class User extends Observable {
 	@ComplexSerializableType(clazz = Location.class)
 	public void setPosition(Location location) {
 		this.position = location;
+		if (location != null) {
+			location.addObserver(this);
+		}
 	}
 	
 	public String toString(){
@@ -133,5 +137,10 @@ public class User extends Observable {
 			return emailAddress;
 		
 		return name;
+	}
+
+	public void update(Observable observable, Object data) {
+		setChanged();
+		notifyObservers();
 	}
 }
