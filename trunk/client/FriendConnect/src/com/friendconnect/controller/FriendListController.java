@@ -39,8 +39,6 @@ import com.google.inject.Singleton;
 @Singleton
 public class FriendListController extends AbstractController<FriendConnectUser> {
 	private int layoutId;
-	@SuppressWarnings("unused")
-	private IFriendConnectApplication application;
 	private IXMLRPCService xmlRPCService;
 	private ObjectHelper objectHelper;
 
@@ -178,8 +176,6 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 
 	@Inject
 	public void setApplication(IFriendConnectApplication application) {
-		this.application = application;
 		this.registerModel(application.getApplicationModel());
 	}
-	
 }
