@@ -62,7 +62,7 @@ public class FriendUpdateService extends Service {
 		public void run() {
 			mainHandler.post(new Runnable(){
 				public void run() {
-					Log.i(FriendUpdateService.class.getCanonicalName(), "Starting new update!");
+					Log.i(FriendUpdateService.class.getCanonicalName(), "Fetching update from server");
 					controller.updateFriendList();	
 				};
 			});
@@ -74,11 +74,7 @@ public class FriendUpdateService extends Service {
 		if(timer != null)
 			timer.cancel();
 		
-		Log.i(getClass().getSimpleName(), "FriendUpdateService stopped");
-	}
-
-	public void setController(FriendListController controller) {
-		this.controller = controller;
+		Log.i(FriendUpdateService.class.getCanonicalName(), "Service stopped");
 	}
 
 }
