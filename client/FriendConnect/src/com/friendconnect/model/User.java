@@ -21,7 +21,7 @@ package com.friendconnect.model;
 import java.util.Observable;
 import java.util.Observer;
 
-import com.friendconnect.xmlrpc.ComplexSerializableType;
+import com.friendconnect.annotations.ComplexSerializableType;
 
 public class User extends Observable implements Observer {
 	protected String id;
@@ -124,11 +124,15 @@ public class User extends Observable implements Observer {
 		return this.position;
 	}
 
+	
 	@ComplexSerializableType(clazz = Location.class)
 	public void setPosition(Location location) {
+		Location oldLocation = this.position;
 		this.position = location;
-		if (location != null) {
-			location.addObserver(this);
+				
+		if(location != null && oldLocation != null && (location.getLatitude() != oldLocation.getLatitude() || location.getLongitude() != oldLocation.getLongitude())){
+			setChanged();
+			notifyObservers();			
 		}
 	}
 	

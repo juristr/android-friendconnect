@@ -24,6 +24,9 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.friendconnect.annotations.ComplexSerializableType;
+import com.friendconnect.annotations.NotSerializable;
+
 
 public class ObjectSerializer {
 	// private Class<T> clazz;

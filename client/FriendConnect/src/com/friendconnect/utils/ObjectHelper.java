@@ -18,10 +18,14 @@
 
 package com.friendconnect.utils;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.friendconnect.annotations.ComplexSerializableType;
+import com.friendconnect.annotations.NotRecursiveSync;
 
 /**
  * Compares and synchronizes two objects
@@ -64,9 +68,9 @@ public class ObjectHelper {
 			} else {
 				if (isComplexObjectType(method.getReturnType())) {
 					// complex object
-					if (valueOrig == null || valueNew == null) {
+					if (valueOrig == null || valueNew == null || isNotRecursiveSynchable(method)) {
 						setValue(method, original, valueNew);
-					} else {
+					} else {						
 						syncObjectGraph(valueOrig, valueNew);
 					}
 				} else {
@@ -80,7 +84,6 @@ public class ObjectHelper {
 				}
 			}
 		}
-
 	}
 
 	private void setValue(Method method, Object original, Object valueNew)
@@ -92,6 +95,28 @@ public class ObjectHelper {
 		setter.invoke(original, valueNew);
 	}
 
+	private boolean traverseRecursively(Method getter, Object original) throws SecurityException, NoSuchMethodException{
+		String setterName = "set" + getter.getName().replace("get", "");
+		Method setter = original.getClass().getMethod(setterName,
+				getter.getReturnType());
+		
+		return isNotRecursiveSynchable(setter);
+	}
+	
+	private boolean isNotRecursiveSynchable(Method method) {
+		return getNotRecursiveSyncAnnotation(method) != null;
+	}
+
+	private Annotation getNotRecursiveSyncAnnotation(Method method) {
+		Annotation[] annotations = method.getAnnotations();
+		for (Annotation annotation : annotations) {
+			if (annotation instanceof NotRecursiveSync)
+				return annotation;
+		}
+
+		return null;
+	}
+	
 	/**
 	 * Determines whether an object is of a complex type. This is done with a
 	 * "hack" by verifying whether it is inside the package "com.friendconnect"
