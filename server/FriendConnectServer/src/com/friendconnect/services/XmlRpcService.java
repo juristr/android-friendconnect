@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.friendconnect.model.Location;
 import com.friendconnect.model.User;
 import com.friendconnect.xmlrpc.ObjectSerializer;
 import com.google.gdata.util.AuthenticationException;
@@ -64,8 +65,7 @@ public class XmlRpcService {
 
 		ObjectSerializer serializer = new ObjectSerializer();
 
-		boolean isAuthenticated = userService.validateToken(userId, token);
-		if (isAuthenticated) {
+		if (userService.validateToken(userId, token)) {
 			List<User> friends = userService.getPendingInvites(userId);
 
 			// serialize
@@ -129,6 +129,16 @@ public class XmlRpcService {
 			return true;
 		}
 
+		return false;
+	}
+	
+	public boolean updateUserLocation(String userId, String token, Map<String, Object> locationData) throws IllegalArgumentException, NoSuchMethodException, InvocationTargetException, IllegalAccessException{
+		if(userService.validateToken(userId, token)){
+			Location userLocation = serializer.deSerialize(locationData, Location.class);
+			userService.updateUserLocation(userId, userLocation);
+			return true;
+		}
+		
 		return false;
 	}
 

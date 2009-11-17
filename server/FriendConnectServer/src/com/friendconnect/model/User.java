@@ -59,14 +59,14 @@ public class User {
 	@Persistent
 	private String statusMessage;
 	
-	@Persistent
+	@Persistent(defaultFetchGroup = "true")
 	@Embedded
 	private Location position;
 	
-	@Persistent(defaultFetchGroup = "true")
+	@Persistent
 	private List<String> friends;
     
-	@Persistent(defaultFetchGroup = "true")
+	@Persistent
     private List<String> pendingFriends;
 	
 	public User() {	
