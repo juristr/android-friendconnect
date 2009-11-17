@@ -23,9 +23,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jdo.JDOException;
-
 import com.friendconnect.dao.IUserDao;
+import com.friendconnect.model.Location;
 import com.friendconnect.model.User;
 import com.google.gdata.client.GoogleService;
 import com.google.gdata.client.GoogleAuthTokenFactory.UserToken;
@@ -110,6 +109,14 @@ public class UserService implements IUserService {
 
 	@Override
 	public void updateUser(User user) {
+		userDao.updateUser(user);
+	}
+	
+	@Override
+	public void updateUserLocation(String userId, Location userLocation){
+		User user = userDao.getUserById(userId);
+		user.setPosition(userLocation);
+		
 		userDao.updateUser(user);
 	}
 

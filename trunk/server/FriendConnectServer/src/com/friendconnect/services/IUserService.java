@@ -23,6 +23,7 @@ import java.util.List;
 
 import javax.jdo.JDOException;
 
+import com.friendconnect.model.Location;
 import com.friendconnect.model.User;
 import com.google.gdata.util.AuthenticationException;
 import com.google.gdata.util.ServiceException;
@@ -89,6 +90,14 @@ public interface IUserService {
 	 * @param user the {@link User} to be updated
 	 */
 	public void updateUser(User user);
+	
+	
+	/**
+	 * 
+	 * @param userId
+	 * @param userLocation
+	 */
+	public void updateUserLocation(String userId, Location userLocation);
 	
 	/**
 	 * Fetches all the Google contacts for a certain user
