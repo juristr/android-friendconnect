@@ -28,10 +28,10 @@ public class ObjectHelperTest extends TestCase {
 		original.setId("1");
 		original.setName("Juri Strumpflohner");
 		original.setStatusMessage("testing...");
-		Location location = new Location();
-		location.setLatitude(12.4);
-		location.setLongitude(112.4);
-		original.setPosition(location);
+//		Location location = new Location();
+//		location.setLatitude(12.4);
+//		location.setLongitude(112.4);
+//		original.setPosition(location);
 
 		User updatedRecord = new User();
 		updatedRecord.setId("1");
