@@ -154,6 +154,8 @@ public class FriendListActivity extends Activity implements IView {
 					.setText(selectedUser.getPhone());
 			((TextView) dialog.findViewById(R.id.textViewEmail))
 					.setText(selectedUser.getEmailAddress());
+			((TextView) dialog.findViewById(R.id.textViewWebsite))
+					.setText(selectedUser.getWebsite());
 			((TextView) dialog.findViewById(R.id.textViewStatusmessage))
 					.setText(selectedUser.getStatusMessage());
 			break;
