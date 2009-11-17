@@ -24,6 +24,7 @@ import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManagerFactory;
 
 import com.friendconnect.dao.UserDao;
+import com.friendconnect.model.Location;
 import com.friendconnect.model.User;
 import com.friendconnect.server.tests.utils.BaseTest;
 
@@ -130,6 +131,24 @@ public class UserDaoTest extends BaseTest {
 		assertNotNull(persistedUser);
 		assertEquals("Matthias Braunhofer", persistedUser.getName());
 		
+	}
+	
+	public void testUpdateUserLocation(){
+		userDao.saveUser(user);
+		
+		assertNull("The user's position should be null initially.",user.getPosition());
+		
+		Location location = new Location();
+		location.setLatitude(123.39);
+		location.setLongitude(12.3);
+		user.setPosition(location);		
+		userDao.updateUser(user);
+		
+		User persisted = userDao.getUserById(user.getId());
+		assertNotNull(persisted);
+		assertNotNull("The location shouldn't be null", persisted.getPosition());
+		assertEquals("The location's latitude should match", location.getLatitude(), persisted.getPosition().getLatitude());
+		assertEquals("The location's longitude should match", location.getLongitude(), persisted.getPosition().getLongitude());		
 	}
 	
 	private boolean contains(List<User> users, String userId) {
