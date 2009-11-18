@@ -45,6 +45,7 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 			storedUser.setName(user.getName());
 			storedUser.setPhone(user.getPhone());
 			storedUser.setWebsite(user.getWebsite());
+			storedUser.setToken(user.getToken());
 			storedUser.setStatusMessage(user.getStatusMessage());
 			storedUser.setOnline(user.isOnline());
 			storedUser.setPosition(user.getPosition());
