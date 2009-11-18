@@ -51,12 +51,17 @@ public class UserService implements IUserService {
 		String token = auth_token.getValue();
 		User user = userDao.getUserByEmailAddress(username);
 		if (user == null) {
+			//TODO Here comes my fix
 			user = new User();
 			user.setEmailAddress(username);
+			user.setToken(token);
+			user.setOnline(true);
+			userDao.saveUser(user);
+		} else {
+			user.setToken(token);
+			user.setOnline(true);
+			userDao.updateUser(user);
 		}
-		user.setToken(token);
-		user.setOnline(true);
-		userDao.saveUser(user);
 		return user;
 	}
 
