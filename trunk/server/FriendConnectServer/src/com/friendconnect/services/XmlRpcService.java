@@ -19,127 +19,199 @@ public class XmlRpcService {
 	}
 
 	/**
-	 * @param username
-	 * @param password
-	 * @return
+	 * RPC method to retrieve a user object by passing username and password
+	 * @param username the username, i.e. the Google Account email of the user 
+	 * @param password the password, i.e. the Google Account password
+	 * @return user, if the authentication was successful
 	 * @throws AuthenticationException
-	 * @throws InvocationTargetException
-	 * @throws IllegalAccessException
 	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
 	 */
-	public Object login(String username, String password)
-			throws AuthenticationException, IllegalArgumentException,
-			IllegalAccessException, InvocationTargetException {
-		User user = null;
-		user = userService.authenticate(username, password);
-
+	public Object login(String username, String password) throws AuthenticationException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+		User user = userService.authenticate(username, password);
 		return serializer.serialize(user);
 	}
-
-	public List getFriends(String userId, String token) throws IOException,
-			IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-		List result = new ArrayList();
-
-		ObjectSerializer serializer = new ObjectSerializer();
-
-		boolean isAuthenticated = userService.validateToken(userId, token);
-		if (isAuthenticated) {
-			List<User> friends = userService.getFriends(userId);
-
-			// serialize
-			for (User friend : friends) {
-				// erase token s.t. it is not send to clients
-				friend.setToken(null);
-				result.add(serializer.serialize(friend));
-			}
-		} else {
-			// TODO throw Exception
-		}
-
-		return result;
-	}
-
-	public List retrievePendingInvites(String userId, String token) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		List result = new ArrayList();
-
-		ObjectSerializer serializer = new ObjectSerializer();
-
-		if (userService.validateToken(userId, token)) {
-			List<User> friends = userService.getPendingInvites(userId);
-
-			// serialize
-			for (User friend : friends) {
-				// erase token s.t. it is not send to clients
-				friend.setToken(null);
-				result.add(serializer.serialize(friend));
-			}
-		} else {
-			// TODO throw Exception
-		}
-
-		return result;
-
-	}
-
-	public boolean addFriendInvite(String userId, String token,
-			String friendEmailAddress) {
-		if (userService.validateToken(userId, token)) {
-			userService.addFriendInvite(userId, friendEmailAddress);
-			return true;
-		}
-
-		return false;
-	}
-
-	public boolean rejectFriendInvite(String userId, String token,
-			String friendIdToReject) {
-		if (userService.validateToken(userId, token)) {
-			userService.rejectFriendInvite(userId, friendIdToReject);
-			return true;
-		}
-
-		return false;
-	}
-
-	public boolean acceptFriendInvite(String userId, String token,
-			String friendId) {
-		if (userService.validateToken(userId, token)) {
-			userService.acceptFriendInvite(userId, friendId);
-			return true;
-		}
-		return false;
-	}
-
-	public boolean removeFriend(String userId, String token, String friendId) {
-		if (userService.validateToken(userId, token)) {
-			userService.removeFriend(userId, friendId);
-			return true;
-		}
-		return false;
-	}
-
-	public boolean updateUserProfile(String userId, String token,
-			Map<String, Object> userData) throws IllegalArgumentException,
-			NoSuchMethodException, InvocationTargetException,
-			IllegalAccessException {
-		if (userService.validateToken(userId, token)) {
-			User userToSave = serializer.deSerialize(userData, User.class);
-			userService.updateUser(userToSave);
-			return true;
-		}
-
-		return false;
-	}
 	
-	public boolean updateUserLocation(String userId, String token, Map<String, Object> locationData) throws IllegalArgumentException, NoSuchMethodException, InvocationTargetException, IllegalAccessException{
-		if(userService.validateToken(userId, token)){
-			Location userLocation = serializer.deSerialize(locationData, Location.class);
-			userService.updateUserLocation(userId, userLocation);
-			return true;
+	/**
+	 * Helper method that validates the user's token
+	 * @param userId
+	 * @param token
+	 * @throws AuthenticationException
+	 */
+	private void authenticateUser(String userId, String token) throws AuthenticationException {
+		if (!userService.validateToken(userId, token)) {
+			throw new AuthenticationException("Can't authenticate user: userid and/or token are invalid");
+		}
+	}
+
+	/**
+	 * RPC method to retrieve a list of serialized friends
+	 * @param userId the user id
+	 * @param token the user token
+	 * @return list of serialized friends
+	 * @throws IOException
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 * @throws AuthenticationException
+	 */
+	public List<Map<String, Object>> getFriends(String userId, String token) throws IOException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, AuthenticationException {	
+		// Authenticate user
+		authenticateUser(userId, token);
+		
+		// User has been successfully authenticated
+		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+		ObjectSerializer serializer = new ObjectSerializer();
+		List<User> friends = userService.getFriends(userId);
+
+		// serialize
+		for (User friend : friends) {
+			result.add(serializer.serialize(friend));
 		}
 		
-		return false;
+		return result;
+	}
+
+	/**
+	 * RPC method to retrieve a list of serialized pending friends
+	 * @param userId the user id
+	 * @param token the user token
+	 * @return list of serialized pending friends
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 * @throws AuthenticationException
+	 */
+	public List<Map<String, Object>> retrievePendingInvites(String userId, String token) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, AuthenticationException {
+		// Authenticate user
+		authenticateUser(userId, token);
+		
+		// User has been successfully authenticated
+		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+		ObjectSerializer serializer = new ObjectSerializer();
+		List<User> friends = userService.getPendingInvites(userId);
+
+		// serialize
+		for (User friend : friends) {
+			result.add(serializer.serialize(friend));
+		}
+		
+		return result;
+	}
+
+	/**
+	 * RPC method to invite a friend
+	 * @param userId the user id
+	 * @param token the user token
+	 * @param friendEmailAddress the e-mail address of the invited friend
+	 * @return true on success
+	 * @throws AuthenticationException
+	 */
+	public boolean addFriendInvite(String userId, String token, String friendEmailAddress) throws AuthenticationException {
+		// Authenticate user
+		authenticateUser(userId, token);
+		
+		// User has been successfully authenticated
+		userService.addFriendInvite(userId, friendEmailAddress);
+		
+		return true;
+	}
+
+	/**
+	 * RPC method to reject a friend request
+	 * @param userId the user id
+	 * @param token the user token
+	 * @param friendIdToReject the friend id
+	 * @return true on success
+	 * @throws AuthenticationException
+	 */
+	public boolean rejectFriendInvite(String userId, String token, String friendIdToReject) throws AuthenticationException {
+		// Authenticate user
+		authenticateUser(userId, token);
+		
+		// User has been successfully authenticated
+		userService.rejectFriendInvite(userId, friendIdToReject);
+		return true;
+	
+	}
+
+	/**
+	 * RPC method to accept a friend request
+	 * @param userId the user id
+	 * @param token the user token
+	 * @param friendId the friend id
+	 * @return true on success
+	 * @throws AuthenticationException
+	 */
+	public boolean acceptFriendInvite(String userId, String token, String friendId) throws AuthenticationException {
+		// Authenticate user
+		authenticateUser(userId, token);
+		
+		// User has been successfully authenticated
+		userService.acceptFriendInvite(userId, friendId);
+		return true;
+	}
+
+	/**
+	 * RPC method to remove a friend
+	 * @param userId the user id
+	 * @param token the user token
+	 * @param friendId the friend id
+	 * @return true on success
+	 * @throws AuthenticationException
+	 */
+	public boolean removeFriend(String userId, String token, String friendId) throws AuthenticationException {
+		// Authenticate user
+		authenticateUser(userId, token);
+		
+		// User has been successfully authenticated
+		userService.removeFriend(userId, friendId);
+		return true;
+	}
+
+	/**
+	 * RPC method to update a user profile
+	 * @param userId the user id
+	 * @param token the user token
+	 * @param userData the serialized user data
+	 * @return true on success
+	 * @throws IllegalArgumentException
+	 * @throws NoSuchMethodException
+	 * @throws InvocationTargetException
+	 * @throws IllegalAccessException
+	 * @throws AuthenticationException
+	 */
+	public boolean updateUserProfile(String userId, String token, Map<String, Object> userData) throws IllegalArgumentException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, AuthenticationException {
+		// Authenticate user
+		authenticateUser(userId, token);
+		
+		// User has been successfully authenticated
+		User userToSave = serializer.deSerialize(userData, User.class);
+		userService.updateUser(userToSave);
+		return true;
+	}
+	
+	/**
+	 * RPC method to update a user location
+	 * @param userId the user id
+	 * @param token the user token
+	 * @param locationData the serialized location data 
+	 * @return true on success
+	 * @throws IllegalArgumentException
+	 * @throws NoSuchMethodException
+	 * @throws InvocationTargetException
+	 * @throws IllegalAccessException
+	 * @throws AuthenticationException
+	 */
+	public boolean updateUserLocation(String userId, String token, Map<String, Object> locationData) throws IllegalArgumentException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, AuthenticationException{
+		// Authenticate user
+		authenticateUser(userId, token);
+		
+		// User has been successfully authenticated
+		Location userLocation = serializer.deSerialize(locationData, Location.class);
+		userService.updateUserLocation(userId, userLocation);
+		return true;
 	}
 
 	/* Getters and setters */

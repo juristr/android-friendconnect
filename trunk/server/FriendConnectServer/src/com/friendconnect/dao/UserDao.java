@@ -32,11 +32,14 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 	
 	@Override
 	public void saveUser(User user) {
-		getPersistenceManager().makePersistent(user);
+		if (user.getId() == null) {
+			getPersistenceManager().makePersistent(user);
+		} else {
+			updateUser(user);
+		}
 	}
 	
-	@Override
-	public void updateUser(User user) {
+	private void updateUser(User user) {
 		PersistenceManager pm = getPersistenceManager();
 		try {
 			pm.currentTransaction().begin();
@@ -93,6 +96,7 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 		if (user.getFriends() != null) {
 			for (String friendId : user.getFriends()) {
 				User friend = pm.getObjectById(User.class, friendId);
+				friend.setToken(null);
 				friends.add(friend);
 			}
 		}
@@ -107,6 +111,7 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 		if (user.getPendingFriends() != null) {
 			for (String pendingFriendEmailAddress : user.getPendingFriends()) {
 				User pendingFriend = pm.getObjectById(User.class, pendingFriendEmailAddress);
+				pendingFriend.setToken(null);
 				pendingFriends.add(pendingFriend);
 			}
 		}
