@@ -18,6 +18,8 @@
 
 package com.friendconnect.activities;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Observable;
 
 import android.os.Bundle;
@@ -30,15 +32,19 @@ import com.friendconnect.R;
 import com.friendconnect.controller.LocationController;
 import com.friendconnect.main.IoC;
 import com.friendconnect.model.FriendConnectUser;
+import com.friendconnect.model.User;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
+import com.google.android.maps.MyLocationOverlay;
+import com.google.android.maps.Overlay;
 
 public class FriendMapActivity extends MapActivity implements IView {
 	private MapView mapView;
 	private MapController mapController;
 	private LocationController controller;
+	private HashMap<String, FriendPositionOverlay> friendOverlays;
 	
 	
 	/** Called when the activity is first created. */
@@ -62,6 +68,12 @@ public class FriendMapActivity extends MapActivity implements IView {
 		this.controller = IoC.getInstance(LocationController.class);
 		this.controller.registerView(this);
 		this.controller.startLocationTracking();
+		
+		MyLocationOverlay myLocationOv = new MyLocationOverlay(this, mapView);
+		myLocationOv.enableMyLocation();
+		addOverlay(myLocationOv);
+		
+		this.friendOverlays = new HashMap<String, FriendPositionOverlay>();
 	}
 	
 	@Override
@@ -84,10 +96,14 @@ public class FriendMapActivity extends MapActivity implements IView {
 		return false;
 	}
 	
+	private void addOverlay(Overlay overlay){
+		List<Overlay> mapOverlays = mapView.getOverlays();
+		mapOverlays.add(overlay);
+	}
+	
 	private void navigateToPoint(double lat, double lng){
 		GeoPoint point = new GeoPoint((int)(lat * 1E6),(int) (lng * 1E6));
 		mapController.animateTo(point);
-		mapView.invalidate();
 	}
 	
 	public void onProgressChanged(String message) {
@@ -98,11 +114,40 @@ public class FriendMapActivity extends MapActivity implements IView {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	private boolean containsFriend(String friendId, List<User> friends){
+		for (User user : friends) {
+			if(user.getId().equals(friendId))
+				return true;
+		}
+		
+		return false;
+	}
 
 	public void update(Observable observable, Object data) {
 		FriendConnectUser user = (FriendConnectUser)observable;
-		if(user.getPosition().getLatitude() != 0 && user.getPosition().getLongitude() != 0)
-			navigateToPoint(user.getPosition().getLatitude(), user.getPosition().getLongitude());
+		//update friend's positions
+		for (User friend : user.getFriends()) {
+			FriendPositionOverlay friendOverlay = friendOverlays.get(friend.getId());
+			if(friendOverlay != null){
+				friendOverlay.setPosition(friend.getPosition(), user.getPosition());
+			}else{
+				friendOverlay = new FriendPositionOverlay(friend.toString(), this);
+				friendOverlays.put(friend.getId(), friendOverlay);
+				addOverlay(friendOverlay);
+			}
+		}
+		
+		//remove overlays of past friends
+		for (String friendId : friendOverlays.keySet()) {
+			if(!containsFriend(friendId, user.getFriends())){
+				friendOverlays.remove(friendId);
+				mapView.getOverlays().remove(friendOverlays.get(friendId));
+			}
+		}
+		
+		mapView.invalidate();
+		
+		navigateToPoint(user.getPosition().getLatitude(), user.getPosition().getLongitude());
 	}
-
 }
