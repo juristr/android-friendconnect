@@ -73,8 +73,18 @@ public class UserService implements IUserService {
 	public void addFriendInvite(String userId, String friendEmailAddress) {
 		User friend = userDao.getUserByEmailAddress(friendEmailAddress);
 		if (friend != null) {
-			userDao.addPendingFriend(friend.getId(), userId);
+			if(!isFriendAlreadyInvited(getPendingInvites(friend.getId()), userId))
+				userDao.addPendingFriend(friend.getId(), userId);
 		}
+	}
+	
+	private boolean isFriendAlreadyInvited(List<User> pendingInvites, String userId){
+		for (User invitedUser : pendingInvites) {
+			if(invitedUser.getId().equals(userId))
+				return true;
+		}
+		
+		return false;
 	}
 
 	@Override
