@@ -123,7 +123,7 @@ public class UserDaoTest extends BaseTest {
 		
 		//change name
 		persistedUser.setName("Matthias Braunhofer");
-		userDao.updateUser(persistedUser);
+		userDao.saveUser(persistedUser);
 		persistedUser = null;
 		
 		//retrieve again
@@ -142,7 +142,7 @@ public class UserDaoTest extends BaseTest {
 		location.setLatitude(123.39);
 		location.setLongitude(12.3);
 		user.setPosition(location);		
-		userDao.updateUser(user);
+		userDao.saveUser(user);
 		
 		User persisted = userDao.getUserById(user.getId());
 		assertNotNull(persisted);
