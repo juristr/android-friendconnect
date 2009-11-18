@@ -72,7 +72,7 @@ public class FriendPositionOverlay extends Overlay {
 			paint.setAntiAlias(true);
 			paint.setFakeBoldText(true);
 
-			if (friendDist < MAX_DISTANCE) {
+//			if (friendDist < MAX_DISTANCE) {
 				Point androidUserPoint = new Point();
 				projection.toPixels(androidUserGeoPoint, androidUserPoint);
 
@@ -97,7 +97,7 @@ public class FriendPositionOverlay extends Overlay {
 						friendPoint.y + 4);
 				canvas.drawText(friendName, friendPoint.x + markerRadius + 4,
 						friendPoint.y, paint);
-			}
+//			}
 		}
 
 		super.draw(canvas, mapView, shadow);
