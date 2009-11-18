@@ -34,6 +34,7 @@
 	<string name="uiMessageLoadingInvites">Retrieving pending invites...</string>
 	<string name="uiMessageSavingProfile">Saving profile...</string>
 	<string name="uiMessageSaveProfile">Save Profile</string>
+	<string name="uiMessageCannotInviteYourself">You cannot invite yourself ;)</string>
 	<string name="menuAddFriend">Add Friend</string>
 	<string name="menuRemoveFriend">Remove Friend</string>
 	<string name="menuPendingInvitesListView">Pending Invites</string>

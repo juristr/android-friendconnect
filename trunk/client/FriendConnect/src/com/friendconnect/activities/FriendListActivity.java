@@ -65,7 +65,6 @@ public class FriendListActivity extends Activity implements IView {
 	private IFriendConnectApplication application;
 	private ListView listViewFriends;
 	private ProgressDialog progressDialog;
-	private Toast toast;
 	private BaseAdapter adapter;
 	private User selectedUser;
 
@@ -81,9 +80,6 @@ public class FriendListActivity extends Activity implements IView {
 		listViewFriends = (ListView) findViewById(R.id.listViewFriends);
 
 		progressDialog = new ProgressDialog(this);
-
-		toast = Toast.makeText(this, R.string.uiMessageProvideEmailAddress,
-				3000);
 
 		controller = IoC.getInstance(FriendListController.class);
 		controller.setLayoutId(R.layout.friendlistrowitem);
@@ -107,8 +103,8 @@ public class FriendListActivity extends Activity implements IView {
 
 		startService(new Intent(this, FriendUpdateService.class));
 	}
-	
-	private void showFriendConnectUserInfo(FriendConnectUser user){
+
+	private void showFriendConnectUserInfo(FriendConnectUser user) {
 		((TextView) findViewById(R.id.textViewMyUsername)).setText(user
 				.toString());
 		((TextView) findViewById(R.id.textViewMyStatus)).setText(user
@@ -170,17 +166,26 @@ public class FriendListActivity extends Activity implements IView {
 							String emailAddress = editTextEmailAddress
 									.getText().toString();
 							if (!emailAddress.trim().equals("")) {
-								showProgressDialog(getText(R.string.uiMessageSendingInvite));
-								controller.inviteFriend(emailAddress);
-								editTextEmailAddress.setText("");
-								dialog.dismiss();
+								if (!emailAddress.equals(controller.getModel().getEmailAddress())) {
+									showProgressDialog(getText(R.string.uiMessageSendingInvite));
+									controller.inviteFriend(emailAddress);
+									editTextEmailAddress.setText("");
+									dialog.dismiss();
+								} else {
+									showToast(R.string.uiMessageCannotInviteYourself);
+								}
+
 							} else {
-								toast.show();
+								showToast(R.string.uiMessageProvideEmailAddress);
 							}
 						}
 					});
 		}
 		}
+	}
+
+	private void showToast(int msgResId) {
+		Toast.makeText(this, msgResId, 3000).show();
 	}
 
 	private void showProgressDialog(CharSequence message) {
@@ -191,10 +196,11 @@ public class FriendListActivity extends Activity implements IView {
 	public void update(final Observable observable, final Object data) {
 		handler.post(new Runnable() {
 			public void run() {
-				showFriendConnectUserInfo((FriendConnectUser)observable);
-				
-				while (lock);
-				
+				showFriendConnectUserInfo((FriendConnectUser) observable);
+
+				while (lock)
+					;
+
 				adapter.notifyDataSetChanged();
 			}
 		});
@@ -278,7 +284,7 @@ public class FriendListActivity extends Activity implements IView {
 			startActivity(new Intent(FriendListActivity.this,
 					FriendMapActivity.class));
 			return true;
-		}		
+		}
 		}
 		return false;
 	}
@@ -299,12 +305,11 @@ public class FriendListActivity extends Activity implements IView {
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		super.onContextItemSelected(item);
-		
+
 		AdapterView.AdapterContextMenuInfo menuInfo;
-        menuInfo = (AdapterView.AdapterContextMenuInfo)
-        item.getMenuInfo();
-        int index = menuInfo.position;
-		
+		menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+		int index = menuInfo.position;
+
 		switch (item.getItemId()) {
 		case (REMOVE_FRIEND): {
 			progressDialog
@@ -352,5 +357,5 @@ public class FriendListActivity extends Activity implements IView {
 	public FriendListController getController() {
 		return controller;
 	}
-	
+
 }
