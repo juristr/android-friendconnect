@@ -45,64 +45,91 @@ public class LocationController extends AbstractController<FriendConnectUser> {
 	private Handler handler;
 	private IXMLRPCService xmlRPCService;
 	private ObjectSerializer serializer;
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public BaseAdapter getAdapter(Context context) {
 		return null;
 	}
-	
-	public void startLocationTracking(){
+
+	public void updateDummyLocation(com.friendconnect.model.Location loc) {
+		if (loc != null)
+			sendLocationUpdateToServer(loc);
+	}
+
+	public void startLocationTracking() {
 		handler = new Handler();
-		handler.post(new Runnable() {		
+		handler.post(new Runnable() {
 			public void run() {
-				locationService.getLocationManager().requestLocationUpdates(locationService.getProvider(), 60000, 10, new LocationListener() {		
-					public void onStatusChanged(String provider, int status, Bundle extras) {
-						
-					}
-					
-					public void onProviderEnabled(String provider) {
-						
-					}
-					
-					public void onProviderDisabled(String provider) {
-						
-					}
-					
-					public void onLocationChanged(Location location) {
-						
-						if(location != null){
-							com.friendconnect.model.Location userLocation = new com.friendconnect.model.Location();
-							userLocation.setLatitude(location.getLatitude());
-							userLocation.setLongitude(location.getLongitude());
-															
-							model.setPosition(userLocation);
-							
-							Map<String, Object> locationData;
-							try {
-								locationData = serializer.serialize(userLocation);
-							
-								xmlRPCService.sendRequest(RPCRemoteMappings.UPDATE_USERLOCATION, new Object[]{locationData}, new IAsyncCallback<Boolean>() {
-									public void onFailure(Throwable throwable) {
-										Log.e(LocationController.class.getCanonicalName(), throwable.getMessage());
-									}
-		
-									public void onSuccess(Boolean result) {
-										if (!result) {
-											onFailure(new Exception("Sending of location was successful!"));
-										}
-									}
-								}, Boolean.class);
-							} catch (Exception e) {
-								Log.e(LocationController.class.getCanonicalName(), "Serialization error:" +e.getMessage());
+				locationService.getLocationManager().requestLocationUpdates(
+						locationService.getProvider(), 60000, 10,
+						new LocationListener() {
+							public void onStatusChanged(String provider,
+									int status, Bundle extras) {
+
 							}
-						}
-					}
-				});
+
+							public void onProviderEnabled(String provider) {
+
+							}
+
+							public void onProviderDisabled(String provider) {
+
+							}
+
+							public void onLocationChanged(Location location) {
+								if (location != null) {
+									com.friendconnect.model.Location userLocation = new com.friendconnect.model.Location();
+									userLocation.setLatitude(location
+											.getLatitude());
+									userLocation.setLongitude(location
+											.getLongitude());
+									sendLocationUpdateToServer(userLocation);
+								}
+							}
+						});
 			}
 		});
 	}
-	
+
+	private void sendLocationUpdateToServer(
+			com.friendconnect.model.Location location) {
+
+		if (location != null) {
+			com.friendconnect.model.Location userLocation = new com.friendconnect.model.Location();
+			userLocation.setLatitude(location.getLatitude());
+			userLocation.setLongitude(location.getLongitude());
+
+			model.setPosition(userLocation);
+
+			Map<String, Object> locationData;
+			try {
+				locationData = serializer.serialize(userLocation);
+
+				xmlRPCService.sendRequest(
+						RPCRemoteMappings.UPDATE_USERLOCATION,
+						new Object[] { locationData },
+						new IAsyncCallback<Boolean>() {
+							public void onFailure(Throwable throwable) {
+								Log.e(LocationController.class
+										.getCanonicalName(), throwable
+										.getMessage());
+							}
+
+							public void onSuccess(Boolean result) {
+								if (!result) {
+									onFailure(new Exception(
+											"Sending of location was successful!"));
+								}
+							}
+						}, Boolean.class);
+			} catch (Exception e) {
+				Log.e(LocationController.class.getCanonicalName(),
+						"Serialization error:" + e.getMessage());
+			}
+		}
+	}
+
 	/* Getters */
 	@Inject
 	public void setApplication(IFriendConnectApplication application) {
@@ -113,7 +140,7 @@ public class LocationController extends AbstractController<FriendConnectUser> {
 	public void setXmlRPCService(IXMLRPCService xmlRPCService) {
 		this.xmlRPCService = xmlRPCService;
 	}
-	
+
 	@Inject
 	public void setLocationService(final ILocationService locationService) {
 		this.locationService = locationService;
