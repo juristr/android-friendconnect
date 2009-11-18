@@ -18,13 +18,12 @@
 
 package com.friendconnect.model;
 
-import java.util.Observable;
 
 /**
  * Representing a location on the earth (lat/lng)
  * 
  */
-public class Location extends Observable {
+public class Location {
 	private double latitude;
 	private double longitude;
 
@@ -39,9 +38,6 @@ public class Location extends Observable {
 
 	public void setLatitude(double latitude) {
 		this.latitude = latitude;
-
-		setChanged();
-		notifyObservers();
 	}
 
 	public double getLongitude() {
@@ -50,9 +46,17 @@ public class Location extends Observable {
 
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
-		
-		setChanged();
-		notifyObservers();
+	}
+	
+	/**
+	 * Converts into a Android Location
+	 * @return
+	 */
+	public android.location.Location convertToAndroidLocation(){
+		android.location.Location androidLoc = new android.location.Location("converted");
+		androidLoc.setLatitude(this.latitude);
+		androidLoc.setLongitude(this.longitude);
+		return androidLoc;
 	}
 
 }
