@@ -98,14 +98,12 @@ public class MockUserDao implements IUserDao {
 		dummyUserStore.remove(userId);
 	}
 	
-	@Override
-	public void updateUser(User user) {
-		dummyUserStore.remove(user.getId());
-		dummyUserStore.put(user.getId(), user);
-	}
-
+	
 	@Override
 	public void saveUser(User user) {
+		if (user.getId() != null && !dummyUserStore.containsKey(user.getId())) {
+			dummyUserStore.remove(user.getId());
+		}
 		dummyUserStore.put(user.getId(), user);
 	}
 
