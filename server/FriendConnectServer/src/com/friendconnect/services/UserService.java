@@ -42,26 +42,19 @@ public class UserService implements IUserService {
 	private String projection;
 
 	@Override
-	public User authenticate(String username, String password)
-			throws AuthenticationException {
+	public User authenticate(String username, String password) throws AuthenticationException {
 		GoogleService contactsService = new ContactsService(applicationName);
 		contactsService.setUserCredentials(username, password);
-		UserToken auth_token = (UserToken) contactsService
-				.getAuthTokenFactory().getAuthToken();
+		UserToken auth_token = (UserToken) contactsService.getAuthTokenFactory().getAuthToken();
 		String token = auth_token.getValue();
 		User user = userDao.getUserByEmailAddress(username);
 		if (user == null) {
-			//TODO Here comes my fix
 			user = new User();
 			user.setEmailAddress(username);
-			user.setToken(token);
-			user.setOnline(true);
-			userDao.saveUser(user);
-		} else {
-			user.setToken(token);
-			user.setOnline(true);
-			userDao.updateUser(user);
-		}
+		} 
+		user.setToken(token);
+		user.setOnline(true);
+		userDao.saveUser(user);
 		return user;
 	}
 
@@ -124,7 +117,7 @@ public class UserService implements IUserService {
 
 	@Override
 	public void updateUser(User user) {
-		userDao.updateUser(user);
+		userDao.saveUser(user);
 	}
 	
 	@Override
@@ -132,12 +125,11 @@ public class UserService implements IUserService {
 		User user = userDao.getUserById(userId);
 		user.setPosition(userLocation);
 		
-		userDao.updateUser(user);
+		userDao.saveUser(user);
 	}
 
 	@Override
-	public List<User> getGoogleContacts(String username, String token)
-			throws IOException, ServiceException {
+	public List<User> getGoogleContacts(String username, String token) throws IOException, ServiceException {
 		ContactsService service = new ContactsService(applicationName);
 		service.setUserToken(token);
 		URL feedUri = new URL(baseURL + "/" + username + "/" + projection);
@@ -192,8 +184,7 @@ public class UserService implements IUserService {
 	 * @throws IOException
 	 * @throws ServiceException
 	 */
-	private List<User> readFriendsFromFeed(ContactsService service,
-			ContactFeed feed, URL feedUri) throws IOException, ServiceException {
+	private List<User> readFriendsFromFeed(ContactsService service, ContactFeed feed, URL feedUri) throws IOException, ServiceException {
 		List<User> friends = new ArrayList<User>();
 		User friend;
 		for (ContactEntry entry : feed.getEntries()) {
