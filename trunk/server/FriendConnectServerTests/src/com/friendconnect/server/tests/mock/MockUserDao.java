@@ -56,6 +56,10 @@ public class MockUserDao implements IUserDao {
 	public List<User> getPendingFriends(String userId) {
 		List<User> result = new ArrayList<User>();
 		List<String> pendingFriends =  dummyUserStore.get(userId).getPendingFriends();
+		
+		if(pendingFriends == null)
+			return result; //empty list
+		
 		for (String id : pendingFriends) {
 			result.add(dummyUserStore.get(id));
 		}

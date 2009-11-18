@@ -114,10 +114,12 @@ public class UserServiceTest extends TestCase {
 		mockUserDao.saveUser(friend);
 		
 		userService.addFriendInvite(user.getId(), friend.getEmailAddress());
+		userService.addFriendInvite(user.getId(), friend.getEmailAddress()); //do 2nd time to check validation of multiple same invites
 		
 		//check
-		List<String> pendingFriends =  friend.getPendingFriends();
+		List<String> pendingFriends =  friend.getPendingFriends();		
 		assertNotNull(pendingFriends);
+		assertEquals("There should be just 1 pending invite", 1, pendingFriends.size());
 		assertTrue("the friend should contain the user in the pending list", pendingFriends.contains(user.getId()));
 		
 	}
