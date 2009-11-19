@@ -18,21 +18,16 @@
 
 package com.friendconnect.controller;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 import android.content.Context;
-import android.location.Location;
-import android.location.LocationListener;
-import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.widget.BaseAdapter;
 
 import com.friendconnect.main.IFriendConnectApplication;
 import com.friendconnect.model.FriendConnectUser;
+import com.friendconnect.model.Location;
 import com.friendconnect.model.RPCRemoteMappings;
-import com.friendconnect.services.ILocationService;
 import com.friendconnect.services.IXMLRPCService;
 import com.friendconnect.xmlrpc.IAsyncCallback;
 import com.friendconnect.xmlrpc.ObjectSerializer;
@@ -41,8 +36,6 @@ import com.google.inject.Singleton;
 
 @Singleton
 public class LocationController extends AbstractController<FriendConnectUser> {
-	private ILocationService locationService;
-	private Handler handler;
 	private IXMLRPCService xmlRPCService;
 	private ObjectSerializer serializer;
 
@@ -52,59 +45,17 @@ public class LocationController extends AbstractController<FriendConnectUser> {
 		return null;
 	}
 
-	public void updateDummyLocation(com.friendconnect.model.Location loc) {
+	public void updateDummyLocation(Location loc) {
 		if (loc != null)
 			sendLocationUpdateToServer(loc);
 	}
 
-	public void startLocationTracking() {
-		handler = new Handler();
-		handler.post(new Runnable() {
-			public void run() {
-				locationService.getLocationManager().requestLocationUpdates(
-						locationService.getProvider(), 60000, 10,
-						new LocationListener() {
-							public void onStatusChanged(String provider,
-									int status, Bundle extras) {
-
-							}
-
-							public void onProviderEnabled(String provider) {
-
-							}
-
-							public void onProviderDisabled(String provider) {
-
-							}
-
-							public void onLocationChanged(Location location) {
-								if (location != null) {
-									com.friendconnect.model.Location userLocation = new com.friendconnect.model.Location();
-									userLocation.setLatitude(location
-											.getLatitude());
-									userLocation.setLongitude(location
-											.getLongitude());
-									sendLocationUpdateToServer(userLocation);
-								}
-							}
-						});
-			}
-		});
-	}
-
-	private void sendLocationUpdateToServer(
-			com.friendconnect.model.Location location) {
-
-		if (location != null) {
-			com.friendconnect.model.Location userLocation = new com.friendconnect.model.Location();
-			userLocation.setLatitude(location.getLatitude());
-			userLocation.setLongitude(location.getLongitude());
-
-			model.setPosition(userLocation);
-
+	public void sendLocationUpdateToServer(Location location) {
+			model.setPosition(location);
+			
 			Map<String, Object> locationData;
 			try {
-				locationData = serializer.serialize(userLocation);
+				locationData = serializer.serialize(location);
 
 				xmlRPCService.sendRequest(
 						RPCRemoteMappings.UPDATE_USERLOCATION,
@@ -127,10 +78,9 @@ public class LocationController extends AbstractController<FriendConnectUser> {
 				Log.e(LocationController.class.getCanonicalName(),
 						"Serialization error:" + e.getMessage());
 			}
-		}
 	}
 
-	/* Getters */
+	/* Setters */
 	@Inject
 	public void setApplication(IFriendConnectApplication application) {
 		registerModel(application.getApplicationModel());
@@ -139,11 +89,6 @@ public class LocationController extends AbstractController<FriendConnectUser> {
 	@Inject
 	public void setXmlRPCService(IXMLRPCService xmlRPCService) {
 		this.xmlRPCService = xmlRPCService;
-	}
-
-	@Inject
-	public void setLocationService(final ILocationService locationService) {
-		this.locationService = locationService;
 	}
 
 	@Inject

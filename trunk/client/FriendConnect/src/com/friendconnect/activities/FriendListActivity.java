@@ -24,6 +24,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -50,6 +51,8 @@ import com.friendconnect.main.IoC;
 import com.friendconnect.model.FriendConnectUser;
 import com.friendconnect.model.User;
 import com.friendconnect.services.FriendUpdateService;
+import com.friendconnect.services.ILocationService;
+import com.friendconnect.services.LocationService;
 
 public class FriendListActivity extends Activity implements IView {
 	private static final int ADD_FRIEND = Menu.FIRST;
@@ -102,6 +105,10 @@ public class FriendListActivity extends Activity implements IView {
 		registerForContextMenu(listViewFriends);
 
 		startService(new Intent(this, FriendUpdateService.class));
+		
+		ILocationService locationService = IoC.getInstance(LocationService.class);
+		locationService.setSystemService(getSystemService(Context.LOCATION_SERVICE));
+		locationService.startLocationTracking();
 	}
 
 	private void showFriendConnectUserInfo(FriendConnectUser user) {

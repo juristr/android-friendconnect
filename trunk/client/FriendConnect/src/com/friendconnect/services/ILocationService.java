@@ -18,8 +18,6 @@
 
 package com.friendconnect.services;
 
-import android.location.LocationManager;
-
 import com.friendconnect.model.Location;
 
 /**
@@ -34,21 +32,13 @@ public interface ILocationService {
 	public Location getLocation();
 	
 	/**
-	 * Returns the provider
-	 * @return provider
+	 * Starts the tracking of the user's location
 	 */
-	public String getProvider();
+	public void startLocationTracking();
 	
 	/**
 	 * Sets the system service
 	 * @param systemService
 	 */
 	public void setSystemService(Object systemService);
-
-	
-	/**
-	 * Gets the location manager
-	 * @return locationManager
-	 */
-	public LocationManager getLocationManager();
 }
