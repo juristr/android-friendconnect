@@ -77,7 +77,6 @@ public class FriendMapActivity extends MapActivity implements IView {
 
 		this.controller = IoC.getInstance(LocationController.class);
 		this.controller.registerView(this);
-		this.controller.startLocationTracking();
 
 		MyLocationOverlay myLocationOv = new MyLocationOverlay(this, mapView);
 		myLocationOv.enableMyLocation();
@@ -244,6 +243,7 @@ public class FriendMapActivity extends MapActivity implements IView {
 		}
 
 		mapView.invalidate();
+		
 		navigateToPoint(user.getPosition().getLatitude(), user.getPosition()
 				.getLongitude());
 	}

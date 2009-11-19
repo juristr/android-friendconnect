@@ -18,21 +18,13 @@
 
 package com.friendconnect.main;
 
-import com.friendconnect.services.ILocationService;
-import com.friendconnect.services.LocationService;
-
 import android.app.Application;
-import android.content.Context;
 
 public class AndroidApplication extends Application {
-	private ILocationService locationService;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		String location_context = Context.LOCATION_SERVICE;
-		locationService = IoC.getInstance(LocationService.class);
-		locationService.setSystemService(getSystemService(location_context));
 	}
 	
 	@Override
