@@ -93,9 +93,9 @@ public interface IUserService {
 	
 	
 	/**
-	 * 
-	 * @param userId
-	 * @param userLocation
+	 * Updates the user location of a user
+	 * @param userId the id of the user
+	 * @param userLocation the current {@link Location} of the user
 	 */
 	public void updateUserLocation(String userId, Location userLocation);
 	
@@ -109,5 +109,10 @@ public interface IUserService {
 	 */
 	public List<User> getGoogleContacts(String username, String token) throws IOException, ServiceException;
 
+	/**
+	 * Returns the list of pending invites for a certain user
+	 * @param userId the id of the user
+	 * @return
+	 */
 	public List<User> getPendingInvites(String userId);
 }
