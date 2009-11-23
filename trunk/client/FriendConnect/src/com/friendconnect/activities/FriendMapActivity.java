@@ -219,28 +219,28 @@ public class FriendMapActivity extends MapActivity implements IView {
 	public void update(Observable observable, Object data) {
 		final FriendConnectUser user = (FriendConnectUser) observable;
 
-		// update friend's positions
-		for (User friend : user.getFriends()) {
-			FriendPositionOverlay friendOverlay = friendOverlays.get(friend
-					.getId());
-			if (friendOverlay != null) {
-				friendOverlay.setPosition(friend.getPosition(), user
-						.getPosition());
-			} else {
-				friendOverlay = new FriendPositionOverlay(friend.toString(),
-						this);
-				friendOverlays.put(friend.getId(), friendOverlay);
-				addOverlay(friendOverlay);
-			}
-		}
-
-		// remove overlays of past friends
-		for (String friendId : friendOverlays.keySet()) {
-			if (!containsFriend(friendId, user.getFriends())) {
-				friendOverlays.remove(friendId);
-				mapView.getOverlays().remove(friendOverlays.get(friendId));
-			}
-		}
+//		// update friend's positions
+//		for (User friend : user.getFriends()) {
+//			FriendPositionOverlay friendOverlay = friendOverlays.get(friend
+//					.getId());
+//			if (friendOverlay != null) {
+//				friendOverlay.setPosition(friend.getPosition(), user
+//						.getPosition());
+//			} else {
+//				friendOverlay = new FriendPositionOverlay(friend.toString(),
+//						this);
+//				friendOverlays.put(friend.getId(), friendOverlay);
+//				addOverlay(friendOverlay);
+//			}
+//		}
+//
+//		// remove overlays of past friends
+//		for (String friendId : friendOverlays.keySet()) {
+//			if (!containsFriend(friendId, user.getFriends())) {
+//				friendOverlays.remove(friendId);
+//				mapView.getOverlays().remove(friendOverlays.get(friendId));
+//			}
+//		}
 
 		mapView.invalidate();
 		
