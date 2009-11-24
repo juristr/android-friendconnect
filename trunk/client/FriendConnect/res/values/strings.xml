@@ -43,6 +43,7 @@
 	<string name="menuRejectInvite">Reject Invite</string>
 	<string name="menuRefresh">Refresh</string>
 	<string name="menuMapView">Friend Map</string>
+	<string name="menuCenterMap">Center Map</string>
 	<string name="invitation">FriendConnect Invitation</string>
 	<string name="sendInvite">Send Invite</string>
 	<string name="inviteFriend">Type the email address of the person you would like to invite:</string>

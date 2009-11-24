@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
@@ -44,11 +45,12 @@ import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 
 public class FriendMapActivity extends MapActivity implements IView {
-
+	private static final int CENTER_MAP = Menu.FIRST;
 	private MapView mapView;
 	private MapController mapController;
 	private LocationController controller;
 	private HashMap<String, FriendPositionOverlay> friendOverlays;
+	private boolean doCenterMap = true;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -87,13 +89,30 @@ public class FriendMapActivity extends MapActivity implements IView {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-	
-//	@Override
-//	public boolean onTouchEvent(MotionEvent event) {
-//		
-//		
-//		return super.onTouchEvent(event);
-//	}
+
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		int actionType = ev.getAction();
+		switch (actionType) {
+		case MotionEvent.ACTION_MOVE:
+			doCenterMap = false;
+			break;
+		}
+
+		return super.dispatchTouchEvent(ev);
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		int actionType = event.getAction();
+		switch (actionType) {
+		case MotionEvent.ACTION_MOVE:
+			doCenterMap = false;
+			return true;
+		}
+
+		return super.onTouchEvent(event);
+	}
 
 	@Override
 	protected boolean isRouteDisplayed() {
@@ -112,8 +131,9 @@ public class FriendMapActivity extends MapActivity implements IView {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		// Create and add new menu items.
-//		MenuItem itemAddFriend = menu.add(0, DUMMY_LOCSET, Menu.NONE,
-//				"dummy loc");
+		MenuItem itemCenterMap = menu.add(0, CENTER_MAP, Menu.NONE,
+				R.string.menuCenterMap);
+		itemCenterMap.setIcon(R.drawable.menu_mylocation);
 
 		return true;
 	}
@@ -122,67 +142,67 @@ public class FriendMapActivity extends MapActivity implements IView {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
 		// int index = this.listViewFriends.getSelectedItemPosition();
-//		switch (item.getItemId()) {
-//		case (DUMMY_LOCSET): {
-//			showDialog(DUMMY_LOCATIONSETTERDIALOG);
-//			return true;
-//		}
-//		}
+		switch (item.getItemId()) {
+		case (CENTER_MAP): {
+			doCenterMap = true;
+			return true;
+		}
+		}
 		return false;
 	}
 
 	@Override
 	protected Dialog onCreateDialog(int id) {
-//		switch (id) {
-//		case (DUMMY_LOCATIONSETTERDIALOG): {
-//			LayoutInflater li = LayoutInflater.from(this);
-//			View dummyLocationView = li.inflate(
-//					R.layout.dummylocationsetdialog, null);
-//			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//			AlertDialog dummyLocationDialog = builder.create();
-//			dummyLocationDialog.setTitle("Dummy Location setter");
-//			dummyLocationDialog.setView(dummyLocationView);
-//			dummyLocationDialog.setCanceledOnTouchOutside(true);
-//			dummyLocationDialog.setIcon(R.drawable.icon);
-//			return dummyLocationDialog;
-//		}
-//		}
+		// switch (id) {
+		// case (DUMMY_LOCATIONSETTERDIALOG): {
+		// LayoutInflater li = LayoutInflater.from(this);
+		// View dummyLocationView = li.inflate(
+		// R.layout.dummylocationsetdialog, null);
+		// AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		// AlertDialog dummyLocationDialog = builder.create();
+		// dummyLocationDialog.setTitle("Dummy Location setter");
+		// dummyLocationDialog.setView(dummyLocationView);
+		// dummyLocationDialog.setCanceledOnTouchOutside(true);
+		// dummyLocationDialog.setIcon(R.drawable.icon);
+		// return dummyLocationDialog;
+		// }
+		// }
 		return null;
 	}
 
 	@Override
 	protected void onPrepareDialog(int id, final Dialog dialog) {
-//		switch (id) {
-//		case (DUMMY_LOCATIONSETTERDIALOG): {
-//			((Button) dialog.findViewById(R.id.buttonSubmitLoc))
-//					.setOnClickListener(new OnClickListener() {
-//						public void onClick(View v) {
-//							EditText editTextLat = (EditText) dialog
-//									.findViewById(R.id.editTextLatitude);
-//							EditText editTextLng = (EditText) dialog
-//									.findViewById(R.id.editTextLongitude);
-//
-//							double lat = Double.parseDouble(editTextLat
-//									.getText().toString());
-//							double lng = Double.parseDouble(editTextLng
-//									.getText().toString());
-//
-//							final Location loc = new Location();
-//							loc.setLatitude(lat);
-//							loc.setLongitude(lng);
-//
-//							Handler handler = new Handler();
-//							handler.post(new Runnable() {
-//								public void run() {
-//									controller.updateDummyLocation(loc);
-//								}
-//							});
-//
-//							dialog.dismiss();
-//						}
-//					});
-//		}
-//		}
+		// switch (id) {
+		// case (DUMMY_LOCATIONSETTERDIALOG): {
+		// ((Button) dialog.findViewById(R.id.buttonSubmitLoc))
+		// .setOnClickListener(new OnClickListener() {
+		// public void onClick(View v) {
+		// EditText editTextLat = (EditText) dialog
+		// .findViewById(R.id.editTextLatitude);
+		// EditText editTextLng = (EditText) dialog
+		// .findViewById(R.id.editTextLongitude);
+		//
+		// double lat = Double.parseDouble(editTextLat
+		// .getText().toString());
+		// double lng = Double.parseDouble(editTextLng
+		// .getText().toString());
+		//
+		// final Location loc = new Location();
+		// loc.setLatitude(lat);
+		// loc.setLongitude(lng);
+		//
+		// Handler handler = new Handler();
+		// handler.post(new Runnable() {
+		// public void run() {
+		// controller.updateDummyLocation(loc);
+		// }
+		// });
+		//
+		// dialog.dismiss();
+		// }
+		// });
+		// }
+		// }
 	}
 
 	private void addOverlay(Overlay overlay) {
@@ -224,8 +244,7 @@ public class FriendMapActivity extends MapActivity implements IView {
 				friendOverlay.setPosition(friend.getPosition(), user
 						.getPosition());
 			} else {
-				friendOverlay = new FriendPositionOverlay(friend,
-						this);
+				friendOverlay = new FriendPositionOverlay(friend, this);
 				friendOverlay.setPosition(friend.getPosition(), user
 						.getPosition());
 				friendOverlays.put(friend.getId(), friendOverlay);
@@ -242,7 +261,11 @@ public class FriendMapActivity extends MapActivity implements IView {
 		}
 
 		mapView.invalidate();
-		navigateToPoint(user.getPosition().getLatitude(), user.getPosition()
-				.getLongitude());
+		if (doCenterMap) {
+			// center the map on the user's position
+			navigateToPoint(user.getPosition().getLatitude(), user
+					.getPosition().getLongitude());
+		}
+
 	}
 }

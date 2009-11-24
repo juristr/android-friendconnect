@@ -34,6 +34,7 @@ public class User extends Observable{
 	protected String statusMessage;
 	protected Location position;
 	protected float distanceToFriendConnectUser;
+	protected String distanceIndic;
 
 	public String getId() {
 		return this.id;
@@ -59,6 +60,19 @@ public class User extends Observable{
 			setChanged();
 			notifyObservers();
 		}
+	}
+
+	public String getDistanceIndic() {
+		return distanceIndic;
+	}
+
+	public void setDistanceIndic(String distanceIndic) {
+		this.distanceIndic = distanceIndic;
+	}
+	
+	public String getFormattedDistanceString(){
+		//(int) to get rid of decimal places which are not needed
+		return (int)distanceToFriendConnectUser + " " + distanceIndic;
 	}
 
 	public void setEmailAddress(String emailAddress) {

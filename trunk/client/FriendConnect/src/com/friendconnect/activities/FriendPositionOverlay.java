@@ -88,7 +88,7 @@ public class FriendPositionOverlay extends Overlay {
 
 				canvas.drawOval(oval, paint);
 				
-				String textToDisplay = friendUser.toString() + "(" + friendUser.getDistanceToFriendConnectUser() + ")";
+				String textToDisplay = friendUser.toString() + " (" + friendUser.getFormattedDistanceString() + ")";
 
 				float textWidth = paint.measureText(textToDisplay);
 				float textHeight = paint.getTextSize();
