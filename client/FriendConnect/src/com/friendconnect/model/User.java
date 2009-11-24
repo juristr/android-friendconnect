@@ -22,8 +22,9 @@ import java.util.Observable;
 import java.util.Observer;
 
 import com.friendconnect.annotations.ComplexSerializableType;
+import com.friendconnect.annotations.NotRecursiveSync;
 
-public class User extends Observable implements Observer {
+public class User extends Observable{
 	protected String id;
 	protected String emailAddress;
 	protected String phone;
@@ -32,6 +33,7 @@ public class User extends Observable implements Observer {
 	protected String token;
 	protected String statusMessage;
 	protected Location position;
+	protected float distanceToFriendConnectUser;
 
 	public String getId() {
 		return this.id;
@@ -43,6 +45,20 @@ public class User extends Observable implements Observer {
 
 	public String getEmailAddress() {
 		return emailAddress;
+	}
+
+	public float getDistanceToFriendConnectUser() {
+		return distanceToFriendConnectUser;
+	}
+
+	public void setDistanceToFriendConnectUser(float distanceToFriendConnectUser) {
+		float oldDistance = this.distanceToFriendConnectUser;
+		this.distanceToFriendConnectUser = distanceToFriendConnectUser;
+		
+		if(oldDistance != distanceToFriendConnectUser){
+			setChanged();
+			notifyObservers();
+		}
 	}
 
 	public void setEmailAddress(String emailAddress) {
@@ -119,21 +135,26 @@ public class User extends Observable implements Observer {
 		this.token = token;
 	}
 
+	@NotRecursiveSync
 	@ComplexSerializableType(clazz = Location.class)
 	public Location getPosition() {
 		return this.position;
 	}
 
 	
+	@NotRecursiveSync
 	@ComplexSerializableType(clazz = Location.class)
 	public void setPosition(Location location) {
 		Location oldLocation = this.position;
 		this.position = location;
-				
-		if(location != null && oldLocation != null && (location.getLatitude() != oldLocation.getLatitude() || location.getLongitude() != oldLocation.getLongitude())){
+			
+		
+//		if(location != null && oldLocation != null && (location.getLatitude() != oldLocation.getLatitude() || location.getLongitude() != oldLocation.getLongitude())){
 			setChanged();
 			notifyObservers();			
-		}
+//		}
+		
+		
 	}
 	
 	public String toString(){
@@ -143,8 +164,4 @@ public class User extends Observable implements Observer {
 		return name;
 	}
 
-	public void update(Observable observable, Object data) {
-		setChanged();
-		notifyObservers();
-	}
 }

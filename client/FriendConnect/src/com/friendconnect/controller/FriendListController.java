@@ -41,6 +41,7 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 	private int layoutId;
 	private IXMLRPCService xmlRPCService;
 	private ObjectHelper objectHelper;
+	private LocationController locationController;
 
 	public FriendListController() {
 		super();
@@ -78,6 +79,10 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 						model.removeFriend(friend);
 					}
 				}
+				
+				//TODO find better solution???
+				//update the distances
+				locationController.updateFriendDistances();
 				
 				notifyStopProgress();
 			}
@@ -178,4 +183,10 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 	public void setApplication(IFriendConnectApplication application) {
 		this.registerModel(application.getApplicationModel());
 	}
+
+	@Inject
+	public void setLocationController(LocationController locationController) {
+		this.locationController = locationController;
+	}
+	
 }

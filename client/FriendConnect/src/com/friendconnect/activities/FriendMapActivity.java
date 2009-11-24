@@ -45,7 +45,6 @@ import com.google.android.maps.Overlay;
 
 public class FriendMapActivity extends MapActivity implements IView {
 
-
 	private MapView mapView;
 	private MapController mapController;
 	private LocationController controller;
@@ -88,6 +87,13 @@ public class FriendMapActivity extends MapActivity implements IView {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
+	
+//	@Override
+//	public boolean onTouchEvent(MotionEvent event) {
+//		
+//		
+//		return super.onTouchEvent(event);
+//	}
 
 	@Override
 	protected boolean isRouteDisplayed() {
@@ -218,8 +224,10 @@ public class FriendMapActivity extends MapActivity implements IView {
 				friendOverlay.setPosition(friend.getPosition(), user
 						.getPosition());
 			} else {
-				friendOverlay = new FriendPositionOverlay(friend.toString(),
+				friendOverlay = new FriendPositionOverlay(friend,
 						this);
+				friendOverlay.setPosition(friend.getPosition(), user
+						.getPosition());
 				friendOverlays.put(friend.getId(), friendOverlay);
 				addOverlay(friendOverlay);
 			}
