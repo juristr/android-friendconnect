@@ -47,44 +47,69 @@ public class LocationController extends AbstractController<FriendConnectUser> {
 	}
 
 	public void sendLocationUpdateToServer(Location location) {
-			model.setPosition(location);
-			
-			Map<String, Object> locationData;
-			try {
-				locationData = serializer.serialize(location);
+		model.setPosition(location);
 
-				xmlRPCService.sendRequest(
-						RPCRemoteMappings.UPDATE_USERLOCATION,
-						new Object[] { locationData },
-						new IAsyncCallback<Boolean>() {
-							public void onFailure(Throwable throwable) {
-								Log.e(LocationController.class
-										.getCanonicalName(), throwable
-										.getMessage());
-							}
+		Map<String, Object> locationData;
+		try {
+			locationData = serializer.serialize(location);
 
-							public void onSuccess(Boolean result) {
-								if(result){
-									updateFriendDistances();
-								}else {
-									onFailure(new Exception(
-											"Sending of location was successful!"));
-								}
+			xmlRPCService.sendRequest(RPCRemoteMappings.UPDATE_USERLOCATION,
+					new Object[] { locationData },
+					new IAsyncCallback<Boolean>() {
+						public void onFailure(Throwable throwable) {
+							Log.e(LocationController.class.getCanonicalName(),
+									throwable.getMessage());
+						}
+
+						public void onSuccess(Boolean result) {
+							if (result) {
+								updateFriendDistances();
+							} else {
+								onFailure(new Exception(
+										"Sending of location was successful!"));
 							}
-						}, Boolean.class);
-			} catch (Exception e) {
-				Log.e(LocationController.class.getCanonicalName(),
-						"Serialization error:" + e.getMessage());
-			}
+						}
+					}, Boolean.class);
+		} catch (Exception e) {
+			Log.e(LocationController.class.getCanonicalName(),
+					"Serialization error:" + e.getMessage());
+		}
 	}
-	
-	public void updateFriendDistances(){
-		if(model.getFriends() != null){
+
+	/**
+	 * Re-calculates the distance from the Android FriendConnect user to all of
+	 * it's friends.
+	 */
+	public void updateFriendDistances() {
+		if (model.getFriends() != null) {
 			for (User friend : model.getFriends()) {
-				float distance = model.getPosition().convertToAndroidLocation().distanceTo(friend.getPosition().convertToAndroidLocation());
+				float distance = model
+						.getPosition()
+						.convertToAndroidLocation()
+						.distanceTo(
+								friend.getPosition().convertToAndroidLocation());
+
+				String distIndic = "";
+
+				if(distance < 1000){
+					distIndic = "m";
+					distance = Round(distance, 0);
+				}else{
+					distIndic = "km";
+					distance = Round(distance/1000, 0);
+				}
+				
 				friend.setDistanceToFriendConnectUser(distance);
+				friend.setDistanceIndic(distIndic);
 			}
 		}
+	}
+
+	private float Round(float roundValue, int roundPoints) {
+		float p = (float) Math.pow(10, roundPoints);
+		roundValue = roundValue * p;
+		float tmp = Math.round(roundValue);
+		return (float) tmp / p;
 	}
 
 	/* Setters */

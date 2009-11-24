@@ -68,7 +68,7 @@ public class FriendAdapter extends ArrayAdapter<User> {
 		String statusMessageLine = person.getStatusMessage();
 		if(statusMessageLine != null && !statusMessageLine.equals(""))
 			statusMessageLine = statusMessageLine + " - ";
-		statusMessageLine = statusMessageLine + "(" + person.getDistanceToFriendConnectUser() + ")";
+		statusMessageLine = statusMessageLine + " (" + person.getFormattedDistanceString() + ")";
 		
 		statusView.setText(statusMessageLine);
 		
