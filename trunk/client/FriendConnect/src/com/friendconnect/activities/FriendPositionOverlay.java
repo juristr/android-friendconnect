@@ -64,8 +64,7 @@ public class FriendPositionOverlay extends Overlay {
 	@Override
 	public void draw(Canvas canvas, MapView mapView, boolean shadow) {
 		if (shadow == false) {
-			Projection projection = mapView.getProjection();
-//			float friendDist = androidUserPosition.distanceTo(friendPosition);		
+			Projection projection = mapView.getProjection();		
 
 			Paint paint = new Paint();
 			paint.setARGB(250, 255, 0, 0);

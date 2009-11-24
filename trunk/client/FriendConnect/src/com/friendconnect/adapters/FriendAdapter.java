@@ -64,7 +64,13 @@ public class FriendAdapter extends ArrayAdapter<User> {
 		TextView statusView = (TextView)friendListView.findViewById(R.id.textViewStatus);
 		
 		nicknameView.setText(person.toString());
-		statusView.setText(person.getStatusMessage());
+		
+		String statusMessageLine = person.getStatusMessage();
+		if(statusMessageLine != null && !statusMessageLine.equals(""))
+			statusMessageLine = statusMessageLine + " - ";
+		statusMessageLine = statusMessageLine + "(" + person.getDistanceToFriendConnectUser() + ")";
+		
+		statusView.setText(statusMessageLine);
 		
 		return friendListView;
 	}
