@@ -28,6 +28,7 @@ import com.friendconnect.main.IFriendConnectApplication;
 import com.friendconnect.model.FriendConnectUser;
 import com.friendconnect.model.Location;
 import com.friendconnect.model.RPCRemoteMappings;
+import com.friendconnect.model.User;
 import com.friendconnect.services.IXMLRPCService;
 import com.friendconnect.xmlrpc.IAsyncCallback;
 import com.friendconnect.xmlrpc.ObjectSerializer;
@@ -43,11 +44,6 @@ public class LocationController extends AbstractController<FriendConnectUser> {
 	@Override
 	public BaseAdapter getAdapter(Context context) {
 		return null;
-	}
-
-	public void updateDummyLocation(Location loc) {
-		if (loc != null)
-			sendLocationUpdateToServer(loc);
 	}
 
 	public void sendLocationUpdateToServer(Location location) {
@@ -68,7 +64,9 @@ public class LocationController extends AbstractController<FriendConnectUser> {
 							}
 
 							public void onSuccess(Boolean result) {
-								if (!result) {
+								if(result){
+									updateFriendDistances();
+								}else {
 									onFailure(new Exception(
 											"Sending of location was successful!"));
 								}
@@ -78,6 +76,15 @@ public class LocationController extends AbstractController<FriendConnectUser> {
 				Log.e(LocationController.class.getCanonicalName(),
 						"Serialization error:" + e.getMessage());
 			}
+	}
+	
+	public void updateFriendDistances(){
+		if(model.getFriends() != null){
+			for (User friend : model.getFriends()) {
+				float distance = model.getPosition().convertToAndroidLocation().distanceTo(friend.getPosition().convertToAndroidLocation());
+				friend.setDistanceToFriendConnectUser(distance);
+			}
+		}
 	}
 
 	/* Setters */

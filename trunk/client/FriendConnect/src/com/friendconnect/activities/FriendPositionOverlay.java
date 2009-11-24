@@ -34,15 +34,15 @@ import com.google.android.maps.Projection;
 public class FriendPositionOverlay extends Overlay {
 	private final float MAX_DISTANCE = 20000;
 	private Context context;
-	private String friendName;
+	private User friendUser;
 	private Location friendPosition;
 	private GeoPoint friendGeoPoint;
 	private Location androidUserPosition;
 	private GeoPoint androidUserGeoPoint;
 
-	public FriendPositionOverlay(String friendName, Context context) {
+	public FriendPositionOverlay(User friendUser, Context context) {
 		super();
-		this.friendName = friendName;
+		this.friendUser = friendUser;
 		this.context = context;
 	}
 
@@ -65,7 +65,7 @@ public class FriendPositionOverlay extends Overlay {
 	public void draw(Canvas canvas, MapView mapView, boolean shadow) {
 		if (shadow == false) {
 			Projection projection = mapView.getProjection();
-			float friendDist = androidUserPosition.distanceTo(friendPosition);
+//			float friendDist = androidUserPosition.distanceTo(friendPosition);		
 
 			Paint paint = new Paint();
 			paint.setARGB(250, 255, 0, 0);
@@ -88,14 +88,16 @@ public class FriendPositionOverlay extends Overlay {
 								+ markerRadius, friendPoint.y + markerRadius);
 
 				canvas.drawOval(oval, paint);
+				
+				String textToDisplay = friendUser.toString() + "(" + friendUser.getDistanceToFriendConnectUser() + ")";
 
-				float textWidth = paint.measureText(friendName);
+				float textWidth = paint.measureText(textToDisplay);
 				float textHeight = paint.getTextSize();
 				RectF textRect = new RectF(friendPoint.x + markerRadius,
 						friendPoint.y - textHeight, friendPoint.x
 								+ markerRadius + 8 + textWidth,
 						friendPoint.y + 4);
-				canvas.drawText(friendName, friendPoint.x + markerRadius + 4,
+				canvas.drawText(textToDisplay, friendPoint.x + markerRadius + 4,
 						friendPoint.y, paint);
 //			}
 		}
