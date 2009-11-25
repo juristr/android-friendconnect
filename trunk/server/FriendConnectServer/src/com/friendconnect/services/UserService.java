@@ -21,6 +21,7 @@ package com.friendconnect.services;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.friendconnect.dao.IUserDao;
@@ -101,12 +102,16 @@ public class UserService implements IUserService {
 
 	@Override
 	public List<User> getFriends(String userId) {
-		return userDao.getFriends(userId);
+		List<User> friends = userDao.getFriends(userId);
+		Collections.sort(friends);
+		return friends;
 	}
 	
 	@Override
 	public List<User> getPendingInvites(String userId) {
-		return userDao.getPendingFriends(userId);
+		List<User> pendingFriends = userDao.getPendingFriends(userId);
+		Collections.sort(pendingFriends);
+		return pendingFriends;
 	}
 
 	@Override
