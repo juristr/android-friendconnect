@@ -32,44 +32,44 @@ import com.friendconnect.xmlrpc.ComplexSerializableType;
 import com.friendconnect.xmlrpc.NotSerializable;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class User {
+public class User implements Comparable<User> {
 	@PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    @Extension(vendorName="datanucleus", key="gae.encoded-pk", value="true")
-    private String id;
-	
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	@Extension(vendorName = "datanucleus", key = "gae.encoded-pk", value = "true")
+	private String id;
+
 	@Persistent
 	private String name;
-	
+
 	@Persistent
 	private String emailAddress;
-	
-	@Persistent 
+
+	@Persistent
 	private String website;
-	
-	@Persistent 
+
+	@Persistent
 	private String phone;
-		
+
 	@Persistent
 	private String token;
-	
+
 	@Persistent
 	private boolean online;
-	
+
 	@Persistent
 	private String statusMessage;
-	
+
 	@Persistent(defaultFetchGroup = "true")
 	@Embedded
 	private Location position;
-	
+
 	private List<String> friends;
-    
-    private List<String> pendingFriends;
-	
-	public User() {	
+
+	private List<String> pendingFriends;
+
+	public User() {
 	}
-	
+
 	public String getId() {
 		return id;
 	}
@@ -85,7 +85,7 @@ public class User {
 	public String getName() {
 		return name;
 	}
-	
+
 	public String getEmailAddress() {
 		return emailAddress;
 	}
@@ -153,7 +153,7 @@ public class User {
 	public List<String> getFriends() {
 		return friends;
 	}
-	
+
 	@NotSerializable
 	public void setPendingFriends(List<String> pendingFriends) {
 		this.pendingFriends = pendingFriends;
@@ -162,5 +162,32 @@ public class User {
 	@NotSerializable
 	public List<String> getPendingFriends() {
 		return pendingFriends;
+	}
+
+	@Override
+	public int compareTo(User user) {
+		final int BEFORE = -1;
+		final int EQUAL = 0;
+		final int AFTER = 1;
+
+		// optimization
+		if (this == user)
+			return EQUAL;
+
+		// compare the users' string representations if they have the same
+		// status
+		if (this.isOnline() == user.isOnline()) {
+			return this.toString().compareToIgnoreCase(user.toString());
+		} else {
+			return this.isOnline() ? BEFORE : AFTER;
+		}
+	}
+
+	@Override
+	public String toString() {
+		if (name == null || name.equals(""))
+			return emailAddress;
+
+		return name;
 	}
 }
