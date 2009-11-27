@@ -28,9 +28,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.LinearLayout;
 
 import com.friendconnect.R;
 import com.friendconnect.controller.LocationController;
@@ -42,7 +39,6 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
-import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 
 public class FriendMapActivity extends MapActivity implements IView {
@@ -62,19 +58,11 @@ public class FriendMapActivity extends MapActivity implements IView {
 		this.mapView = (MapView) findViewById(R.id.map_view);
 		this.mapController = mapView.getController();
 
-		LinearLayout zoomLayout = (LinearLayout) findViewById(R.id.zoom);
-		View zoomView = mapView.getZoomControls();
-
-		zoomLayout.addView(zoomView, new LinearLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+		mapView.setBuiltInZoomControls(true);
 		mapView.displayZoomControls(true);
 
 		this.controller = IoC.getInstance(LocationController.class);
 		this.controller.registerView(this);
-
-//		MyLocationOverlay myLocationOv = new MyLocationOverlay(this, mapView);
-//		myLocationOv.enableMyLocation();
-//		addOverlay(myLocationOv);
 
 		this.friendOverlays = new HashMap<String, FriendPositionOverlay>();
 	}

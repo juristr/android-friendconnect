@@ -78,7 +78,7 @@ public class User extends Observable {
 	@NotSerializable
 	public String getFormattedDistanceString() {
 		// (int) to get rid of decimal places which are not needed
-		if (distanceIndic != null)
+		if (distanceIndic != null && distanceToFriendConnectUser > 0)
 			return (int) distanceToFriendConnectUser + " " + distanceIndic;
 		else
 			return "";

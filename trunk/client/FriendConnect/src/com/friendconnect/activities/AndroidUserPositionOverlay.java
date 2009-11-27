@@ -22,18 +22,16 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
+
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
-import com.google.android.maps.Overlay;
 import com.google.android.maps.Projection;
 
-public class AndroidUserPositionOverlay extends Overlay {
-	// private Context context;
+public class AndroidUserPositionOverlay extends BasePositionOverlay {
 	private GeoPoint androidUserGeoPoint;
 
 	public AndroidUserPositionOverlay() {
 		super();
-		// this.context = context;
 	}
 
 	public void setPosition(com.friendconnect.model.Location position) {
@@ -61,16 +59,20 @@ public class AndroidUserPositionOverlay extends Overlay {
 
 			canvas.drawOval(oval, paint);
 
+			
 			String textToDisplay = "(That's you)";
-
+			
 			float textWidth = paint.measureText(textToDisplay);
 			float textHeight = paint.getTextSize();
-			RectF textRect = new RectF(androidUserPoint.x + markerRadius,
-					androidUserPoint.y - textHeight, androidUserPoint.x
-							+ markerRadius + 8 + textWidth,
-					androidUserPoint.y + 4);
+			
+			RectF infoWindowRect = new RectF(androidUserPoint.x + markerRadius, androidUserPoint.y - textHeight,androidUserPoint.x + 14 + textWidth, androidUserPoint.y + 7);	
+			
+			canvas.drawRoundRect(infoWindowRect, 5, 5, getInnerPaint());
+			canvas.drawRoundRect(infoWindowRect, 5, 5, getBorderPaint());
+			
 			canvas.drawText(textToDisplay, androidUserPoint.x + markerRadius
-					+ 4, androidUserPoint.y, paint);
+					+ 4, androidUserPoint.y, getTextPaint());
+			
 		}
 
 		super.draw(canvas, mapView, shadow);
@@ -80,4 +82,5 @@ public class AndroidUserPositionOverlay extends Overlay {
 	public boolean onTap(GeoPoint p, MapView mapView) {
 		return false;
 	}
+	
 }

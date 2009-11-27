@@ -172,7 +172,7 @@ public class FriendListActivity extends Activity implements IView {
 									.findViewById(R.id.editTextInviteeEmail);
 							String emailAddress = editTextEmailAddress
 									.getText().toString();
-							if (!emailAddress.trim().equals("")) {
+							if (!emailAddress.trim().equals("") && emailAddress.contains("@")) {
 								if (!emailAddress.equals(controller.getModel().getEmailAddress())) {
 									showProgressDialog(getText(R.string.uiMessageSendingInvite));
 									controller.inviteFriend(emailAddress);
