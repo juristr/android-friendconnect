@@ -26,10 +26,9 @@ import android.graphics.RectF;
 import com.friendconnect.model.User;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
-import com.google.android.maps.Overlay;
 import com.google.android.maps.Projection;
 
-public class FriendPositionOverlay extends Overlay {
+public class FriendPositionOverlay extends BasePositionOverlay {
 	private final float MAX_DISTANCE = 20000;
 	private User friendUser;
 	private GeoPoint friendGeoPoint;
@@ -82,12 +81,14 @@ public class FriendPositionOverlay extends Overlay {
 
 				float textWidth = paint.measureText(textToDisplay);
 				float textHeight = paint.getTextSize();
-				RectF textRect = new RectF(friendPoint.x + markerRadius,
-						friendPoint.y - textHeight, friendPoint.x
-								+ markerRadius + 8 + textWidth,
-						friendPoint.y + 4);
+				
+				RectF infoWindowRect = new RectF(friendPoint.x + markerRadius, friendPoint.y - textHeight,friendPoint.x + 14 + textWidth, friendPoint.y + 7);	
+				
+				canvas.drawRoundRect(infoWindowRect, 5, 5, getInnerPaint());
+				canvas.drawRoundRect(infoWindowRect, 5, 5, getBorderPaint());
+				
 				canvas.drawText(textToDisplay, friendPoint.x + markerRadius + 4,
-						friendPoint.y, paint);
+						friendPoint.y, getTextPaint());
 //			}
 		}
 

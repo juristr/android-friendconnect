@@ -68,6 +68,11 @@ public class LoginActivity extends Activity implements IView {
 			public void onClick(View v) {
 				String username = ((EditText) findViewById(R.id.editTextEmail)).getText().toString();
 				String password = ((EditText) findViewById(R.id.editTextPassword)).getText().toString();
+				
+				if(!username.contains("@")){
+					username = username + "@gmail.com";
+					((EditText)findViewById(R.id.editTextEmail)).setText(username);
+				}
 
 				if (username.equals("") || password.equals("")) {
 					toast.show();
