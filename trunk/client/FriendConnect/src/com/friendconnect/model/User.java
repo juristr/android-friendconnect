@@ -25,7 +25,7 @@ import com.friendconnect.annotations.ComplexSerializableType;
 import com.friendconnect.annotations.NotRecursiveSync;
 import com.friendconnect.annotations.NotSerializable;
 
-public class User extends Observable{
+public class User extends Observable {
 	protected String id;
 	protected String emailAddress;
 	protected String phone;
@@ -58,8 +58,8 @@ public class User extends Observable{
 	public void setDistanceToFriendConnectUser(float distanceToFriendConnectUser) {
 		float oldDistance = this.distanceToFriendConnectUser;
 		this.distanceToFriendConnectUser = distanceToFriendConnectUser;
-		
-		if(oldDistance != distanceToFriendConnectUser){
+
+		if (oldDistance != distanceToFriendConnectUser) {
 			setChanged();
 			notifyObservers();
 		}
@@ -74,11 +74,14 @@ public class User extends Observable{
 	public void setDistanceIndic(String distanceIndic) {
 		this.distanceIndic = distanceIndic;
 	}
-	
+
 	@NotSerializable
-	public String getFormattedDistanceString(){
-		//(int) to get rid of decimal places which are not needed
-		return (int)distanceToFriendConnectUser + " " + distanceIndic;
+	public String getFormattedDistanceString() {
+		// (int) to get rid of decimal places which are not needed
+		if (distanceIndic != null)
+			return (int) distanceToFriendConnectUser + " " + distanceIndic;
+		else
+			return "";
 	}
 
 	public void setEmailAddress(String emailAddress) {
@@ -161,26 +164,25 @@ public class User extends Observable{
 		return this.position;
 	}
 
-	
 	@NotRecursiveSync
 	@ComplexSerializableType(clazz = Location.class)
 	public void setPosition(Location location) {
 		Location oldLocation = this.position;
 		this.position = location;
-			
-		
-//		if(location != null && oldLocation != null && (location.getLatitude() != oldLocation.getLatitude() || location.getLongitude() != oldLocation.getLongitude())){
-			setChanged();
-			notifyObservers();			
-//		}
-		
-		
+
+		// if(location != null && oldLocation != null && (location.getLatitude()
+		// != oldLocation.getLatitude() || location.getLongitude() !=
+		// oldLocation.getLongitude())){
+		setChanged();
+		notifyObservers();
+		// }
+
 	}
-	
-	public String toString(){
-		if(name == null || name.equals(""))
+
+	public String toString() {
+		if (name == null || name.equals(""))
 			return emailAddress;
-		
+
 		return name;
 	}
 

@@ -65,12 +65,21 @@ public class FriendAdapter extends ArrayAdapter<User> {
 		
 		nicknameView.setText(person.toString());
 		
+		String statusLine = "";
 		String statusMessageLine = person.getStatusMessage();
-		if(statusMessageLine != null && !statusMessageLine.equals(""))
-			statusMessageLine = statusMessageLine + " - ";
-		statusMessageLine = statusMessageLine + " (" + person.getFormattedDistanceString() + ")";
+		String distanceString = person.getFormattedDistanceString();
 		
-		statusView.setText(statusMessageLine);
+		if(statusMessageLine != null && !statusMessageLine.equals(""))
+			statusLine = statusMessageLine;
+		
+		if(distanceString != null && !distanceString.equals("")){
+			if(statusLine.equals(""))
+				statusLine = "(" + distanceString + ")";
+			else
+				statusLine = statusLine + " - (" + distanceString + ")";
+		}
+		
+		statusView.setText(statusLine);
 		
 		return friendListView;
 	}
