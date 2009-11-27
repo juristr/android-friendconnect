@@ -36,6 +36,7 @@ import com.friendconnect.R;
 import com.friendconnect.controller.LocationController;
 import com.friendconnect.main.IoC;
 import com.friendconnect.model.FriendConnectUser;
+import com.friendconnect.model.Location;
 import com.friendconnect.model.User;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -49,6 +50,7 @@ public class FriendMapActivity extends MapActivity implements IView {
 	private MapView mapView;
 	private MapController mapController;
 	private LocationController controller;
+	private AndroidUserPositionOverlay androidUserPositionOverlay;
 	private HashMap<String, FriendPositionOverlay> friendOverlays;
 	private boolean doCenterMap = true;
 
@@ -70,9 +72,9 @@ public class FriendMapActivity extends MapActivity implements IView {
 		this.controller = IoC.getInstance(LocationController.class);
 		this.controller.registerView(this);
 
-		MyLocationOverlay myLocationOv = new MyLocationOverlay(this, mapView);
-		myLocationOv.enableMyLocation();
-		addOverlay(myLocationOv);
+//		MyLocationOverlay myLocationOv = new MyLocationOverlay(this, mapView);
+//		myLocationOv.enableMyLocation();
+//		addOverlay(myLocationOv);
 
 		this.friendOverlays = new HashMap<String, FriendPositionOverlay>();
 	}
@@ -204,6 +206,15 @@ public class FriendMapActivity extends MapActivity implements IView {
 		// }
 		// }
 	}
+	
+	private void showAndroidUserPosition(Location position){
+		if(androidUserPositionOverlay == null){
+			androidUserPositionOverlay = new AndroidUserPositionOverlay();
+			addOverlay(androidUserPositionOverlay);
+		}
+		
+		androidUserPositionOverlay.setPosition(position);
+	}
 
 	private void addOverlay(Overlay overlay) {
 		List<Overlay> mapOverlays = mapView.getOverlays();
@@ -236,6 +247,9 @@ public class FriendMapActivity extends MapActivity implements IView {
 	public void update(Observable observable, Object data) {
 		final FriendConnectUser user = (FriendConnectUser) observable;
 
+		//fix user's own position
+		showAndroidUserPosition(user.getPosition());
+		
 		// update friend's positions
 		for (User friend : user.getFriends()) {
 			FriendPositionOverlay friendOverlay = friendOverlays.get(friend
@@ -244,7 +258,7 @@ public class FriendMapActivity extends MapActivity implements IView {
 				friendOverlay.setPosition(friend.getPosition(), user
 						.getPosition());
 			} else {
-				friendOverlay = new FriendPositionOverlay(friend, this);
+				friendOverlay = new FriendPositionOverlay(friend);
 				friendOverlay.setPosition(friend.getPosition(), user
 						.getPosition());
 				friendOverlays.put(friend.getId(), friendOverlay);

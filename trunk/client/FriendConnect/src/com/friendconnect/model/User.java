@@ -23,6 +23,7 @@ import java.util.Observer;
 
 import com.friendconnect.annotations.ComplexSerializableType;
 import com.friendconnect.annotations.NotRecursiveSync;
+import com.friendconnect.annotations.NotSerializable;
 
 public class User extends Observable{
 	protected String id;
@@ -48,10 +49,12 @@ public class User extends Observable{
 		return emailAddress;
 	}
 
+	@NotSerializable
 	public float getDistanceToFriendConnectUser() {
 		return distanceToFriendConnectUser;
 	}
 
+	@NotSerializable
 	public void setDistanceToFriendConnectUser(float distanceToFriendConnectUser) {
 		float oldDistance = this.distanceToFriendConnectUser;
 		this.distanceToFriendConnectUser = distanceToFriendConnectUser;
@@ -62,14 +65,17 @@ public class User extends Observable{
 		}
 	}
 
+	@NotSerializable
 	public String getDistanceIndic() {
 		return distanceIndic;
 	}
 
+	@NotSerializable
 	public void setDistanceIndic(String distanceIndic) {
 		this.distanceIndic = distanceIndic;
 	}
 	
+	@NotSerializable
 	public String getFormattedDistanceString(){
 		//(int) to get rid of decimal places which are not needed
 		return (int)distanceToFriendConnectUser + " " + distanceIndic;
