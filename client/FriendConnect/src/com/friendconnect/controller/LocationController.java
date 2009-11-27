@@ -83,24 +83,25 @@ public class LocationController extends AbstractController<FriendConnectUser> {
 	public void updateFriendDistances() {
 		if (model.getFriends() != null) {
 			for (User friend : model.getFriends()) {
-				float distance = model
-						.getPosition()
-						.convertToAndroidLocation()
-						.distanceTo(
-								friend.getPosition().convertToAndroidLocation());
+				if (model.getPosition() != null) {
+					float distance = model.getPosition()
+							.convertToAndroidLocation().distanceTo(
+									friend.getPosition()
+											.convertToAndroidLocation());
 
-				String distIndic = "";
+					String distIndic = "";
 
-				if(distance < 1000){
-					distIndic = "m";
-					distance = Round(distance, 0);
-				}else{
-					distIndic = "km";
-					distance = Round(distance/1000, 0);
+					if (distance < 1000) {
+						distIndic = "m";
+						distance = Round(distance, 0);
+					} else {
+						distIndic = "km";
+						distance = Round(distance / 1000, 0);
+					}
+
+					friend.setDistanceToFriendConnectUser(distance);
+					friend.setDistanceIndic(distIndic);
 				}
-				
-				friend.setDistanceToFriendConnectUser(distance);
-				friend.setDistanceIndic(distIndic);
 			}
 		}
 	}
