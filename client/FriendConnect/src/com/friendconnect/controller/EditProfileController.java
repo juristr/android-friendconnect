@@ -56,13 +56,13 @@ public class EditProfileController extends AbstractController<FriendConnectUser>
 
 				public void onSuccess(Boolean result) {
 					notifyStopProgress();
-					notifySuccess(R.string.uiMessageEditProfileSuccessMsg);
+					notifyShowMessage(R.string.uiMessageEditProfileSuccessMsg);
 				}
 				
 				public void onFailure(Throwable throwable) {
 					Log.e(EditProfileController.class.getCanonicalName(), throwable.getMessage());
 					notifyStopProgress();
-					notifyFailure(R.string.uiMessageEditProfileErrorMsg);
+					notifyShowMessage(R.string.uiMessageEditProfileErrorMsg);
 				}
 				
 			}, Boolean.class);

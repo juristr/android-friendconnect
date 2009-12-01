@@ -214,15 +214,11 @@ public class PendingInvitesListActivity extends Activity implements IView {
 		progressDialog.show();
 	}
 	
-	public void stopProgess() {
+	public void stopProgress() {
 		progressDialog.cancel();
 	}
 
-	public void onSuccess(int successMessageId) {
-		ActivityUtils.showToast(this, successMessageId, Toast.LENGTH_SHORT);
-	}
-	
-	public void onFailure(int failureMessageId) {
-		ActivityUtils.showToast(this, failureMessageId, Toast.LENGTH_LONG);
+	public void showMessage(int messageId) {
+		ActivityUtils.showToast(this, messageId, Toast.LENGTH_LONG);
 	}
 }

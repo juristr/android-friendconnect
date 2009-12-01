@@ -28,9 +28,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.friendconnect.R;
 import com.friendconnect.controller.LocationController;
@@ -38,6 +36,7 @@ import com.friendconnect.main.IoC;
 import com.friendconnect.model.FriendConnectUser;
 import com.friendconnect.model.Location;
 import com.friendconnect.model.User;
+import com.friendconnect.utils.ActivityUtils;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
@@ -268,15 +267,11 @@ public class FriendMapActivity extends MapActivity implements IView {
 
 	}
 	
-	public void stopProgess() {
+	public void stopProgress() {
 		//do nothing
 	}
 
-	public void onFailure(int failureMessageId) {
-		//do nothing
-	}
-
-	public void onSuccess(int successMessageId) {
-		//do nothing
+	public void showMessage(int messageId) {
+		ActivityUtils.showToast(this, messageId, Toast.LENGTH_LONG);
 	}
 }
