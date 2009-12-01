@@ -43,10 +43,12 @@ public class UserDaoTest extends BaseTest {
 		
 		user = new User();
 		user.setEmailAddress("matthias.braunhofer@gmail.com");
+		user.setOnline(true);
 		user.setName("Matthias");
 		
 		friend = new User();
 		friend.setEmailAddress("juri.strumpflohner@gmail.com");
+		friend.setOnline(false);
 		friend.setName("Juri");
 	}
 	
@@ -149,6 +151,21 @@ public class UserDaoTest extends BaseTest {
 		assertNotNull("The location shouldn't be null", persisted.getPosition());
 		assertEquals("The location's latitude should match", location.getLatitude(), persisted.getPosition().getLatitude());
 		assertEquals("The location's longitude should match", location.getLongitude(), persisted.getPosition().getLongitude());		
+	}
+	
+	public void testGetOnlineUsers() {
+		List<User> result = userDao.getOnlineUsers();
+		
+		assertNotNull("The result list shouldn't be null", result);
+		assertEquals("The result list should contain no entry", result.size(), 0);
+		
+		userDao.saveUser(user);
+		userDao.saveUser(friend);
+		
+		result = userDao.getOnlineUsers();
+		
+		assertNotNull("The result list shouldn't be null", result);
+		assertEquals("The result list should contain one entry", result.size(), 1);	
 	}
 	
 	private boolean contains(List<User> users, String userId) {

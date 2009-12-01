@@ -111,4 +111,9 @@ public class MockUserDao implements IUserDao {
 	public List<User> searchUsers(String searchText) {
 		return new ArrayList<User>();
 	}
+	
+	@Override
+	public List<User> getOnlineUsers() {
+		return new ArrayList<User>();
+	}
 }
