@@ -122,7 +122,7 @@ public class User implements Comparable<User> {
 		this.online = online;
 	}
 
-	public boolean isOnline() {
+	public boolean getOnline() {
 		return online;
 	}
 
@@ -176,10 +176,10 @@ public class User implements Comparable<User> {
 
 		// compare the users' string representations if they have the same
 		// status
-		if (this.isOnline() == user.isOnline()) {
+		if (this.getOnline() == user.getOnline()) {
 			return this.toString().compareToIgnoreCase(user.toString());
 		} else {
-			return this.isOnline() ? BEFORE : AFTER;
+			return this.getOnline() ? BEFORE : AFTER;
 		}
 	}
 
