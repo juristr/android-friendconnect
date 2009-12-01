@@ -102,4 +102,10 @@ public interface IUserDao {
 	 * @return
 	 */
 	public List<User> searchUsers(String searchText);
+	
+	/**
+	 * Returns all users whose status is set to online from the JDO Datastore
+	 * @return
+	 */
+	public List<User> getOnlineUsers();
 }

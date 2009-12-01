@@ -21,6 +21,7 @@ package com.friendconnect.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jdo.Extent;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
@@ -52,6 +53,7 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 			storedUser.setStatusMessage(user.getStatusMessage());
 			storedUser.setOnline(user.getOnline());
 			storedUser.setPosition(user.getPosition());
+			storedUser.setLastAccess(user.getLastAccess());
 			pm.currentTransaction().commit();
 		} finally {
 			if (pm.currentTransaction().isActive()) {
@@ -209,5 +211,20 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 	public List<User> searchUsers(String searchText) {
 		//TODO implement search
 		return null;
+	}
+	
+	@Override
+	public List<User> getOnlineUsers() {
+		List<User> users = new ArrayList<User>();
+		PersistenceManager pm = getPersistenceManager();
+		//An extent retrieves results in batches, and can exceed the 1,000-result limit that applies to queries!!!
+		Extent<User> extent = pm.getExtent(User.class, false);
+		for (User user : extent) {
+			if (user.getOnline()) {
+				users.add(pm.detachCopy(user));
+			}
+		}
+		extent.closeAll();
+		return users;	
 	}
 }

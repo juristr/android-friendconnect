@@ -18,6 +18,7 @@
 
 package com.friendconnect.model;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.jdo.annotations.Embedded;
@@ -58,13 +59,18 @@ public class User implements Comparable<User> {
 
 	@Persistent
 	private String statusMessage;
+	
+	@Persistent
+	private Date lastAccess;
 
 	@Persistent(defaultFetchGroup = "true")
 	@Embedded
 	private Location position;
 
+	@Persistent
 	private List<String> friends;
 
+	@Persistent
 	private List<String> pendingFriends;
 
 	public User() {
@@ -132,6 +138,16 @@ public class User implements Comparable<User> {
 
 	public String getStatusMessage() {
 		return statusMessage;
+	}
+
+	@NotSerializable
+	public void setLastAccess(Date lastAccess) {
+		this.lastAccess = lastAccess;
+	}
+
+	@NotSerializable
+	public Date getLastAccess() {
+		return lastAccess;
 	}
 
 	@ComplexSerializableType(clazz = Location.class)
