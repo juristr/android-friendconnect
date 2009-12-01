@@ -50,7 +50,7 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 			storedUser.setWebsite(user.getWebsite());
 			storedUser.setToken(user.getToken());
 			storedUser.setStatusMessage(user.getStatusMessage());
-			storedUser.setOnline(user.isOnline());
+			storedUser.setOnline(user.getOnline());
 			storedUser.setPosition(user.getPosition());
 			pm.currentTransaction().commit();
 		} finally {
@@ -153,7 +153,7 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 			User user = pm.getObjectById(User.class, userId);
 			if (user.getFriends() != null) {
 				List<String> friends = user.getFriends();
-				friends.remove(friends.indexOf(friendId));
+				friends.remove(friendId);
 				user.setFriends(friends);
 			}
 			pm.currentTransaction().commit();
@@ -194,7 +194,7 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 			User user = pm.getObjectById(User.class, userId);
 			if (user.getPendingFriends() != null) {
 				List<String> pendingFriends = user.getPendingFriends();
-				pendingFriends.remove(pendingFriends.indexOf(friendId));
+				pendingFriends.remove(friendId);
 				user.setPendingFriends(pendingFriends);
 			}
 			pm.currentTransaction().commit();
