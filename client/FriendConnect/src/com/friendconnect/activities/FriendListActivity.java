@@ -45,10 +45,12 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.friendconnect.R;
+import com.friendconnect.adapters.FriendAdapter;
 import com.friendconnect.controller.FriendListController;
 import com.friendconnect.main.IoC;
 import com.friendconnect.model.FriendConnectUser;
 import com.friendconnect.model.User;
+import com.friendconnect.model.UserComparator;
 import com.friendconnect.services.FriendUpdateService;
 import com.friendconnect.services.ILocationService;
 import com.friendconnect.services.LocationService;
@@ -63,6 +65,7 @@ public class FriendListActivity extends Activity implements IView {
 
 	private boolean lock = false;
 
+	private UserComparator userComparator = new UserComparator();
 	private Handler handler;
 	private FriendListController controller;
 	private ListView listViewFriends;
@@ -181,7 +184,8 @@ public class FriendListActivity extends Activity implements IView {
 				showFriendConnectUserInfo((FriendConnectUser) observable);
 
 				while (lock);
-
+				
+				((FriendAdapter)adapter).sort(userComparator);
 				adapter.notifyDataSetChanged();
 			}
 		});
