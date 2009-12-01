@@ -130,22 +130,6 @@ public class PendingFriendListController extends AbstractController<FriendConnec
 		return new FriendAdapter(context, this.layoutId, this.model.getPendingInvites());
 	}
 	
-	/**
-	 * Retrieves a {@link Friend} object from a list of friends
-	 * @param users users to search a friend in
-	 * @param id the identifier to be matched
-	 * @return the corresponding {@link Friend} object, null otherwise
-	 */
-	private User getFriend(List<User> users, String id) {
-		
-		for (User friend : users) {
-			if(friend.getId().equals(id))
-				return friend;
-		}
-		
-		return null;
-	}
-	
 	public void setLayoutId(int layoutId){
 		this.layoutId = layoutId;
 	}

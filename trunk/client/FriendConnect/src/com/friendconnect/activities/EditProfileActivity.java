@@ -20,20 +20,20 @@ package com.friendconnect.activities;
 
 import java.util.Observable;
 
-import com.friendconnect.R;
-import com.friendconnect.controller.EditProfileController;
-import com.friendconnect.main.IoC;
-import com.friendconnect.model.FriendConnectUser;
-import com.friendconnect.services.FriendUpdateService;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.friendconnect.R;
+import com.friendconnect.controller.EditProfileController;
+import com.friendconnect.main.IoC;
+import com.friendconnect.model.FriendConnectUser;
+import com.friendconnect.utils.ActivityUtils;
 
 public class EditProfileActivity extends Activity implements IView {
 	private EditProfileController controller;
@@ -67,6 +67,9 @@ public class EditProfileActivity extends Activity implements IView {
 		});
 	}
 	
+	/**
+	 * Initializes the string values of the EditText views
+	 */
 	private void init() {
 		FriendConnectUser user = controller.getModel();
 		((EditText) findViewById(R.id.editTextEmail)).setText(user.getEmailAddress());
@@ -79,12 +82,16 @@ public class EditProfileActivity extends Activity implements IView {
 	public void update(Observable observable, Object data) {
 		//do nothing
 	}
-
-	public void onProgressChanged(String message) {
-		progressDialog.setMessage(message);
-	}
-
+	
 	public void stopProgess() {
 		progressDialog.cancel();
+	}
+
+	public void onSuccess(int successMessageId) {
+		ActivityUtils.showToast(this, successMessageId, Toast.LENGTH_SHORT);
+	}
+	
+	public void onFailure(int failureMessageId) {
+		ActivityUtils.showToast(this, failureMessageId, Toast.LENGTH_LONG);
 	}
 }

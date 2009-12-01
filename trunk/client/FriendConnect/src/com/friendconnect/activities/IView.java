@@ -36,10 +36,16 @@ public interface IView {
 	public void update(Observable observable, Object data);
 	
 	/**
-	 * Notifies about changes in the progress
-	 * @param message
+	 * Event for listening to success notifications 
+	 * @param successMessageId resource id of the success message
 	 */
-	public void onProgressChanged(String message);
+	public void onSuccess(int successMessageId);
+	
+	/**
+	 * Event for listening for failure notifications
+	 * @param failureMessageId resource id of the failure message
+	 */
+	public void onFailure(int failureMessageId);
 	
 	/**
 	 * Event for listening to commands for stopping progress notifications

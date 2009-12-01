@@ -91,21 +91,31 @@ public abstract class AbstractController<T extends Observable> implements Observ
 	}
 	
 	/**
-	 * Notifies about changes in the progress
-	 * @param message
-	 */
-	protected void notifyProgressChange(String message){
-		for (IView view : this.views) {
-			view.onProgressChanged(message);
-		}
-	}
-	
-	/**
 	 * Notifies views to stop their progress indications
 	 */
 	protected void notifyStopProgress(){
 		for (IView view : this.views) {
 			view.stopProgess();
+		}
+	}
+	
+	/**
+	 * Notifies views about success
+	 * @param successMessageId
+	 */
+	protected void notifySuccess(int successMessageId){
+		for (IView view : this.views) {
+			view.onSuccess(successMessageId);
+		}
+	}
+	
+	/**
+	 * Notifies views about failure
+	 * @param failureMessageId
+	 */
+	protected void notifyFailure(int failureMessageId){
+		for (IView view : this.views) {
+			view.onFailure(failureMessageId);
 		}
 	}
 	

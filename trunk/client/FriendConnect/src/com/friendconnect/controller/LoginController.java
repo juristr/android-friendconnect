@@ -22,6 +22,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.BaseAdapter;
 
+import com.friendconnect.R;
 import com.friendconnect.main.IFriendConnectApplication;
 import com.friendconnect.model.FriendConnectUser;
 import com.friendconnect.model.LoginResult;
@@ -57,7 +58,7 @@ public class LoginController extends AbstractController<LoginResult> {
 			public void onFailure(Throwable throwable) {
 				Log.e(LoginController.class.getCanonicalName(), throwable.getMessage());
 				notifyStopProgress();
-				model.setLoginSucceeded(false);
+				notifyFailure(R.string.uiMessageLoginErrorMsg);
 			}
 			
 		}, FriendConnectUser.class);

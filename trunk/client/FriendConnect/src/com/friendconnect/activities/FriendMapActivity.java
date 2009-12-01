@@ -28,6 +28,9 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.LinearLayout;
 
 import com.friendconnect.R;
 import com.friendconnect.controller.LocationController;
@@ -214,15 +217,6 @@ public class FriendMapActivity extends MapActivity implements IView {
 		mapController.animateTo(point);
 	}
 
-	public void onProgressChanged(String message) {
-		// TODO Auto-generated method stub
-	}
-
-	public void stopProgess() {
-		// TODO Auto-generated method stub
-
-	}
-
 	private boolean containsFriend(String friendId, List<User> friends) {
 		for (User user : friends) {
 			if (user.getId().equals(friendId))
@@ -269,5 +263,17 @@ public class FriendMapActivity extends MapActivity implements IView {
 					.getPosition().getLongitude());
 		}
 
+	}
+	
+	public void stopProgess() {
+		//do nothing
+	}
+
+	public void onFailure(int failureMessageId) {
+		//do nothing
+	}
+
+	public void onSuccess(int successMessageId) {
+		//do nothing
 	}
 }
