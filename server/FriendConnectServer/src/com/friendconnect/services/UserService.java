@@ -103,7 +103,6 @@ public class UserService implements IUserService {
 	@Override
 	public List<User> getFriends(String userId) {
 		List<User> friends = userDao.getFriends(userId);
-		Collections.sort(friends);
 		return friends;
 	}
 	
