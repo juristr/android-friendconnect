@@ -25,11 +25,11 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.ContextMenu;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,13 +46,13 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.friendconnect.R;
 import com.friendconnect.controller.FriendListController;
-import com.friendconnect.main.IFriendConnectApplication;
 import com.friendconnect.main.IoC;
 import com.friendconnect.model.FriendConnectUser;
 import com.friendconnect.model.User;
 import com.friendconnect.services.FriendUpdateService;
 import com.friendconnect.services.ILocationService;
 import com.friendconnect.services.LocationService;
+import com.friendconnect.utils.ActivityUtils;
 
 public class FriendListActivity extends Activity implements IView {
 	private static final int ADD_FRIEND = Menu.FIRST;
@@ -65,7 +65,6 @@ public class FriendListActivity extends Activity implements IView {
 
 	private Handler handler;
 	private FriendListController controller;
-	private IFriendConnectApplication application;
 	private ListView listViewFriends;
 	private ProgressDialog progressDialog;
 	private BaseAdapter adapter;
@@ -74,7 +73,6 @@ public class FriendListActivity extends Activity implements IView {
 	static final private int FRIENDDETAILS_DIALOG = 10;
 	static final private int ADDFRIEND_DIALOG = 20;
 
-	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -95,8 +93,7 @@ public class FriendListActivity extends Activity implements IView {
 
 		listViewFriends.setAdapter(this.adapter);
 		listViewFriends.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				selectedUser = controller.getFriend(position);
 				showDialog(FRIENDDETAILS_DIALOG);
 			}
@@ -111,90 +108,68 @@ public class FriendListActivity extends Activity implements IView {
 		locationService.startLocationTracking();
 	}
 
+	/**
+	 * Shows information of the logged-in user
+	 * @param user
+	 */
 	private void showFriendConnectUserInfo(FriendConnectUser user) {
-		((TextView) findViewById(R.id.textViewMyUsername)).setText(user
-				.toString());
-		((TextView) findViewById(R.id.textViewMyStatus)).setText(user
-				.getStatusMessage());
+		((TextView) findViewById(R.id.textViewMyUsername)).setText(user.toString());
+		((TextView) findViewById(R.id.textViewMyStatus)).setText(user.getStatusMessage());
 	}
 
 	@Override
 	public Dialog onCreateDialog(int id) {
 		switch (id) {
-		case (FRIENDDETAILS_DIALOG): {
-			LayoutInflater li = LayoutInflater.from(this);
-			View friendDetailsView = li.inflate(R.layout.frienddetailsview,
-					null);
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			AlertDialog friendDetailsDialog = builder.create();
-			friendDetailsDialog.setTitle(R.string.details);
-			friendDetailsDialog.setView(friendDetailsView);
-			friendDetailsDialog.setCanceledOnTouchOutside(true);
-			friendDetailsDialog.setIcon(R.drawable.icon);
-			return friendDetailsDialog;
+			case (FRIENDDETAILS_DIALOG): {
+				return ActivityUtils.createViewDialog(this, R.layout.frienddetailsview, R.string.details, R.drawable.icon);
+			}
+			case (ADDFRIEND_DIALOG): {
+				return ActivityUtils.createViewDialog(this, R.layout.friendinvite, R.string.invitation, R.drawable.icon);
+			}
 		}
-		case (ADDFRIEND_DIALOG): {
-			LayoutInflater li = LayoutInflater.from(this);
-			View inviteFriendView = li.inflate(R.layout.friendinvite, null);
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			AlertDialog inviteFriendDialog = builder.create();
-			inviteFriendDialog.setTitle(R.string.invitation);
-			inviteFriendDialog.setView(inviteFriendView);
-			inviteFriendDialog.setCanceledOnTouchOutside(true);
-			inviteFriendDialog.setIcon(R.drawable.icon);
-			return inviteFriendDialog;
-		}
-		}
-		return null;
+		return super.onCreateDialog(id);
 	}
 
 	@Override
 	public void onPrepareDialog(int id, final Dialog dialog) {
 		switch (id) {
-		case (FRIENDDETAILS_DIALOG): {
-			((TextView) dialog.findViewById(R.id.textViewName))
-					.setText(selectedUser.getName());
-			((TextView) dialog.findViewById(R.id.textViewPhone))
-					.setText(selectedUser.getPhone());
-			((TextView) dialog.findViewById(R.id.textViewEmail))
-					.setText(selectedUser.getEmailAddress());
-			((TextView) dialog.findViewById(R.id.textViewWebsite))
-					.setText(selectedUser.getWebsite());
-			((TextView) dialog.findViewById(R.id.textViewStatusmessage))
-					.setText(selectedUser.getStatusMessage());
-			break;
-		}
-		case (ADDFRIEND_DIALOG): {
-			((Button) dialog.findViewById(R.id.buttonInvite))
-					.setOnClickListener(new OnClickListener() {
+			case (FRIENDDETAILS_DIALOG): {
+				((TextView) dialog.findViewById(R.id.textViewName)).setText(selectedUser.getName());
+				((TextView) dialog.findViewById(R.id.textViewPhone)).setText(selectedUser.getPhone());
+				((TextView) dialog.findViewById(R.id.textViewEmail)).setText(selectedUser.getEmailAddress());
+				((TextView) dialog.findViewById(R.id.textViewWebsite)).setText(selectedUser.getWebsite());
+				((TextView) dialog.findViewById(R.id.textViewStatusmessage)).setText(selectedUser.getStatusMessage());
+				break;
+			}
+			case (ADDFRIEND_DIALOG): {
+				((Button) dialog.findViewById(R.id.buttonInvite)).setOnClickListener(new OnClickListener() {
 						public void onClick(View v) {
-							EditText editTextEmailAddress = (EditText) dialog
-									.findViewById(R.id.editTextInviteeEmail);
-							String emailAddress = editTextEmailAddress
-									.getText().toString();
-							if (!emailAddress.trim().equals("") && emailAddress.contains("@")) {
+							EditText editTextEmailAddress = (EditText) dialog.findViewById(R.id.editTextInviteeEmail);
+							String emailAddress = editTextEmailAddress.getText().toString().trim();
+							if (!emailAddress.equals("") && emailAddress.contains("@")) {
 								if (!emailAddress.equals(controller.getModel().getEmailAddress())) {
 									showProgressDialog(getText(R.string.uiMessageSendingInvite));
 									controller.inviteFriend(emailAddress);
 									editTextEmailAddress.setText("");
+									editTextEmailAddress.requestFocus();
 									dialog.dismiss();
 								} else {
-									showToast(R.string.uiMessageCannotInviteYourself);
+									ActivityUtils.showToast(FriendListActivity.this, R.string.uiMessageCannotInviteYourself, Toast.LENGTH_LONG);
 								}
 
 							} else {
-								showToast(R.string.uiMessageProvideEmailAddress);
+								ActivityUtils.showToast(FriendListActivity.this, R.string.uiMessageProvideEmailAddress, Toast.LENGTH_LONG);
 							}
 						}
 					});
-		}
+				break;
+			}
 		}
 	}
 
-	private void showToast(int msgResId) {
-		Toast.makeText(this, msgResId, 3000).show();
-	}
-
+	/** 
+	 * Displays a progress dialog 
+	 */
 	private void showProgressDialog(CharSequence message) {
 		progressDialog.setMessage(message);
 		progressDialog.show();
@@ -205,24 +180,13 @@ public class FriendListActivity extends Activity implements IView {
 			public void run() {
 				showFriendConnectUserInfo((FriendConnectUser) observable);
 
-				while (lock)
-					;
+				while (lock);
 
 				adapter.notifyDataSetChanged();
 			}
 		});
 	}
 
-	public void onProgressChanged(String message) {
-		if (!message.equals(""))
-			progressDialog.setMessage(message);
-	}
-
-	public void stopProgess() {
-		progressDialog.cancel();
-	}
-
-	/** Called every time before the options menu is shown */
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
@@ -234,21 +198,15 @@ public class FriendListActivity extends Activity implements IView {
 		return true;
 	}
 
-	/** Triggered the first time activity’s menu is displayed. */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		// Create and add new menu items.
-		MenuItem itemAddFriend = menu.add(0, ADD_FRIEND, Menu.NONE, this
-				.getString(R.string.menuAddFriend));
-		MenuItem itemRemoveFriend = menu.add(0, REMOVE_FRIEND, Menu.NONE, this
-				.getString(R.string.menuRemoveFriend));
-		MenuItem itemPendingInvitesList = menu.add(2, PENDINGINVITES_LIST,
-				Menu.NONE, this.getString(R.string.menuPendingInvitesListView));
-		MenuItem itemProfile = menu.add(3, PROFILE, Menu.NONE, this
-				.getString(R.string.menuEditProfile));
-		MenuItem itemMapView = menu.add(4, MAP_VIEW, Menu.NONE, this
-				.getString(R.string.menuMapView));
+		MenuItem itemAddFriend = menu.add(0, ADD_FRIEND, Menu.NONE, this.getString(R.string.menuAddFriend));
+		MenuItem itemRemoveFriend = menu.add(0, REMOVE_FRIEND, Menu.NONE, this.getString(R.string.menuRemoveFriend));
+		MenuItem itemPendingInvitesList = menu.add(2, PENDINGINVITES_LIST, Menu.NONE, this.getString(R.string.menuPendingInvitesListView));
+		MenuItem itemProfile = menu.add(3, PROFILE, Menu.NONE, this.getString(R.string.menuEditProfile));
+		MenuItem itemMapView = menu.add(4, MAP_VIEW, Menu.NONE, this.getString(R.string.menuMapView));
 
 		// Assign icons
 		itemAddFriend.setIcon(R.drawable.menu_invite);
@@ -263,52 +221,40 @@ public class FriendListActivity extends Activity implements IView {
 		return true;
 	}
 
-	/** Handles activity’s menu item selections */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
-		// int index = this.listViewFriends.getSelectedItemPosition();
 		switch (item.getItemId()) {
-		case (ADD_FRIEND): {
-			showDialog(ADDFRIEND_DIALOG);
-			return true;
+			case (ADD_FRIEND): {
+				showDialog(ADDFRIEND_DIALOG);
+				return true;
+			}
+			case (REMOVE_FRIEND): {
+				doRemoveFriendActions(listViewFriends.getSelectedItemPosition());
+				return true;
+			}
+			case (PENDINGINVITES_LIST): {
+				startActivity(new Intent(FriendListActivity.this, PendingInvitesListActivity.class));
+				return true;
+			}
+			case (PROFILE): {
+				startActivity(new Intent(FriendListActivity.this, EditProfileActivity.class));
+				return true;
+			}
+			case (MAP_VIEW): {
+				startActivity(new Intent(FriendListActivity.this, FriendMapActivity.class));
+				return true;
+			}
 		}
-		case (REMOVE_FRIEND): {
-			doRemoveFriendActions(listViewFriends.getSelectedItemPosition());
-			return true;
-		}
-		case (PENDINGINVITES_LIST): {
-			startActivity(new Intent(FriendListActivity.this,
-					PendingInvitesListActivity.class));
-			return true;
-		}
-		case (PROFILE): {
-			startActivity(new Intent(FriendListActivity.this,
-					EditProfileActivity.class));
-			return true;
-		}
-		case (MAP_VIEW): {
-			startActivity(new Intent(FriendListActivity.this,
-					FriendMapActivity.class));
-			return true;
-		}
-		}
-		return false;
+		return super.onOptionsItemSelected(item);
 	}
 
-	/**
-	 * Called every time the context menu for listViewFriends is about to be
-	 * shown
-	 */
 	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		menu.setHeaderTitle("Selected Friend");
 		menu.add(0, REMOVE_FRIEND, Menu.NONE, R.string.menuRemoveFriend);
 	}
 
-	/** Handles context menu selections */
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		super.onContextItemSelected(item);
@@ -318,49 +264,65 @@ public class FriendListActivity extends Activity implements IView {
 		int index = menuInfo.position;
 
 		switch (item.getItemId()) {
-		case (REMOVE_FRIEND): {
-			progressDialog
-					.setMessage(getText(R.string.uiMessageRemovingFriend));
-			progressDialog.show();
-			doRemoveFriendActions(index);
-			return true;
+			case (REMOVE_FRIEND): {
+				doRemoveFriendActions(index);
+				return true;
+			}
 		}
-		}
-		return false;
+		return super.onContextItemSelected(item);
 	}
 
 	/**
 	 * Does preparative actions for calling the controller's removeFriend method
 	 */
 	private void doRemoveFriendActions(int index) {
-		progressDialog.setMessage(getText(R.string.uiMessageRemovingFriend));
-		progressDialog.show();
-
-		String userId = getFriendId(index);
-		if (userId != null && !userId.equals("")) {
-			controller.removeFriend(userId);
-		}
+		final User friend = getSelectedFriend(index);
+		AlertDialog.Builder ad = ActivityUtils.createConfirmationDialog(this, getString(R.string.dialogRemoveFriendTitle), String.format(getString(R.string.dialogRemoveFriendMessage), friend.toString()));
+		ad.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				if (friend != null) {
+					showProgressDialog(getText(R.string.uiMessageRemovingFriend));
+					controller.removeFriend(friend.getId());
+				}
+			}
+		});
+		ad.setNegativeButton(R.string.cancel, null);
+		ad.setCancelable(true);
+		ad.show();
 	}
 
 	/**
-	 * Locks the friend-list to be updated and retrieves the id of the object
+	 * Locks the friend-list to be updated and retrieves the friend object
 	 * that is being selected by the user
 	 * 
-	 * @return the id of the friend to remove
+	 * @return the friend to remove
 	 */
-	private String getFriendId(int index) {
-		String result;
+	private User getSelectedFriend(int index) {
+		User user;
 		lock = true;
 		try {
-			User user = (User) listViewFriends.getItemAtPosition(index);
-			result = user.getId();
+			user = (User) listViewFriends.getItemAtPosition(index);
 		} finally {
 			lock = false;
 		}
 
-		return result;
+		return user;
+	}
+	
+	public void stopProgess() {
+		progressDialog.cancel();
+	}
+	
+	public void onSuccess(int successMessageId) {
+		ActivityUtils.showToast(this, successMessageId, Toast.LENGTH_SHORT);
+	}
+	
+	public void onFailure(int failureMessageId) {
+		ActivityUtils.showToast(this, failureMessageId, Toast.LENGTH_LONG);
 	}
 
+	/* Getters and setters */
+	
 	public FriendListController getController() {
 		return controller;
 	}

@@ -19,19 +19,19 @@
 package com.friendconnect.model;
 
 import java.util.Observable;
-import java.util.Observer;
 
 import com.friendconnect.annotations.ComplexSerializableType;
 import com.friendconnect.annotations.NotRecursiveSync;
 import com.friendconnect.annotations.NotSerializable;
 
-public class User extends Observable {
+public class User extends Observable{
 	protected String id;
 	protected String emailAddress;
 	protected String phone;
 	protected String website;
 	protected String name;
 	protected String token;
+	protected boolean online;
 	protected String statusMessage;
 	protected Location position;
 	protected float distanceToFriendConnectUser;
@@ -74,7 +74,7 @@ public class User extends Observable {
 	public void setDistanceIndic(String distanceIndic) {
 		this.distanceIndic = distanceIndic;
 	}
-
+	
 	@NotSerializable
 	public String getFormattedDistanceString() {
 		// (int) to get rid of decimal places which are not needed
@@ -135,6 +135,14 @@ public class User extends Observable {
 			notifyObservers();
 		}
 	}
+	
+	public boolean getOnline() {
+		return online;
+	}
+
+	public void setOnline(boolean online) {
+		this.online = online;
+	}
 
 	public String getStatusMessage() {
 		return statusMessage;
@@ -178,11 +186,11 @@ public class User extends Observable {
 		// }
 
 	}
-
-	public String toString() {
-		if (name == null || name.equals(""))
+	
+	public String toString(){
+		if(name == null || name.equals(""))
 			return emailAddress;
-
+		
 		return name;
 	}
 

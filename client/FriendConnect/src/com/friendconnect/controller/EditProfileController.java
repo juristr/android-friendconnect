@@ -22,6 +22,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.BaseAdapter;
 
+import com.friendconnect.R;
 import com.friendconnect.main.IFriendConnectApplication;
 import com.friendconnect.model.FriendConnectUser;
 import com.friendconnect.model.RPCRemoteMappings;
@@ -55,11 +56,13 @@ public class EditProfileController extends AbstractController<FriendConnectUser>
 
 				public void onSuccess(Boolean result) {
 					notifyStopProgress();
+					notifySuccess(R.string.uiMessageEditProfileSuccessMsg);
 				}
 				
 				public void onFailure(Throwable throwable) {
 					Log.e(EditProfileController.class.getCanonicalName(), throwable.getMessage());
 					notifyStopProgress();
+					notifyFailure(R.string.uiMessageEditProfileErrorMsg);
 				}
 				
 			}, Boolean.class);

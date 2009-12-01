@@ -50,6 +50,13 @@ public class FriendConnectUser extends User implements Observer {
 		notifyObservers();
 	}
 	
+	public void addFriend(int location, User friend) {
+		friends.add(location, friend);
+		friend.addObserver(this);
+		setChanged();
+		notifyObservers();
+	}
+	
 	public void removeFriend(User friend) {
 		friends.remove(friend);
 		friend.deleteObserver(this);

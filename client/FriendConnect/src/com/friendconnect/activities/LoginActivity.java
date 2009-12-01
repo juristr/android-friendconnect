@@ -21,9 +21,7 @@ package com.friendconnect.activities;
 import java.util.Observable;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -39,6 +37,7 @@ import com.friendconnect.controller.LoginController;
 import com.friendconnect.main.IoC;
 import com.friendconnect.model.Constants;
 import com.friendconnect.model.LoginResult;
+import com.friendconnect.utils.ActivityUtils;
 
 /**
  * View for performing the user login
@@ -61,12 +60,11 @@ public class LoginActivity extends Activity implements IView {
 		controller.registerView(this);
 
 		loadActivityPreferences();
-		final Toast toast = Toast.makeText(this, R.string.uiMessageProvideUsernamePassword, 3000);
-
+		
 		signInButton = (Button) this.findViewById(R.id.buttonSignIn);
 		signInButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				String username = ((EditText) findViewById(R.id.editTextEmail)).getText().toString();
+				String username = ((EditText) findViewById(R.id.editTextEmail)).getText().toString().trim();
 				String password = ((EditText) findViewById(R.id.editTextPassword)).getText().toString();
 				
 				if(!username.contains("@")){
@@ -75,7 +73,7 @@ public class LoginActivity extends Activity implements IView {
 				}
 
 				if (username.equals("") || password.equals("")) {
-					toast.show();
+					ActivityUtils.showToast(LoginActivity.this, R.string.uiMessageProvideUsernamePassword, Toast.LENGTH_LONG);
 				} else {
 					progressDialog.setMessage(getText(R.string.uiMessageLogin));
 					progressDialog.show();
@@ -134,30 +132,20 @@ public class LoginActivity extends Activity implements IView {
 
 		if (result.isLoginSucceeded()) {
 			saveActivityPreferences();
-			startActivity(new Intent(LoginActivity.this,
-					FriendListActivity.class));
+			startActivity(new Intent(LoginActivity.this, FriendListActivity.class));
 			finish();
-		} else {
-			//TODO factor this out to a factory or somewhere?
-			AlertDialog.Builder ad = new AlertDialog.Builder(this); 
-			ad.setTitle(R.string.uiMessageLoginErrorTitle); 
-			ad.setMessage(R.string.uiMessageLoginErrorMsg); 
-			ad.setPositiveButton("Ok",
-					new android.content.DialogInterface.OnClickListener() { 
-						public void onClick(DialogInterface dialog,	int arg1) {
-						} 
-					});
-			ad.show();
-		}
-	}
-
-	public void onProgressChanged(String message) {
-		if (message != null && !message.equals("")) {
-			progressDialog.setMessage(message);
 		}
 	}
 	
 	public void stopProgess() {
 		progressDialog.cancel();
+	}
+	
+	public void onSuccess(int successMessageId) {
+		//do nothing
+	}
+	
+	public void onFailure(int failureMessageId) {
+		ActivityUtils.showToast(this, failureMessageId, Toast.LENGTH_LONG);
 	}
 }
