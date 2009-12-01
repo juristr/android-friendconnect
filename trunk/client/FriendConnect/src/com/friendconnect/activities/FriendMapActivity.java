@@ -90,6 +90,9 @@ public class FriendMapActivity extends MapActivity implements IView {
 		case MotionEvent.ACTION_MOVE:
 			doCenterMap = false;
 			break;
+		case MotionEvent.ACTION_DOWN:
+			//hook in POI activity here
+			break;
 		}
 
 		return super.dispatchTouchEvent(ev);
