@@ -178,13 +178,23 @@ public class User extends Observable{
 		Location oldLocation = this.position;
 		this.position = location;
 
-		// if(location != null && oldLocation != null && (location.getLatitude()
-		// != oldLocation.getLatitude() || location.getLongitude() !=
-		// oldLocation.getLongitude())){
-		setChanged();
-		notifyObservers();
-		// }
+		boolean fireChanges = false;
+		
+		if(oldLocation == null && this.position != null){
+			fireChanges = true;
+		}else if(oldLocation != null && this.position == null){
+			fireChanges = true;
+		}else if(oldLocation != null && this.position != null){
+			if(oldLocation.getLatitude() != this.position.getLatitude() ||
+			   oldLocation.getLongitude() != this.position.getLongitude()){
+				fireChanges = true;
+			}
+		}
 
+		if(fireChanges){
+			setChanged();
+			notifyObservers();
+		}
 	}
 	
 	public String toString(){
