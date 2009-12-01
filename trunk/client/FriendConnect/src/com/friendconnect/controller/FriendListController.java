@@ -19,10 +19,10 @@
 package com.friendconnect.controller;
 
 import java.util.List;
+
 import android.content.Context;
 import android.util.Log;
 
-import com.friendconnect.R;
 import com.friendconnect.adapters.FriendAdapter;
 import com.friendconnect.main.IFriendConnectApplication;
 import com.friendconnect.model.FriendConnectUser;
@@ -57,51 +57,28 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 	public void updateFriendList() {
 		xmlRPCService.sendRequest(RPCRemoteMappings.GETFRIENDS, null, new IAsyncCallback<List<User>>() {
 			public void onSuccess(List<User> result) {
-				int indexLocal = 0;
-				int indexServer = 0;
-				while (indexLocal < model.getFriends().size() && indexServer < result.size()) {
-					User localFriend = model.getFriends().get(indexLocal);
-					User serverFriend = result.get(indexServer);
-					int compareToResult = localFriend.toString().compareToIgnoreCase(serverFriend.toString());
-					//friendNames are equal
-					if (compareToResult == 0) {
-						if (localFriend.getId().equals(serverFriend.getId())) {
-							//sync properties
-							try {
-								objectHelper.syncObjectGraph(localFriend, serverFriend);
-							} catch (Exception ex) {
-								onFailure(ex);
-							}
-						} else {
-							//replace local friend with server friend
-							model.removeFriend(localFriend);
-							model.addFriend(indexLocal, serverFriend);
+				for (User friend : result) {
+					User friendInModel = getFriend(model.getFriends(), friend.getId());
+					if(friendInModel == null){
+						//new friend
+						model.addFriend(friend);
+						
+					}else{
+						//sync properties
+						try {
+							objectHelper.syncObjectGraph(friendInModel, friend);
+						} catch (Exception ex) {
+							onFailure(ex);
 						}
-						//Advance both pointers
-						indexLocal++;
-						indexServer++;
-					}
-					//localFriend precedes serverFriend
-					else if (compareToResult < 0) {
-						//Remove localFriend
-						model.removeFriend(localFriend);
-					} 
-					//localFriend succeeds serverFriend
-					else {
-						//Add remoteFriend before localFriend; advance both pointers
-						model.addFriend(indexLocal, serverFriend);
-						indexLocal++;
-						indexServer++;
 					}
 				}
 				
-				if (indexServer < result.size()) {
-					for (; indexServer < result.size(); indexServer++) {
-						model.addFriend(result.get(indexServer));
-					}
-				} else if (indexLocal < model.getFriends().size()) {
-					for (int i = model.getFriends().size() - 1; i >= indexLocal; i--) {
-						model.removeFriend(model.getFriends().get(i));
+				List<User> currentFriends = model.getFriends();
+				for (User friend : currentFriends) {
+					User friendInResult = getFriend(result, friend.getId());
+					if(friendInResult == null){
+						//remove friend
+						model.removeFriend(friend);
 					}
 				}
 		
@@ -153,6 +130,22 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 				notifyStopProgress();
 			}
 		}, Boolean.class);
+	}
+	
+	/**
+	 * Retrieves a {@link Friend} object from a list of friends
+	 * @param users users to search a friend in
+	 * @param id the identifier to be matched
+	 * @return the corresponding {@link Friend} object, null otherwise
+	 */
+	private User getFriend(List<User> users, String id) {
+		
+		for (User friend : users) {
+			if(friend.getId().equals(id))
+				return friend;
+		}
+		
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")
