@@ -58,7 +58,7 @@ public class LoginController extends AbstractController<LoginResult> {
 			public void onFailure(Throwable throwable) {
 				Log.e(LoginController.class.getCanonicalName(), throwable.getMessage());
 				notifyStopProgress();
-				notifyFailure(R.string.uiMessageLoginErrorMsg);
+				notifyShowMessage(R.string.uiMessageLoginErrorMsg);
 			}
 			
 		}, FriendConnectUser.class);
