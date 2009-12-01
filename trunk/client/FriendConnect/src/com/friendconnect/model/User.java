@@ -141,7 +141,13 @@ public class User extends Observable{
 	}
 
 	public void setOnline(boolean online) {
+		boolean oldValue = this.online;
 		this.online = online;
+
+		if (oldValue != this.online) {
+			setChanged();
+			notifyObservers();
+		}
 	}
 
 	public String getStatusMessage() {
@@ -191,10 +197,6 @@ public class User extends Observable{
 			}
 		}
 
-		if(fireChanges){
-			setChanged();
-			notifyObservers();
-		}
 	}
 	
 	public String toString(){

@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -80,6 +81,14 @@ public class FriendAdapter extends ArrayAdapter<User> {
 		}
 		
 		statusView.setText(statusLine);
+		
+		//show correct status image
+		ImageView statusImageView = (ImageView)friendListView.findViewById(R.id.imgViewStatus);
+		if (person.getOnline()) {
+			statusImageView.setImageResource(R.drawable.online);
+		} else {
+			statusImageView.setImageResource(R.drawable.offline);
+		}
 		
 		return friendListView;
 	}
