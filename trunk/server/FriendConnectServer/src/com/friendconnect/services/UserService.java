@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import com.friendconnect.dao.IUserDao;
@@ -102,6 +103,11 @@ public class UserService implements IUserService {
 
 	@Override
 	public List<User> getFriends(String userId) {
+		User user = userDao.getUserById(userId);
+		user.setLastAccess(new Date());
+		user.setOnline(true);
+		userDao.saveUser(user);
+		
 		List<User> friends = userDao.getFriends(userId);
 		return friends;
 	}
@@ -204,6 +210,10 @@ public class UserService implements IUserService {
 			}
 		}
 		return friends;
+	}
+	
+	public List<User> getOnlineUsers() {
+		return userDao.getOnlineUsers();
 	}
 
 	/* Getters and setters */

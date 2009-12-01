@@ -115,4 +115,10 @@ public interface IUserService {
 	 * @return
 	 */
 	public List<User> getPendingInvites(String userId);
+	
+	/** 
+	 * Returns all users whose status is set to online
+	 * @return
+	 */
+	public List<User> getOnlineUsers();
 }
