@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="fill_parent" android:layout_width="fill_parent"
+	android:stretchColumns="1,2" android:padding="2dp">
+	<TableRow>
+		<TextView android:id="@+id/textViewTitle" android:text="@string/title" />
+		<EditText android:id="@+id/editTextTitle"
+			android:layout_span="2" android:maxLines="1" />
+	</TableRow>
+	<TableRow>
+		<TextView android:id="@+id/textViewRadius" android:text="@string/radius" />
+		<EditText android:id="@+id/editTextRadius"
+			android:layout_span="2" android:maxLines="1" />
+	</TableRow>
+	<TableRow>
+		<CheckBox android:id="@+id/checkBoxPoiActivated"
+			android:checked="false" />
+		<TextView android:id="@+id/textViewPoiActivated"
+			android:text="@string/poiActivated" android:layout_span="2" />
+	</TableRow>
+	<TableRow>
+		<TextView android:id="@+id/textViewExpirationDate"
+			android:text="@string/expirationDate" android:layout_span="3" />
+	</TableRow>
+	<TableRow>
+		<DatePicker android:id="@+id/datePickerExpirationDate"
+			android:layout_span="3" />
+	</TableRow>
+	<TableRow>
+		<TextView android:id="@+id/textViewAddress" android:text="@string/address" />
+		<EditText android:id="@+id/editTextAddress"
+			android:layout_span="2" android:maxLines="1" />
+	</TableRow>
+	<TableRow android:paddingBottom="20dp">
+		<Button android:layout_span="3" android:layout_gravity="center_horizontal"
+			android:id="@+id/buttonSavePoi" android:text="@string/save" />
+	</TableRow>
+</TableLayout>

@@ -18,7 +18,13 @@
 
 package com.friendconnect.model;
 
-public class POIAlert {
+import java.util.Observable;
+
+import com.friendconnect.annotations.ComplexSerializableType;
+import com.friendconnect.annotations.NotRecursiveSync;
+
+
+public class POIAlert extends Observable {
 	private int id;
 	private String title;
 	private int radius;
@@ -34,12 +40,18 @@ public class POIAlert {
 		this.id = value;
 	}
 
-	public String getTitle() {
+	public String getTitle() { 
 		return title;
 	}
 
 	public void setTitle(String title) {
+		String oldValue = this.title;
 		this.title = title;
+		
+		if (oldValue == null || !oldValue.equals(this.title)) {
+			setChanged();
+			notifyObservers();
+		}
 	}
 
 	public int getRadius() {
@@ -47,15 +59,39 @@ public class POIAlert {
 	}
 
 	public void setRadius(int radius) {
+		int oldValue = this.radius;
 		this.radius = radius;
+		
+		if(oldValue != radius){
+			setChanged();
+			notifyObservers();
+		}
 	}
 
+	@NotRecursiveSync
+	@ComplexSerializableType(clazz = Location.class)
 	public Location getPosition() {
 		return this.position;
 	}
 
+	@NotRecursiveSync
+	@ComplexSerializableType(clazz = Location.class)
 	public void setPosition(Location location) {
+		Location oldLocation = this.position;
 		this.position = location;
+
+		boolean fireChanges = false;
+		
+		if(oldLocation == null && this.position != null){
+			fireChanges = true;
+		}else if(oldLocation != null && this.position == null){
+			fireChanges = true;
+		}else if(oldLocation != null && this.position != null){
+			if(oldLocation.getLatitude() != this.position.getLatitude() ||
+			   oldLocation.getLongitude() != this.position.getLongitude()){
+				fireChanges = true;
+			}
+		}
 	}
 
 }
