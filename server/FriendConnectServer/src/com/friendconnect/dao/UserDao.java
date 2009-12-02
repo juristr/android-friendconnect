@@ -27,6 +27,7 @@ import javax.jdo.Query;
 
 import org.springframework.orm.jdo.support.JdoDaoSupport;
 
+import com.friendconnect.model.POIAlert;
 import com.friendconnect.model.User;
 
 public class UserDao extends JdoDaoSupport implements IUserDao {
@@ -34,10 +35,23 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 	@Override
 	public void saveUser(User user) {
 		if (user.getId() == null) {
-			getPersistenceManager().makePersistent(user);
+			storeUser(user);
 		} else {
 			updateUser(user);
 		}
+	}
+	
+	private void storeUser(User user) {
+		PersistenceManager pm = getPersistenceManager();
+		try {
+			pm.currentTransaction().begin();
+			pm.makePersistent(user);
+			pm.currentTransaction().commit();
+		} finally {
+			if (pm.currentTransaction().isActive()) {
+				pm.currentTransaction().rollback();
+			}
+		}	
 	}
 	
 	private void updateUser(User user) {
@@ -86,8 +100,16 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 	@Override
 	public void removeUser(String userId) {
 		PersistenceManager pm = getPersistenceManager();
-		User user = pm.getObjectById(User.class, userId);
-		pm.deletePersistent(user);
+		try {
+			pm.currentTransaction().begin();
+			User user = pm.getObjectById(User.class, userId);
+			pm.deletePersistent(user);
+			pm.currentTransaction().commit();
+		} finally {
+			if (pm.currentTransaction().isActive()) {
+				pm.currentTransaction().rollback();
+			}
+		} 
 	}
 	
 	@Override
@@ -226,5 +248,84 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 		}
 		extent.closeAll();
 		return users;	
+	}
+
+	@Override
+	public POIAlert getPOIAlert(String poiAlertId) {
+		PersistenceManager pm = getPersistenceManager();
+		POIAlert poiAlert = pm.getObjectById(POIAlert.class, poiAlertId);
+		return pm.detachCopy(poiAlert);
+	}
+
+	@Override
+	public List<POIAlert> getPOIAlerts(String userId) {
+		PersistenceManager pm = getPersistenceManager();
+		User user = pm.getObjectById(User.class, userId);
+		return pm.detachCopy(user.getPoiAlerts());
+	}
+
+	@Override
+	public void removePOIAlert(String poiAlertId) {
+		PersistenceManager pm = getPersistenceManager();
+		try {
+			pm.currentTransaction().begin();
+			POIAlert poiAlert = pm.getObjectById(POIAlert.class, poiAlertId);
+			pm.deletePersistent(poiAlert);
+			pm.currentTransaction().commit();
+		} finally {
+			if (pm.currentTransaction().isActive()) {
+				pm.currentTransaction().rollback();
+			}
+		}
+	}
+
+	@Override
+	public void savePOIAlert(String userId, POIAlert poiAlert) {
+		if (poiAlert.getId() == null) {
+			storePOIAlert(userId, poiAlert);
+		} else {
+			updatePOIAlert(poiAlert);
+		}
+	}
+	
+	private void storePOIAlert(String userId, POIAlert poiAlert) {
+		PersistenceManager pm = getPersistenceManager();
+		try {
+			pm.currentTransaction().begin();
+			pm.makePersistent(poiAlert);
+			User user = pm.getObjectById(User.class, userId);
+			List<POIAlert> poiAlerts;
+			if (user.getPoiAlerts() == null) {
+				poiAlerts = new ArrayList<POIAlert>();
+			} else {
+				poiAlerts = user.getPoiAlerts();
+			}
+			poiAlerts.add(poiAlert);
+			user.setPoiAlerts(poiAlerts);
+			pm.currentTransaction().commit();
+		} finally {
+			if (pm.currentTransaction().isActive()) {
+				pm.currentTransaction().rollback();
+			}
+		}
+	}
+	
+	private void updatePOIAlert(POIAlert poiAlert) {
+		PersistenceManager pm = getPersistenceManager();
+		try {
+			pm.currentTransaction().begin();
+			POIAlert storedPoiAlert = pm.getObjectById(POIAlert.class, poiAlert.getId());
+			storedPoiAlert.setActivated(poiAlert.getActivated());
+			storedPoiAlert.setAddress(poiAlert.getAddress());
+			storedPoiAlert.setExpirationDate(poiAlert.getExpirationDate());
+			storedPoiAlert.setPosition(poiAlert.getPosition());
+			storedPoiAlert.setRadius(poiAlert.getRadius());
+			storedPoiAlert.setTitle(poiAlert.getTitle());
+			pm.currentTransaction().commit();
+		} finally {
+			if (pm.currentTransaction().isActive()) {
+				pm.currentTransaction().rollback();
+			}
+		}
 	}
 }
