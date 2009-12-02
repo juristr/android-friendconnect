@@ -20,6 +20,7 @@ package com.friendconnect.dao;
 
 import java.util.List;
 
+import com.friendconnect.model.POIAlert;
 import com.friendconnect.model.User;
 
 /**
@@ -108,4 +109,31 @@ public interface IUserDao {
 	 * @return
 	 */
 	public List<User> getOnlineUsers();
+	
+	/**
+	 * Saves or updates a POI alert for a certain user into the JDO Datastore
+	 * @param userId
+	 * @param poiAlert
+	 */
+	public void savePOIAlert(String userId, POIAlert poiAlert);
+	
+	/**
+	 * Fetches all POI alerts for of a certain user from the JDO Datastore
+	 * @param userId
+	 * @return
+	 */
+	public List<POIAlert> getPOIAlerts(String userId);
+	
+	/**
+	 * Fetches a POI alert from the JDO Datastore passing its POI alert id
+	 * @param poiAlertId
+	 * @return
+	 */
+	public POIAlert getPOIAlert(String poiAlertId);
+	
+	/**
+	 * Deletes a POI alert from the JDO Datastore
+	 * @param poiAlertId
+	 */
+	public void removePOIAlert(String poiAlertId);	
 }

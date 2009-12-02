@@ -72,6 +72,9 @@ public class User implements Comparable<User> {
 
 	@Persistent
 	private List<String> pendingFriends;
+	
+	@Persistent
+	private List<POIAlert> poiAlerts;
 
 	public User() {
 	}
@@ -178,6 +181,16 @@ public class User implements Comparable<User> {
 	@NotSerializable
 	public List<String> getPendingFriends() {
 		return pendingFriends;
+	}
+	
+	@NotSerializable
+	public List<POIAlert> getPoiAlerts() {
+		return poiAlerts;
+	}
+
+	@NotSerializable
+	public void setPoiAlerts(List<POIAlert> poiAlerts) {
+		this.poiAlerts = poiAlerts;
 	}
 
 	@Override
