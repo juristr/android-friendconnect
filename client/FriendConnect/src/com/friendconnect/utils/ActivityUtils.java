@@ -72,5 +72,9 @@ public class ActivityUtils {
 	 */
 	public static void showToast(Activity activity, int textId, int duration) {
 		Toast.makeText(activity, textId, duration).show();
-	}	
+	}
+	
+	public static void showToast(Activity activity, String text, int duration){
+		Toast.makeText(activity, text, duration).show();
+	}
 }

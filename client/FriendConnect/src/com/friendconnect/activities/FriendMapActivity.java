@@ -22,18 +22,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.widget.Toast;
 
 import com.friendconnect.R;
 import com.friendconnect.controller.LocationController;
 import com.friendconnect.main.IoC;
-import com.friendconnect.model.FriendConnectUser;
 import com.friendconnect.model.Location;
 import com.friendconnect.model.User;
 import com.friendconnect.utils.ActivityUtils;
@@ -43,8 +45,9 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 
-public class FriendMapActivity extends MapActivity implements IView {
+public class FriendMapActivity extends MapActivity implements IView, OnLongClickListener {
 	private static final int CENTER_MAP = Menu.FIRST;
+	private static final int ADD_POI = Menu.FIRST + 1;
 	private MapView mapView;
 	private MapController mapController;
 	private LocationController controller;
@@ -62,6 +65,13 @@ public class FriendMapActivity extends MapActivity implements IView {
 
 		mapView.setBuiltInZoomControls(true);
 		mapView.displayZoomControls(true);
+		mapView.setLongClickable(true);
+		mapView.setOnLongClickListener(new OnLongClickListener() {
+			public boolean onLongClick(View v) {
+				ActivityUtils.showToast((Activity)v.getContext(), "Pushed down", 3000);
+				return false;
+			}
+		});
 
 		this.controller = IoC.getInstance(LocationController.class);
 		this.controller.registerView(this);
@@ -82,32 +92,34 @@ public class FriendMapActivity extends MapActivity implements IView {
 		return super.onKeyDown(keyCode, event);
 	}
 
-	@Override
-	public boolean dispatchTouchEvent(MotionEvent ev) {
-		int actionType = ev.getAction();
-		switch (actionType) {
-		case MotionEvent.ACTION_MOVE:
-			doCenterMap = false;
-			break;
-		case MotionEvent.ACTION_DOWN:
-			//hook in POI activity here
-			break;
-		}
-
-		return super.dispatchTouchEvent(ev);
+//	@Override
+//	public boolean dispatchTouchEvent(MotionEvent ev) {
+//		int actionType = ev.getAction();
+//		switch (actionType) {
+//		case MotionEvent.ACTION_MOVE:
+//			doCenterMap = false;
+//			break;
+//		}
+//
+//		return super.dispatchTouchEvent(ev);
+//	}
+	
+	public boolean onLongClick(View v) {
+//		ActivityUtils.showToast(this, "Pushed down", 3000);
+		return false;
 	}
 
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		int actionType = event.getAction();
-		switch (actionType) {
-		case MotionEvent.ACTION_MOVE:
-			doCenterMap = false;
-			return true;
-		}
-
-		return super.onTouchEvent(event);
-	}
+//	@Override
+//	public boolean onTouchEvent(MotionEvent event) {
+//		int actionType = event.getAction();
+//		switch (actionType) {
+//		case MotionEvent.ACTION_MOVE:
+//			doCenterMap = false;
+//			return true;
+//		}
+//
+//		return super.onTouchEvent(event);
+//	}
 
 	@Override
 	protected boolean isRouteDisplayed() {
@@ -129,6 +141,8 @@ public class FriendMapActivity extends MapActivity implements IView {
 		MenuItem itemCenterMap = menu.add(0, CENTER_MAP, Menu.NONE,
 				R.string.menuCenterMap);
 		itemCenterMap.setIcon(R.drawable.menu_mylocation);
+		
+		MenuItem itemAddPoi = menu.add(1, ADD_POI, Menu.NONE, R.string.menuAddPoiAlert);
 
 		return true;
 	}
@@ -141,6 +155,9 @@ public class FriendMapActivity extends MapActivity implements IView {
 		case (CENTER_MAP): {
 			doCenterMap = true;
 			return true;
+		}
+		case (ADD_POI):{
+			startActivity(new Intent(FriendMapActivity.this, EditPoiActivity.class));
 		}
 		}
 		return false;
@@ -228,42 +245,43 @@ public class FriendMapActivity extends MapActivity implements IView {
 		return false;
 	}
 
-	public void update(Observable observable, Object data) {
-		final FriendConnectUser user = (FriendConnectUser) observable;
-
-		//fix user's own position
-		showAndroidUserPosition(user.getPosition());
+	public synchronized void update(Observable observable, Object data) {
 		
-		// update friend's positions
-		for (User friend : user.getFriends()) {
-			FriendPositionOverlay friendOverlay = friendOverlays.get(friend
-					.getId());
-			if (friendOverlay != null) {
-				friendOverlay.setPosition(friend.getPosition(), user
-						.getPosition());
-			} else {
-				friendOverlay = new FriendPositionOverlay(friend);
-				friendOverlay.setPosition(friend.getPosition(), user
-						.getPosition());
-				friendOverlays.put(friend.getId(), friendOverlay);
-				addOverlay(friendOverlay);
-			}
-		}
-
-		// remove overlays of past friends
-		for (String friendId : friendOverlays.keySet()) {
-			if (!containsFriend(friendId, user.getFriends())) {
-				friendOverlays.remove(friendId);
-				mapView.getOverlays().remove(friendOverlays.get(friendId));
-			}
-		}
-
-		mapView.invalidate();
-		if (doCenterMap) {
-			// center the map on the user's position
-			navigateToPoint(user.getPosition().getLatitude(), user
-					.getPosition().getLongitude());
-		}
+//		final FriendConnectUser user = (FriendConnectUser) observable;
+//
+//		//fix user's own position
+//		showAndroidUserPosition(user.getPosition());
+//		
+//		// update friend's positions
+//		for (User friend : user.getFriends()) {
+//			FriendPositionOverlay friendOverlay = friendOverlays.get(friend
+//					.getId());
+//			if (friendOverlay != null) {
+//				friendOverlay.setPosition(friend.getPosition(), user
+//						.getPosition());
+//			} else {
+//				friendOverlay = new FriendPositionOverlay(friend);
+//				friendOverlay.setPosition(friend.getPosition(), user
+//						.getPosition());
+//				friendOverlays.put(friend.getId(), friendOverlay);
+//				addOverlay(friendOverlay);
+//			}
+//		}
+//
+//		// remove overlays of past friends
+//		for (String friendId : friendOverlays.keySet()) {
+//			if (!containsFriend(friendId, user.getFriends())) {
+//				friendOverlays.remove(friendId);
+//				mapView.getOverlays().remove(friendOverlays.get(friendId));
+//			}
+//		}
+//
+//		mapView.invalidate();
+//		if (doCenterMap) {
+//			// center the map on the user's position
+//			navigateToPoint(user.getPosition().getLatitude(), user
+//					.getPosition().getLongitude());
+//		}
 
 	}
 	

@@ -11,6 +11,11 @@
 	<string name="password">Password:</string>
 	<string name="signin">Sign in</string>
 	<string name="save">Save</string>
+	<string name="title">Title</string>
+	<string name="radius">Radius (m)</string>
+	<string name="poiActivated">Activated</string>
+	<string name="expirationDate">Expiration Date</string>
+	<string name="address">Address</string>
 	<string name="signinwith">Sign in with your</string>
 	<string name="account">Account</string>
 	<string name="donthave">Don\'t have a Google Account?</string>
@@ -20,6 +25,7 @@
 	<string name="activityTitlePendingInvites">Pending invites</string>
 	<string name="activityEditProfile">Profile</string>
 	<string name="activityFriendMap">Friend Map</string>
+	<string name="activityEditPoi">POI - Point Of Interest</string>
 	<string name="friendConnectServerUrl">http://1.latest.android-friendconnect.appspot.com/</string>
 	<string name="uiMessageLogin">Logging in...</string>
 	<string name="uiMessageSendingInvite">Sending invite...</string>
@@ -44,6 +50,7 @@
 	<string name="menuRefresh">Refresh</string>
 	<string name="menuMapView">Friend Map</string>
 	<string name="menuCenterMap">Center Map</string>
+	<string name="menuAddPoiAlert">Add POI</string>
 	<string name="invitation">FriendConnect Invitation</string>
 	<string name="sendInvite">Send Invite</string>
 	<string name="inviteFriend">Type the email address of the person you would like to invite:</string>

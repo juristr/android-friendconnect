@@ -49,6 +49,16 @@ public class User extends Observable{
 		return emailAddress;
 	}
 
+	public void setEmailAddress(String emailAddress) {
+		String oldValue = this.emailAddress;
+		this.emailAddress = emailAddress;
+
+		if (oldValue == null || !oldValue.equals(this.emailAddress)) {
+			setChanged();
+			notifyObservers();
+		}
+	}
+	
 	@NotSerializable
 	public float getDistanceToFriendConnectUser() {
 		return distanceToFriendConnectUser;
@@ -82,16 +92,6 @@ public class User extends Observable{
 			return (int) distanceToFriendConnectUser + " " + distanceIndic;
 		else
 			return "";
-	}
-
-	public void setEmailAddress(String emailAddress) {
-		String oldValue = this.emailAddress;
-		this.emailAddress = emailAddress;
-
-		if (oldValue == null || !oldValue.equals(this.emailAddress)) {
-			setChanged();
-			notifyObservers();
-		}
 	}
 
 	public String getPhone() {
