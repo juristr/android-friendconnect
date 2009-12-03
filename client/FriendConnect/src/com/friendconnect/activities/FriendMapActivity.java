@@ -39,6 +39,8 @@ import com.friendconnect.main.IoC;
 import com.friendconnect.model.Location;
 import com.friendconnect.model.User;
 import com.friendconnect.utils.ActivityUtils;
+import com.friendconnect.views.AndroidUserPositionOverlay;
+import com.friendconnect.views.FriendPositionOverlay;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
