@@ -16,7 +16,7 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.activities;
+package com.friendconnect.views;
 
 import com.google.android.maps.Overlay;
 
