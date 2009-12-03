@@ -27,6 +27,7 @@ import java.util.List;
 
 import com.friendconnect.dao.IUserDao;
 import com.friendconnect.model.Location;
+import com.friendconnect.model.POIAlert;
 import com.friendconnect.model.User;
 import com.google.gdata.client.GoogleService;
 import com.google.gdata.client.GoogleAuthTokenFactory.UserToken;
@@ -146,12 +147,37 @@ public class UserService implements IUserService {
 		ContactFeed contactFeed = service.getFeed(feedUri, ContactFeed.class);
 		return readFriendsFromFeed(service, contactFeed, feedUri);
 	}
+	
+	@Override
+	public List<User> getOnlineUsers() {
+		return userDao.getOnlineUsers();
+	}
+	
+	@Override
+	public void addPOIAlert(String userId, POIAlert poiAlert) {
+		userDao.savePOIAlert(userId, poiAlert);
+	}
+
+	@Override
+	public List<POIAlert> getPOIAlerts(String userId) {
+		return userDao.getPOIAlerts(userId);
+	}
+
+	@Override
+	public void removePOIAlert(String poiAlertId) {
+		userDao.removePOIAlert(poiAlertId);
+	}
+
+	@Override
+	public void updatePOIAlert(String userId, POIAlert poiAlert) {
+		userDao.savePOIAlert(userId, poiAlert);
+	}
+	
+	/* Helper methods */
 
 	/**
 	 * Converts a ContactEntry object into a Friend object
-	 * 
-	 * @param contact
-	 *            to convert
+	 * @param contact to convert
 	 * @return friend
 	 */
 	private User convertToFriend(ContactEntry contact) {
@@ -211,10 +237,6 @@ public class UserService implements IUserService {
 		}
 		return friends;
 	}
-	
-	public List<User> getOnlineUsers() {
-		return userDao.getOnlineUsers();
-	}
 
 	/* Getters and setters */
 
@@ -249,5 +271,4 @@ public class UserService implements IUserService {
 	public void setProjection(String projection) {
 		this.projection = projection;
 	}
-
 }

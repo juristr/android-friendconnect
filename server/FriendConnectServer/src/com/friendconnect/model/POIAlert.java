@@ -28,6 +28,8 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.friendconnect.xmlrpc.ComplexSerializableType;
+
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class POIAlert {
 	@PrimaryKey
@@ -102,10 +104,12 @@ public class POIAlert {
 		this.address = address;
 	}
 
+	@ComplexSerializableType(clazz = Location.class)
 	public Location getPosition() {
 		return this.position;
 	}
 
+	@ComplexSerializableType(clazz = Location.class)
 	public void setPosition(Location location) {
 		this.position = location;
 	}
