@@ -24,6 +24,7 @@ import java.util.List;
 import javax.jdo.JDOException;
 
 import com.friendconnect.model.Location;
+import com.friendconnect.model.POIAlert;
 import com.friendconnect.model.User;
 import com.google.gdata.util.AuthenticationException;
 import com.google.gdata.util.ServiceException;
@@ -67,7 +68,6 @@ public interface IUserService {
 	 * Removes a friend from the friend list of a certain user
 	 * @param userId the id of the user
 	 * @param friendId the id of the friend to remove
-	 * @throws JDOException
 	 */
 	public void removeFriend(String userId, String friendId);
 
@@ -121,4 +121,33 @@ public interface IUserService {
 	 * @return
 	 */
 	public List<User> getOnlineUsers();
+	
+	/**
+	 * Returns the list of POI alerts for a certain user
+	 * @param userId the id of the user
+	 * @return
+	 */
+	public List<POIAlert> getPOIAlerts(String userId);
+	
+	/**
+	 * Removes a POI alert from the POI alert list of a certain user
+	 * @param poiAlertId the id of the POI alert to remove
+	 * @throws JDOException
+	 */
+	public void removePOIAlert(String poiAlertId);
+	
+	/**
+	 * Adds a new POI alert to the list of POI alerts 
+	 * @param userId the user that creates the POI alert
+	 * @param poiAlert the new POI alert
+	 */
+	public void addPOIAlert(String userId, POIAlert poiAlert);
+	
+	
+	/**
+	 * Updates a POI alert
+	 * @param userId the user that created the POI alert
+	 * @param poiAlert the updated POI alert
+	 */
+	public void updatePOIAlert(String userId, POIAlert poiAlert);
 }
