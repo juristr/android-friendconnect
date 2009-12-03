@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.friendconnect.dao.IUserDao;
+import com.friendconnect.model.POIAlert;
 import com.friendconnect.model.User;
 
 public class MockUserDao implements IUserDao {
@@ -116,4 +117,28 @@ public class MockUserDao implements IUserDao {
 	public List<User> getOnlineUsers() {
 		return new ArrayList<User>();
 	}
+
+	@Override
+	public POIAlert getPOIAlert(String poiAlertId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<POIAlert> getPOIAlerts(String userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void removePOIAlert(String poiAlertId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void savePOIAlert(String userId, POIAlert poiAlert) {
+		// TODO Auto-generated method stub
+		
+	}	
 }
