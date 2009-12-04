@@ -6,7 +6,7 @@ import android.view.MotionEvent;
 
 import com.google.android.maps.MapView;
 
-public class MyMapView extends MapView {
+public class FriendMapView extends MapView {
 	private long downTime = -1;
 	private long upTime = -1;
 	private long lastTouchTime = -1;
@@ -16,7 +16,7 @@ public class MyMapView extends MapView {
 	private OnDoubleClickListener onDoubleClickListener;
 	private OnLongTouchListener onLongTouchListener;
 
-	public MyMapView(Context context, AttributeSet attrs) {
+	public FriendMapView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 	

@@ -16,22 +16,38 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.controller;
+package com.friendconnect.views;
 
-import com.friendconnect.model.POIAlert;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Point;
+import android.util.Log;
 
-import android.content.Context;
-import android.widget.BaseAdapter;
+import com.friendconnect.R;
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MapView;
+import com.google.android.maps.Overlay;
 
-public class PoiController extends AbstractController<POIAlert> {
+public class POIOverlay extends Overlay {
+	private GeoPoint geoLocation;
 
-	public PoiController() {
-		
+	public POIOverlay(GeoPoint geoLocation) {
+		this.geoLocation = geoLocation;
 	}
-	
+
 	@Override
-	public BaseAdapter getAdapter(Context context) {
-		return null;
+	public void draw(Canvas canvas, MapView mapView, boolean shadow) {
+		super.draw(canvas, mapView, shadow);
+		Point screenPos = new Point();
+		mapView.getProjection().toPixels(geoLocation, screenPos);
+		
+		if (!shadow) {
+			Bitmap bmp = BitmapFactory.decodeResource(mapView.getResources(), R.drawable.flag);
+			canvas.drawBitmap(bmp, screenPos.x, screenPos.y-bmp.getHeight(), null);
+		}else{
+			Bitmap bmp = BitmapFactory.decodeResource(mapView.getResources(), R.drawable.flag_shadow);
+			canvas.drawBitmap(bmp, screenPos.x, screenPos.y-bmp.getHeight(), null);
+		}
 	}
-
 }
