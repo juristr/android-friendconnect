@@ -261,7 +261,7 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 	public List<POIAlert> getPOIAlerts(String userId) {
 		PersistenceManager pm = getPersistenceManager();
 		User user = pm.getObjectById(User.class, userId);
-		return pm.detachCopy(user.getPoiAlerts());
+		return user.getPoiAlerts();
 	}
 
 	@Override

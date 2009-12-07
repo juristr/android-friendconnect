@@ -33,7 +33,7 @@ import com.friendconnect.xmlrpc.ComplexSerializableType;
 import com.friendconnect.xmlrpc.NotSerializable;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class User implements Comparable<User> {
+public class User implements Comparable<User>, IIdentity {
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	@Extension(vendorName = "datanucleus", key = "gae.encoded-pk", value = "true")
@@ -73,16 +73,18 @@ public class User implements Comparable<User> {
 	@Persistent
 	private List<String> pendingFriends;
 	
-	@Persistent
+    @Persistent
 	private List<POIAlert> poiAlerts;
 
 	public User() {
 	}
 
+	@Override
 	public String getId() {
 		return id;
 	}
 
+	@Override
 	public void setId(String id) {
 		this.id = id;
 	}

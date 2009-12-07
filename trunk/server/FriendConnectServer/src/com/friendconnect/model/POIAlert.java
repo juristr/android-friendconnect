@@ -31,7 +31,7 @@ import javax.jdo.annotations.PrimaryKey;
 import com.friendconnect.xmlrpc.ComplexSerializableType;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class POIAlert {
+public class POIAlert implements IIdentity {
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	@Extension(vendorName = "datanucleus", key = "gae.encoded-pk", value = "true")
@@ -56,10 +56,12 @@ public class POIAlert {
 	@Embedded
 	private Location position;
 
+	@Override
 	public String getId() {
 		return this.id;
 	}
 
+	@Override
 	public void setId(String id) {
 		this.id = id;
 	}
