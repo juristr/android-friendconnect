@@ -18,13 +18,16 @@
 
 package com.friendconnect.server.tests.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManagerFactory;
 
 import com.friendconnect.dao.UserDao;
+import com.friendconnect.model.IIdentity;
 import com.friendconnect.model.Location;
+import com.friendconnect.model.POIAlert;
 import com.friendconnect.model.User;
 import com.friendconnect.server.tests.utils.BaseTest;
 
@@ -33,6 +36,8 @@ public class UserDaoTest extends BaseTest {
 	private UserDao userDao;
 	private User user;
 	private User friend;
+	private Location location;
+	private POIAlert poiAlert;
 	
 	@Override
 	protected void setUp() throws Exception {
@@ -50,6 +55,17 @@ public class UserDaoTest extends BaseTest {
 		friend.setEmailAddress("juri.strumpflohner@gmail.com");
 		friend.setOnline(false);
 		friend.setName("Juri");
+		
+		location = new Location();
+		location.setLatitude(123.39);
+		location.setLongitude(12.3);
+		
+		poiAlert = new POIAlert();
+		poiAlert.setActivated(true);
+		poiAlert.setAddress("POI alert address");
+		poiAlert.setExpirationDate(new Date());
+		poiAlert.setRadius(100);
+		poiAlert.setTitle("Title");
 	}
 	
 	@Override
@@ -60,6 +76,9 @@ public class UserDaoTest extends BaseTest {
 		
 		user = null;
 		friend = null;
+		
+		location = null;
+		poiAlert = null;
 	}
 	
 	public void testSaveGetRemoveUser() {
@@ -140,9 +159,6 @@ public class UserDaoTest extends BaseTest {
 		
 		assertNull("The user's position should be null initially.",user.getPosition());
 		
-		Location location = new Location();
-		location.setLatitude(123.39);
-		location.setLongitude(12.3);
 		user.setPosition(location);		
 		userDao.saveUser(user);
 		
@@ -168,9 +184,57 @@ public class UserDaoTest extends BaseTest {
 		assertEquals("The result list should contain one entry", result.size(), 1);	
 	}
 	
-	private boolean contains(List<User> users, String userId) {
-		for (User u : users) {
-			if (u.getId().equals(userId)) {
+	public void testSaveGetRemovePOIAlert() {
+		userDao.saveUser(user);
+		
+		poiAlert.setPosition(location);
+		
+		userDao.savePOIAlert(user.getId(), poiAlert);
+		
+		List<POIAlert> poiAlerts = userDao.getPOIAlerts(user.getId());
+		assertTrue("User's POI alert list should contain POI alert", contains(poiAlerts, poiAlert.getId()));
+		
+		POIAlert persistedPOIAlert = poiAlerts.get(0);
+		
+		assertEquals("POI alert's id should match", poiAlert.getId(), persistedPOIAlert.getId());
+		assertEquals("POI alert's title should match", poiAlert.getTitle(), persistedPOIAlert.getTitle());
+		assertEquals("POI alert's expiration date should match", poiAlert.getExpirationDate(), persistedPOIAlert.getExpirationDate());
+		assertEquals("POI alert's radius should match", poiAlert.getRadius(), persistedPOIAlert.getRadius());
+		assertEquals("POI alert's activation status should match", poiAlert.getActivated(), persistedPOIAlert.getActivated());
+		assertEquals("POI alert's address should match", poiAlert.getAddress(), persistedPOIAlert.getAddress());
+		assertEquals("POI alert's latitude should match", poiAlert.getPosition().getLatitude(), persistedPOIAlert.getPosition().getLatitude());
+		assertEquals("POI alert's longitude should match", poiAlert.getPosition().getLongitude(), persistedPOIAlert.getPosition().getLongitude());
+		
+		userDao.removePOIAlert(poiAlert.getId());
+		poiAlerts = userDao.getPOIAlerts(user.getId());
+		assertFalse("User's POI alert list should not contain POI alert", contains(poiAlerts, poiAlert.getId()));		
+	}
+	
+	public void testUpdatePOIAlert() {
+		userDao.saveUser(user);
+		poiAlert.setPosition(location);
+		userDao.savePOIAlert(user.getId(), poiAlert);
+		
+		//retrieve it from DB
+		POIAlert persistedPOIAlert = userDao.getPOIAlert(poiAlert.getId());
+		assertNotNull("POI alert should not be null", persistedPOIAlert);
+		assertEquals("Title should be the same", poiAlert.getTitle(), persistedPOIAlert.getTitle());
+		
+		//change title
+		String newTitle = "New Title";
+		persistedPOIAlert.setTitle(newTitle);
+		userDao.savePOIAlert(user.getId(), persistedPOIAlert);
+		persistedPOIAlert = null;
+		
+		//retrieve again
+		persistedPOIAlert = userDao.getPOIAlert(poiAlert.getId());
+		assertNotNull("POI alert should not be null", persistedPOIAlert);
+		assertEquals("Title should be the same", newTitle, persistedPOIAlert.getTitle());
+	}
+	
+	private <T extends IIdentity> boolean contains(List<T> elements, String elementId) {
+		for (T element : elements) {
+			if (element.getId().equals(elementId)) {
 				return true;
 			}
 		}
