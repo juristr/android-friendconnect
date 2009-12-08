@@ -27,12 +27,12 @@ import com.friendconnect.annotations.NotSerializable;
 
 public class FriendConnectUser extends User implements Observer {
 	private List<User> friends;
-	private List<POIAlert> poiAlert;
+	private List<POIAlert> poiAlerts;
 	private List<User> pendingInvites;
 	
 	public FriendConnectUser() {
 		this.friends = new ArrayList<User>();
-		this.poiAlert = new ArrayList<POIAlert>();
+//		this.poiAlerts = new ArrayList<POIAlert>();
 		this.pendingInvites = new ArrayList<User>();
 	}
 
@@ -50,13 +50,6 @@ public class FriendConnectUser extends User implements Observer {
 		notifyObservers();
 	}
 	
-	public void addFriend(int location, User friend) {
-		friends.add(location, friend);
-		friend.addObserver(this);
-		setChanged();
-		notifyObservers();
-	}
-	
 	public void removeFriend(User friend) {
 		friends.remove(friend);
 		friend.deleteObserver(this);
@@ -65,12 +58,28 @@ public class FriendConnectUser extends User implements Observer {
 	}
 
 	//possibly don't allow direct access
-//	public List<POIAlert> getPoiAlert() {
-//		return poiAlert;
-//	}
+	public List<POIAlert> getPoiAlerts() {
+		return poiAlerts;
+	}
 
-	public void setPoiAlert(List<POIAlert> poiAlert) {
-		this.poiAlert = poiAlert;
+	public void setPoiAlerts(List<POIAlert> poiAlerts) {
+		this.poiAlerts = poiAlerts;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public void addPOIAlert(POIAlert poiAlert) {
+		poiAlerts.add(poiAlert);
+		poiAlert.addObserver(this);
+		setChanged();
+		notifyObservers();
+	}
+	
+	public void removePOIAlert(POIAlert poiAlert) {
+		poiAlerts.remove(poiAlert);
+		poiAlert.deleteObserver(this);
+		setChanged();
+		notifyObservers();
 	}
 
 	@NotSerializable

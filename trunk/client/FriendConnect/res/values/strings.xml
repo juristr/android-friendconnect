@@ -26,6 +26,7 @@
 	<string name="activityEditProfile">Profile</string>
 	<string name="activityFriendMap">Friend Map</string>
 	<string name="activityEditPoi">POI - Point Of Interest</string>
+	<string name="activityPOIAlertList">POI Alerts</string>
 	<string name="friendConnectServerUrl">http://1.latest.android-friendconnect.appspot.com/</string>
 	<string name="uiMessageLogin">Logging in...</string>
 	<string name="uiMessageSendingInvite">Sending invite...</string>
@@ -41,6 +42,7 @@
 	<string name="uiMessageSavingProfile">Saving profile...</string>
 	<string name="uiMessageSaveProfile">Save Profile</string>
 	<string name="uiMessageCannotInviteYourself">You cannot invite yourself ;)</string>
+	<string name="uiMessageRemovingPOIAlert">Removing POI Alert...</string>
 	<string name="menuAddFriend">Add Friend</string>
 	<string name="menuRemoveFriend">Remove Friend</string>
 	<string name="menuPendingInvitesListView">Pending Invites</string>
@@ -50,7 +52,8 @@
 	<string name="menuRefresh">Refresh</string>
 	<string name="menuMapView">Friend Map</string>
 	<string name="menuCenterMap">Center Map</string>
-	<string name="menuAddPoiAlert">Add POI</string>
+	<string name="menuAddPoiAlert">Add POI Alert</string>
+	<string name="menuRemovePoiAlert">Remove POI Alert</string>
 	<string name="invitation">FriendConnect Invitation</string>
 	<string name="sendInvite">Send Invite</string>
 	<string name="inviteFriend">Type the email address of the person you would like to invite:</string>
@@ -65,6 +68,7 @@
 <string name="dialogAcceptInvitationMessage">&quot;Are you sure you want to accept the friendship request of '%1$s'?&quot;</string>
 <string name="uiMessageEditProfileErrorMsg">Oops, it seems as if there has been a problem when updating your profile!</string>
 <string name="uiMessageEditProfileSuccessMsg">Your profile has been successfully updated.</string>
-
+<string name="dialogRemovePOIAlertMessage">&quot;Are you sure you want to remove '%1$s'?&quot;</string>
+<string name="dialogRemovePOIAlertTitle">Confirm Remove</string>
 
 </resources>
