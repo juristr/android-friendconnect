@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,8 +29,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnLongClickListener;
 import android.widget.Toast;
 
 import com.friendconnect.R;
@@ -44,16 +41,16 @@ import com.friendconnect.utils.ActivityUtils;
 import com.friendconnect.views.AndroidUserPositionOverlay;
 import com.friendconnect.views.FriendMapView;
 import com.friendconnect.views.FriendPositionOverlay;
+import com.friendconnect.views.OnClickListener;
 import com.friendconnect.views.OnDoubleClickListener;
 import com.friendconnect.views.OnLongTouchListener;
 import com.friendconnect.views.POIOverlay;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
-import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 
-public class FriendMapActivity extends MapActivity implements IView, OnLongTouchListener, OnDoubleClickListener {
+public class FriendMapActivity extends MapActivity implements IView, OnLongTouchListener, OnDoubleClickListener, OnClickListener {
 	private static final int CENTER_MAP = Menu.FIRST;
 	private static final int ADD_POI = Menu.FIRST + 1;
 	private FriendMapView mapView;
@@ -61,6 +58,7 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 	private LocationController controller;
 	private AndroidUserPositionOverlay androidUserPositionOverlay;
 	private HashMap<String, FriendPositionOverlay> friendOverlays;
+	private HashMap<String, POIOverlay> poiOverlays;
 	private boolean doCenterMap = true;
 
 	/** Called when the activity is first created. */
@@ -107,16 +105,21 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 		return super.dispatchTouchEvent(ev);
 	}
 
-	public void onLongTouch(MotionEvent ev) {
-		ActivityUtils.showToast(this, "Funzia!", 2000); 
-		
+	public void onLongTouch(MotionEvent ev) { 
 		GeoPoint point = mapView.getProjection().fromPixels((int)ev.getX(), (int)ev.getY());
-		POIOverlay poiOverlay = new POIOverlay(point);
+		POIOverlay poiOverlay = new POIOverlay(point, this);
+		poiOverlay.setOnClickListener(this);
+//		poiOverlays.put(point.get, value)
 		addOverlay(poiOverlay);
 	}
 
 	public void onDoubleClick(MotionEvent ev) {
+		doCenterMap = false;
 		mapController.zoomInFixing((int) ev.getX(), (int) ev.getY());
+	}
+	
+	public void onClick(GeoPoint point){
+		ActivityUtils.showToast(this, "You clicked on me!", 1500);
 	}
 
 	@Override
