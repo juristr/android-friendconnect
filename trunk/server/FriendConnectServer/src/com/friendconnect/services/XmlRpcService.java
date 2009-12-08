@@ -264,7 +264,7 @@ public class XmlRpcService {
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	public List<Map<String, Object>> getPOIAlerts(String userId, String token) throws AuthenticationException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	public List<Map<String, Object>> retrievePOIAlerts(String userId, String token) throws AuthenticationException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		// Authenticate user
 		authenticateUser(userId, token);
 		
