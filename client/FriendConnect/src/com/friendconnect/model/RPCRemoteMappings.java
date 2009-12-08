@@ -35,5 +35,6 @@ public class RPCRemoteMappings {
 	public static final String ACCEPTINVITE = baseMapping + "acceptFriendInvite";
 	public static final String REJECTINVITE = baseMapping + "rejectFriendInvite";
 	public static final String UPDATE_USERLOCATION = baseMapping + "updateUserLocation";
-
+	public static final String RETRIEVEPOIALERTS = baseMapping + "retrievePOIAlerts";
+	public static final String REMOVEPOIALERT = "removePOIAlert";;
 }

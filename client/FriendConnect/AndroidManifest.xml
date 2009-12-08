@@ -17,6 +17,7 @@
 		<activity android:name=".activities.EditProfileActivity" android:label="@string/activityEditProfile"/>
 		<activity android:name=".activities.FriendMapActivity" android:label="@string/activityFriendMap"/>
 		<activity android:name=".activities.EditPoiActivity" android:label="@string/activityEditPoi"/>
+		<activity android:name=".activities.POIAlertListActivity" android:label="@string/activityPOIAlertList"/>
 		<service android:name=".services.FriendUpdateService" android:enabled="true">
 			
 		</service>

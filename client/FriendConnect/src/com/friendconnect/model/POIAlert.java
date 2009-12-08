@@ -25,18 +25,18 @@ import com.friendconnect.annotations.NotRecursiveSync;
 
 
 public class POIAlert extends Observable {
-	private int id;
+	private String id;
 	private String title;
 	private int radius;
 	private Location position;
 
 	// expiration date
 
-	public int getId() {
+	public String getId() {
 		return this.id;
 	}
 
-	public void setId(Integer value) {
+	public void setId(String value) {
 		this.id = value;
 	}
 
