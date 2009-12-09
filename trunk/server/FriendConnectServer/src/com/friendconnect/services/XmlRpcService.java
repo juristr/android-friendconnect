@@ -227,14 +227,14 @@ public class XmlRpcService {
 	 * @throws InvocationTargetException
 	 * @throws IllegalAccessException
 	 */
-	public boolean addPOIAlert(String userId, String token, Map<String, Object> poiAlertData) throws AuthenticationException, IllegalArgumentException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+	public String addPOIAlert(String userId, String token, Map<String, Object> poiAlertData) throws AuthenticationException, IllegalArgumentException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 		// Authenticate user
 		authenticateUser(userId, token);
 		
 		// User has been successfully authenticated
 		POIAlert poiAlert = serializer.deSerialize(poiAlertData, POIAlert.class);
 		userService.addPOIAlert(userId, poiAlert);
-		return true;
+		return poiAlert.getId();
 	}
 	
 	/**
