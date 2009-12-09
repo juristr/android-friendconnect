@@ -18,6 +18,8 @@
 
 package com.friendconnect.model;
 
+import com.google.android.maps.GeoPoint;
+
 
 /**
  * Representing a location on the earth (lat/lng)
@@ -57,6 +59,10 @@ public class Location {
 		androidLoc.setLatitude(this.latitude);
 		androidLoc.setLongitude(this.longitude);
 		return androidLoc;
+	}
+	
+	public GeoPoint convertToAndroidGeoPoint(){
+		return new GeoPoint((int) (this.latitude * 1E6), (int) (this.longitude * 1E6));
 	}
 
 }
