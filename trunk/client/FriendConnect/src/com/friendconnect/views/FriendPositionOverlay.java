@@ -39,15 +39,9 @@ public class FriendPositionOverlay extends BasePositionOverlay {
 		this.friendUser = friendUser;
 	}
 
-	public void setPosition(com.friendconnect.model.Location position,
-			com.friendconnect.model.Location androidUserPosition) {
-		this.friendGeoPoint = new GeoPoint(
-				(int) (position.getLatitude() * 1E6), (int) (position
-						.getLongitude() * 1E6));
-
-		this.androidUserGeoPoint = new GeoPoint((int) (androidUserPosition
-				.getLatitude() * 1E6), (int) (androidUserPosition
-				.getLongitude() * 1E6));
+	public void setPosition(GeoPoint friendPosition, GeoPoint androidUserPosition) {
+		this.friendGeoPoint = friendPosition;
+		this.androidUserGeoPoint = androidUserPosition;
 	}
 
 	@Override

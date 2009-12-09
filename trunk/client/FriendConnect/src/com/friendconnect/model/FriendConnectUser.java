@@ -29,27 +29,27 @@ public class FriendConnectUser extends User implements Observer {
 	private List<User> friends;
 	private List<POIAlert> poiAlerts;
 	private List<User> pendingInvites;
-	
+
 	public FriendConnectUser() {
 		this.friends = new ArrayList<User>();
-//		this.poiAlerts = new ArrayList<POIAlert>();
+		this.poiAlerts = new ArrayList<POIAlert>();
 		this.pendingInvites = new ArrayList<User>();
 	}
 
-	//TODO bad, could be modified without being able to notice
-	//and fire change events!!!
+	// TODO bad, could be modified without being able to notice
+	// and fire change events!!!
 	@NotSerializable
 	public List<User> getFriends() {
 		return friends;
 	}
-	
-	public void addFriend(User friend){
+
+	public void addFriend(User friend) {
 		friends.add(friend);
 		friend.addObserver(this);
 		setChanged();
 		notifyObservers();
 	}
-	
+
 	public void removeFriend(User friend) {
 		friends.remove(friend);
 		friend.deleteObserver(this);
@@ -57,27 +57,28 @@ public class FriendConnectUser extends User implements Observer {
 		notifyObservers();
 	}
 
-	//possibly don't allow direct access
+	@NotSerializable
 	public List<POIAlert> getPoiAlerts() {
 		return poiAlerts;
 	}
 
-	public void setPoiAlerts(List<POIAlert> poiAlerts) {
-		this.poiAlerts = poiAlerts;
+	public void addPoiAlert(POIAlert alert) {
+		poiAlerts.add(alert);
+		alert.addObserver(this);
 		setChanged();
 		notifyObservers();
 	}
-	
-	public void addPOIAlert(POIAlert poiAlert) {
-		poiAlerts.add(poiAlert);
-		poiAlert.addObserver(this);
+
+	public void removePoiAlert(POIAlert alert) {
+		poiAlerts.remove(alert);
+		alert.deleteObserver(this);
 		setChanged();
 		notifyObservers();
 	}
-	
-	public void removePOIAlert(POIAlert poiAlert) {
-		poiAlerts.remove(poiAlert);
-		poiAlert.deleteObserver(this);
+
+	@NotSerializable
+	public void setPoiAlerts(List<POIAlert> poiAlert) {
+		this.poiAlerts = poiAlert;
 		setChanged();
 		notifyObservers();
 	}
@@ -87,18 +88,12 @@ public class FriendConnectUser extends User implements Observer {
 		return pendingInvites;
 	}
 
-//	public void setPendingInvites(List<User> pendingInvites) {
-//		this.pendingInvites = pendingInvites;
-//		setChanged();
-//		notifyObservers();		
-//	}
-	
-	public void addPendingInvite(User friend){
+	public void addPendingInvite(User friend) {
 		pendingInvites.add(friend);
 		setChanged();
 		notifyObservers();
 	}
-	
+
 	public void removePendingInvite(User friend) {
 		pendingInvites.remove(friend);
 		setChanged();

@@ -25,18 +25,21 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.RectF;
 import com.friendconnect.R;
+import com.friendconnect.model.POIAlert;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 
 public class POIOverlay extends Overlay {
 	private GeoPoint geoLocation;
-	private OnClickListener clickListener;
+	private POIAlert alert;
+	private OnOverlayClickListener clickListener;
 	private Bitmap flagBitmap;
 	private Bitmap flagShadowBitmap;
 
-	public POIOverlay(GeoPoint geoLocation, Context context) {
-		this.geoLocation = geoLocation;
+	public POIOverlay(POIAlert alert, Context context) {
+		this.alert = alert;
+		this.geoLocation = alert.getPosition().convertToAndroidGeoPoint();
 		this.flagBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.flag);
 		this.flagShadowBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.flag_shadow);
 	}
@@ -88,13 +91,13 @@ public class POIOverlay extends Overlay {
 		return super.onTap(tapPoint, mapView);
 	}
 	
-	public void setOnClickListener(OnClickListener listener){
+	public void setOnOverlayClickListener(OnOverlayClickListener listener){
 		this.clickListener = listener;
 	}
 	
 	private void notifyClickListener(GeoPoint point){
 		if(this.clickListener != null){
-			this.clickListener.onClick(point);
+			this.clickListener.onClick(point, this.alert);
 		}
 	}
 }

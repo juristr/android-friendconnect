@@ -20,8 +20,13 @@ package com.friendconnect.views;
 
 import com.google.android.maps.GeoPoint;
 
-public interface OnClickListener {
+public interface OnOverlayClickListener {
 
-	public void onClick(GeoPoint point);
+	/**
+	 * The click event
+	 * @param point the {@link GeoPoint} where the click happened
+	 * @param data the payload
+	 */
+	public void onClick(GeoPoint point, Object data);
 	
 }
