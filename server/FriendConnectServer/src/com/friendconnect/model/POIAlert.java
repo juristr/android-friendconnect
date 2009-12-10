@@ -73,11 +73,11 @@ public class POIAlert implements IIdentity {
 		this.title = title;
 	}
 
-	public int getRadius() {
+	public Integer getRadius() {
 		return radius;
 	}
 
-	public void setRadius(int radius) {
+	public void setRadius(Integer radius) {
 		this.radius = radius;
 	}
 
@@ -89,11 +89,11 @@ public class POIAlert implements IIdentity {
 		this.expirationDate = expirationDate;
 	}
 
-	public void setActivated(boolean activated) {
+	public void setActivated(Boolean activated) {
 		this.activated = activated;
 	}
 
-	public boolean getActivated() {
+	public Boolean getActivated() {
 		return activated;
 	}
 
