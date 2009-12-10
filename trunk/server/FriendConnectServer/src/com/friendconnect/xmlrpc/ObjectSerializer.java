@@ -21,8 +21,13 @@ package com.friendconnect.xmlrpc;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import com.friendconnect.model.User;
 
 
 public class ObjectSerializer {
@@ -80,8 +85,18 @@ public class ObjectSerializer {
 				// is serializable?
 				if(isSerializable(method)) {
 					
+					if (propertyValue instanceof List<?>) {
+						List<Map<String, Object>> serializedList = new ArrayList<Map<String, Object>>();
+						for (Object o : (List<?>) propertyValue) {
+							Map<String, Object> temp = serialize(o);
+							serializedList.add(temp);
+						}
+						propertyValue = serializedList;
+					}
+
 					// is complex serializable?
-					if (isComplexSerializable(method) && propertyValue != null) {
+					else if (isComplexSerializable(method) && propertyValue != null) {
+						
 						propertyValue = serialize(propertyValue);
 					}
 

@@ -23,6 +23,7 @@ import java.util.List;
 
 import javax.jdo.annotations.Embedded;
 import javax.jdo.annotations.Extension;
+import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -33,6 +34,7 @@ import com.friendconnect.xmlrpc.ComplexSerializableType;
 import com.friendconnect.xmlrpc.NotSerializable;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
+@FetchGroup(name=FetchGroupConstants.ALL, members={@Persistent(name="position"), @Persistent(name="poiAlerts")})
 public class User implements Comparable<User>, IIdentity {
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -63,7 +65,7 @@ public class User implements Comparable<User>, IIdentity {
 	@Persistent
 	private Date lastAccess;
 
-	@Persistent(defaultFetchGroup = "true")
+	@Persistent
 	@Embedded
 	private Location position;
 
@@ -73,7 +75,7 @@ public class User implements Comparable<User>, IIdentity {
 	@Persistent
 	private List<String> pendingFriends;
 	
-    @Persistent
+	@Persistent
 	private List<POIAlert> poiAlerts;
 
 	public User() {
@@ -185,12 +187,10 @@ public class User implements Comparable<User>, IIdentity {
 		return pendingFriends;
 	}
 	
-	@NotSerializable
 	public List<POIAlert> getPoiAlerts() {
 		return poiAlerts;
 	}
 
-	@NotSerializable
 	public void setPoiAlerts(List<POIAlert> poiAlerts) {
 		this.poiAlerts = poiAlerts;
 	}

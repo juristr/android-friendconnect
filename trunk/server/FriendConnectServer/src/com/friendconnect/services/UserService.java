@@ -57,6 +57,7 @@ public class UserService implements IUserService {
 		} 
 		user.setToken(token);
 		user.setOnline(true);
+		System.out.println(user.getPoiAlerts().size());
 		userDao.saveUser(user);
 		return user;
 	}
