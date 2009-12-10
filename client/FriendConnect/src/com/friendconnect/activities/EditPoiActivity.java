@@ -18,6 +18,8 @@
 
 package com.friendconnect.activities;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Observable;
 
 import android.app.Activity;
@@ -68,8 +70,8 @@ public class EditPoiActivity extends Activity implements IView {
 					// if we have already
 					TextView textViewAddress = (TextView) findViewById(R.id.textViewAddress);
 					EditText editTextAddress = (EditText) findViewById(R.id.editTextAddress);
-					textViewAddress.setVisibility(TextView.INVISIBLE);
-					editTextAddress.setVisibility(EditText.INVISIBLE);
+					textViewAddress.setVisibility(View.INVISIBLE);
+					editTextAddress.setVisibility(View.INVISIBLE);
 
 					Location location = new Location();
 					location.setLatitude((double) (lat / 1E6));
@@ -87,7 +89,7 @@ public class EditPoiActivity extends Activity implements IView {
 
 			public void onClick(View v) {
 				unbindPoiAlert();
-				
+
 				controller.addPOIAlert(poiAlert);
 
 				setResult(Activity.RESULT_OK, null);
@@ -100,19 +102,22 @@ public class EditPoiActivity extends Activity implements IView {
 		EditText editTextTitle = (EditText) findViewById(R.id.editTextTitle);
 		EditText editTextRadius = (EditText) findViewById(R.id.editTextRadius);
 		CheckBox checkBoxActivated = (CheckBox) findViewById(R.id.checkBoxPoiActivated);
-		DatePicker expirationDate = (DatePicker) findViewById(R.id.datePickerExpirationDate);
+		DatePicker expirationDatePicker = (DatePicker) findViewById(R.id.datePickerExpirationDatePicker);
 		EditText editTextAddress = (EditText) findViewById(R.id.editTextAddress);
 
 		editTextTitle.setText(poiAlert.getTitle());
 		editTextRadius.setText(poiAlert.getRadius());
-		// checkBoxActivated.setChecked(poiAlert.get)
+		checkBoxActivated.setChecked(poiAlert.getActivated());
+		if (poiAlert.getExpirationDate() != null)
+			expirationDatePicker.updateDate(poiAlert.getExpirationDate().getYear(), poiAlert
+					.getExpirationDate().getMonth(), poiAlert.getExpirationDate().getDay());
 	}
 
 	private void unbindPoiAlert() {
 		EditText editTextTitle = (EditText) findViewById(R.id.editTextTitle);
 		EditText editTextRadius = (EditText) findViewById(R.id.editTextRadius);
 		CheckBox checkBoxActivated = (CheckBox) findViewById(R.id.checkBoxPoiActivated);
-		DatePicker expirationDate = (DatePicker) findViewById(R.id.datePickerExpirationDate);
+		DatePicker expirationDatePicker = (DatePicker) findViewById(R.id.datePickerExpirationDatePicker);
 		EditText editTextAddress = (EditText) findViewById(R.id.editTextAddress);
 
 		poiAlert.setTitle(editTextTitle.getText().toString());
@@ -122,6 +127,8 @@ public class EditPoiActivity extends Activity implements IView {
 			Log.w(EditPoiActivity.class.getCanonicalName(), "Error parsing radius: "
 					+ editTextRadius.getText());
 		}
+		poiAlert.setActivated(checkBoxActivated.isChecked());		
+		poiAlert.setExpirationDate(new Date(expirationDatePicker.getYear(), expirationDatePicker.getMonth(), expirationDatePicker.getDayOfMonth()));		
 	}
 
 	public void showMessage(int messageId) {

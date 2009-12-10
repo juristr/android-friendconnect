@@ -18,8 +18,8 @@
 
 package com.friendconnect.model;
 
+import java.util.Date;
 import java.util.Observable;
-
 import com.friendconnect.annotations.ComplexSerializableType;
 import com.friendconnect.annotations.NotRecursiveSync;
 
@@ -28,9 +28,9 @@ public class POIAlert extends Observable {
 	private String id;
 	private String title;
 	private int radius;
+	private Date expirationDate;
+	private boolean activated;
 	private Location position;
-
-	// expiration date
 
 	public String getId() {
 		return this.id;
@@ -54,15 +54,52 @@ public class POIAlert extends Observable {
 		}
 	}
 
-	public int getRadius() {
+	public Integer getRadius() {
 		return radius;
 	}
 
-	public void setRadius(int radius) {
+	public void setRadius(Integer radius) {
 		int oldValue = this.radius;
 		this.radius = radius;
 		
 		if(oldValue != radius){
+			setChanged();
+			notifyObservers();
+		}
+	}
+
+	public Date getExpirationDate() {
+		return expirationDate;
+	}
+
+	public void setExpirationDate(Date expirationDate) {
+		Date oldValue = this.expirationDate;
+		this.expirationDate = expirationDate;
+		
+		boolean changed = false;
+		if(oldValue == null || expirationDate == null){
+			changed = true;
+		}
+		
+		if(!changed && oldValue.compareTo(expirationDate) != 1){
+			changed = true;
+		}
+		
+		if(changed){
+			setChanged();
+			notifyObservers();
+		}
+	}
+
+	public Boolean getActivated() {
+		return activated;
+	}
+
+	public void setActivated(Boolean activated) {
+		boolean oldValue = this.activated;
+		this.activated = activated;
+		
+		if(oldValue != activated){
 			setChanged();
 			notifyObservers();
 		}

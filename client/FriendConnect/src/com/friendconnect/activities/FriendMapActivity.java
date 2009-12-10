@@ -96,7 +96,7 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 		this.locationController.registerView(this);
 		this.poiController = IoC.getInstance(POIAlertListController.class);
 		 //do not register to not get too many updates! LocationController already registers on FriendConnectUser
-//		this.poiController.registerView(this);
+		this.poiController.registerView(this);
 
 		this.progressDialog = new ProgressDialog(this);
 		
@@ -244,6 +244,7 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 					progressDialog.setMessage(getText(R.string.uiMessageRemovingPOIAlert));
 					progressDialog.show();
 					poiController.removePOIAlert(clickedPOIAlert.getId());
+					dialog.cancel();
 				}
 			});
 			break;
@@ -398,7 +399,6 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 	}
 
 	public void stopProgress() {
-		// do nothing
 		progressDialog.cancel();
 	}
 
