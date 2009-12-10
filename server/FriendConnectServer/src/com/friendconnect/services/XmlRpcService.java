@@ -220,7 +220,7 @@ public class XmlRpcService {
 	 * @param userId the user id
 	 * @param token the user token
 	 * @param poiAlertData the serialized POI alert data
-	 * @return true on success
+	 * @return POI alert id on success
 	 * @throws AuthenticationException
 	 * @throws IllegalArgumentException
 	 * @throws NoSuchMethodException

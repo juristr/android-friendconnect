@@ -27,6 +27,7 @@ import javax.jdo.Query;
 
 import org.springframework.orm.jdo.support.JdoDaoSupport;
 
+import com.friendconnect.model.FetchGroupConstants;
 import com.friendconnect.model.POIAlert;
 import com.friendconnect.model.User;
 
@@ -79,6 +80,7 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 	@Override
 	public User getUserById(String userId) {
 		PersistenceManager pm = getPersistenceManager();
+		pm.getFetchPlan().addGroup(FetchGroupConstants.ALL);
 		User user = pm.getObjectById(User.class, userId);
 		return pm.detachCopy(user);
 	}
@@ -87,6 +89,7 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 	@Override
 	public User getUserByEmailAddress(String emailAddress) {
 		PersistenceManager pm = getPersistenceManager();
+		pm.getFetchPlan().addGroup(FetchGroupConstants.ALL);
 		Query query = pm.newQuery(User.class);
 	    query.setFilter("emailAddress == emailAddressParam");
 	    query.declareParameters("String emailAddressParam");
@@ -316,7 +319,6 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 			pm.currentTransaction().begin();
 			POIAlert storedPoiAlert = pm.getObjectById(POIAlert.class, poiAlert.getId());
 			storedPoiAlert.setActivated(poiAlert.getActivated());
-			storedPoiAlert.setAddress(poiAlert.getAddress());
 			storedPoiAlert.setExpirationDate(poiAlert.getExpirationDate());
 			storedPoiAlert.setPosition(poiAlert.getPosition());
 			storedPoiAlert.setRadius(poiAlert.getRadius());

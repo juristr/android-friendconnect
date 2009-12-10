@@ -22,6 +22,7 @@ import java.util.Date;
 
 import javax.jdo.annotations.Embedded;
 import javax.jdo.annotations.Extension;
+import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -31,6 +32,7 @@ import javax.jdo.annotations.PrimaryKey;
 import com.friendconnect.xmlrpc.ComplexSerializableType;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
+@FetchGroup(name=FetchGroupConstants.ALL, members={@Persistent(name="position")})
 public class POIAlert implements IIdentity {
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -50,9 +52,6 @@ public class POIAlert implements IIdentity {
 	private boolean activated;
 	
 	@Persistent
-	private String address;
-	
-	@Persistent(defaultFetchGroup = "true")
 	@Embedded
 	private Location position;
 
@@ -96,14 +95,6 @@ public class POIAlert implements IIdentity {
 
 	public boolean getActivated() {
 		return activated;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
 	}
 
 	@ComplexSerializableType(clazz = Location.class)
