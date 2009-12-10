@@ -23,7 +23,7 @@
 			android:text="@string/expirationDate" android:layout_span="3" />
 	</TableRow>
 	<TableRow>
-		<DatePicker android:id="@+id/datePickerExpirationDate"
+		<DatePicker android:id="@+id/datePickerExpirationDatePicker"
 			android:layout_span="3" />
 	</TableRow>
 	<TableRow>

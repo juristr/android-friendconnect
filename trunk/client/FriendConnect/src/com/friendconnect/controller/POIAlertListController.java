@@ -19,11 +19,8 @@
 package com.friendconnect.controller;
 
 import java.util.List;
-import java.util.Random;
-import java.util.UUID;
 
 import android.content.Context;
-import android.text.method.DateTimeKeyListener;
 import android.util.Log;
 
 import com.friendconnect.adapters.POIAlertAdapter;
