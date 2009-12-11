@@ -21,12 +21,17 @@ package com.friendconnect.xmlrpc;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.friendconnect.annotations.ComplexSerializableType;
 import com.friendconnect.annotations.NotSerializable;
-
+import com.friendconnect.model.User;
 
 public class ObjectSerializer {
 	// private Class<T> clazz;
@@ -36,21 +41,36 @@ public class ObjectSerializer {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T deSerialize(Map<String, Object> map, Class clazz)
-			throws NoSuchMethodException, InvocationTargetException,
-			IllegalArgumentException, IllegalAccessException {
+	public <T> T deSerialize(Map<String, Object> map, Class clazz) throws NoSuchMethodException,
+			InvocationTargetException, IllegalArgumentException, IllegalAccessException {
 		T instance = (T) createInstance(clazz);
 
 		for (Map.Entry<String, Object> entry : map.entrySet()) {
 			String propertyName = correctFieldName(entry.getKey());
 			Object propertyValue = entry.getValue();
-			
+
 			Method setter = getMethodByName("set" + propertyName, clazz);
 
-			if (propertyValue instanceof HashMap) {
+			if (propertyValue instanceof Object[] || propertyValue instanceof List<?>) {
 				Class subClazz = getClassFromAnnotation(setter);
-				propertyValue = deSerialize(
-						(Map<String, Object>) propertyValue, subClazz);
+				List<Object> list = (List<Object>) new ArrayList<Object>();
+				
+				if(propertyValue instanceof List<?>)
+					propertyValue = ((List<?>)propertyValue).toArray();
+				
+				Object[] serializedObjs = (Object[])propertyValue;
+				if (serializedObjs != null && serializedObjs.length > 0) {
+					for (Object element : serializedObjs) {
+						Object desObj = deSerialize((Map<String,Object>)element, subClazz);
+						list.add(desObj);
+					}
+					propertyValue = list;
+				}else{
+					propertyValue = null;
+				}
+			}else if (propertyValue instanceof HashMap) {
+				Class subClazz = getClassFromAnnotation(setter);
+				propertyValue = deSerialize((Map<String, Object>) propertyValue, subClazz);
 			}
 
 			setter.invoke(instance, propertyValue);
@@ -62,16 +82,15 @@ public class ObjectSerializer {
 	private Method getMethodByName(String methodName, Class clazz) {
 		Method[] methods = clazz.getMethods();
 		for (Method method : methods) {
-			if(method.getName().equals(methodName))
+			if (method.getName().equals(methodName))
 				return method;
 		}
-		
+
 		return null;
 	}
 
-	public Map<String, Object> serialize(Object object)
-			throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
+	public Map<String, Object> serialize(Object object) throws IllegalArgumentException,
+			IllegalAccessException, InvocationTargetException {
 		Map<String, Object> result = new HashMap<String, Object>();
 
 		Method[] methods = object.getClass().getMethods();
@@ -81,10 +100,25 @@ public class ObjectSerializer {
 				Object propertyValue = (Object) method.invoke(object, null);
 
 				// is serializable?
-				if(isSerializable(method)) {
-					
+				if (isSerializable(method)) {
+
+					if (propertyValue instanceof List<?>) {
+						List<Map<String, Object>> serializedList = new ArrayList<Map<String, Object>>();
+						List<?> list = (List<?>) propertyValue;
+						if (list != null && list.size() > 0) {
+							for (Object o : (List<?>) propertyValue) {
+								Map<String, Object> temp = serialize(o);
+								serializedList.add(temp);
+							}
+							propertyValue = serializedList;
+						} else {
+							propertyValue = null;
+						}
+					}
+
 					// is complex serializable?
-					if (isComplexSerializable(method) && propertyValue != null) {
+					else if (isComplexSerializable(method) && propertyValue != null) {
+
 						propertyValue = serialize(propertyValue);
 					}
 
@@ -105,7 +139,7 @@ public class ObjectSerializer {
 	private boolean isSerializable(Method method) {
 		return getNotSerializableAnnotation(method) == null;
 	}
-	
+
 	private Annotation getNotSerializableAnnotation(Method method) {
 		Annotation[] annotations = method.getAnnotations();
 		for (Annotation annotation : annotations) {
@@ -114,7 +148,7 @@ public class ObjectSerializer {
 		}
 		return null;
 	}
-	
+
 	private boolean isComplexSerializable(Method method) {
 		return getSerializableAnnotation(method) != null;
 	}
@@ -142,8 +176,7 @@ public class ObjectSerializer {
 	}
 
 	private String correctFieldName(String fieldName) {
-		return fieldName.substring(0, 1).toUpperCase()
-				+ fieldName.substring(1, fieldName.length());
+		return fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1, fieldName.length());
 	}
 
 	private Object createInstance(Class clazz) {

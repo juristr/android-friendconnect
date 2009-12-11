@@ -84,13 +84,7 @@ public class POIAlertListController extends AbstractController<FriendConnectUser
 						public void onSuccess(String result) {
 							if (result != null && !result.equals("")) {
 								// just add if it was successful
-
-								// dummy id for now -> should come from server
-//								Random r = new Random();
-//								String token = Long.toString(Math.abs(r.nextLong()), 36);
-//								alert.setId(token);
 								alert.setId(result);
-
 								model.addPoiAlert(alert);
 							} else {
 								onFailure(new Exception(alert.getTitle()));

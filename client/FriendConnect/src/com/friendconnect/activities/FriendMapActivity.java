@@ -102,6 +102,7 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 		
 		this.friendOverlays = new HashMap<String, FriendPositionOverlay>();
 		this.poiOverlays = new HashMap<String, POIOverlay>();
+		update(locationController.getModel(), null);
 	}
 
 	@Override
