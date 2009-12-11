@@ -56,6 +56,7 @@ public class UserService implements IUserService {
 			user.setEmailAddress(username);
 		} 
 		user.setToken(token);
+		user.setLastAccess(new Date());
 		user.setOnline(true);
 		userDao.saveUser(user);
 		return user;
