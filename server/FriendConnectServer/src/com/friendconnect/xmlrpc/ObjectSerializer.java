@@ -47,7 +47,24 @@ public class ObjectSerializer {
 
 			Method setter = getMethodByName("set" + propertyName, clazz);
 
-			if (propertyValue instanceof HashMap) {
+			if (propertyValue instanceof Object[] || propertyValue instanceof List<?>) {
+				Class subClazz = getClassFromAnnotation(setter);
+				List<Object> list = (List<Object>) new ArrayList<Object>();
+				
+				if(propertyValue instanceof List<?>)
+					propertyValue = ((List<?>)propertyValue).toArray();
+				
+				Object[] serializedObjs = (Object[])propertyValue;
+				if (serializedObjs != null && serializedObjs.length > 0) {
+					for (Object element : serializedObjs) {
+						Object desObj = deSerialize((Map<String,Object>)element, subClazz);
+						list.add(desObj);
+					}
+					propertyValue = list;
+				}else{
+					propertyValue = null;
+				}
+			}else if (propertyValue instanceof HashMap) {
 				Class subClazz = getClassFromAnnotation(setter);
 				propertyValue = deSerialize((Map<String, Object>) propertyValue, subClazz);
 			}
@@ -83,8 +100,8 @@ public class ObjectSerializer {
 
 					if (propertyValue instanceof List<?>) {
 						List<Map<String, Object>> serializedList = new ArrayList<Map<String, Object>>();
-						List<?> poiAlerts = (List<?>) propertyValue;
-						if (poiAlerts != null && poiAlerts.size() > 0) {
+						List<?> list = (List<?>) propertyValue;
+						if (list != null && list.size() > 0) {
 							for (Object o : (List<?>) propertyValue) {
 								Map<String, Object> temp = serialize(o);
 								serializedList.add(temp);
