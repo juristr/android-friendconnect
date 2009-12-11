@@ -84,13 +84,15 @@ public class ObjectSerializer {
 					if (propertyValue instanceof List<?>) {
 						List<Map<String, Object>> serializedList = new ArrayList<Map<String, Object>>();
 						List<?> poiAlerts = (List<?>) propertyValue;
-						if (poiAlerts != null) {
+						if (poiAlerts != null && poiAlerts.size() > 0) {
 							for (Object o : (List<?>) propertyValue) {
 								Map<String, Object> temp = serialize(o);
 								serializedList.add(temp);
 							}
+							propertyValue = serializedList;
+						} else {
+							propertyValue = null;
 						}
-						propertyValue = serializedList;
 					}
 
 					// is complex serializable?
