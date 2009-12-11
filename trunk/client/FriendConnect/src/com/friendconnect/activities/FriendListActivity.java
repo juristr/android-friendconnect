@@ -318,7 +318,7 @@ public class FriendListActivity extends Activity implements IView {
 	}
 	
 	public void showMessage(int messageId) {
-		ActivityUtils.showToast(this, messageId, Toast.LENGTH_LONG);
+		ActivityUtils.showToast(this, messageId, Toast.LENGTH_SHORT);
 	}
 
 	/* Getters and setters */
