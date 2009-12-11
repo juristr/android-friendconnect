@@ -22,8 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-
-import com.friendconnect.annotations.NotSerializable;
+import com.friendconnect.annotations.*;
 
 public class FriendConnectUser extends User implements Observer {
 	private List<User> friends;
@@ -36,8 +35,6 @@ public class FriendConnectUser extends User implements Observer {
 		this.pendingInvites = new ArrayList<User>();
 	}
 
-	// TODO bad, could be modified without being able to notice
-	// and fire change events!!!
 	@NotSerializable
 	public List<User> getFriends() {
 		return friends;
@@ -76,7 +73,7 @@ public class FriendConnectUser extends User implements Observer {
 		notifyObservers();
 	}
 
-	@NotSerializable
+	@ComplexSerializableType(clazz = POIAlert.class)
 	public void setPoiAlerts(List<POIAlert> poiAlert) {
 		this.poiAlerts = poiAlert;
 		setChanged();
