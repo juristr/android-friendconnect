@@ -191,6 +191,7 @@ public class User implements Comparable<User>, IIdentity {
 		return poiAlerts;
 	}
 
+	@ComplexSerializableType(clazz = POIAlert.class)
 	public void setPoiAlerts(List<POIAlert> poiAlerts) {
 		this.poiAlerts = poiAlerts;
 	}
