@@ -62,7 +62,6 @@ public class UserDaoTest extends BaseTest {
 		
 		poiAlert = new POIAlert();
 		poiAlert.setActivated(true);
-		poiAlert.setAddress("POI alert address");
 		poiAlert.setExpirationDate(new Date());
 		poiAlert.setRadius(100);
 		poiAlert.setTitle("Title");
@@ -84,9 +83,14 @@ public class UserDaoTest extends BaseTest {
 	public void testSaveGetRemoveUser() {
 		userDao.saveUser(user);
 		
+		poiAlert.setPosition(location);
+		userDao.savePOIAlert(user.getId(), poiAlert);
+		
 		User aUser = userDao.getUserById(user.getId());
 		
 		assertNotNull("User should not be null", aUser);
+		assertNotNull("User's POI alerts should not be null", aUser.getPoiAlerts());
+		assertNotNull("User's POI alert location should not be null", aUser.getPoiAlerts().get(0).getPosition());
 		assertEquals("Ids of users should be equal", user.getId(), aUser.getId());
 		assertEquals("Names of users should be equal", user.getName(), aUser.getName());
 		assertEquals("Emails of users should be equal", user.getEmailAddress(), aUser.getEmailAddress());
@@ -201,7 +205,6 @@ public class UserDaoTest extends BaseTest {
 		assertEquals("POI alert's expiration date should match", poiAlert.getExpirationDate(), persistedPOIAlert.getExpirationDate());
 		assertEquals("POI alert's radius should match", poiAlert.getRadius(), persistedPOIAlert.getRadius());
 		assertEquals("POI alert's activation status should match", poiAlert.getActivated(), persistedPOIAlert.getActivated());
-		assertEquals("POI alert's address should match", poiAlert.getAddress(), persistedPOIAlert.getAddress());
 		assertEquals("POI alert's latitude should match", poiAlert.getPosition().getLatitude(), persistedPOIAlert.getPosition().getLatitude());
 		assertEquals("POI alert's longitude should match", poiAlert.getPosition().getLongitude(), persistedPOIAlert.getPosition().getLongitude());
 		

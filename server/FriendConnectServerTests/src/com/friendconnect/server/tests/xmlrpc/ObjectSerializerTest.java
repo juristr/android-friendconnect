@@ -1,11 +1,14 @@
 package com.friendconnect.server.tests.xmlrpc;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import junit.framework.TestCase;
 
 import com.friendconnect.model.Location;
+import com.friendconnect.model.POIAlert;
 import com.friendconnect.model.User;
 import com.friendconnect.xmlrpc.ObjectSerializer;
 
@@ -28,6 +31,14 @@ public class ObjectSerializerTest extends TestCase {
 		location.setLongitude(112.3);
 		user.setPosition(location);
 		
+		List<POIAlert> poiAlerts = new ArrayList<POIAlert>();
+		POIAlert poiAlert = new POIAlert();
+		poiAlert.setRadius(1);
+		poiAlert.setTitle("hallo");
+		poiAlerts.add(poiAlert);
+		
+		user.setPoiAlerts(poiAlerts);
+		
 		ObjectSerializer serializer = new ObjectSerializer();
 		Map<String, Object> serialized = serializer.serialize(user);
 		
@@ -36,7 +47,6 @@ public class ObjectSerializerTest extends TestCase {
 		assertEquals("The names should match", user.getName(), serialized.get("Name"));
 		assertNotNull("The hashmap should have an object value for the subobj", serialized.get("Position"));
 		
-		
 		//deserialize
 		User deserializedUser = serializer.deSerialize(serialized, User.class);
 		assertNotNull(deserializedUser);
@@ -44,6 +54,6 @@ public class ObjectSerializerTest extends TestCase {
 		assertEquals(user.getName(), deserializedUser.getName());
 		assertEquals(user.getPosition().getLatitude(), deserializedUser.getPosition().getLatitude());
 		assertEquals(user.getPosition().getLongitude(), deserializedUser.getPosition().getLongitude());
+		assertTrue(deserializedUser.getPoiAlerts().size() > 0);
 	}
-
 }
