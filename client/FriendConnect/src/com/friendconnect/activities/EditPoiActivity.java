@@ -131,12 +131,10 @@ public class EditPoiActivity extends Activity implements IView {
 	}
 
 	public void showMessage(int messageId) {
-		// TODO Auto-generated method stub
 
 	}
 
 	public void stopProgress() {
-		// TODO Auto-generated method stub
 
 	}
 

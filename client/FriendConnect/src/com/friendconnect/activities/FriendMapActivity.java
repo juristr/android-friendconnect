@@ -335,7 +335,7 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 			updatePOIFlags(user);
 	
 			mapView.invalidate();
-			if (doCenterMap) {
+			if (doCenterMap && user.getPosition() != null) {
 				// center the map on the user's position
 				navigateToPoint(user.getPosition().getLatitude(), user.getPosition().getLongitude());
 			}
