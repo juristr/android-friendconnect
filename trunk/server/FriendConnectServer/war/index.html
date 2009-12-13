@@ -7,27 +7,87 @@
 <!-- but may lead to some differences in layout.   -->
 
 <html>
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>Android FriendConnect</title>
-    <style type="text/css">
-    	body{
-    		font-family: Verdana, Tahoma, Helvetica, Arial;
-    	}
-    </style>
-  </head>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Android FriendConnect</title>
+<link rel="stylesheet" href="main.css" />
+<script type="text/javascript"
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+<script type="text/javascript" src="jquery.featureList-1.0.0.js"></script>
 
-  <body>
-    <table width="50%" align="center" style="text-align:center; margin-top:50px;">
-      <tr>
-        <td><img src="/img/friendConnectLogo_web.png" alt="Friend Connect"/></td>        
-      </tr>
-      <tr>
-      	<td style="font-size:25pt; padding-top:10px;"><img src="/img/AndroidLogo.gif"/><br/>FriendConnect</td>
-      </tr>
-      <tr>
-      	<td style="border-top:1px solid gray; padding-top:10px; padding-bottom:10px; font-size:10pt; color:gray;">&copy; 2009 Android FriendConnect - <a href="http://android-friendconnect.googlecode.com">Project home</a><br/>Interested? Contact us: android.friendconnect [at] gmail.com<br/><img src="http://code.google.com/appengine/images/appengine-noborder-120x30.gif" alt="Powered by Google App Engine" /></td>
-      </tr>
-    </table>
-  </body>
+<script language="javascript">
+	$(document).ready(function() {
+		$.featureList(
+			$("#tabs li a"),
+			$("#output li"), {
+				start_item	:	0
+			}
+		);
+	});
+</script>
+
+</head>
+<body>
+
+<div id="content">
+
+	<table width="100%" align="center"
+		style="text-align: center; margin-top: 50px;">
+		<tr>
+			<td><img src="/img/friendConnectLogo_web.png"
+				alt="Friend Connect" /></td>
+<td style="font-size: 25pt; padding-top: 10px;" align="left"><img
+				src="/img/AndroidLogo.gif" /><br />
+			FriendConnect</td>
+		</tr>
+	</table>
+	<hr />
+	<div id="feature_list">
+		<ul id="tabs">
+			<li>
+				<a href="javascript:;"><img src="img/add_invite.png" />
+				<h3>Social</h3>
+				<span>Invite and connect with your peers</span> </a>
+			</li>
+			<li>
+				<a href="javascript:;"><img src="img/friends.png" />
+				<h3>Your Friends..</h3>
+				<span>Everywhere..from your Android</span> </a>
+			</li>
+			<li>
+				<a href="javascript:;"><img src="img/flag.png" />
+				<h3>Points-of-interest</h3>
+				<span>Flag them and get informed</span> </a>
+			</li>
+			<li>
+				<a href="javascript:;"><img src="img/map.png" />
+				<h3>Stay connected</h3>
+				<span>Find and meet your friends</span> </a>
+			</li>			
+		</ul>
+		<ul id="output">
+			<li>
+				<img src="img/invite.png" /> <!-- <a href="#">See project details</a>-->
+			</li>
+			<li>
+				<img src="img/friendlist.png" /> <!-- <a href="#">See project details</a>-->
+			</li>
+			<li>
+				<img src="img/poi.png" /> <!-- <a href="#">See project details</a>-->
+			</li>
+			<li>
+				<img src="img/friendMap.png" /> <!-- <a href="#">See project details</a>-->
+			</li>			
+		</ul>
+	</div>
+	<hr/>
+	<div id="footer">
+		&copy;	2009 Android FriendConnect - 
+		<a href="http://android-friendconnect.googlecode.com">Project home</a><br />
+			Interested? Contact us: android.friendconnect [at] gmail.com<br />
+			<img src="http://code.google.com/appengine/images/appengine-noborder-120x30.gif"
+				alt="Powered by Google App Engine" />
+	</div>
+</div>
+</body>
 </html>
