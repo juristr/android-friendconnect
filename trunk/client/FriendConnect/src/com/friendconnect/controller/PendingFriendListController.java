@@ -52,7 +52,7 @@ public class PendingFriendListController extends AbstractController<FriendConnec
 					if(!modelContainsPendingInvite(userInvite))
 						model.addPendingInvite(userInvite);
 				}
-				
+								
 				notifyStopProgress();
 			}
 

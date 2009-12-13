@@ -18,7 +18,6 @@
 
 package com.friendconnect.activities;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Observable;
 
@@ -66,7 +65,7 @@ public class EditPoiActivity extends Activity implements IView {
 				int lat = retrievedData.getInt(BUNDLE_GEO_LAT);
 				int lng = retrievedData.getInt(BUNDLE_GEO_LNG);
 
-				if (lat > 0 && lng > 0) {
+//				if (lat > 0 && lng > 0) {
 					// if we have already
 					TextView textViewAddress = (TextView) findViewById(R.id.textViewAddress);
 					EditText editTextAddress = (EditText) findViewById(R.id.editTextAddress);
@@ -78,10 +77,10 @@ public class EditPoiActivity extends Activity implements IView {
 					location.setLongitude((double) (lng / 1E6));
 					poiAlert.setPosition(location);
 				}
-			} else {
-				// bind the data for editing
-				databindPoiAlert();
-			}
+//			} else {
+//				// bind the data for editing
+//				databindPoiAlert();
+//			}
 		}
 
 		Button saveButton = (Button) findViewById(R.id.buttonSavePoi);

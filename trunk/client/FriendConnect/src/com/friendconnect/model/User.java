@@ -196,7 +196,11 @@ public class User extends Observable{
 				fireChanges = true;
 			}
 		}
-
+		
+		if (fireChanges) {
+			setChanged();
+			notifyObservers();
+		}
 	}
 	
 	public String toString(){

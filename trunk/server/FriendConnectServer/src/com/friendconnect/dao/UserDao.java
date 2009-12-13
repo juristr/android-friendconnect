@@ -80,7 +80,7 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 	@Override
 	public User getUserById(String userId) {
 		PersistenceManager pm = getPersistenceManager();
-		pm.getFetchPlan().addGroup(FetchGroupConstants.ALL);
+		pm.getFetchPlan().addGroup(FetchGroupConstants.USER_ALL);
 		User user = pm.getObjectById(User.class, userId);
 		return pm.detachCopy(user);
 	}
@@ -89,7 +89,7 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 	@Override
 	public User getUserByEmailAddress(String emailAddress) {
 		PersistenceManager pm = getPersistenceManager();
-		pm.getFetchPlan().addGroup(FetchGroupConstants.ALL);
+		pm.getFetchPlan().addGroup(FetchGroupConstants.USER_ALL);
 		Query query = pm.newQuery(User.class);
 	    query.setFilter("emailAddress == emailAddressParam");
 	    query.declareParameters("String emailAddressParam");
@@ -122,7 +122,8 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 		List<User> friends = new ArrayList<User>();
 		if (user.getFriends() != null) {
 			for (String friendId : user.getFriends()) {
-				User friend = pm.getObjectById(User.class, friendId);
+				pm.getFetchPlan().addGroup(FetchGroupConstants.USER_POSITION);
+				User friend = pm.detachCopy(pm.getObjectById(User.class, friendId));
 				friend.setToken(null);
 				friends.add(friend);
 			}
@@ -137,7 +138,8 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 		List<User> pendingFriends = new ArrayList<User>();
 		if (user.getPendingFriends() != null) {
 			for (String pendingFriendEmailAddress : user.getPendingFriends()) {
-				User pendingFriend = pm.getObjectById(User.class, pendingFriendEmailAddress);
+				pm.getFetchPlan().addGroup(FetchGroupConstants.USER_POSITION);
+				User pendingFriend = pm.detachCopy(pm.getObjectById(User.class, pendingFriendEmailAddress));
 				pendingFriend.setToken(null);
 				pendingFriends.add(pendingFriend);
 			}

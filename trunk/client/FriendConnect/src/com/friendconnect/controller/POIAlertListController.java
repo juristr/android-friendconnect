@@ -137,6 +137,7 @@ public class POIAlertListController extends AbstractController<FriendConnectUser
 			POIAlert poiAlert = poiAlerts.get(i);
 			if (poiAlert.getId().equals(poiAlertId)) {
 				model.removePoiAlert(poiAlert);
+				break;
 			}
 		}
 	}

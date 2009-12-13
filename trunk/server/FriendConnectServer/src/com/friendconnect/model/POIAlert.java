@@ -32,7 +32,7 @@ import javax.jdo.annotations.PrimaryKey;
 import com.friendconnect.xmlrpc.ComplexSerializableType;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-@FetchGroup(name=FetchGroupConstants.ALL, members={@Persistent(name="position")})
+@FetchGroup(name=FetchGroupConstants.USER_ALL, members={@Persistent(name="position")})
 public class POIAlert implements IIdentity {
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

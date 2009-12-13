@@ -32,7 +32,6 @@ import android.widget.TextView;
 
 import com.friendconnect.R;
 import com.friendconnect.model.POIAlert;
-import com.friendconnect.model.User;
 
 /**
  * Adapter for binding a list of {@link POIAlert} objects
@@ -57,21 +56,21 @@ public class POIAlertAdapter extends ArrayAdapter<POIAlert> {
 			poiAlertListView = new LinearLayout(getContext());
 			LayoutInflater layoutInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			layoutInflater.inflate(resourceId, poiAlertListView, true);
-		} else{
+		} else {
 			poiAlertListView = (LinearLayout)convertView;
 		}
 		
-		TextView titleView = (TextView)poiAlertListView.findViewById(R.id.textViewTitle);
+		TextView titleView = (TextView)poiAlertListView.findViewById(R.id.textViewPoiAlertTitle);
 		
 		titleView.setText(poiAlert.getTitle());
 		
 		//show correct status image
-//		ImageView poiAlertStatusImageView = (ImageView)poiAlertListView.findViewById(R.id.imgViewPoiAlertStatus);
-//		if (poiAlert.getActivated()) {
-//			poiAlertStatusImageView.setImageResource(R.drawable.poialert_active);
-//		} else {
-//			poiAlertStatusImageView.setImageResource(R.drawable.poialert_inactive);
-//		}
+		ImageView poiAlertStatusImageView = (ImageView)poiAlertListView.findViewById(R.id.imgViewPoiAlertStatus);
+		if (poiAlert.getActivated()) {
+			poiAlertStatusImageView.setImageResource(R.drawable.flag);
+		} else {
+			poiAlertStatusImageView.setImageResource(R.drawable.flag_inactive);
+		}
 		
 		return poiAlertListView;
 	}

@@ -19,6 +19,9 @@
 package com.friendconnect.model;
 
 public class FetchGroupConstants {
-	//Can be used to get a User object by retrieving recursively also the fields "position" and "poiAlerts" 
-	public static final String ALL = "all";
+	//Can be used to get a User object by retrieving eagerly all its children fields
+	public static final String USER_ALL = "user_all";
+	
+	//Can be used to get a User object by retrieving eagerly its "position" field
+	public static final String USER_POSITION = "user_position";
 }

@@ -24,6 +24,7 @@ import java.util.List;
 import javax.jdo.annotations.Embedded;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.FetchGroup;
+import javax.jdo.annotations.FetchGroups;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -34,7 +35,8 @@ import com.friendconnect.xmlrpc.ComplexSerializableType;
 import com.friendconnect.xmlrpc.NotSerializable;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-@FetchGroup(name=FetchGroupConstants.ALL, members={@Persistent(name="position"), @Persistent(name="poiAlerts")})
+@FetchGroups(value={@FetchGroup(name=FetchGroupConstants.USER_ALL, members={@Persistent(name="position"), @Persistent(name="poiAlerts")}), 
+				    @FetchGroup(name=FetchGroupConstants.USER_POSITION, members={@Persistent(name="position")})})
 public class User implements Comparable<User>, IIdentity {
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

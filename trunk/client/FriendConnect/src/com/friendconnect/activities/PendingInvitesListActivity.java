@@ -136,19 +136,11 @@ public class PendingInvitesListActivity extends Activity implements IView {
 	 * Does preparative actions for calling the controller's acceptFriend method
 	 */
 	private void doAcceptInvitationActions(int index) {
-		final User user = getSelectedFriend(index);
-		AlertDialog.Builder ad = ActivityUtils.createConfirmationDialog(this, getString(R.string.dialogAcceptInvitationTitle), String.format(getString(R.string.dialogAcceptInvitationMessage), user.toString()));
-		ad.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-				if (user != null) {
-					showProgressDialog(getText(R.string.uiMessageAcceptingInvite));
-					controller.acceptFriend(user.getId());
-				}
-			}
-		});
-		ad.setNegativeButton(R.string.cancel, null);
-		ad.setCancelable(true);
-		ad.show();
+		User user = getSelectedFriend(index);
+		if (user != null) {
+			showProgressDialog(getText(R.string.uiMessageAcceptingInvite));
+			controller.acceptFriend(user.getId());
+		}
 	}
 	
 	/**

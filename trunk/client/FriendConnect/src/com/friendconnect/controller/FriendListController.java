@@ -81,10 +81,10 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 						model.removeFriend(friend);
 					}
 				}
-		
+								
 				//update the distances
 				locationController.updateFriendDistances();
-				
+								
 				notifyStopProgress();
 			}
 
