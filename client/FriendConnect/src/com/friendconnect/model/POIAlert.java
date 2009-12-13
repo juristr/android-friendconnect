@@ -91,11 +91,11 @@ public class POIAlert extends Observable {
 		}
 	}
 
-	public Boolean getActivated() {
+	public boolean getActivated() {
 		return activated;
 	}
 
-	public void setActivated(Boolean activated) {
+	public void setActivated(boolean activated) {
 		boolean oldValue = this.activated;
 		this.activated = activated;
 		
@@ -128,6 +128,11 @@ public class POIAlert extends Observable {
 			   oldLocation.getLongitude() != this.position.getLongitude()){
 				fireChanges = true;
 			}
+		}
+		
+		if (fireChanges) {
+			setChanged();
+			notifyObservers();
 		}
 	}
 

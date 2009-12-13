@@ -23,13 +23,11 @@ import java.util.List;
 import java.util.Observable;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -51,9 +49,9 @@ import com.friendconnect.utils.ActivityUtils;
 import com.friendconnect.views.AndroidUserPositionOverlay;
 import com.friendconnect.views.FriendMapView;
 import com.friendconnect.views.FriendPositionOverlay;
-import com.friendconnect.views.OnOverlayClickListener;
 import com.friendconnect.views.OnDoubleClickListener;
 import com.friendconnect.views.OnLongTouchListener;
+import com.friendconnect.views.OnOverlayClickListener;
 import com.friendconnect.views.POIOverlay;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -64,6 +62,7 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 		OnDoubleClickListener, OnOverlayClickListener {
 	private static final int CENTER_MAP = Menu.FIRST;
 	private static final int ADD_POI = Menu.FIRST + 1;
+	private static final int LIST_POIALERTS = Menu.FIRST + 2;
 	private static final int SUBACTIVITY_EDITPOI = 1;
 	private static final int POIDIALOGVIEW = 1;
 
@@ -132,7 +131,7 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 
 	public void onLongTouch(MotionEvent ev) {
 		GeoPoint point = mapView.getProjection().fromPixels((int) ev.getX(), (int) ev.getY());
-
+		
 		// start intent for editing
 		Intent intent = new Intent(this, EditPoiActivity.class);
 		intent.putExtra(EditPoiActivity.BUNDLE_GEO_LAT, point.getLatitudeE6());
@@ -193,8 +192,11 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 		itemCenterMap.setIcon(R.drawable.menu_mylocation);
 
 		MenuItem itemAddPoi = menu.add(1, ADD_POI, Menu.NONE, R.string.menuAddPoiAlert);
-		itemAddPoi.setIcon(R.drawable.menu_myplaces);
+		itemAddPoi.setIcon(R.drawable.menu_add);
 
+		MenuItem listPoiAlerts = menu.add(1, LIST_POIALERTS, Menu.NONE, R.string.menuListPoiAlerts);
+		listPoiAlerts.setIcon(R.drawable.menu_myplaces);
+		
 		return true;
 	}
 
@@ -203,14 +205,18 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 		super.onOptionsItemSelected(item);
 
 		switch (item.getItemId()) {
-		case (CENTER_MAP): {
-			doCenterMap = true;
-			return true;
-		}
-		case (ADD_POI): {
-			startActivity(new Intent(this, EditPoiActivity.class));
-			return true;
-		}
+			case (CENTER_MAP): {
+				doCenterMap = true;
+				return true;
+			}
+			case (ADD_POI): {
+				startActivity(new Intent(this, EditPoiActivity.class));
+				return true;
+			}
+			case (LIST_POIALERTS): {
+				startActivity(new Intent(this, POIAlertListActivity.class));
+				return true;
+			}
 		}
 		return false;
 	}
@@ -218,17 +224,9 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
-		case (POIDIALOGVIEW): {
-			LayoutInflater li = LayoutInflater.from(this);
-			View poiDialogView = li.inflate(R.layout.poidialogview, null);
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			AlertDialog dummyLocationDialog = builder.create();
-			dummyLocationDialog.setTitle("POI Details");
-			dummyLocationDialog.setView(poiDialogView);
-			dummyLocationDialog.setCanceledOnTouchOutside(true);
-			dummyLocationDialog.setIcon(R.drawable.flag);
-			return dummyLocationDialog;
-		}
+			case (POIDIALOGVIEW): {
+				return ActivityUtils.createViewDialog(this, R.layout.poidialogview, R.string.details, R.drawable.flag);
+			}
 		}
 		return null;
 	}
@@ -238,6 +236,9 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 		switch (id) {
 		case POIDIALOGVIEW:
 			((TextView) dialog.findViewById(R.id.textViewPoiTitle)).setText(clickedPOIAlert.getTitle());
+			((TextView) dialog.findViewById(R.id.textViewPoiRadius)).setText(clickedPOIAlert.getRadius().toString());
+			((TextView) dialog.findViewById(R.id.textViewPoiActivated)).setText(clickedPOIAlert.getActivated() ? getText(R.string.yes) : getText(R.string.no));
+			((TextView) dialog.findViewById(R.id.textViewPoiExpirationDate)).setText(clickedPOIAlert.getExpirationDate().toLocaleString());
 			Button deleteButton = (Button)dialog.findViewById(R.id.buttonDeletePoi);
 			deleteButton.setOnClickListener(new OnClickListener() {
 				
@@ -327,17 +328,20 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 	}
 
 	public synchronized void update(Observable observable, Object data) {
-		final FriendConnectUser user = (FriendConnectUser) observable;
+		try {
+			final FriendConnectUser user = (FriendConnectUser) observable;
 
-		updateFriendLocations(user);
-		updatePOIFlags(user);
-
-		mapView.invalidate();
-		if (doCenterMap) {
-			// center the map on the user's position
-			navigateToPoint(user.getPosition().getLatitude(), user.getPosition().getLongitude());
+			updateFriendLocations(user);
+			updatePOIFlags(user);
+	
+			mapView.invalidate();
+			if (doCenterMap) {
+				// center the map on the user's position
+				navigateToPoint(user.getPosition().getLatitude(), user.getPosition().getLongitude());
+			}
+		} catch (Exception e) {
+		
 		}
-
 	}
 
 	private void updateFriendLocations(final FriendConnectUser user) {
@@ -345,8 +349,9 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 		showAndroidUserPosition(user.getPosition());
 
 		// update friend's positions
-		for (User friend : user.getFriends()) {
-			if (friend.getOnline()) {
+		List<User> friends = user.getCopyOfFriends();
+		for (User friend : friends) {
+			if (friend.getOnline() && friend.getPosition() != null) {
 				FriendPositionOverlay friendOverlay = friendOverlays.get(friend.getId());
 				if (friendOverlay != null) {
 					friendOverlay.setPosition(friend.getPosition().convertToAndroidGeoPoint(), user
@@ -363,7 +368,7 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 
 		// remove overlays of past friends
 		for (String friendId : friendOverlays.keySet()) {
-			if (!containsFriend(friendId, user.getFriends())) {
+			if (!containsFriend(friendId, friends)) {
 				mapView.getOverlays().remove(friendOverlays.get(friendId));
 				friendOverlays.remove(friendId);
 			}
@@ -372,7 +377,8 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 
 	private void updatePOIFlags(final FriendConnectUser user) {
 		if (user.getPoiAlerts() != null) {
-			for (POIAlert poiAlert : user.getPoiAlerts()) {
+			List<POIAlert> poiAlerts = user.getCopyOfPoiAlerts();
+			for (POIAlert poiAlert : poiAlerts) {
 				POIOverlay poiOverlay = poiOverlays.get(poiAlert.getId());
 				if (poiOverlay == null) {
 					poiOverlay = new POIOverlay(poiAlert, this);
@@ -383,7 +389,7 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 			}
 
 			for (String poiAlertId : poiOverlays.keySet()) {
-				if (!containsPoiAlert(poiAlertId, user.getPoiAlerts())) {
+				if (!containsPoiAlert(poiAlertId, poiAlerts)) {
 					mapView.getOverlays().remove(poiOverlays.get(poiAlertId));
 					poiOverlays.remove(poiAlertId);
 				}

@@ -65,8 +65,7 @@ public class LocationController extends AbstractController<FriendConnectUser> {
 							if (result) {
 								updateFriendDistances();
 							} else {
-								onFailure(new Exception(
-										"Sending of location was successful!"));
+								onFailure(new Exception("Sending of location was successful!"));
 							}
 						}
 					}, Boolean.class);
@@ -83,11 +82,8 @@ public class LocationController extends AbstractController<FriendConnectUser> {
 	public void updateFriendDistances() {
 		if (model.getFriends() != null) {
 			for (User friend : model.getFriends()) {
-				if (model.getPosition() != null) {
-					float distance = model.getPosition()
-							.convertToAndroidLocation().distanceTo(
-									friend.getPosition()
-											.convertToAndroidLocation());
+				if (model.getPosition() != null && friend.getPosition() != null) {
+					float distance = model.getPosition().convertToAndroidLocation().distanceTo(friend.getPosition().convertToAndroidLocation());
 
 					String distIndic = "";
 

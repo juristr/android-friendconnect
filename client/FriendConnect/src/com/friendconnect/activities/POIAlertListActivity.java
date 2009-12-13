@@ -56,7 +56,7 @@ public class POIAlertListActivity extends Activity implements IView {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.pendinginviteslist);
+		setContentView(R.layout.poilist);
 		handler = new Handler();
 		listViewPoiAlerts = (ListView) findViewById(R.id.listViewPoiAlerts);
 
@@ -87,15 +87,15 @@ public class POIAlertListActivity extends Activity implements IView {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		// Create and add new menu items.
-		MenuItem itemAddPOIAlert = menu.add(0, ADD_POIALERT, Menu.NONE, this.getString(R.string.menuAddPoiAlert));
+//		MenuItem itemAddPOIAlert = menu.add(0, ADD_POIALERT, Menu.NONE, this.getString(R.string.menuAdd));
 		MenuItem itemRemovePOIAlert = menu.add(0, REMOVE_POIALERT, Menu.NONE, this.getString(R.string.menuRemovePoiAlert));
 		
 		// Assign icons
-		itemAddPOIAlert.setIcon(R.drawable.menu_add);
+//		itemAddPOIAlert.setIcon(R.drawable.menu_add);
 		itemRemovePOIAlert.setIcon(R.drawable.menu_delete);
 
 		// Allocate shortcuts to each of them.
-		itemAddPOIAlert.setShortcut('0', 'a');
+//		itemAddPOIAlert.setShortcut('0', 'a');
 		itemRemovePOIAlert.setShortcut('1', 'r');
 		return true;
 	}
@@ -144,7 +144,7 @@ public class POIAlertListActivity extends Activity implements IView {
 	 */
 	private void doRemovePOIAlertActions(int index) {
 		final POIAlert poiAlert = getSelectedPOIAlert(index);
-		AlertDialog.Builder ad = ActivityUtils.createConfirmationDialog(this, getString(R.string.dialogRemovePOIAlertTitle), String.format(getString(R.string.dialogRemovePOIAlertMessage), poiAlert.toString()));
+		AlertDialog.Builder ad = ActivityUtils.createConfirmationDialog(this, getString(R.string.dialogRemovePOIAlertTitle), String.format(getString(R.string.dialogRemovePOIAlertMessage), poiAlert.getTitle()));
 		ad.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				if (poiAlert != null) {

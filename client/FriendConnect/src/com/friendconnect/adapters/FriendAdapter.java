@@ -92,5 +92,4 @@ public class FriendAdapter extends ArrayAdapter<User> {
 		
 		return friendListView;
 	}
-
 }

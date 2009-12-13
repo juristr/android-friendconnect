@@ -47,11 +47,12 @@ public class EditProfileController extends AbstractController<FriendConnectUser>
 
 	public void saveProfile(String name, String phone, String website, String statusMessage){
 		try {
-			getModel().setName(name);
-			getModel().setPhone(phone);
-			getModel().setWebsite(website);
-			getModel().setStatusMessage(statusMessage);
-			Object serializedUser = serializer.serialize(getModel());
+			model.setName(name);
+			model.setPhone(phone);
+			model.setWebsite(website);
+			model.setStatusMessage(statusMessage);
+			
+			Object serializedUser = serializer.serialize(model);
 			xmlRpcService.sendRequest(RPCRemoteMappings.UPDATEPROFILE, new Object[]{serializedUser}, new IAsyncCallback<Boolean>() {
 
 				public void onSuccess(Boolean result) {

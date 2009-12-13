@@ -39,6 +39,11 @@ public class FriendConnectUser extends User implements Observer {
 	public List<User> getFriends() {
 		return friends;
 	}
+	
+	@NotSerializable
+	public List<User> getCopyOfFriends() {
+		return new ArrayList<User>(friends);
+	}
 
 	public void addFriend(User friend) {
 		friends.add(friend);
@@ -58,6 +63,11 @@ public class FriendConnectUser extends User implements Observer {
 	public List<POIAlert> getPoiAlerts() {
 		return poiAlerts;
 	}
+	
+	@NotSerializable
+	public List<POIAlert> getCopyOfPoiAlerts() {
+		return new ArrayList<POIAlert>(poiAlerts);
+	}
 
 	public void addPoiAlert(POIAlert alert) {
 		poiAlerts.add(alert);
@@ -74,8 +84,8 @@ public class FriendConnectUser extends User implements Observer {
 	}
 
 	@ComplexSerializableType(clazz = POIAlert.class)
-	public void setPoiAlerts(List<POIAlert> poiAlert) {
-		this.poiAlerts = poiAlert;
+	public void setPoiAlerts(List<POIAlert> poiAlerts) {
+		this.poiAlerts = poiAlerts;
 		setChanged();
 		notifyObservers();
 	}
@@ -101,5 +111,4 @@ public class FriendConnectUser extends User implements Observer {
 		setChanged();
 		notifyObservers();
 	}
-
 }

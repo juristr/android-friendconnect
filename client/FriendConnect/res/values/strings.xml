@@ -55,21 +55,20 @@
 	<string name="menuCenterMap">Center Map</string>
 	<string name="menuAddPoiAlert">Add POI Alert</string>
 	<string name="menuRemovePoiAlert">Remove POI Alert</string>
+	<string name="menuListPoiAlerts">List POI Alerts</string>
 	<string name="invitation">FriendConnect Invitation</string>
 	<string name="sendInvite">Send Invite</string>
 	<string name="inviteFriend">Type the email address of the person you would like to invite:</string>
-<string name="ok">OK</string>
-
-<string name="cancel">Cancel</string>
-<string name="dialogRemoveFriendMessage">&quot;Are you sure you want to remove '%1$s'?&quot;</string>
-<string name="dialogRemoveFriendTitle">Confirm Remove</string>
-<string name="dialogRejectInvitationTitle">Confirm Reject</string>
-<string name="dialogRejectInvitationMessage">&quot;Are you sure you want to reject the friendship request of '%1$s'?&quot;</string>
-<string name="dialogAcceptInvitationTitle">Confirm Accept</string>
-<string name="dialogAcceptInvitationMessage">&quot;Are you sure you want to accept the friendship request of '%1$s'?&quot;</string>
-<string name="uiMessageEditProfileErrorMsg">Oops, it seems as if there has been a problem when updating your profile!</string>
-<string name="uiMessageEditProfileSuccessMsg">Your profile has been successfully updated.</string>
-<string name="dialogRemovePOIAlertMessage">&quot;Are you sure you want to remove '%1$s'?&quot;</string>
-<string name="dialogRemovePOIAlertTitle">Confirm Remove</string>
-
+	<string name="ok">OK</string>
+	<string name="cancel">Cancel</string>
+	<string name="dialogRemoveFriendMessage">&quot;Are you sure you want to remove '%1$s'?&quot;</string>
+	<string name="dialogRemoveFriendTitle">Confirm Remove</string>
+	<string name="dialogRejectInvitationTitle">Confirm Reject</string>
+	<string name="dialogRejectInvitationMessage">&quot;Are you sure you want to reject the friendship request of '%1$s'?&quot;</string>
+	<string name="uiMessageEditProfileErrorMsg">Oops, it seems as if there has been a problem when updating your profile!</string>
+	<string name="uiMessageEditProfileSuccessMsg">Your profile has been successfully updated.</string>
+	<string name="dialogRemovePOIAlertMessage">&quot;Are you sure you want to remove '%1$s'?&quot;</string>
+	<string name="dialogRemovePOIAlertTitle">Confirm Remove</string>
+	<string name="yes">Yes</string>
+	<string name="no">No</string>
 </resources>
