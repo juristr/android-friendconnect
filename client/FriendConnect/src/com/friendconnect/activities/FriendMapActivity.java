@@ -18,15 +18,16 @@
 
 package com.friendconnect.activities;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -132,13 +133,12 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 	public void onLongTouch(MotionEvent ev) {
 		GeoPoint point = mapView.getProjection().fromPixels((int) ev.getX(), (int) ev.getY());
 		
-		// start intent for editing
 		Intent intent = new Intent(this, EditPoiActivity.class);
 		intent.putExtra(EditPoiActivity.BUNDLE_GEO_LAT, point.getLatitudeE6());
 		intent.putExtra(EditPoiActivity.BUNDLE_GEO_LNG, point.getLongitudeE6());
 		startActivityForResult(intent, SUBACTIVITY_EDITPOI);
 	}
-
+	
 	public void onDoubleClick(MotionEvent ev) {
 		doCenterMap = false;
 		mapController.zoomInFixing((int) ev.getX(), (int) ev.getY());
@@ -156,19 +156,20 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		switch (requestCode) {
-		case SUBACTIVITY_EDITPOI:
-			if (resultCode == Activity.RESULT_OK) {
-				// handle the thing, otherwise remove
-				ActivityUtils.showToast(this, "Ok!", 1500);
-			} else {
-				ActivityUtils.showToast(this, "Cancelled!", 1500);
-			}
-			break;
-
-		default:
-			break;
-		}
+		//don't react
+//		switch (requestCode) {
+//		case SUBACTIVITY_EDITPOI:
+//			if (resultCode == Activity.RESULT_OK) {
+//				// handle the thing, otherwise remove
+////				ActivityUtils.showToast(this, "Ok!", 1500);
+//			} else {
+////				ActivityUtils.showToast(this, "Cancelled!", 1500);
+//			}
+//			break;
+//
+//		default:
+//			break;
+//		}
 	}
 
 	@Override
@@ -237,11 +238,10 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 		case POIDIALOGVIEW:
 			((TextView) dialog.findViewById(R.id.textViewPoiTitle)).setText(clickedPOIAlert.getTitle());
 			((TextView) dialog.findViewById(R.id.textViewPoiRadius)).setText(clickedPOIAlert.getRadius().toString());
-			((TextView) dialog.findViewById(R.id.textViewPoiActivated)).setText(clickedPOIAlert.getActivated() ? getText(R.string.yes) : getText(R.string.no));
-			((TextView) dialog.findViewById(R.id.textViewPoiExpirationDate)).setText(clickedPOIAlert.getExpirationDate().toLocaleString());
+			((TextView) dialog.findViewById(R.id.textViewPoiActivated)).setText(clickedPOIAlert.getActivated() ? getText(R.string.yes) : getText(R.string.no)); 
+			((TextView) dialog.findViewById(R.id.textViewPoiExpirationDate)).setText(clickedPOIAlert.getExpirationDateString());
 			Button deleteButton = (Button)dialog.findViewById(R.id.buttonDeletePoi);
-			deleteButton.setOnClickListener(new OnClickListener() {
-				
+			deleteButton.setOnClickListener(new OnClickListener() {	
 				public void onClick(View v) {
 					progressDialog.setMessage(getText(R.string.uiMessageRemovingPOIAlert));
 					progressDialog.show();
@@ -249,6 +249,17 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 					dialog.cancel();
 				}
 			});
+			
+			Button editButton = (Button)dialog.findViewById(R.id.buttonEditPoi);
+			editButton.setOnClickListener(new OnClickListener() {	
+				public void onClick(View v) {
+					Intent intent = new Intent(FriendMapActivity.this, EditPoiActivity.class);
+					intent.putExtra(EditPoiActivity.BUNDLE_ALERT_ID, clickedPOIAlert.getId());
+					startActivityForResult(intent, SUBACTIVITY_EDITPOI);
+					dialog.cancel();
+				}
+			});
+			
 			break;
 
 		default:
@@ -340,7 +351,7 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 				navigateToPoint(user.getPosition().getLatitude(), user.getPosition().getLongitude());
 			}
 		} catch (Exception e) {
-		
+			Log.i(FriendMapActivity.class.getCanonicalName(), "Error during update: " + e.getMessage());
 		}
 	}
 

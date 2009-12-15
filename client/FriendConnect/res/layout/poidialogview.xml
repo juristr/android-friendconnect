@@ -5,34 +5,44 @@
 	android:padding="10dp">
 
 	<TextView android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:textStyle="bold" android:text="@string/title"/>
+		android:layout_height="wrap_content" android:textStyle="bold"
+		android:text="@string/title" />
 
 	<TextView android:id="@+id/textViewPoiTitle"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:paddingBottom="10dp" />
-		
+
 	<TextView android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:textStyle="bold" android:text="@string/radius"/>
+		android:layout_height="wrap_content" android:textStyle="bold"
+		android:text="@string/radius" />
 
 	<TextView android:id="@+id/textViewPoiRadius"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:paddingBottom="10dp" />	
-		
+		android:paddingBottom="10dp" />
+
 	<TextView android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:textStyle="bold" android:text="@string/poiActivated"/>
+		android:layout_height="wrap_content" android:textStyle="bold"
+		android:text="@string/poiActivated" />
 
 	<TextView android:id="@+id/textViewPoiActivated"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:paddingBottom="10dp" />
 
 	<TextView android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:textStyle="bold" android:text="@string/expirationDate"/>
+		android:layout_height="wrap_content" android:textStyle="bold"
+		android:text="@string/expirationDate" />
 
 	<TextView android:id="@+id/textViewPoiExpirationDate"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:paddingBottom="10dp"/>
-		
-	<Button android:id="@+id/buttonDeletePoi"
-		android:layout_width="wrap_content" android:layout_gravity="center_horizontal" android:layout_height="fill_parent" android:text="@string/delete" />
-		
+		android:paddingBottom="10dp" />
+
+	<LinearLayout android:orientation="horizontal"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_gravity="center_horizontal">
+		<Button android:id="@+id/buttonEditPoi" android:layout_width="wrap_content"
+			android:layout_height="fill_parent" android:text="@string/edit" android:width="100dp" />
+		<Button android:id="@+id/buttonDeletePoi" android:layout_width="wrap_content"
+			android:layout_height="fill_parent" android:text="@string/delete" android:width="100dp"  />
+	</LinearLayout>
+
 </LinearLayout>
