@@ -129,8 +129,6 @@ public class UserService implements IUserService {
 
 	@Override
 	public void updateUser(User user) {
-		user.setLastAccess(new Date());
-		user.setOnline(true);
 		userDao.saveUser(user);
 	}
 	

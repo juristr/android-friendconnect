@@ -244,6 +244,7 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 	public List<User> getOnlineUsers() {
 		List<User> users = new ArrayList<User>();
 		PersistenceManager pm = getPersistenceManager();
+//		pm.getFetchPlan().addGroup(FetchGroupConstants.USER_POSITION);
 		//An extent retrieves results in batches, and can exceed the 1,000-result limit that applies to queries!!!
 		Extent<User> extent = pm.getExtent(User.class, false);
 		for (User user : extent) {
