@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/layout_root" android:orientation="vertical"
+	android:layout_width="fill_parent" android:layout_height="wrap_content"
+	android:padding="10dp">
+
+	<TextView android:layout_width="fill_parent" android:id="@+id/textViewContactFriend"
+		android:layout_height="wrap_content" android:paddingBottom="10dp"/>
+
+	<RadioGroup android:id="@+id/spinnerContactOptions"
+		android:layout_width="fill_parent" android:layout_height="wrap_content">
+		<RadioButton android:id="@+id/radioButtonEmail" android:text="@string/radioButtonEmail" android:checked="true"/>
+		<RadioButton android:id="@+id/radioButtonPhone" android:text="@string/radioButtonPhone"/>
+		<RadioButton android:id="@+id/radioButtonSms" android:text="@string/radioButtonSms"/>
+	</RadioGroup>
+
+	<LinearLayout android:orientation="horizontal"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_gravity="center_horizontal" android:paddingTop="10dp">
+	
+		<Button android:id="@+id/buttonOK" android:layout_width="wrap_content"
+			android:layout_height="fill_parent" android:text="@string/ok"
+			android:width="100dp" />
+	
+		<Button android:id="@+id/buttonExit" android:layout_width="wrap_content"
+			android:layout_height="fill_parent" android:text="@string/exit"
+			android:width="100dp" />
+
+	</LinearLayout>
+			
+</LinearLayout>

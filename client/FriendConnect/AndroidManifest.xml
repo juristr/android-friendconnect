@@ -18,9 +18,9 @@
 		<activity android:name=".activities.FriendMapActivity" android:label="@string/activityFriendMap"/>
 		<activity android:name=".activities.EditPoiActivity" android:label="@string/activityEditPoi"/>
 		<activity android:name=".activities.POIAlertListActivity" android:label="@string/activityPOIAlertList"/>
-		<service android:name=".services.FriendUpdateService" android:enabled="true">
-			
-		</service>
+		<activity android:name=".activities.FriendContactActivity" android:label="@string/activityFriendContact"/>
+		<service android:name=".services.FriendUpdateService" android:enabled="true"/>
+		<service android:name=".services.POIAlertNotificationService" android:enabled="true"/>
 	</application>
     <uses-sdk android:minSdkVersion="4" />
     <uses-permission android:name="android.permission.INTERNET"/>
