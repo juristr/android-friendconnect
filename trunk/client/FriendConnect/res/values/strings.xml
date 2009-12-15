@@ -29,6 +29,7 @@
 	<string name="activityFriendMap">Friend Map</string>
 	<string name="activityEditPoi">POI - Point Of Interest</string>
 	<string name="activityPOIAlertList">POI Alerts</string>
+	<string name="activityFriendContact">Contact Friend</string>
 	<string name="friendConnectServerUrl">http://1.latest.android-friendconnect.appspot.com/</string>
 	<string name="uiMessageLogin">Logging in...</string>
 	<string name="uiMessageSendingInvite">Sending invite...</string>
@@ -59,9 +60,16 @@
 	<string name="menuListPoiAlerts">List POI Alerts</string>
 	<string name="invitation">FriendConnect Invitation</string>
 	<string name="sendInvite">Send Invite</string>
+	<string name="notificationNewPoiAlert">New POI Alert(s)!</string>
+	<string name="notificationText">&quot;'%1$s' is nearby to '%2$s'&quot;</string>
 	<string name="inviteFriend">Type the email address of the person you would like to invite:</string>
+	<string name="contactFriendText">&quot;'%1$s' is nearby to '%2$s'&quot;! Please select from one of the options listed below to contact him/her:</string>
+	<string name="radioButtonEmail">Email</string>
+	<string name="radioButtonPhone">Phone</string>
+	<string name="radioButtonSms">SMS</string>
 	<string name="ok">OK</string>
 	<string name="cancel">Cancel</string>
+	<string name="exit">Exit</string>
 	<string name="dialogRemoveFriendMessage">&quot;Are you sure you want to remove '%1$s'?&quot;</string>
 	<string name="dialogRemoveFriendTitle">Confirm Remove</string>
 	<string name="dialogRejectInvitationTitle">Confirm Reject</string>

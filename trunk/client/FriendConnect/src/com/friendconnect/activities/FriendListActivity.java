@@ -54,6 +54,7 @@ import com.friendconnect.model.UserComparator;
 import com.friendconnect.services.FriendUpdateService;
 import com.friendconnect.services.ILocationService;
 import com.friendconnect.services.LocationService;
+import com.friendconnect.services.POIAlertNotificationService;
 import com.friendconnect.utils.ActivityUtils;
 
 public class FriendListActivity extends Activity implements IView {
@@ -105,6 +106,7 @@ public class FriendListActivity extends Activity implements IView {
 		registerForContextMenu(listViewFriends);
 
 		startService(new Intent(this, FriendUpdateService.class));
+		startService(new Intent(this, POIAlertNotificationService.class));
 		
 		ILocationService locationService = IoC.getInstance(LocationService.class);
 		locationService.setSystemService(getSystemService(Context.LOCATION_SERVICE));
