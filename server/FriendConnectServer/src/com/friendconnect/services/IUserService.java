@@ -46,7 +46,7 @@ public interface IUserService {
 	 * be called on subsequent calls.
 	 * @param userId the id of the user
 	 * @param token the user token
-	 * @return
+	 * @return true, if the token matches the user id, false otherwise
 	 */
 	public boolean validateToken(String userId, String token);
 	

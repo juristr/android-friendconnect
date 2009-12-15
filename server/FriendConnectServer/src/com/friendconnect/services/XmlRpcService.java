@@ -3,6 +3,7 @@ package com.friendconnect.services;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -189,6 +190,9 @@ public class XmlRpcService {
 		
 		// User has been successfully authenticated
 		User userToSave = serializer.deSerialize(userData, User.class);
+		userToSave.setLastAccess(new Date());
+		userToSave.setOnline(true);
+			
 		userService.updateUser(userToSave);
 		return true;
 	}
