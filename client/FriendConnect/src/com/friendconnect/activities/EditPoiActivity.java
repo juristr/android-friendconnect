@@ -30,13 +30,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.friendconnect.R;
 import com.friendconnect.controller.POIAlertListController;
 import com.friendconnect.main.IoC;
 import com.friendconnect.model.Location;
 import com.friendconnect.model.POIAlert;
+import com.friendconnect.utils.ActivityUtils;
 
 public class EditPoiActivity extends Activity implements IView {
 	public static final String BUNDLE_GEO_LAT = "geoLatData";
@@ -82,10 +82,20 @@ public class EditPoiActivity extends Activity implements IView {
 			public void onClick(View v) {
 				unbindPoiAlert();
 
-				controller.addPOIAlert(poiAlert);
+				// restrict the min radius
+				if (poiAlert.getRadius() < 10) {
+					ActivityUtils.showToast(EditPoiActivity.this,
+							R.string.uiMessageMinAllowedRadius, 2000);
+				} else {
 
-				setResult(Activity.RESULT_OK, null);
-				finish();
+					if (poiAlert.getId() != null && !poiAlert.getId().equals(""))
+						controller.updatePOIAlert(poiAlert);
+					else
+						controller.addPOIAlert(poiAlert);
+
+					setResult(Activity.RESULT_OK, null);
+					finish();
+				}
 			}
 		});
 	}
@@ -123,11 +133,9 @@ public class EditPoiActivity extends Activity implements IView {
 	}
 
 	public void showMessage(int messageId) {
-
 	}
 
 	public void stopProgress() {
-		
 		finish();
 	}
 

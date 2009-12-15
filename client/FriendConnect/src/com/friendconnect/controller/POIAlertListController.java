@@ -98,11 +98,40 @@ public class POIAlertListController extends AbstractController<FriendConnectUser
 							notifyStopProgress();
 						}
 
+					}, String.class);
+		} catch (Exception ex) {
+			Log.e(POIAlertListController.class.getCanonicalName(), ex.getMessage());
+		}
+	}
+	
+	public void updatePOIAlert(final POIAlert alert) {
+		try {
+			Object serializedAlert = serializer.serialize(alert);
+
+			xmlRPCService.sendRequest(RPCRemoteMappings.UPDATEPOIALERT,
+					new Object[] { serializedAlert }, new IAsyncCallback<Boolean>() {
+
+						public void onSuccess(Boolean result) {
+							if (result) {
+//								model.addPoiAlert(alert);
+							} else {
+								onFailure(new Exception(alert.getTitle()));
+							}
+							notifyStopProgress();
+						}
+
+						public void onFailure(Throwable throwable) {
+							Log.e(POIAlertListController.class.getCanonicalName(),
+									"Error updating POI alert: " + throwable.getMessage());
+							notifyStopProgress();
+						}
+
 					}, Boolean.class);
 		} catch (Exception ex) {
 			Log.e(POIAlertListController.class.getCanonicalName(), ex.getMessage());
 		}
 	}
+	
 
 	/**
 	 * This method will be called by the POIAlertListActivity for removing a POI
