@@ -22,6 +22,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
 import com.friendconnect.R;
@@ -36,12 +37,18 @@ public class POIOverlay extends Overlay {
 	private OnOverlayClickListener clickListener;
 	private Bitmap flagBitmap;
 	private Bitmap flagShadowBitmap;
+	private Paint radiusPaint;
 
 	public POIOverlay(POIAlert alert, Context context) {
 		this.alert = alert;
 		this.geoLocation = alert.getPosition().convertToAndroidGeoPoint();
 		this.flagBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.flag);
 		this.flagShadowBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.flag_shadow);
+		
+		this.radiusPaint= new Paint();
+		this.radiusPaint.setARGB(50, 75, 75, 75);
+		this.radiusPaint.setAntiAlias(true);
+		this.radiusPaint.setFakeBoldText(true);
 	}
 
 	@Override
@@ -54,6 +61,14 @@ public class POIOverlay extends Overlay {
 			int xPos = screenPos.x - (flagBitmap.getWidth() / 2) + 5;
 			int yPos = screenPos.y - (flagBitmap.getHeight() - 2);
 			canvas.drawBitmap(flagBitmap, xPos, yPos, null);
+			
+			
+			float markerRadius = mapView.getProjection().metersToEquatorPixels(alert.getRadius());
+			RectF oval = new RectF(screenPos.x - markerRadius,
+					screenPos.y - markerRadius, screenPos.x
+							+ markerRadius, screenPos.y + markerRadius);
+
+			canvas.drawOval(oval, radiusPaint);
 			
 //			Paint rectPaint = new Paint();
 //			rectPaint.setARGB(225, 75, 75, 75); //gray
