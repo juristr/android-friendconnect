@@ -41,7 +41,7 @@ import com.friendconnect.model.POIAlert;
 public class EditPoiActivity extends Activity implements IView {
 	public static final String BUNDLE_GEO_LAT = "geoLatData";
 	public static final String BUNDLE_GEO_LNG = "getLngData";
-	private static final String BUNDLE_ALERT_ID = "alertId";
+	public static final String BUNDLE_ALERT_ID = "alertId";
 	private POIAlertListController controller;
 	private POIAlert poiAlert;
 
@@ -65,22 +65,15 @@ public class EditPoiActivity extends Activity implements IView {
 				int lat = retrievedData.getInt(BUNDLE_GEO_LAT);
 				int lng = retrievedData.getInt(BUNDLE_GEO_LNG);
 
-//				if (lat > 0 && lng > 0) {
-					// if we have already
-					TextView textViewAddress = (TextView) findViewById(R.id.textViewAddress);
-					EditText editTextAddress = (EditText) findViewById(R.id.editTextAddress);
-					textViewAddress.setVisibility(View.INVISIBLE);
-					editTextAddress.setVisibility(View.INVISIBLE);
+				Location location = new Location();
+				location.setLatitude((double) (lat / 1E6));
+				location.setLongitude((double) (lng / 1E6));
+				poiAlert.setPosition(location);
 
-					Location location = new Location();
-					location.setLatitude((double) (lat / 1E6));
-					location.setLongitude((double) (lng / 1E6));
-					poiAlert.setPosition(location);
-				}
-//			} else {
-//				// bind the data for editing
-//				databindPoiAlert();
-//			}
+			} else {
+				// bind the data for editing
+				databindPoiAlert();
+			}
 		}
 
 		Button saveButton = (Button) findViewById(R.id.buttonSavePoi);
@@ -102,14 +95,13 @@ public class EditPoiActivity extends Activity implements IView {
 		EditText editTextRadius = (EditText) findViewById(R.id.editTextRadius);
 		CheckBox checkBoxActivated = (CheckBox) findViewById(R.id.checkBoxPoiActivated);
 		DatePicker expirationDatePicker = (DatePicker) findViewById(R.id.datePickerExpirationDatePicker);
-		EditText editTextAddress = (EditText) findViewById(R.id.editTextAddress);
 
 		editTextTitle.setText(poiAlert.getTitle());
-		editTextRadius.setText(poiAlert.getRadius());
+		editTextRadius.setText(poiAlert.getRadius().toString());
 		checkBoxActivated.setChecked(poiAlert.getActivated());
 		if (poiAlert.getExpirationDate() != null)
 			expirationDatePicker.updateDate(poiAlert.getExpirationDate().getYear(), poiAlert
-					.getExpirationDate().getMonth(), poiAlert.getExpirationDate().getDay());
+					.getExpirationDate().getMonth(), poiAlert.getExpirationDate().getDate());
 	}
 
 	private void unbindPoiAlert() {
@@ -117,7 +109,6 @@ public class EditPoiActivity extends Activity implements IView {
 		EditText editTextRadius = (EditText) findViewById(R.id.editTextRadius);
 		CheckBox checkBoxActivated = (CheckBox) findViewById(R.id.checkBoxPoiActivated);
 		DatePicker expirationDatePicker = (DatePicker) findViewById(R.id.datePickerExpirationDatePicker);
-		EditText editTextAddress = (EditText) findViewById(R.id.editTextAddress);
 
 		poiAlert.setTitle(editTextTitle.getText().toString());
 		try {
@@ -126,8 +117,9 @@ public class EditPoiActivity extends Activity implements IView {
 			Log.w(EditPoiActivity.class.getCanonicalName(), "Error parsing radius: "
 					+ editTextRadius.getText());
 		}
-		poiAlert.setActivated(checkBoxActivated.isChecked());		
-		poiAlert.setExpirationDate(new Date(expirationDatePicker.getYear(), expirationDatePicker.getMonth(), expirationDatePicker.getDayOfMonth()));		
+		poiAlert.setActivated(checkBoxActivated.isChecked());
+		poiAlert.setExpirationDate(new Date(expirationDatePicker.getYear(), expirationDatePicker
+				.getMonth(), expirationDatePicker.getDayOfMonth()));
 	}
 
 	public void showMessage(int messageId) {
@@ -135,7 +127,8 @@ public class EditPoiActivity extends Activity implements IView {
 	}
 
 	public void stopProgress() {
-
+		
+		finish();
 	}
 
 	public void update(Observable observable, Object data) {

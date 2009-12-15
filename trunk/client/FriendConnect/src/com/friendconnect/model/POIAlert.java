@@ -18,10 +18,15 @@
 
 package com.friendconnect.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Observable;
+
+import android.text.format.DateFormat;
+
 import com.friendconnect.annotations.ComplexSerializableType;
 import com.friendconnect.annotations.NotRecursiveSync;
+import com.friendconnect.annotations.NotSerializable;
 
 
 public class POIAlert extends Observable {
@@ -68,6 +73,12 @@ public class POIAlert extends Observable {
 		}
 	}
 
+	@NotSerializable
+	public String getExpirationDateString(){
+		SimpleDateFormat format = new SimpleDateFormat("MMM-d-yyyy");
+		return format.format(this.expirationDate);
+	}
+	
 	public Date getExpirationDate() {
 		return expirationDate;
 	}
