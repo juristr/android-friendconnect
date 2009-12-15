@@ -37,6 +37,7 @@
 	<string name="uiMessageRemovingFriend">Removing Friend...</string>
 	<string name="uiMessageProvideUsernamePassword">You have to provide both, username and password</string>
 	<string name="uiMessageProvideEmailAddress">You have to provide an email address</string>
+	<string name="uiMessageMinAllowedRadius">You have to enter a radius of at least 10 m!</string>
 	
 	<string name="uiMessageLoginErrorMsg">Oops, it seems as if there has been a problem when logging you in!</string>
 	<string name="uiMessageAcceptingInvite">Accepting invite...</string>

@@ -38,4 +38,5 @@ public class RPCRemoteMappings {
 	public static final String RETRIEVEPOIALERTS = baseMapping + "retrievePOIAlerts";
 	public static final String REMOVEPOIALERT = baseMapping + "removePOIAlert";
 	public static final String ADDPOIALERT = baseMapping + "addPOIAlert";
+	public static final String UPDATEPOIALERT = baseMapping + "updatePOIAlert";
 }

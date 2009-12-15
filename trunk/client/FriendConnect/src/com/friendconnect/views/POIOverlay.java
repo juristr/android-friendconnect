@@ -32,17 +32,20 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 
 public class POIOverlay extends Overlay {
+	private Context context;
 	private GeoPoint geoLocation;
 	private POIAlert alert;
 	private OnOverlayClickListener clickListener;
 	private Bitmap flagBitmap;
+	private Bitmap flagBitmapInactive;
 	private Bitmap flagShadowBitmap;
 	private Paint radiusPaint;
 
 	public POIOverlay(POIAlert alert, Context context) {
 		this.alert = alert;
+		this.context = context;
 		this.geoLocation = alert.getPosition().convertToAndroidGeoPoint();
-		this.flagBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.flag);
+//		this.flagBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.flag);
 		this.flagShadowBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.flag_shadow);
 		
 		this.radiusPaint= new Paint();
@@ -50,20 +53,39 @@ public class POIOverlay extends Overlay {
 		this.radiusPaint.setAntiAlias(true);
 		this.radiusPaint.setFakeBoldText(true);
 	}
+	
+	/**
+	 * Loads the right bitmap depending on the object's "active" state.
+	 * This method is further used as point for optimization to just instantiate the bitmap once.
+	 * @return
+	 */
+	private Bitmap getFlagBitmap(){
+		if(alert.getActivated()){
+			if(flagBitmap == null)
+				this.flagBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.flag);
+			return this.flagBitmap;
+		}else{
+			if(flagBitmapInactive == null)
+				this.flagBitmapInactive = BitmapFactory.decodeResource(context.getResources(), R.drawable.flag_inactive);
+			return this.flagBitmapInactive;
+		}
+	}
 
 	@Override
 	public void draw(Canvas canvas, MapView mapView, boolean shadow) {
 		super.draw(canvas, mapView, shadow);
 		Point screenPos = new Point();
 		mapView.getProjection().toPixels(geoLocation, screenPos);
+		
+		Bitmap flagBmp = getFlagBitmap();
 
 		if (!shadow) {
-			int xPos = screenPos.x - (flagBitmap.getWidth() / 2) + 5;
-			int yPos = screenPos.y - (flagBitmap.getHeight() - 2);
-			canvas.drawBitmap(flagBitmap, xPos, yPos, null);
+			int xPos = screenPos.x - (flagBmp.getWidth() / 2) + 5;
+			int yPos = screenPos.y - (flagBmp.getHeight() - 2);
+			canvas.drawBitmap(flagBmp, xPos, yPos, null);
 			
 			
-			float markerRadius = mapView.getProjection().metersToEquatorPixels(alert.getRadius());
+			float markerRadius = mapView.getProjection().metersToEquatorPixels(alert.getRadius()) * (1/(float)Math.cos(Math.toRadians(geoLocation.getLatitudeE6()/1E6)));
 			RectF oval = new RectF(screenPos.x - markerRadius,
 					screenPos.y - markerRadius, screenPos.x
 							+ markerRadius, screenPos.y + markerRadius);
@@ -88,13 +110,14 @@ public class POIOverlay extends Overlay {
 	
 	@Override
 	public boolean onTap(GeoPoint tapPoint, MapView mapView) {
+		Bitmap flagBmp = getFlagBitmap();
 		
 		RectF hitTestRect = new RectF();
 		
 		Point screenCoords = new Point();
 		mapView.getProjection().toPixels(geoLocation, screenCoords);
 		
-		hitTestRect.set(-flagBitmap.getWidth()/2,-flagBitmap.getHeight(),flagBitmap.getWidth()/2,0);
+		hitTestRect.set(-flagBmp.getWidth()/2,-flagBmp.getHeight(),flagBmp.getWidth()/2,0);
 		hitTestRect.offset(screenCoords.x, screenCoords.y);
 		
 		mapView.getProjection().toPixels(tapPoint, screenCoords);
