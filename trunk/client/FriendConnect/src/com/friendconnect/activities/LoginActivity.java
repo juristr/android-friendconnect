@@ -22,7 +22,6 @@ import java.util.Observable;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -41,7 +40,6 @@ import com.friendconnect.utils.ActivityUtils;
 
 /**
  * View for performing the user login
- * 
  */
 public class LoginActivity extends Activity implements IView {
 	private Button signInButton;
@@ -132,7 +130,7 @@ public class LoginActivity extends Activity implements IView {
 
 		if (result.isLoginSucceeded()) {
 			saveActivityPreferences();
-			startActivity(new Intent(LoginActivity.this, FriendListActivity.class));
+			setResult(Activity.RESULT_OK, null);
 			finish();
 		}
 	}

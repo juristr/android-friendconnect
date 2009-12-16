@@ -38,7 +38,7 @@ import com.friendconnect.model.Location;
 import com.friendconnect.model.POIAlert;
 import com.friendconnect.utils.ActivityUtils;
 
-public class EditPoiActivity extends Activity implements IView {
+public class EditPoiActivity extends AuthenticationActivity implements IView {
 	public static final String BUNDLE_GEO_LAT = "geoLatData";
 	public static final String BUNDLE_GEO_LNG = "getLngData";
 	public static final String BUNDLE_ALERT_ID = "alertId";
@@ -48,6 +48,9 @@ public class EditPoiActivity extends Activity implements IView {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+	}
+	
+	public void onAuthenticated() {
 		setContentView(R.layout.editpoiview);
 
 		this.controller = IoC.getInstance(POIAlertListController.class);
@@ -132,16 +135,8 @@ public class EditPoiActivity extends Activity implements IView {
 				.getMonth(), expirationDatePicker.getDayOfMonth()));
 	}
 
-	public void showMessage(int messageId) {
-	}
-
-	public void stopProgress() {
-		finish();
-	}
-
 	public void update(Observable observable, Object data) {
 		// TODO Auto-generated method stub
 
 	}
-
 }

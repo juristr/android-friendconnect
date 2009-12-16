@@ -20,9 +20,7 @@ package com.friendconnect.activities;
 
 import java.util.Observable;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,7 +33,6 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.friendconnect.R;
 import com.friendconnect.controller.POIAlertListController;
@@ -43,25 +40,25 @@ import com.friendconnect.main.IoC;
 import com.friendconnect.model.POIAlert;
 import com.friendconnect.utils.ActivityUtils;
 
-public class POIAlertListActivity extends Activity implements IView {
+public class POIAlertListActivity extends AuthenticationActivity implements IView {
 	private static final int ADD_POIALERT = Menu.FIRST;
 	private static final int REMOVE_POIALERT = Menu.FIRST + 1;
 
 	private POIAlertListController controller;
 	private ListView listViewPoiAlerts;
-	private ProgressDialog progressDialog;
 	private BaseAdapter adapter;
 	private Handler handler;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+	}
+	
+	public void onAuthenticated() {
 		setContentView(R.layout.poilist);
 		handler = new Handler();
 		listViewPoiAlerts = (ListView) findViewById(R.id.listViewPoiAlerts);
-
-		progressDialog = new ProgressDialog(this);
-
+		
 		controller = IoC.getInstance(POIAlertListController.class);
 		controller.setLayoutId(R.layout.poilistrowitem);
 		controller.registerView(this);
@@ -173,21 +170,5 @@ public class POIAlertListActivity extends Activity implements IView {
 				adapter.notifyDataSetChanged();
 			}
 		});
-	}
-	
-	/** 
-	 * Displays a progress dialog 
-	 */
-	private void showProgressDialog(CharSequence message) {
-		progressDialog.setMessage(message);
-		progressDialog.show();
-	}
-	
-	public void stopProgress() {
-		progressDialog.cancel();
-	}
-
-	public void showMessage(int messageId) {
-		ActivityUtils.showToast(this, messageId, Toast.LENGTH_SHORT);
 	}
 }

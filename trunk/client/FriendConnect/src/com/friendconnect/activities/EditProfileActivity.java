@@ -20,31 +20,29 @@ package com.friendconnect.activities;
 
 import java.util.Observable;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.friendconnect.R;
 import com.friendconnect.controller.EditProfileController;
 import com.friendconnect.main.IoC;
 import com.friendconnect.model.FriendConnectUser;
-import com.friendconnect.utils.ActivityUtils;
 
-public class EditProfileActivity extends Activity implements IView {
+public class EditProfileActivity extends AuthenticationActivity implements IView {
 	private EditProfileController controller;
 	private ProgressDialog progressDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+	}
+	
+	public void onAuthenticated() {
 		setContentView(R.layout.editprofileview);
-
-		progressDialog = new ProgressDialog(this);
 
 		controller = IoC.getInstance(EditProfileController.class);
 		controller.registerView(this);
@@ -81,13 +79,5 @@ public class EditProfileActivity extends Activity implements IView {
 
 	public void update(Observable observable, Object data) {
 		//do nothing
-	}
-	
-	public void stopProgress() {
-		progressDialog.cancel();
-	}
-
-	public void showMessage(int messageId) {
-		ActivityUtils.showToast(this, messageId, Toast.LENGTH_SHORT);
 	}
 }

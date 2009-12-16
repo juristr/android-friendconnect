@@ -18,13 +18,11 @@
 
 package com.friendconnect.activities;
 
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,7 +34,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.friendconnect.R;
 import com.friendconnect.controller.LocationController;
@@ -55,11 +52,10 @@ import com.friendconnect.views.OnLongTouchListener;
 import com.friendconnect.views.OnOverlayClickListener;
 import com.friendconnect.views.POIOverlay;
 import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.Overlay;
 
-public class FriendMapActivity extends MapActivity implements IView, OnLongTouchListener,
+public class FriendMapActivity extends AuthenticationMapActivity implements IView, OnLongTouchListener,
 		OnDoubleClickListener, OnOverlayClickListener {
 	private static final int CENTER_MAP = Menu.FIRST;
 	private static final int ADD_POI = Menu.FIRST + 1;
@@ -67,7 +63,6 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 	private static final int SUBACTIVITY_EDITPOI = 1;
 	private static final int POIDIALOGVIEW = 1;
 
-	private ProgressDialog progressDialog;
 	private FriendMapView mapView;
 	private MapController mapController;
 	private LocationController locationController;
@@ -83,6 +78,9 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+	}
+	
+	public void onAuthenticated() {
 		setContentView(R.layout.friendmapview);
 		this.mapView = (FriendMapView) findViewById(R.id.map_view);
 		this.mapController = mapView.getController();
@@ -97,8 +95,6 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 		this.poiController = IoC.getInstance(POIAlertListController.class);
 		 //do not register to not get too many updates! LocationController already registers on FriendConnectUser
 		this.poiController.registerView(this);
-
-		this.progressDialog = new ProgressDialog(this);
 		
 		this.friendOverlays = new HashMap<String, FriendPositionOverlay>();
 		this.poiOverlays = new HashMap<String, POIOverlay>();
@@ -243,8 +239,7 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 			Button deleteButton = (Button)dialog.findViewById(R.id.buttonDeletePoi);
 			deleteButton.setOnClickListener(new OnClickListener() {	
 				public void onClick(View v) {
-					progressDialog.setMessage(getText(R.string.uiMessageRemovingPOIAlert));
-					progressDialog.show();
+					showProgressDialog(getText(R.string.uiMessageRemovingPOIAlert));
 					poiController.removePOIAlert(clickedPOIAlert.getId());
 					dialog.cancel();
 				}
@@ -414,13 +409,5 @@ public class FriendMapActivity extends MapActivity implements IView, OnLongTouch
 		// mapView.getOverlays().remove(friendOverlays.get(friendId));
 		// }
 		// }
-	}
-
-	public void stopProgress() {
-		progressDialog.cancel();
-	}
-
-	public void showMessage(int messageId) {
-		ActivityUtils.showToast(this, messageId, Toast.LENGTH_SHORT);
 	}
 }

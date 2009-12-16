@@ -18,7 +18,6 @@
 
 package com.friendconnect.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,7 +29,7 @@ import android.widget.TextView;
 
 import com.friendconnect.R;
 
-public class FriendContactActivity extends Activity {
+public class FriendContactActivity extends AuthenticationActivity {
 	public static final String FRIEND_NAME = "friendName";
 	public static final String FRIEND_PHONE = "friendPhone";
 	public static final String FRIEND_EMAIL = "friendEmail";
@@ -46,6 +45,9 @@ public class FriendContactActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+	}
+	
+	public void onAuthenticated() {
 		setContentView(R.layout.contactfriend);
 		
 		Bundle retrievedData = this.getIntent().getExtras();

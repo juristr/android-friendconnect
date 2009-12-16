@@ -25,7 +25,6 @@ import android.os.Handler;
 
 import com.friendconnect.R;
 import com.friendconnect.activities.FriendListActivity;
-import com.friendconnect.activities.LoginActivity;
 
 public class SplashScreenActivity extends Activity {
 	private long splashTime = 3000;
@@ -43,14 +42,19 @@ public class SplashScreenActivity extends Activity {
 	         * and close this Splash-Screen after some seconds.*/
 	        new Handler().postDelayed(new Runnable(){
 	             public void run() {
-	                  /* Create an Intent that will start the LoginActivity. */
-	                  startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
-	                  finish();
+	                startFriendListActivity();  
 	             }
 	        }, splashTime);
 		} else {
-			startActivity(new Intent(SplashScreenActivity.this, FriendListActivity.class));
-            finish();
+			startFriendListActivity();
 		}
+	}
+	
+	/**
+	 * Creates an Intent that will start the FriendListActivity.
+	 */
+	private void startFriendListActivity() {
+        startActivity(new Intent(SplashScreenActivity.this, FriendListActivity.class));
+        finish();
 	}
 }
