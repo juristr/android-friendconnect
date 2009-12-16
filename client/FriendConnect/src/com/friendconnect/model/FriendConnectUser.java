@@ -41,6 +41,17 @@ public class FriendConnectUser extends User implements Observer {
 	}
 	
 	@NotSerializable
+	public User getFriend(String friendId) {
+		List<User> friends = getCopyOfFriends();
+		for (User friend : friends) {
+			if (friend.getId().equals(friendId)) {
+				return friend;
+			}
+		}
+		return null;
+	}
+	
+	@NotSerializable
 	public List<User> getCopyOfFriends() {
 		return new ArrayList<User>(friends);
 	}
@@ -62,6 +73,17 @@ public class FriendConnectUser extends User implements Observer {
 	@NotSerializable
 	public List<POIAlert> getPoiAlerts() {
 		return poiAlerts;
+	}
+	
+	@NotSerializable
+	public POIAlert getPOIAlert(String poiAlertId) {
+		List<POIAlert> poiAlerts = getCopyOfPoiAlerts();
+		for (POIAlert poiAlert : poiAlerts) {
+			if (poiAlert.getId().equals(poiAlertId)) {
+				return poiAlert;
+			}
+		}
+		return null;
 	}
 	
 	@NotSerializable

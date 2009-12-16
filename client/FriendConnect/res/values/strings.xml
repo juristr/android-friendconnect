@@ -29,7 +29,7 @@
 	<string name="activityFriendMap">Friend Map</string>
 	<string name="activityEditPoi">POI - Point Of Interest</string>
 	<string name="activityPOIAlertList">POI Alerts</string>
-	<string name="activityFriendContact">Contact Friend</string>
+	<string name="activityPOIAlert">POI Alert</string>
 	<string name="friendConnectServerUrl">http://1.latest.android-friendconnect.appspot.com/</string>
 	<string name="uiMessageLogin">Logging in...</string>
 	<string name="uiMessageSendingInvite">Sending invite...</string>
@@ -47,6 +47,7 @@
 	<string name="uiMessageSaveProfile">Save Profile</string>
 	<string name="uiMessageCannotInviteYourself">You cannot invite yourself ;)</string>
 	<string name="uiMessageRemovingPOIAlert">Removing POI Alert...</string>
+	<string name="uiMessageSavingPOIAlert">Saving POI Alert...</string>
 	<string name="menuAddFriend">Add Friend</string>
 	<string name="menuRemoveFriend">Remove Friend</string>
 	<string name="menuPendingInvitesListView">Pending Invites</string>
@@ -59,6 +60,7 @@
 	<string name="menuAddPoiAlert">Add POI Alert</string>
 	<string name="menuRemovePoiAlert">Remove POI Alert</string>
 	<string name="menuListPoiAlerts">List POI Alerts</string>
+	<string name="deactivate">Deactivate</string>
 	<string name="invitation">FriendConnect Invitation</string>
 	<string name="sendInvite">Send Invite</string>
 	<string name="notificationNewPoiAlert">New POI Alert(s)!</string>
