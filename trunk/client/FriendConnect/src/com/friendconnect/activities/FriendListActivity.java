@@ -230,7 +230,7 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 				return true;
 			}
 		}
-		return super.onOptionsItemSelected(item);
+		return true;
 	}
 
 	@Override

@@ -35,7 +35,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.friendconnect.R;
-import com.friendconnect.activities.FriendContactActivity;
+import com.friendconnect.activities.POIAlertActivity;
 import com.friendconnect.main.IFriendConnectApplication;
 import com.friendconnect.main.IoC;
 import com.friendconnect.model.POIAlert;
@@ -108,11 +108,12 @@ public class POIAlertNotificationService extends Service {
 	
 	private void showNotification(User friend, POIAlert poiAlert) {
 		Notification notification = new Notification(R.drawable.icon, getText(R.string.notificationNewPoiAlert), System.currentTimeMillis()); 
-		Intent intent = new Intent(this, FriendContactActivity.class);
-		intent.putExtra(FriendContactActivity.FRIEND_EMAIL, friend.getEmailAddress());
-		intent.putExtra(FriendContactActivity.FRIEND_NAME, friend.getName());
-		intent.putExtra(FriendContactActivity.FRIEND_PHONE, friend.getPhone());
-		intent.putExtra(FriendContactActivity.POI_TITLE, poiAlert.getTitle());
+		Intent intent = new Intent(this, POIAlertActivity.class);
+		intent.putExtra(POIAlertActivity.FRIEND_EMAIL, friend.getEmailAddress());
+		intent.putExtra(POIAlertActivity.FRIEND_NAME, friend.getName());
+		intent.putExtra(POIAlertActivity.FRIEND_PHONE, friend.getPhone());
+		intent.putExtra(POIAlertActivity.POI_TITLE, poiAlert.getTitle());
+		intent.putExtra(POIAlertActivity.POI_ID, poiAlert.getId());
 		
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, Intent.FLAG_ACTIVITY_NEW_TASK);
 
