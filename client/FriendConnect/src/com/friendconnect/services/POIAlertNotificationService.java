@@ -91,8 +91,8 @@ public class POIAlertNotificationService extends Service {
 	private void checkForPOIMatches() {
 		List<POIAlert> poiAlerts = application.getApplicationModel().getCopyOfPoiAlerts();
 		List<User> friends = application.getApplicationModel().getCopyOfFriends();
-		for (POIAlert poiAlert : poiAlerts) {
-			if (poiAlert.getPosition() != null) {
+		for (POIAlert poiAlert : poiAlerts) {		
+			if (poiAlert.getActivated() && poiAlert.getPosition() != null) {
 				android.location.Location poiLocation = poiAlert.getPosition().convertToAndroidLocation();
 				for (User friend : friends) {
 					if (friend.getOnline() && friend.getPosition() != null) {
