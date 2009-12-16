@@ -20,11 +20,8 @@ package com.friendconnect.activities;
 
 import java.util.Observable;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -51,13 +48,9 @@ import com.friendconnect.main.IoC;
 import com.friendconnect.model.FriendConnectUser;
 import com.friendconnect.model.User;
 import com.friendconnect.model.UserComparator;
-import com.friendconnect.services.FriendUpdateService;
-import com.friendconnect.services.ILocationService;
-import com.friendconnect.services.LocationService;
-import com.friendconnect.services.POIAlertNotificationService;
 import com.friendconnect.utils.ActivityUtils;
 
-public class FriendListActivity extends Activity implements IView {
+public class FriendListActivity extends AuthenticationActivity implements IView {
 	private static final int ADD_FRIEND = Menu.FIRST;
 	private static final int REMOVE_FRIEND = Menu.FIRST + 1;
 	private static final int PENDINGINVITES_LIST = Menu.FIRST + 2;
@@ -70,7 +63,6 @@ public class FriendListActivity extends Activity implements IView {
 	private Handler handler;
 	private FriendListController controller;
 	private ListView listViewFriends;
-	private ProgressDialog progressDialog;
 	private BaseAdapter adapter;
 	private User selectedUser;
 
@@ -80,11 +72,12 @@ public class FriendListActivity extends Activity implements IView {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+	}
+	
+	public void onAuthenticated() {
 		setContentView(R.layout.friendlist);
 		handler = new Handler();
 		listViewFriends = (ListView) findViewById(R.id.listViewFriends);
-
-		progressDialog = new ProgressDialog(this);
 
 		controller = IoC.getInstance(FriendListController.class);
 		controller.setLayoutId(R.layout.friendlistrowitem);
@@ -104,13 +97,6 @@ public class FriendListActivity extends Activity implements IView {
 		});
 
 		registerForContextMenu(listViewFriends);
-
-		startService(new Intent(this, FriendUpdateService.class));
-		startService(new Intent(this, POIAlertNotificationService.class));
-		
-		ILocationService locationService = IoC.getInstance(LocationService.class);
-		locationService.setSystemService(getSystemService(Context.LOCATION_SERVICE));
-		locationService.startLocationTracking();
 	}
 
 	/**
@@ -170,14 +156,6 @@ public class FriendListActivity extends Activity implements IView {
 				break;
 			}
 		}
-	}
-
-	/** 
-	 * Displays a progress dialog 
-	 */
-	private void showProgressDialog(CharSequence message) {
-		progressDialog.setMessage(message);
-		progressDialog.show();
 	}
 
 	public void update(final Observable observable, final Object data) {
@@ -313,14 +291,6 @@ public class FriendListActivity extends Activity implements IView {
 		}
 
 		return user;
-	}
-	
-	public void stopProgress() {
-		progressDialog.cancel();
-	}
-	
-	public void showMessage(int messageId) {
-		ActivityUtils.showToast(this, messageId, Toast.LENGTH_SHORT);
 	}
 
 	/* Getters and setters */

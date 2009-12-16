@@ -20,9 +20,7 @@ package com.friendconnect.activities;
 
 import java.util.Observable;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,7 +32,6 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.friendconnect.R;
 import com.friendconnect.controller.PendingFriendListController;
@@ -42,14 +39,13 @@ import com.friendconnect.main.IoC;
 import com.friendconnect.model.User;
 import com.friendconnect.utils.ActivityUtils;
 
-public class PendingInvitesListActivity extends Activity implements IView {
+public class PendingInvitesListActivity extends AuthenticationActivity implements IView {
 	private static final int REFRESH = Menu.FIRST;
 	private static final int ACCEPT_INVITE = Menu.FIRST + 1;
 	private static final int REJECT_INVITE = Menu.FIRST + 2;
 
 	private PendingFriendListController controller;
 	private ListView listViewFriends;
-	private ProgressDialog progressDialog;
 	private BaseAdapter adapter;
 	private Handler handler;
 	private boolean lock = false;
@@ -57,11 +53,12 @@ public class PendingInvitesListActivity extends Activity implements IView {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+	}
+	
+	public void onAuthenticated() {
 		setContentView(R.layout.pendinginviteslist);
 		handler = new Handler();
 		listViewFriends = (ListView) findViewById(R.id.listViewFriends);
-
-		progressDialog = new ProgressDialog(this);
 
 		controller = IoC.getInstance(PendingFriendListController.class);
 		controller.setLayoutId(R.layout.friendlistrowitem);
@@ -196,21 +193,5 @@ public class PendingInvitesListActivity extends Activity implements IView {
 				adapter.notifyDataSetChanged();
 			}
 		});
-	}
-	
-	/** 
-	 * Displays a progress dialog 
-	 */
-	private void showProgressDialog(CharSequence message) {
-		progressDialog.setMessage(message);
-		progressDialog.show();
-	}
-	
-	public void stopProgress() {
-		progressDialog.cancel();
-	}
-
-	public void showMessage(int messageId) {
-		ActivityUtils.showToast(this, messageId, Toast.LENGTH_SHORT);
 	}
 }
