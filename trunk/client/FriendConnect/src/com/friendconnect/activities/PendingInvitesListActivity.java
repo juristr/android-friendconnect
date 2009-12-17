@@ -22,7 +22,6 @@ import java.util.Observable;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.os.Handler;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -49,11 +48,6 @@ public class PendingInvitesListActivity extends AuthenticationActivity implement
 	private BaseAdapter adapter;
 	private Handler handler;
 	private boolean lock = false;
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
 	
 	public void onAuthenticated() {
 		setContentView(R.layout.pendinginviteslist);

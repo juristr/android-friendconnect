@@ -51,11 +51,6 @@ public class POIAlertActivity extends AuthenticationActivity implements IView {
 	private RadioButton radioButtonPhone;
 	private RadioButton radioButtonSms;
 	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
-	
 	public void onAuthenticated() {
 		setContentView(R.layout.poialert);
 		

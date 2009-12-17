@@ -44,11 +44,6 @@ public class EditPoiActivity extends AuthenticationActivity implements IView {
 	public static final String BUNDLE_ALERT_ID = "alertId";
 	private POIAlertListController controller;
 	private POIAlert poiAlert;
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
 	
 	public void onAuthenticated() {
 		setContentView(R.layout.editpoiview);

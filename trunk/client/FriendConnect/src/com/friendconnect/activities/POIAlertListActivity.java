@@ -23,7 +23,6 @@ import java.util.Observable;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -48,11 +47,6 @@ public class POIAlertListActivity extends AuthenticationActivity implements IVie
 	private ListView listViewPoiAlerts;
 	private BaseAdapter adapter;
 	private Handler handler;
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
 	
 	public void onAuthenticated() {
 		setContentView(R.layout.poilist);

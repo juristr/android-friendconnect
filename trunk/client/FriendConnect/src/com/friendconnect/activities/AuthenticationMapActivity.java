@@ -42,6 +42,9 @@ public abstract class AuthenticationMapActivity extends MapActivity {
 	private static final int SUBACTIVITY_LOGIN = 1337;
 	private ProgressDialog progressDialog;
 	
+	/**
+	 * Template method
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,7 +60,7 @@ public abstract class AuthenticationMapActivity extends MapActivity {
 	}
 	
 	/**
-	 * Template method that is used to let subclasses implement (through method overriding)
+	 * Method that is used to let subclasses implement (through method overriding)
 	 * the activity's behavior when the user has been successfully authenticated.
 	 */
 	public abstract void onAuthenticated();
