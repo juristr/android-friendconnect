@@ -21,7 +21,6 @@ package com.friendconnect.activities;
 import java.util.Observable;
 
 import android.app.ProgressDialog;
-import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -35,11 +34,6 @@ import com.friendconnect.model.FriendConnectUser;
 public class EditProfileActivity extends AuthenticationActivity implements IView {
 	private EditProfileController controller;
 	private ProgressDialog progressDialog;
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
 	
 	public void onAuthenticated() {
 		setContentView(R.layout.editprofileview);

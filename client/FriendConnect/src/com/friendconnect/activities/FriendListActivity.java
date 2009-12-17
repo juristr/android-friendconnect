@@ -24,7 +24,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -68,11 +67,6 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 
 	static final private int FRIENDDETAILS_DIALOG = 10;
 	static final private int ADDFRIEND_DIALOG = 20;
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
 	
 	public void onAuthenticated() {
 		setContentView(R.layout.friendlist);
