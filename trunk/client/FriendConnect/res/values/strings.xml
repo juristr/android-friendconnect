@@ -60,10 +60,9 @@
 	<string name="menuAddPoiAlert">Add POI Alert</string>
 	<string name="menuRemovePoiAlert">Remove POI Alert</string>
 	<string name="menuListPoiAlerts">List POI Alerts</string>
-	<string name="deactivate">Deactivate</string>
 	<string name="invitation">FriendConnect Invitation</string>
 	<string name="sendInvite">Send Invite</string>
-	<string name="notificationNewPoiAlert">New POI Alert(s)!</string>
+	<string name="notificationNewPoiAlert">New POI Alert!</string>
 	<string name="notificationText">&quot;'%1$s' is nearby to '%2$s'&quot;</string>
 	<string name="inviteFriend">Type the email address of the person you would like to invite:</string>
 	<string name="contactFriendText">&quot;'%1$s' is nearby to '%2$s'&quot;! Please select from one of the options listed below to contact him/her:</string>

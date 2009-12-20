@@ -35,6 +35,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -100,6 +101,13 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 	private void showFriendConnectUserInfo(FriendConnectUser user) {
 		((TextView) findViewById(R.id.textViewMyUsername)).setText(user.toString());
 		((TextView) findViewById(R.id.textViewMyStatus)).setText(user.getStatusMessage());
+		int imgResourceId;
+		if (user.getOnline()) {
+			imgResourceId = R.drawable.online;
+		} else {
+			imgResourceId = R.drawable.offline;
+		}
+		((ImageView) findViewById(R.id.imgViewMyStatus)).setImageResource(imgResourceId);
 	}
 
 	@Override

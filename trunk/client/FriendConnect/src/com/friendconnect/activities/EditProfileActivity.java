@@ -20,7 +20,6 @@ package com.friendconnect.activities;
 
 import java.util.Observable;
 
-import android.app.ProgressDialog;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -33,7 +32,6 @@ import com.friendconnect.model.FriendConnectUser;
 
 public class EditProfileActivity extends AuthenticationActivity implements IView {
 	private EditProfileController controller;
-	private ProgressDialog progressDialog;
 	
 	public void onAuthenticated() {
 		setContentView(R.layout.editprofileview);
@@ -51,8 +49,7 @@ public class EditProfileActivity extends AuthenticationActivity implements IView
 				String website = ((EditText) findViewById(R.id.editTextWebsite)).getText().toString();
 				String statusMessage = ((EditText) findViewById(R.id.editTextStatusMsg)).getText().toString();
 
-				progressDialog.setMessage(getText(R.string.uiMessageSavingProfile));
-				progressDialog.show();
+				showProgressDialog(getText(R.string.uiMessageSavingProfile));
 
 				controller.saveProfile(name, phone, website, statusMessage);
 			}

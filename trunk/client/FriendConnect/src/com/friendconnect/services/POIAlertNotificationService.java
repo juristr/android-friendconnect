@@ -18,9 +18,9 @@
 
 package com.friendconnect.services;
 
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -36,7 +36,7 @@ import android.util.Log;
 
 import com.friendconnect.R;
 import com.friendconnect.activities.POIAlertActivity;
-import com.friendconnect.main.IFriendConnectApplication;
+import com.friendconnect.controller.POIAlertListController;
 import com.friendconnect.main.IoC;
 import com.friendconnect.model.POIAlert;
 import com.friendconnect.model.User;
@@ -46,23 +46,22 @@ import com.friendconnect.model.User;
  * is located nearby of a POI. 
  */
 public class POIAlertNotificationService extends Service {
-	private IFriendConnectApplication application;
+	private POIAlertListController controller;
 	private NotificationManager notificationManager;
 	private Timer timer;
 	private final int CHECK_INTERVAL = 5000; // TODO make configurable??
 	private Handler mainHandler;
-	private Hashtable<String, Integer> notificationsTable = new Hashtable<String, Integer>();
-	private int notificationCounter = 1;
+	private List<String> shownNotifications = new ArrayList<String>();
+	private int notificationCounter = 0;
 	
 	@Override
 	public IBinder onBind(Intent arg0) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void onCreate() {
-		this.application = IoC.getInstance(IFriendConnectApplication.class);
+		this.controller = IoC.getInstance(POIAlertListController.class);
 		
 		String svcName = Context.NOTIFICATION_SERVICE; 
 		notificationManager = (NotificationManager)getSystemService(svcName); 
@@ -88,61 +87,110 @@ public class POIAlertNotificationService extends Service {
 		}
 	};
 	
+	/**
+	 * Checks whether users' friends are in the range of POI alerts. It also 
+	 * deactivates POI alerts automatically if the expiration date has already passed. 
+	 */
 	private void checkForPOIMatches() {
-		List<POIAlert> poiAlerts = application.getApplicationModel().getCopyOfPoiAlerts();
-		List<User> friends = application.getApplicationModel().getCopyOfFriends();
-		for (POIAlert poiAlert : poiAlerts) {		
-			if (poiAlert.getActivated() && poiAlert.getPosition() != null) {
+		List<POIAlert> poiAlerts = controller.getModel().getCopyOfPoiAlerts();
+		List<User> friends = controller.getModel().getCopyOfFriends();
+		Date now = new Date();
+		for (POIAlert poiAlert : poiAlerts) {
+			//check if an activated POI alert is expired; if yes deactivate it
+			if (poiAlert.getActivated() && poiAlert.getExpirationDate().compareTo(now) < 0) {
+				poiAlert.setActivated(false);
+				controller.updatePOIAlert(poiAlert);
+			} 
+			//check if a friend is in the range of a POI
+			else if (poiAlert.getActivated() && poiAlert.getPosition() != null) {
 				android.location.Location poiLocation = poiAlert.getPosition().convertToAndroidLocation();
 				for (User friend : friends) {
 					if (friend.getOnline() && friend.getPosition() != null) {
 						android.location.Location friendLocation = friend.getPosition().convertToAndroidLocation();
 						if (poiLocation.distanceTo(friendLocation) <= poiAlert.getRadius()) {
+							//show notification, since friend is in range
 							showNotification(friend, poiAlert);
+						} else {
+							//eventually remove notification key, since friend is no more inside the range
+							removeNotificationKey(friend, poiAlert);
 						}
+					} else {
+						//eventually remove notification key, since friend is offline or its position is unknown
+						removeNotificationKey(friend, poiAlert);
 					}
 				}
 			}
 		}
 	}
 	
-	private void showNotification(User friend, POIAlert poiAlert) {
-		Notification notification = new Notification(R.drawable.icon, getText(R.string.notificationNewPoiAlert), System.currentTimeMillis()); 
-		Intent intent = new Intent(this, POIAlertActivity.class);
-		intent.putExtra(POIAlertActivity.FRIEND_EMAIL, friend.getEmailAddress());
-		intent.putExtra(POIAlertActivity.FRIEND_NAME, friend.getName());
-		intent.putExtra(POIAlertActivity.FRIEND_PHONE, friend.getPhone());
-		intent.putExtra(POIAlertActivity.POI_TITLE, poiAlert.getTitle());
-		intent.putExtra(POIAlertActivity.POI_ID, poiAlert.getId());
-		
-		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, Intent.FLAG_ACTIVITY_NEW_TASK);
-
-		String notificationContentText = String.format(getString(R.string.notificationText), friend.toString(), poiAlert.getTitle());
-			
-		notification.setLatestEventInfo(this, poiAlert.getTitle(), notificationContentText, pendingIntent);
-		
-		String notificationKey = friend.getId() + poiAlert.getId();
-		int notificationId;
-		if (notificationsTable.containsKey(notificationKey)) {
-			notificationId = notificationsTable.get(notificationKey);
-		} else {
-			notificationId = notificationCounter;
-			notificationsTable.put(notificationKey, notificationId);
-			notificationCounter++;
+	/**
+	 * Removes the notification key associated to the pair of {@link User} and {@link POIAlert) objects from 
+	 * the list of shown notifications, s.t. the notification can be shown again afterwards.  
+	 * @param friend
+	 * @param poiAlert
+	 */
+	private void removeNotificationKey(User friend, POIAlert poiAlert) {
+		shownNotifications.remove(getNotificationKey(friend, poiAlert));
+	}
+	
+	/**
+	 * Returns the notification key for a pair of {@link User} and {@link POIAlert) objects. 
+	 * @param friend
+	 * @param poiAlert
+	 * @return
+	 */
+	private String getNotificationKey(User friend, POIAlert poiAlert) {
+		return friend.getId() + poiAlert.getId();
+	}
+	
+	/**
+	 * Returns the next notification id.
+	 * @return
+	 */
+	private int getNextNotificationId() {
+		if (notificationCounter == Integer.MAX_VALUE) {
+			notificationCounter = 0;
 		}
-		 
-		notificationManager.notify(notificationId, notification);
+		notificationCounter++;
+		return notificationCounter;
+	}
+	
+	/**
+	 * Shows a custom notification in the status bar.
+	 * @param friend
+	 * @param poiAlert
+	 */
+	private void showNotification(User friend, POIAlert poiAlert) {
+		String notificationKey = getNotificationKey(friend, poiAlert);
+		//Check whether the notification has already been shown
+		if (!shownNotifications.contains(notificationKey)) {
+			int notificationId = getNextNotificationId();
+			shownNotifications.add(notificationKey);
+			
+			Notification notification = new Notification(R.drawable.icon, getText(R.string.notificationNewPoiAlert), System.currentTimeMillis()); 
+			Intent intent = new Intent(this, POIAlertActivity.class);
+			intent.putExtra(POIAlertActivity.FRIEND_EMAIL, friend.getEmailAddress());
+			intent.putExtra(POIAlertActivity.FRIEND_NAME, friend.getName());
+			intent.putExtra(POIAlertActivity.FRIEND_PHONE, friend.getPhone());
+			intent.putExtra(POIAlertActivity.POI_TITLE, poiAlert.getTitle());
+			intent.putExtra(POIAlertActivity.NOTIFICATION_ID, notificationId);
+			
+			notification.defaults = Notification.DEFAULT_ALL;
+
+			PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, Intent.FLAG_ACTIVITY_NEW_TASK);
+	
+			String notificationContentText = String.format(getString(R.string.notificationText), friend.toString(), poiAlert.getTitle());
+				
+			notification.setLatestEventInfo(this, poiAlert.getTitle(), notificationContentText, pendingIntent);
+			
+			notificationManager.notify(notificationId, notification);
+		}
 	}
 	
 	@Override
 	public void onDestroy() {
 		if(timer != null)
 			timer.cancel();
-		
-		Set<String> keys = notificationsTable.keySet();
-		for (String key : keys) {
-			notificationManager.cancel(notificationsTable.get(key));
-		}
 		
 		Log.i(POIAlertNotificationService.class.getCanonicalName(), "Service stopped");
 	}

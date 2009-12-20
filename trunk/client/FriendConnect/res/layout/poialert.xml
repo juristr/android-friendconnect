@@ -21,10 +21,6 @@
 		<Button android:id="@+id/buttonOK" android:layout_width="wrap_content"
 			android:layout_height="fill_parent" android:text="@string/ok"
 			android:width="100dp" />
-		
-		<Button android:id="@+id/buttonDeactivate" android:layout_width="wrap_content"
-			android:layout_height="fill_parent" android:text="@string/deactivate"
-			android:width="100dp" />
 
 	</LinearLayout>
 			
