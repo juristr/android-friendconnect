@@ -19,6 +19,7 @@
 package com.friendconnect.model;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Observable;
 
@@ -75,8 +76,11 @@ public class POIAlert extends Observable {
 
 	@NotSerializable
 	public String getExpirationDateString(){
-		SimpleDateFormat format = new SimpleDateFormat("MMM-d-yyyy");
-		return format.format(this.expirationDate);
+		String date = this.expirationDate.getDay() + "/" + expirationDate.getMonth() + "/" + expirationDate.getYear();
+		return date;
+		//below doesn't work strangely....for 2009 -> 3909???
+//		SimpleDateFormat format = new SimpleDateFormat("EEE, MMM d, yyyy");
+//		return format.format(this.expirationDate);
 	}
 	
 	public Date getExpirationDate() {
