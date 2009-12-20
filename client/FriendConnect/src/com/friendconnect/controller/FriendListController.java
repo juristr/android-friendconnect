@@ -84,12 +84,19 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 								
 				//update the distances
 				locationController.updateFriendDistances();
-								
+				
+				//set user status to online
+				model.setOnline(true);
+				
 				notifyStopProgress();
 			}
 
 			public void onFailure(Throwable throwable) {
 				Log.e(FriendListController.class.getCanonicalName(), "Problem updating friendlist:" + throwable.getMessage());
+				
+				//set user status to offline
+				model.setOnline(false);
+				
 				notifyStopProgress();
 			}
 		}, User.class);
