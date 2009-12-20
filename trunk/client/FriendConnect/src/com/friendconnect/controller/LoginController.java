@@ -28,6 +28,7 @@ import com.friendconnect.model.FriendConnectUser;
 import com.friendconnect.model.LoginResult;
 import com.friendconnect.model.RPCRemoteMappings;
 import com.friendconnect.services.IXMLRPCService;
+import com.friendconnect.utils.Encrypter;
 import com.friendconnect.xmlrpc.IAsyncCallback;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -37,13 +38,16 @@ public class LoginController extends AbstractController<LoginResult> {
 	
 	private IFriendConnectApplication application;
 	private IXMLRPCService xmlRpcService;
+	private Encrypter encrypter;
 	
 	public LoginController() {
 		registerModel(new LoginResult());
 	}
 	
 	public void login(final String emailAddress, String password){
-		xmlRpcService.sendRequest(RPCRemoteMappings.LOGIN, new Object[]{emailAddress, password}, new IAsyncCallback<FriendConnectUser>() {
+		byte[] encrPwd = encrypter.encryptPassword(password);
+		
+		xmlRpcService.sendRequest(RPCRemoteMappings.LOGIN, new Object[]{emailAddress, encrPwd}, new IAsyncCallback<FriendConnectUser>() {
 
 			public void onSuccess(FriendConnectUser result) {
 				if(result == null)
@@ -78,6 +82,11 @@ public class LoginController extends AbstractController<LoginResult> {
 	@Inject
 	public void setApplication(IFriendConnectApplication application) {
 		this.application = application;
+	}
+	
+	@Inject
+	public void setEncrypter(Encrypter encrypter){
+		this.encrypter = encrypter;
 	}
 	
 }

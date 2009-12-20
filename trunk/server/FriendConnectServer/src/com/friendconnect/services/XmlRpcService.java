@@ -10,12 +10,14 @@ import java.util.Map;
 import com.friendconnect.model.Location;
 import com.friendconnect.model.POIAlert;
 import com.friendconnect.model.User;
+import com.friendconnect.utils.Encrypter;
 import com.friendconnect.xmlrpc.ObjectSerializer;
 import com.google.gdata.util.AuthenticationException;
 
 public class XmlRpcService {
 	private IUserService userService;
 	private ObjectSerializer serializer;
+	private Encrypter encrypter;
 
 	public XmlRpcService() {
 	}
@@ -30,7 +32,9 @@ public class XmlRpcService {
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	public Object login(String username, String password) throws AuthenticationException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	public Object login(String username, byte[] encryptedPwd) throws AuthenticationException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+		String password = encrypter.performDecrypt(encryptedPwd);
+		
 		User user = userService.authenticate(username, password);
 		return serializer.serialize(user);
 	}
@@ -324,4 +328,9 @@ public class XmlRpcService {
 	public void setSerializer(ObjectSerializer serializer) {
 		this.serializer = serializer;
 	}
+
+	public void setEncrypter(Encrypter encrypter) {
+		this.encrypter = encrypter;
+	}
+	
 }

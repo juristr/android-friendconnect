@@ -24,6 +24,7 @@
 	<bean id="xmlRpcService" class="com.friendconnect.services.XmlRpcService">
 		<property name="serializer" ref="objectSerializer" />
 		<property name="userService" ref="userService" />
+		<property name="encrypter" ref="encrypter"/>
 	</bean>
 
 	<bean id="userService" class="com.friendconnect.services.UserService">
@@ -34,5 +35,5 @@
 	</bean>
 
 	<bean id="objectSerializer" class="com.friendconnect.xmlrpc.ObjectSerializer" />
-
+	<bean id="encrypter" class="com.friendconnect.utils.Encrypter"/>
 </beans>

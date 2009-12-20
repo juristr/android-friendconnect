@@ -1,0 +1,10 @@
+<!-- Indices written at Sun, 20 Dec 2009 18:57:20 UTC -->
+
+<datastore-indexes>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="POIAlert" ancestor="true" source="auto">
+        <property name="poiAlerts_INTEGER_IDX" direction="asc"/>
+    </datastore-index>
+
+</datastore-indexes>

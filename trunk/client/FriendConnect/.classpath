@@ -4,5 +4,6 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="lib" path="libs/guice-2.0-no_aop.jar"/>
+	<classpathentry kind="lib" path="libs/encryption.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
