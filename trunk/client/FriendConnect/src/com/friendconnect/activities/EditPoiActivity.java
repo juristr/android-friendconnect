@@ -134,4 +134,10 @@ public class EditPoiActivity extends AuthenticationActivity implements IView {
 		// TODO Auto-generated method stub
 
 	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		controller.removeView(this);
+	}
 }

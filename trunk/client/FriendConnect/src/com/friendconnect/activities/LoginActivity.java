@@ -142,4 +142,10 @@ public class LoginActivity extends Activity implements IView {
 	public void showMessage(int messageId) {
 		ActivityUtils.showToast(this, messageId, Toast.LENGTH_SHORT);
 	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		controller.removeView(this);
+	}
 }

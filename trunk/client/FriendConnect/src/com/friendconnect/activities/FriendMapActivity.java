@@ -58,7 +58,7 @@ import com.google.android.maps.Overlay;
 public class FriendMapActivity extends AuthenticationMapActivity implements IView, OnLongTouchListener,
 		OnDoubleClickListener, OnOverlayClickListener {
 	private static final int CENTER_MAP = Menu.FIRST;
-	private static final int ADD_POI = Menu.FIRST + 1;
+//	private static final int ADD_POI = Menu.FIRST + 1;
 	private static final int LIST_POIALERTS = Menu.FIRST + 2;
 	private static final int SUBACTIVITY_EDITPOI = 1;
 	private static final int POIDIALOGVIEW = 1;
@@ -188,8 +188,8 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 		MenuItem itemCenterMap = menu.add(0, CENTER_MAP, Menu.NONE, R.string.menuCenterMap);
 		itemCenterMap.setIcon(R.drawable.menu_mylocation);
 
-		MenuItem itemAddPoi = menu.add(1, ADD_POI, Menu.NONE, R.string.menuAddPoiAlert);
-		itemAddPoi.setIcon(R.drawable.menu_add);
+//		MenuItem itemAddPoi = menu.add(1, ADD_POI, Menu.NONE, R.string.menuAddPoiAlert);
+//		itemAddPoi.setIcon(R.drawable.menu_add);
 
 		MenuItem listPoiAlerts = menu.add(1, LIST_POIALERTS, Menu.NONE, R.string.menuListPoiAlerts);
 		listPoiAlerts.setIcon(R.drawable.menu_myplaces);
@@ -206,10 +206,10 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 				doCenterMap = true;
 				return true;
 			}
-			case (ADD_POI): {
-				startActivity(new Intent(this, EditPoiActivity.class));
-				return true;
-			}
+//			case (ADD_POI): {
+//				startActivity(new Intent(this, EditPoiActivity.class));
+//				return true;
+//			}
 			case (LIST_POIALERTS): {
 				startActivity(new Intent(this, POIAlertListActivity.class));
 				return true;
@@ -409,5 +409,12 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 		// mapView.getOverlays().remove(friendOverlays.get(friendId));
 		// }
 		// }
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		locationController.removeView(this);
+		poiController.removeView(this);
 	}
 }

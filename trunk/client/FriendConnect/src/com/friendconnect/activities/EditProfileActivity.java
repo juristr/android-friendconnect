@@ -71,4 +71,10 @@ public class EditProfileActivity extends AuthenticationActivity implements IView
 	public void update(Observable observable, Object data) {
 		//do nothing
 	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		controller.removeView(this);
+	}
 }

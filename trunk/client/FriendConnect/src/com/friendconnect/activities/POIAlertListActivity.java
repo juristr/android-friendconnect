@@ -21,6 +21,7 @@ package com.friendconnect.activities;
 import java.util.Observable;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
@@ -29,9 +30,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.friendconnect.R;
 import com.friendconnect.controller.POIAlertListController;
@@ -40,13 +45,16 @@ import com.friendconnect.model.POIAlert;
 import com.friendconnect.utils.ActivityUtils;
 
 public class POIAlertListActivity extends AuthenticationActivity implements IView {
-	private static final int ADD_POIALERT = Menu.FIRST;
-	private static final int REMOVE_POIALERT = Menu.FIRST + 1;
+	private static final int REMOVE_POIALERT = Menu.FIRST;
 
+	private static final int POIDIALOGVIEW = 1;
+	private static final int SUBACTIVITY_EDITPOI = 1;
+	
 	private POIAlertListController controller;
 	private ListView listViewPoiAlerts;
 	private BaseAdapter adapter;
 	private Handler handler;
+	private POIAlert selectedPOIAlert;
 	
 	public void onAuthenticated() {
 		setContentView(R.layout.poilist);
@@ -59,6 +67,12 @@ public class POIAlertListActivity extends AuthenticationActivity implements IVie
 
 		adapter = controller.getAdapter(this);
 		listViewPoiAlerts.setAdapter(adapter);
+		listViewPoiAlerts.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				selectedPOIAlert = controller.getPOIAlert(position);
+				showDialog(POIDIALOGVIEW);
+			}	
+		});
 		
 		registerForContextMenu(listViewPoiAlerts);
 	}
@@ -78,15 +92,12 @@ public class POIAlertListActivity extends AuthenticationActivity implements IVie
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		// Create and add new menu items.
-//		MenuItem itemAddPOIAlert = menu.add(0, ADD_POIALERT, Menu.NONE, this.getString(R.string.menuAdd));
 		MenuItem itemRemovePOIAlert = menu.add(0, REMOVE_POIALERT, Menu.NONE, this.getString(R.string.menuRemovePoiAlert));
 		
 		// Assign icons
-//		itemAddPOIAlert.setIcon(R.drawable.menu_add);
 		itemRemovePOIAlert.setIcon(R.drawable.menu_delete);
 
 		// Allocate shortcuts to each of them.
-//		itemAddPOIAlert.setShortcut('0', 'a');
 		itemRemovePOIAlert.setShortcut('1', 'r');
 		return true;
 	}
@@ -95,16 +106,12 @@ public class POIAlertListActivity extends AuthenticationActivity implements IVie
 	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
 		switch (item.getItemId()) {
-			case (ADD_POIALERT): {
-				startActivity(new Intent(POIAlertListActivity.this, EditPoiActivity.class));
-				return true;
-			}
 			case (REMOVE_POIALERT): {
 				doRemovePOIAlertActions(listViewPoiAlerts.getSelectedItemPosition());
 				return true;
 			}
 		}
-		return super.onOptionsItemSelected(item);
+		return true;
 	}
 	
 	@Override
@@ -128,6 +135,52 @@ public class POIAlertListActivity extends AuthenticationActivity implements IVie
 			}
 		}
 		return super.onContextItemSelected(item);
+	}
+	
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		switch (id) {
+			case (POIDIALOGVIEW): {
+				return ActivityUtils.createViewDialog(this, R.layout.poidialogview, R.string.details, R.drawable.flag);
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	protected void onPrepareDialog(int id, final Dialog dialog) {
+		switch (id) {
+			case POIDIALOGVIEW:
+				((TextView) dialog.findViewById(R.id.textViewPoiTitle)).setText(selectedPOIAlert.getTitle());
+				((TextView) dialog.findViewById(R.id.textViewPoiRadius)).setText(selectedPOIAlert.getRadius().toString());
+				((TextView) dialog.findViewById(R.id.textViewPoiActivated)).setText(selectedPOIAlert.getActivated() ? getText(R.string.yes) : getText(R.string.no)); 
+				((TextView) dialog.findViewById(R.id.textViewPoiExpirationDate)).setText(selectedPOIAlert.getExpirationDateString());
+				Button deleteButton = (Button)dialog.findViewById(R.id.buttonDeletePoi);
+				deleteButton.setOnClickListener(new OnClickListener() {	
+					public void onClick(View v) {
+						showProgressDialog(getText(R.string.uiMessageRemovingPOIAlert));
+						controller.removePOIAlert(selectedPOIAlert.getId());
+						dialog.cancel();
+					}
+				});
+				
+				Button editButton = (Button)dialog.findViewById(R.id.buttonEditPoi);
+				editButton.setOnClickListener(new OnClickListener() {	
+					public void onClick(View v) {
+						Intent intent = new Intent(POIAlertListActivity.this, EditPoiActivity.class);
+						intent.putExtra(EditPoiActivity.BUNDLE_ALERT_ID, selectedPOIAlert.getId());
+						startActivityForResult(intent, SUBACTIVITY_EDITPOI);
+						dialog.cancel();
+					}
+				});
+				
+				break;
+		}
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 	
 	/**
@@ -164,5 +217,11 @@ public class POIAlertListActivity extends AuthenticationActivity implements IVie
 				adapter.notifyDataSetChanged();
 			}
 		});
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		controller.removeView(this);
 	}
 }
