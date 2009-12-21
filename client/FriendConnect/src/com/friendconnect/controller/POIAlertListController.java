@@ -170,6 +170,10 @@ public class POIAlertListController extends AbstractController<FriendConnectUser
 			}
 		}
 	}
+	
+	public POIAlert getPOIAlert(int position) {
+		return this.model.getPoiAlerts().get(position);
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override

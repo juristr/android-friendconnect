@@ -294,6 +294,12 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 
 		return user;
 	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		controller.removeView(this);
+	}
 
 	/* Getters and setters */
 	

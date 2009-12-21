@@ -188,4 +188,10 @@ public class PendingInvitesListActivity extends AuthenticationActivity implement
 			}
 		});
 	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		controller.removeView(this);
+	}
 }
