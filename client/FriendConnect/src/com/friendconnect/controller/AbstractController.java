@@ -100,10 +100,12 @@ public abstract class AbstractController<T extends Observable> implements Observ
 	}
 	
 	/**
-	 * Notifies views to show a message
+	 * Notifies views to show a message. This works since always just one view
+	 * will be registered at the same time, since they register during the onCreate and
+	 * de-register when they're dismissed.
 	 * @param messageId
 	 */
-	protected void notifyShowMessage(int messageId){
+	public void notifyShowMessage(int messageId){
 		for (IView view : this.views) {
 			view.showMessage(messageId);
 		}

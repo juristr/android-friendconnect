@@ -38,7 +38,6 @@
 	<string name="uiMessageProvideUsernamePassword">You have to provide both, username and password</string>
 	<string name="uiMessageProvideEmailAddress">You have to provide an email address</string>
 	<string name="uiMessageMinAllowedRadius">You have to enter a radius of at least 10 m!</string>
-	
 	<string name="uiMessageLoginErrorMsg">Oops, it seems as if there has been a problem when logging you in!</string>
 	<string name="uiMessageAcceptingInvite">Accepting invite...</string>
 	<string name="uiMessageRejectingInvite">Rejecting invite...</string>
@@ -48,6 +47,9 @@
 	<string name="uiMessageCannotInviteYourself">You cannot invite yourself ;)</string>
 	<string name="uiMessageRemovingPOIAlert">Removing POI Alert...</string>
 	<string name="uiMessageSavingPOIAlert">Saving POI Alert...</string>
+	<string name="uiMessageLocationProviderOutOfService">Oops, it seems as if your location provider is out of service!</string>
+	<string name="uiMessageLocationProviderTemporarilyUnavailable">Oops, your location provider is temporarily unavailable.</string>
+	<string name="uiMessageLocationProviderDisabled">You disabled the location provider. We cannot update your location any more :(</string>
 	<string name="menuAddFriend">Add Friend</string>
 	<string name="menuRemoveFriend">Remove Friend</string>
 	<string name="menuPendingInvitesListView">Pending Invites</string>
