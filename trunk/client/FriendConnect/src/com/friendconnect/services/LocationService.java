@@ -21,9 +21,11 @@ package com.friendconnect.services;
 import android.location.Criteria;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.friendconnect.R;
 import com.friendconnect.controller.LocationController;
 import com.friendconnect.model.Location;
 import com.google.inject.Inject;
@@ -33,10 +35,11 @@ import com.google.inject.Singleton;
 public class LocationService implements ILocationService, LocationListener {
 	private LocationController locationController;
 	private LocationManager locationManager;
-	private String provider; 
+	private String provider;
 	private boolean running = false;
 	
 	public LocationService() {
+		
 	}
 	
 	public Location getLocation() {
@@ -69,18 +72,18 @@ public class LocationService implements ILocationService, LocationListener {
 	}
 
 	public void onProviderDisabled(String provider) {
-		// TODO Auto-generated method stub
-		
+		locationController.notifyShowMessage(R.string.uiMessageLocationProviderDisabled);
 	}
 
 	public void onProviderEnabled(String provider) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
-		
+		if(status == LocationProvider.OUT_OF_SERVICE){
+			locationController.notifyShowMessage(R.string.uiMessageLocationProviderOutOfService);
+		}else if(status == LocationProvider.TEMPORARILY_UNAVAILABLE){
+			locationController.notifyShowMessage(R.string.uiMessageLocationProviderTemporarilyUnavailable);
+		}
 	}
 	
 	public void setSystemService(Object systemService) {
