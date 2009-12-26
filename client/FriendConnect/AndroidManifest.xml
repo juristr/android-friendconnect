@@ -3,7 +3,7 @@
       package="com.friendconnect"
       android:versionCode="1"
       android:versionName="1.0">
-    <application android:name=".main.AndroidApplication" android:icon="@drawable/icon" android:label="@string/app_name">
+    <application android:name=".main.AndroidApplication" android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="true">
     	<uses-library android:name="com.google.android.maps"/>
         <activity android:clearTaskOnLaunch="true" android:label="@string/app_name" android:name=".main.SplashScreenActivity">
             <intent-filter>
@@ -22,7 +22,7 @@
 		<service android:name=".services.FriendUpdateService" android:enabled="true"/>
 		<service android:name=".services.POIAlertNotificationService" android:enabled="true"/>
 	</application>
-    <uses-sdk android:minSdkVersion="4" />
+    <uses-sdk android:minSdkVersion="3" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
