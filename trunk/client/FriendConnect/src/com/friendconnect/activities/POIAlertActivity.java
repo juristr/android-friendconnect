@@ -80,10 +80,11 @@ public class POIAlertActivity extends AuthenticationActivity {
 					intent.setData(Uri.parse("tel:" + friendPhone));
 				} else {
 					intent = new Intent(Intent.ACTION_VIEW);
-					intent.setData(Uri.parse("tel:" + friendPhone));
+					intent.putExtra("address", friendPhone);
 					intent.setType("vnd.android-dir/mms-sms");   
 				}
-				startActivity(intent); 
+				startActivity(intent);
+				finish();
 			}
 		});
 	}
