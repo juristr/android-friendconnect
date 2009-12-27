@@ -83,7 +83,9 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 				}
 								
 				//update the distances
-				locationController.updateFriendDistances();
+				if (locationController != null) {
+					locationController.updateFriendDistances();
+				}
 				
 				//set user status to online
 				model.setOnline(true);
