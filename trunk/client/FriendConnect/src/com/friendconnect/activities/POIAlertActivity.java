@@ -84,7 +84,6 @@ public class POIAlertActivity extends AuthenticationActivity {
 					intent.setType("vnd.android-dir/mms-sms");   
 				}
 				startActivity(intent);
-				finish();
 			}
 		});
 	}
