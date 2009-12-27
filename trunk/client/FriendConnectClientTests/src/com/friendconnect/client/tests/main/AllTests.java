@@ -5,7 +5,6 @@ import junit.framework.TestSuite;
 
 import com.friendconnect.client.tests.controller.FriendListControllerTest;
 import com.friendconnect.client.tests.controller.LoginControllerTest;
-import com.friendconnect.controller.LoginController;
 import com.friendconnect.test.utils.ObjectHelperTest;
 
 public class AllTests {

@@ -1,17 +1,18 @@
 package com.friendconnect.client.tests.controller;
 
+import junit.framework.TestCase;
+
 import com.friendconnect.client.tests.mocks.MockXMLRPCServiceLogin;
 import com.friendconnect.controller.LoginController;
 import com.friendconnect.main.FriendConnectApplication;
 import com.friendconnect.main.IFriendConnectApplication;
 import com.friendconnect.services.IXMLRPCService;
-
-import junit.framework.TestCase;
-import static org.mockito.Mockito.*;
+import com.friendconnect.utils.Encrypter;
 
 public class LoginControllerTest extends TestCase {
 	private IFriendConnectApplication application;
 	private LoginController loginController;
+	private Encrypter encrypter;
 	private IXMLRPCService mockXmlRpcService;
 	
 	
@@ -21,6 +22,8 @@ public class LoginControllerTest extends TestCase {
 		loginController = new LoginController();
 		application = new FriendConnectApplication();
 		mockXmlRpcService = new MockXMLRPCServiceLogin();
+		encrypter = new Encrypter();
+		loginController.setEncrypter(encrypter);
 		loginController.setApplication(application);
 		loginController.setXmlRpcService(mockXmlRpcService);
 	}
@@ -29,6 +32,7 @@ public class LoginControllerTest extends TestCase {
 	protected void tearDown() throws Exception {
 		super.tearDown();
 		loginController = null;
+		encrypter = null;
 		application = null;
 		mockXmlRpcService = null;
 	}

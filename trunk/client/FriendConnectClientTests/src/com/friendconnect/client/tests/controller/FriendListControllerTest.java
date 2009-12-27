@@ -9,23 +9,23 @@ import com.friendconnect.model.User;
 import com.friendconnect.utils.ObjectHelper;
 
 public class FriendListControllerTest extends TestCase {
-	private FriendListController controller;
+	private FriendListController friendListController;
 	private FriendConnectUser model;
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.controller = new FriendListController();
+		this.friendListController = new FriendListController();
 		this.model = new FriendConnectUser();
-		this.controller.registerModel(model);
-		this.controller.setXmlRPCService(new MockXMLRPCServiceFriendList());
-		this.controller.setObjectHelper(new ObjectHelper());
+		this.friendListController.registerModel(model);
+		this.friendListController.setXmlRPCService(new MockXMLRPCServiceFriendList());
+		this.friendListController.setObjectHelper(new ObjectHelper());
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		this.controller = null;
+		this.friendListController = null;
 		this.model = null;
 	}
 
@@ -44,7 +44,7 @@ public class FriendListControllerTest extends TestCase {
 				.getFriends().get(0).getStatusMessage());
 
 		// update the list
-		this.controller.updateFriendList();
+		this.friendListController.updateFriendList();
 
 		assertTrue("The model should contain two friends", model.getFriends()
 				.size() == 2);
