@@ -16,27 +16,34 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.server.main;
+package com.friendconnect.server.tests.utils;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import com.friendconnect.utils.Encrypter;
 
-import com.friendconnect.server.tests.dao.UserDaoTest;
-import com.friendconnect.server.tests.services.UserServiceTest;
-import com.friendconnect.server.tests.utils.EncrypterTest;
-import com.friendconnect.server.tests.xmlrpc.ObjectSerializerTest;
+import junit.framework.TestCase;
 
-public class AllTests {
+public class EncrypterTest extends TestCase {
+	private Encrypter encrypter;
+	private String password;
 
-	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for com.friendconnect.server");
-		//$JUnit-BEGIN$
-		suite.addTestSuite(ObjectSerializerTest.class);
-		suite.addTestSuite(UserDaoTest.class);
-		suite.addTestSuite(UserServiceTest.class);
-		suite.addTestSuite(EncrypterTest.class);
-		//$JUnit-END$
-		return suite;
+	protected void setUp() throws Exception {
+		super.setUp();
+		encrypter = new Encrypter();
+		password = "mySecretPassword";
 	}
 
+	protected void tearDown() throws Exception {
+		super.tearDown();
+		encrypter = null;
+		password = null;
+	}
+
+	public void testEncryptDecryptPassword() {
+		byte[] encryptedPassword = encrypter.encryptPassword(password);
+		assertNotNull("Encrypted password should not be null", encryptedPassword);
+		
+		String decryptedPassword = encrypter.performDecrypt(encryptedPassword);
+		assertNotNull("Decrypted password should not be null", decryptedPassword);
+		assertEquals("Passwords should be equal", password, decryptedPassword);
+	}
 }

@@ -30,8 +30,6 @@
 	<bean id="userService" class="com.friendconnect.services.UserService">
 		<property name="userDao" ref="userDao"/>
 		<property name="applicationName" value="FriendConnect"/>
-		<property name="baseURL" value="http://www.google.com/m8/feeds/contacts"/>
-		<property name="projection" value="thin"/>
 	</bean>
 
 	<bean id="objectSerializer" class="com.friendconnect.xmlrpc.ObjectSerializer" />

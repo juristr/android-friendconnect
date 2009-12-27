@@ -27,7 +27,7 @@ import com.google.apphosting.api.ApiProxy;
 import com.google.apphosting.api.ApiProxy.Environment;
 
 /**
- * Task that can be scheduled to update the online/offline status of registered users
+ * Task that can be scheduled to update the online/offline status of registered user
  */
 public class UpdateOnlineStatusTask extends TimerTask {
 	private IUserService userService;

@@ -42,6 +42,10 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 		}
 	}
 	
+	/**
+	 * Helper method that persists a {@link User} object.
+	 * @param user
+	 */
 	private void storeUser(User user) {
 		PersistenceManager pm = getPersistenceManager();
 		try {
@@ -55,6 +59,10 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 		}	
 	}
 	
+	/**
+	 * Helper method that updates an already persisted {@link User} object.
+	 * @param user
+	 */
 	private void updateUser(User user) {
 		PersistenceManager pm = getPersistenceManager();
 		try {
@@ -233,18 +241,12 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 			}
 		}
 	}
-
-	@Override
-	public List<User> searchUsers(String searchText) {
-		//TODO implement search
-		return null;
-	}
 	
 	@Override
 	public List<User> getOnlineUsers() {
 		List<User> users = new ArrayList<User>();
 		PersistenceManager pm = getPersistenceManager();
-//		pm.getFetchPlan().addGroup(FetchGroupConstants.USER_POSITION);
+		pm.getFetchPlan().addGroup(FetchGroupConstants.USER_POSITION);
 		//An extent retrieves results in batches, and can exceed the 1,000-result limit that applies to queries!!!
 		Extent<User> extent = pm.getExtent(User.class, false);
 		for (User user : extent) {
@@ -259,6 +261,7 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 	@Override
 	public POIAlert getPOIAlert(String poiAlertId) {
 		PersistenceManager pm = getPersistenceManager();
+		pm.getFetchPlan().addGroup(FetchGroupConstants.POIALERT_POSITION);
 		POIAlert poiAlert = pm.getObjectById(POIAlert.class, poiAlertId);
 		return pm.detachCopy(poiAlert);
 	}
@@ -266,7 +269,8 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 	@Override
 	public List<POIAlert> getPOIAlerts(String userId) {
 		PersistenceManager pm = getPersistenceManager();
-		User user = pm.getObjectById(User.class, userId);
+		pm.getFetchPlan().addGroup(FetchGroupConstants.USER_ALL);
+		User user = pm.detachCopy(pm.getObjectById(User.class, userId));
 		return user.getPoiAlerts();
 	}
 
@@ -294,6 +298,11 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 		}
 	}
 	
+	/**
+	 * Helper method that persists a {@link POIAlert} object.
+	 * @param userId
+	 * @param poiAlert
+	 */
 	private void storePOIAlert(String userId, POIAlert poiAlert) {
 		PersistenceManager pm = getPersistenceManager();
 		try {
@@ -316,6 +325,10 @@ public class UserDao extends JdoDaoSupport implements IUserDao {
 		}
 	}
 	
+	/**
+	 * Helper method that updates an already persisted {@link POIAlert} object.
+	 * @param poiAlert
+	 */
 	private void updatePOIAlert(POIAlert poiAlert) {
 		PersistenceManager pm = getPersistenceManager();
 		try {

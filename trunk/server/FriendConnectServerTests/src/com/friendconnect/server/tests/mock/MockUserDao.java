@@ -107,11 +107,6 @@ public class MockUserDao implements IUserDao {
 		}
 		dummyUserStore.put(user.getId(), user);
 	}
-
-	@Override
-	public List<User> searchUsers(String searchText) {
-		return new ArrayList<User>();
-	}
 	
 	@Override
 	public List<User> getOnlineUsers() {

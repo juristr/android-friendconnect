@@ -23,37 +23,47 @@ public class ObjectSerializerTest extends TestCase {
 	}
 
 	public void testObjectDeserializer() throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-		User user = new User();
-		user.setId("123456");
-		user.setEmailAddress("juri.strumpflohner@gmail.com");
 		Location location = new Location();
 		location.setLatitude(10.34);
 		location.setLongitude(112.3);
-		user.setPosition(location);
 		
 		List<POIAlert> poiAlerts = new ArrayList<POIAlert>();
 		POIAlert poiAlert = new POIAlert();
 		poiAlert.setRadius(1);
-		poiAlert.setTitle("hallo");
+		poiAlert.setTitle("Title");
+		poiAlert.setPosition(location);
 		poiAlerts.add(poiAlert);
 		
+		User user = new User();
+		user.setId("123456");
+		user.setEmailAddress("juri.strumpflohner@gmail.com");
+		user.setPosition(location);
 		user.setPoiAlerts(poiAlerts);
 		
 		ObjectSerializer serializer = new ObjectSerializer();
 		Map<String, Object> serialized = serializer.serialize(user);
 		
-		assertNotNull("the serialized object shouldn't be null", serialized);
+		assertNotNull("The serialized object shouldn't be null", serialized);
 		assertEquals("The ids should match", user.getId(), serialized.get("Id"));
 		assertEquals("The names should match", user.getName(), serialized.get("Name"));
 		assertNotNull("The hashmap should have an object value for the subobj", serialized.get("Position"));
 		
 		//deserialize
 		User deserializedUser = serializer.deSerialize(serialized, User.class);
-		assertNotNull(deserializedUser);
-		assertEquals(user.getId(), deserializedUser.getId());
-		assertEquals(user.getName(), deserializedUser.getName());
-		assertEquals(user.getPosition().getLatitude(), deserializedUser.getPosition().getLatitude());
-		assertEquals(user.getPosition().getLongitude(), deserializedUser.getPosition().getLongitude());
-		assertTrue(deserializedUser.getPoiAlerts().size() > 0);
+		assertNotNull("The deserialized object shouldn't be null", deserializedUser);
+		assertEquals("The ids should match", user.getId(), deserializedUser.getId());
+		assertEquals("The names should match", user.getName(), deserializedUser.getName());
+		assertNotNull("User's position should not be null", deserializedUser.getPosition());
+		assertEquals("The latitudes should match", location.getLatitude(), deserializedUser.getPosition().getLatitude());
+		assertEquals("The longitudes should match", location.getLongitude(), deserializedUser.getPosition().getLongitude());
+		assertNotNull("POI alert list shouldn't be null", deserializedUser.getPoiAlerts());
+		assertTrue("POI alert list should contain one POI alert", deserializedUser.getPoiAlerts().size() == 1);
+		
+		POIAlert deserializedPOIAlert = deserializedUser.getPoiAlerts().get(0);
+		assertNotNull("POI alert shouldn't be null", deserializedPOIAlert);
+		assertNotNull("POI alert's position should not be null", deserializedPOIAlert.getPosition());
+		assertEquals("POI alert's latitudes should match", location.getLatitude(), deserializedPOIAlert.getPosition().getLatitude());
+		assertEquals("POI alert's longitudes should match", location.getLongitude(), deserializedPOIAlert.getPosition().getLongitude());
+		assertEquals("POI alert's titles should match", poiAlert.getTitle(), deserializedPOIAlert.getTitle());
 	}
 }

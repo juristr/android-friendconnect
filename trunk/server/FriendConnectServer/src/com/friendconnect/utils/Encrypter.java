@@ -25,6 +25,9 @@ import org.bouncycastle.crypto.modes.CBCBlockCipher;
 import org.bouncycastle.crypto.paddings.PaddedBufferedBlockCipher;
 import org.bouncycastle.crypto.params.KeyParameter;
 
+/**
+ * Utility class that can be used to encrypt/decrypt passwords.
+ */
 public class Encrypter {
 
 	private String key = "abc123abc123abcd";

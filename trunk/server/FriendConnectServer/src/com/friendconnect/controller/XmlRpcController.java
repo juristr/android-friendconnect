@@ -28,10 +28,17 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
+/**
+ * Simple controller class that handles web requests (i.e. XML-RPC calls)
+ * from Spring's DispatcherServlet by delegating them to the XmlRpcServletServer.
+ */
 public class XmlRpcController extends AbstractController {
 
 	private XmlRpcServletServer server = new XmlRpcServletServer();
 	
+	/**
+	 * Initialization method.
+	 */
 	public void initialize(){
 		XmlRpcServerConfigImpl serverConfig = (XmlRpcServerConfigImpl) server.getConfig();
 		serverConfig.setEnabledForExtensions(true);
