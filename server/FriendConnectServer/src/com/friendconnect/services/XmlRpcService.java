@@ -25,7 +25,7 @@ public class XmlRpcService {
 	/**
 	 * RPC method to retrieve a user object by passing username and password
 	 * @param username the username, i.e. the Google Account email of the user 
-	 * @param password the password, i.e. the Google Account password
+	 * @param encryptedPwd the encrypted password, i.e. the encrypted Google Account password
 	 * @return user, if the authentication was successful
 	 * @throws AuthenticationException
 	 * @throws IllegalArgumentException

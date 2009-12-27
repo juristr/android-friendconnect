@@ -22,18 +22,13 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.friendconnect.model.User;
-
 public class ObjectSerializer {
-	// private Class<T> clazz;
 
 	public ObjectSerializer() {
-		// this.clazz = clazz;
 	}
 
 	@SuppressWarnings("unchecked")

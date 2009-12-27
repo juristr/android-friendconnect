@@ -98,13 +98,6 @@ public interface IUserDao {
 	public void removePendingFriend(String userId, String friendId);
 	
 	/**
-	 * Returns all users from the JDO Datastore that match the specified search criteria
-	 * @param searchText
-	 * @return
-	 */
-	public List<User> searchUsers(String searchText);
-	
-	/**
 	 * Returns all users whose status is set to online from the JDO Datastore
 	 * @return
 	 */

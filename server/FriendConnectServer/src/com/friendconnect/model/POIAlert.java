@@ -23,6 +23,7 @@ import java.util.Date;
 import javax.jdo.annotations.Embedded;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.FetchGroup;
+import javax.jdo.annotations.FetchGroups;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -31,8 +32,12 @@ import javax.jdo.annotations.PrimaryKey;
 
 import com.friendconnect.xmlrpc.ComplexSerializableType;
 
+/**
+ * Represents a POI alert.
+ */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-@FetchGroup(name=FetchGroupConstants.USER_ALL, members={@Persistent(name="position")})
+@FetchGroups(value={@FetchGroup(name=FetchGroupConstants.USER_ALL, members={@Persistent(name="position")}), 
+				    @FetchGroup(name=FetchGroupConstants.POIALERT_POSITION, members={@Persistent(name="position")})})
 public class POIAlert implements IIdentity {
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

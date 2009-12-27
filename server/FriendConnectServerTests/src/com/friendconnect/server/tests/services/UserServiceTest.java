@@ -18,8 +18,6 @@
 
 package com.friendconnect.server.tests.services;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -33,15 +31,12 @@ import com.friendconnect.server.tests.mock.MockUserDao;
 import com.friendconnect.server.tests.utils.PropsUtils;
 import com.friendconnect.services.UserService;
 import com.google.gdata.util.AuthenticationException;
-import com.google.gdata.util.ServiceException;
 
 public class UserServiceTest extends TestCase {
 	private UserService userService;
 	private IUserDao mockUserDao;
 	private Properties properties;
 	private String applicationName = "FriendConnect";
-	private String baseURL = "http://www.google.com/m8/feeds/contacts";
-	private String projection = "thin";
 	
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -49,8 +44,6 @@ public class UserServiceTest extends TestCase {
 		userService = new UserService();
 		userService.setUserDao(mockUserDao);
 		userService.setApplicationName(applicationName);
-		userService.setBaseURL(baseURL);
-		userService.setProjection(projection);
 		properties = PropsUtils.load("config.properties");
 	}
 
@@ -81,22 +74,6 @@ public class UserServiceTest extends TestCase {
 			//ignore exception
 		}
 		assertNull("User should be null", user);
-	}
-	
-	
-	public void testGetGoogleContacts() throws MalformedURLException, IOException, ServiceException {
-		String emailAddress = properties.getProperty("emailAddress");
-		String password = properties.getProperty("password");
-				
-		User user = userService.authenticate(emailAddress, password); 
-		
-		assertNotNull("User should not be null", user);
-		assertNotNull("Token should not be null", user.getToken());
-		assertTrue("Token should not be equal to empty string", !user.getToken().equals(""));
-		
-		List<User> friends = userService.getGoogleContacts(emailAddress, user.getToken());
-		
-		assertNotNull("List should not be null", friends);		
 	}
 	
 	public void testAddFriendInvite(){

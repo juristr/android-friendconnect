@@ -36,7 +36,6 @@ public class UserDaoTest extends BaseTest {
 	private UserDao userDao;
 	private User user;
 	private User friend;
-	private Location location;
 	private POIAlert poiAlert;
 	
 	@Override
@@ -47,24 +46,32 @@ public class UserDaoTest extends BaseTest {
 		userDao.setPersistenceManagerFactory(factory);
 		
 		user = new User();
-		user.setEmailAddress("matthias.braunhofer@gmail.com");
+		user.setEmailAddress("matthias@friendconnect.com");
 		user.setOnline(true);
 		user.setName("Matthias");
+		Location userLocation = new Location();
+		userLocation.setLatitude(123.39);
+		userLocation.setLongitude(12.3);
+		user.setPosition(userLocation);
 		
 		friend = new User();
-		friend.setEmailAddress("juri.strumpflohner@gmail.com");
+		friend.setEmailAddress("juri@friendconnect.com");
 		friend.setOnline(false);
 		friend.setName("Juri");
-		
-		location = new Location();
-		location.setLatitude(123.39);
-		location.setLongitude(12.3);
+		Location friendLocation = new Location();
+		friendLocation.setLatitude(0.0);
+		friendLocation.setLongitude(0.0);
+		friend.setPosition(friendLocation);
 		
 		poiAlert = new POIAlert();
 		poiAlert.setActivated(true);
 		poiAlert.setExpirationDate(new Date());
 		poiAlert.setRadius(100);
 		poiAlert.setTitle("Title");
+		Location poiLocation = new Location();
+		poiLocation.setLatitude(-10.0);
+		poiLocation.setLongitude(20.0);
+		poiAlert.setPosition(poiLocation);
 	}
 	
 	@Override
@@ -72,36 +79,47 @@ public class UserDaoTest extends BaseTest {
 		super.tearDown();
 		factory = null;
 		userDao = null;
-		
+			
 		user = null;
 		friend = null;
-		
-		location = null;
+	
 		poiAlert = null;
 	}
 	
 	public void testSaveGetRemoveUser() {
+		//User id should be null, since the user object has not yet been persisted
+		assertNull("User id should be null", user.getId());
+		
 		userDao.saveUser(user);
 		
-		poiAlert.setPosition(location);
-		userDao.savePOIAlert(user.getId(), poiAlert);
+		//User id shouldn't be null anymore, since the user object has been persisted
+		assertNotNull("User id should not be null", user.getId());
 		
+		//Retrieve user object from the JDO datastore by specifying its id
 		User aUser = userDao.getUserById(user.getId());
 		
 		assertNotNull("User should not be null", aUser);
-		assertNotNull("User's POI alerts should not be null", aUser.getPoiAlerts());
-		assertNotNull("User's POI alert location should not be null", aUser.getPoiAlerts().get(0).getPosition());
 		assertEquals("Ids of users should be equal", user.getId(), aUser.getId());
 		assertEquals("Names of users should be equal", user.getName(), aUser.getName());
 		assertEquals("Emails of users should be equal", user.getEmailAddress(), aUser.getEmailAddress());
+		assertEquals("Status of users should be equal", user.getOnline(), aUser.getOnline());
+		assertNotNull("User's position should not be null", aUser.getPosition());
+		assertEquals("Latitude of users should be equal", user.getPosition().getLatitude(), aUser.getPosition().getLatitude());
+		assertEquals("Longitude of users should be equal", user.getPosition().getLongitude(), aUser.getPosition().getLongitude());
 		
+		//Retrieve user object from the JDO datastore by specifying its e-mail address
 		User anotherUser = userDao.getUserByEmailAddress(user.getEmailAddress());
 		
 		assertNotNull("User should not be null", anotherUser);
 		assertEquals("Ids of users should be equal", user.getId(), anotherUser.getId());
 		assertEquals("Names of users should be equal", user.getName(), anotherUser.getName());
-		assertEquals("Emails of users should be equal", user.getEmailAddress(), anotherUser.getEmailAddress());	
-	
+		assertEquals("Emails of users should be equal", user.getEmailAddress(), anotherUser.getEmailAddress());
+		assertEquals("Status of users should be equal", user.getOnline(), anotherUser.getOnline());
+		assertNotNull("User's position should not be null", anotherUser.getPosition());
+		assertEquals("Latitude of users should be equal", user.getPosition().getLatitude(), anotherUser.getPosition().getLatitude());
+		assertEquals("Longitude of users should be equal", user.getPosition().getLongitude(), anotherUser.getPosition().getLongitude());
+		
+		//Remove user from the JDO datastore
 		userDao.removeUser(user.getId());
 		boolean exceptionThrown = false;
 		try {
@@ -116,12 +134,21 @@ public class UserDaoTest extends BaseTest {
 		userDao.saveUser(user);
 		userDao.saveUser(friend);
 		
-		userDao.addFriend(user.getId(), friend.getId());
+		//Initially friend list should be empty
 		List<User> friends = userDao.getFriends(user.getId());
+		assertNotNull("User's friend list should not be null", friends);
+		assertTrue("User's friend list should be empty", friends.size() == 0);
+		
+		//Add a friend in the JDO datastore
+		userDao.addFriend(user.getId(), friend.getId());
+		friends = userDao.getFriends(user.getId());
+		assertNotNull("User's friend list should not be null", friends);
 		assertTrue("User's friend list should contain friend", contains(friends, friend.getId()));
 		
+		//Remove the friend from the JDO datastore
 		userDao.removeFriend(user.getId(), friend.getId());
 		friends = userDao.getFriends(user.getId());
+		assertNotNull("User's friend list should not be null", friends);
 		assertFalse("User's friend list should not contain friend", contains(friends, friend.getId()));		
 	}
 	
@@ -129,73 +156,83 @@ public class UserDaoTest extends BaseTest {
 		userDao.saveUser(user);
 		userDao.saveUser(friend);
 		
-		userDao.addPendingFriend(user.getId(), friend.getId());
+		//Initially pending friend list should be empty
 		List<User> pendingFriends = userDao.getPendingFriends(user.getId());
-		assertTrue("Pending friend list should contain friend", contains(pendingFriends, friend.getId()));
+		assertNotNull("User's pending friend list should not be null", pendingFriends);
+		assertTrue("User's pending friend list should be empty", pendingFriends.size() == 0);
 		
+		//Add a pending friend in the JDO datastore
+		userDao.addPendingFriend(user.getId(), friend.getId());
+		pendingFriends = userDao.getPendingFriends(user.getId());
+		assertNotNull("User's pending friend list should not be null", pendingFriends);
+		assertTrue("User's pending friend list should contain friend", contains(pendingFriends, friend.getId()));
+		
+		//Remove the pending friend from the JDO datastore
 		userDao.removePendingFriend(user.getId(), friend.getId());
 		pendingFriends = userDao.getPendingFriends(user.getId());
-		assertFalse("Pending friend list should not contain friend", contains(pendingFriends, friend.getId()));	
+		assertNotNull("User's pending friend list should not be null", pendingFriends);
+		assertFalse("User's pending friend list should not contain friend", contains(pendingFriends, friend.getId()));	
 	}
 	
 	public void testUpdateUser(){
 		userDao.saveUser(user);
 		
-		//retrieve it from DB
+		//Retrieve 
 		User persistedUser = userDao.getUserById(user.getId());
-		assertNotNull(persistedUser);
-		assertEquals("name should be the same", user.getName(), persistedUser.getName());
+		assertNotNull("User should not be null", persistedUser);
+		assertEquals("Names of users should be the equal", user.getName(), persistedUser.getName());
 		
-		//change name
-		persistedUser.setName("Matthias Braunhofer");
+		//Change name
+		String newName = "Matthias Braunhofer";
+		persistedUser.setName(newName);
 		userDao.saveUser(persistedUser);
 		persistedUser = null;
 		
-		//retrieve again
+		//Retrieve again
 		persistedUser = userDao.getUserById(user.getId());
-		assertNotNull(persistedUser);
-		assertEquals("Matthias Braunhofer", persistedUser.getName());
-		
+		assertNotNull("User should not be null", persistedUser);
+		assertEquals("Names should be equal", newName, persistedUser.getName());
 	}
 	
 	public void testUpdateUserLocation(){
 		userDao.saveUser(user);
 		
-		assertNull("The user's position should be null initially.",user.getPosition());
+		//Retrieve
+		User persistedUser = userDao.getUserById(user.getId());
+		assertNotNull("User should not be null", persistedUser);
+		assertNotNull("User's position should not be null", persistedUser.getPosition());
+		assertEquals("Latitude of users should be the equal", user.getPosition().getLatitude(), persistedUser.getPosition().getLatitude());
+		assertEquals("Longitude of users should be the equal", user.getPosition().getLongitude(), persistedUser.getPosition().getLongitude());
 		
-		user.setPosition(location);		
+		//Change location
+		Location newLocation = new Location();
+		newLocation.setLatitude(100.0);
+		newLocation.setLongitude(100.0);
+		user.setPosition(newLocation);		
 		userDao.saveUser(user);
+		persistedUser = null;
 		
-		User persisted = userDao.getUserById(user.getId());
-		assertNotNull(persisted);
-		assertNotNull("The location shouldn't be null", persisted.getPosition());
-		assertEquals("The location's latitude should match", location.getLatitude(), persisted.getPosition().getLatitude());
-		assertEquals("The location's longitude should match", location.getLongitude(), persisted.getPosition().getLongitude());		
-	}
-	
-	public void testGetOnlineUsers() {
-		List<User> result = userDao.getOnlineUsers();
-		
-		assertNotNull("The result list shouldn't be null", result);
-		assertEquals("The result list should contain no entry", result.size(), 0);
-		
-		userDao.saveUser(user);
-		userDao.saveUser(friend);
-		
-		result = userDao.getOnlineUsers();
-		
-		assertNotNull("The result list shouldn't be null", result);
-		assertEquals("The result list should contain one entry", result.size(), 1);	
+		//Retrieve again
+		persistedUser = userDao.getUserById(user.getId());
+		assertNotNull("User should not be null", persistedUser);
+		assertNotNull("User's position should not be null", persistedUser.getPosition());
+		assertEquals("Latitudes should be the equal", newLocation.getLatitude(), persistedUser.getPosition().getLatitude());
+		assertEquals("Longitudes should be the equal", newLocation.getLongitude(), persistedUser.getPosition().getLongitude());
 	}
 	
 	public void testSaveGetRemovePOIAlert() {
 		userDao.saveUser(user);
 		
-		poiAlert.setPosition(location);
 		
-		userDao.savePOIAlert(user.getId(), poiAlert);
-		
+		//Initially POI alert list should be empty
 		List<POIAlert> poiAlerts = userDao.getPOIAlerts(user.getId());
+		assertNotNull("User's POI alert list should not be null", poiAlerts);
+		assertTrue("User's POI alert list should be empty", poiAlerts.size() == 0);
+		
+		//Add a POI alert in the JDO datastore
+		userDao.savePOIAlert(user.getId(), poiAlert);
+		poiAlerts = userDao.getPOIAlerts(user.getId());
+		assertNotNull("User's POI alert list should not be null", poiAlerts);
 		assertTrue("User's POI alert list should contain POI alert", contains(poiAlerts, poiAlert.getId()));
 		
 		POIAlert persistedPOIAlert = poiAlerts.get(0);
@@ -208,28 +245,29 @@ public class UserDaoTest extends BaseTest {
 		assertEquals("POI alert's latitude should match", poiAlert.getPosition().getLatitude(), persistedPOIAlert.getPosition().getLatitude());
 		assertEquals("POI alert's longitude should match", poiAlert.getPosition().getLongitude(), persistedPOIAlert.getPosition().getLongitude());
 		
+		//Remove the POI alert from the JDO datastore
 		userDao.removePOIAlert(poiAlert.getId());
 		poiAlerts = userDao.getPOIAlerts(user.getId());
+		assertNotNull("User's POI alert list should not be null", poiAlerts);
 		assertFalse("User's POI alert list should not contain POI alert", contains(poiAlerts, poiAlert.getId()));		
 	}
 	
 	public void testUpdatePOIAlert() {
 		userDao.saveUser(user);
-		poiAlert.setPosition(location);
 		userDao.savePOIAlert(user.getId(), poiAlert);
 		
-		//retrieve it from DB
+		//Retrieve
 		POIAlert persistedPOIAlert = userDao.getPOIAlert(poiAlert.getId());
 		assertNotNull("POI alert should not be null", persistedPOIAlert);
 		assertEquals("Title should be the same", poiAlert.getTitle(), persistedPOIAlert.getTitle());
 		
-		//change title
+		//Change title
 		String newTitle = "New Title";
 		persistedPOIAlert.setTitle(newTitle);
 		userDao.savePOIAlert(user.getId(), persistedPOIAlert);
 		persistedPOIAlert = null;
 		
-		//retrieve again
+		//Retrieve again
 		persistedPOIAlert = userDao.getPOIAlert(poiAlert.getId());
 		assertNotNull("POI alert should not be null", persistedPOIAlert);
 		assertEquals("Title should be the same", newTitle, persistedPOIAlert.getTitle());

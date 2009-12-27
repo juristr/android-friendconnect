@@ -23,8 +23,7 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 
 /**
- * Representing a location on the earth (lat/lng)
- *
+ * Represents a location on the earth (i.e. latitude and longitude)
  */
 @PersistenceCapable
 @EmbeddedOnly

@@ -18,7 +18,6 @@
 
 package com.friendconnect.services;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.jdo.JDOException;
@@ -27,7 +26,6 @@ import com.friendconnect.model.Location;
 import com.friendconnect.model.POIAlert;
 import com.friendconnect.model.User;
 import com.google.gdata.util.AuthenticationException;
-import com.google.gdata.util.ServiceException;
 
 public interface IUserService {
 	
@@ -91,7 +89,6 @@ public interface IUserService {
 	 */
 	public void updateUser(User user);
 	
-	
 	/**
 	 * Updates the user location of a user
 	 * @param userId the id of the user
@@ -99,16 +96,6 @@ public interface IUserService {
 	 */
 	public void updateUserLocation(String userId, Location userLocation);
 	
-	/**
-	 * Fetches all the Google contacts for a certain user
-	 * @param username the Google Account email of the user
-	 * @param token the user token 
-	 * @return
-	 * @throws IOException
-	 * @throws ServiceException
-	 */
-	public List<User> getGoogleContacts(String username, String token) throws IOException, ServiceException;
-
 	/**
 	 * Returns the list of pending invites for a certain user
 	 * @param userId the id of the user
@@ -142,7 +129,6 @@ public interface IUserService {
 	 * @param poiAlert the new POI alert
 	 */
 	public void addPOIAlert(String userId, POIAlert poiAlert);
-	
 	
 	/**
 	 * Updates a POI alert

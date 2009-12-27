@@ -34,6 +34,9 @@ import javax.jdo.annotations.PrimaryKey;
 import com.friendconnect.xmlrpc.ComplexSerializableType;
 import com.friendconnect.xmlrpc.NotSerializable;
 
+/**
+ * Represents a FriendConnect user.
+ */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 @FetchGroups(value={@FetchGroup(name=FetchGroupConstants.USER_ALL, members={@Persistent(name="position"), @Persistent(name="poiAlerts")}), 
 				    @FetchGroup(name=FetchGroupConstants.USER_POSITION, members={@Persistent(name="position")})})

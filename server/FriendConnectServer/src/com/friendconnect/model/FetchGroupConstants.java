@@ -24,4 +24,7 @@ public class FetchGroupConstants {
 	
 	//Can be used to get a User object by retrieving eagerly its "position" field
 	public static final String USER_POSITION = "user_position";
+	
+	//Can be used to get a POI alert object by retrieving eagerly its "position" field
+	public static final String POIALERT_POSITION = "poiAlert_position";
 }
