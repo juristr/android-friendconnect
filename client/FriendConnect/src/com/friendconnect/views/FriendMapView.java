@@ -2,6 +2,7 @@ package com.friendconnect.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import com.google.android.maps.MapView;
@@ -50,11 +51,34 @@ public class FriendMapView extends MapView {
 			upTime = ev.getEventTime();
 		}
 		
-		if (upTime - downTime > 1000 && ev.getX() == x && ev.getY() == y) {
+		if (upTime - downTime > 1000 && doEventCoordinatesMatchInitialLocation(ev.getX(), ev.getY())){
+			Log.i("FriendMapView.onTouchEvent", "ok, notify the onLongTouchListener!!");
 			notifyOnLongTouchListener(ev);
 			return true;
 		}
 		return super.onTouchEvent(ev);
+	}
+
+	/**
+	 * This is needed since a thumb on a real device may be thicker and therefore
+	 * the x,y coordinates of the touch may vary slightly (while it will work with a
+	 * mouse pointer on the emulator).
+	 * @param evX
+	 * @param evY
+	 * @return
+	 */
+	private boolean doEventCoordinatesMatchInitialLocation(float evX, float evY){
+		int toleranz = 10;
+		
+		int preparedEvX = (int)evX;
+		int preparedEvY = (int)evY;
+		int preparedX = (int)x;
+		int preparedY = (int)y;
+		
+		boolean xMatches = (preparedX <= (preparedEvX + toleranz)) && (preparedX >= (preparedEvX - toleranz));
+		boolean yMatches = (preparedY <= (preparedEvY + toleranz)) && (preparedY >= (preparedEvY - toleranz));
+		
+		return xMatches && yMatches;
 	}
 
 	@Override

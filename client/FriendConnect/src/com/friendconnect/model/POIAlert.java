@@ -76,11 +76,8 @@ public class POIAlert extends Observable {
 
 	@NotSerializable
 	public String getExpirationDateString(){
-		String date = this.expirationDate.getDay() + "/" + expirationDate.getMonth() + "/" + expirationDate.getYear();
-		return date;
-		//below doesn't work strangely....for 2009 -> 3909???
-//		SimpleDateFormat format = new SimpleDateFormat("EEE, MMM d, yyyy");
-//		return format.format(this.expirationDate);
+		SimpleDateFormat format = new SimpleDateFormat("EEE, MMM d, ");
+		return format.format(this.expirationDate) + expirationDate.getYear(); //hack to make it work, otherwise prints adds 1900 to date
 	}
 	
 	public Date getExpirationDate() {
