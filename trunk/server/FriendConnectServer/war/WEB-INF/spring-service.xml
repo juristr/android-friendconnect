@@ -4,6 +4,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	     http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+	<!--	
 	<bean class="org.springframework.scheduling.timer.TimerFactoryBean"> 
   		<property name="scheduledTimerTasks"> 
     		<list> 
@@ -11,11 +12,12 @@
     		</list> 
   		</property> 
 	</bean> 
-	
+ 
 	<bean id="scheduledUpdateTask" class="org.springframework.scheduling.timer.ScheduledTimerTask"> 
   		<property name="timerTask" ref="updateOnlineStatusTask" /> 
   		<property name="period" value="30000" /> 
-	</bean> 
+	</bean>
+	 --> 
 
 	<bean id="updateOnlineStatusTask" class="com.friendconnect.services.UpdateOnlineStatusTask"> 
   		<property name="userService" ref="userService" /> 
