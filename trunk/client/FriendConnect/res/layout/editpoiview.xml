@@ -26,8 +26,8 @@
 		<DatePicker android:id="@+id/datePickerExpirationDatePicker"
 			android:layout_span="3" />
 	</TableRow>
-	<TableRow android:paddingBottom="20dp">
+	<TableRow android:paddingBottom="20dp" android:paddingTop="20dp">
 		<Button android:layout_span="3" android:layout_gravity="center_horizontal"
-			android:id="@+id/buttonSavePoi" android:text="@string/save" />
+			android:id="@+id/buttonSavePoi" android:text="@string/save" android:layout_width="fill_parent" android:layout_height="wrap_content" />
 	</TableRow>
 </TableLayout>
