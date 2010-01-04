@@ -23,6 +23,7 @@ import java.util.List;
 import android.content.Context;
 import android.util.Log;
 
+import com.friendconnect.R;
 import com.friendconnect.adapters.FriendAdapter;
 import com.friendconnect.main.IFriendConnectApplication;
 import com.friendconnect.model.FriendConnectUser;
@@ -108,16 +109,23 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 	 * This method will be called by the FriendListActivity for inviting
 	 * another user.
 	 */
-	public void inviteFriend(String inviteeEmailAddress) {
-		Object[] params = {inviteeEmailAddress};
+	public void inviteFriend(final String inviteeEmailAddress) {
+		Object[] params = {inviteeEmailAddress.toLowerCase()};
 		xmlRPCService.sendRequest(RPCRemoteMappings.INVITEFRIEND, params, new IAsyncCallback<Boolean>() {
 
 			public void onSuccess(Boolean result) {
+				if(!result){
+					onFailure(new Exception("Server returned false"));
+				}
 				notifyStopProgress();
+				notifyShowMessage(R.string.uiMessageFriendInviteSuccessful);
 			}
 			
-			public void onFailure(Throwable throwable) {			
+			public void onFailure(Throwable throwable) {
+				Log.e(FriendListController.class.getCanonicalName(), "Problem inviting the friend " + inviteeEmailAddress + ": " + throwable.getMessage());
 				notifyStopProgress();
+				
+				notifyShowMessage(R.string.uiMessageFriendInviteFailure);
 			}
 			
 		}, Boolean.class);
@@ -127,16 +135,23 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 	 * This method will be called by the FriendListActivity for removing
 	 * a friend from the friend list.
 	 */
-	public void removeFriend(String friendId) {
+	public void removeFriend(final String friendId) {
 		Object[] params = {friendId};
 		xmlRPCService.sendRequest(RPCRemoteMappings.REMOVEFRIEND, params, new IAsyncCallback<Boolean>() {
 
-			public void onFailure(Throwable throwable) {
+			public void onSuccess(Boolean result) {
+				if(!result){
+					onFailure(new Exception("Server returned false"));
+				}
+				
 				notifyStopProgress();
 			}
-
-			public void onSuccess(Boolean result) {
+			
+			public void onFailure(Throwable throwable) {
+				Log.e(FriendListController.class.getCanonicalName(), "Problem removing friend (id: " + friendId + "): " + throwable.getMessage());
 				notifyStopProgress();
+				
+				notifyShowMessage(R.string.uiMessageFriendRemovalFailure);
 			}
 		}, Boolean.class);
 	}
