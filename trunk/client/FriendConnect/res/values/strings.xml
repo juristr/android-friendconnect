@@ -50,6 +50,9 @@
 	<string name="uiMessageLocationProviderOutOfService">Oops, it seems as if your location provider is out of service!</string>
 	<string name="uiMessageLocationProviderTemporarilyUnavailable">Oops, your location provider is temporarily unavailable.</string>
 	<string name="uiMessageLocationProviderDisabled">You disabled the location provider. We cannot update your location any more :(</string>
+	<string name="uiMessageFriendInviteSuccessful">Your friend has been invited successfully.</string>
+	<string name="uiMessageFriendInviteFailure">Oops, there was a problem inviting your friend. We're sorry, please try again.</string>
+	<string name="uiMessageFriendRemovalFailure">Oops, there was a problem in removing your friend. We're sorry, please try again.</string>
 	<string name="menuAddFriend">Add Friend</string>
 	<string name="menuRemoveFriend">Remove Friend</string>
 	<string name="menuPendingInvitesListView">Pending Invites</string>

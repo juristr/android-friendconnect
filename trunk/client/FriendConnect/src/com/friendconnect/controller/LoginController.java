@@ -47,7 +47,7 @@ public class LoginController extends AbstractController<LoginResult> {
 	public void login(final String emailAddress, String password){
 		byte[] encrPwd = encrypter.encryptPassword(password);
 		
-		xmlRpcService.sendRequest(RPCRemoteMappings.LOGIN, new Object[]{emailAddress, encrPwd}, new IAsyncCallback<FriendConnectUser>() {
+		xmlRpcService.sendRequest(RPCRemoteMappings.LOGIN, new Object[]{emailAddress.toLowerCase(), encrPwd}, new IAsyncCallback<FriendConnectUser>() {
 
 			public void onSuccess(FriendConnectUser result) {
 				if(result == null)
