@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import com.friendconnect.model.Location;
 import com.friendconnect.model.POIAlert;
@@ -15,6 +16,7 @@ import com.friendconnect.xmlrpc.ObjectSerializer;
 import com.google.gdata.util.AuthenticationException;
 
 public class XmlRpcService {
+	private static final Logger log = Logger.getLogger(XmlRpcService.class.getName());
 	private IUserService userService;
 	private ObjectSerializer serializer;
 	private Encrypter encrypter;
@@ -46,6 +48,7 @@ public class XmlRpcService {
 	 * @throws AuthenticationException
 	 */
 	private void authenticateUser(String userId, String token) throws AuthenticationException {
+		log.info("Validating user token. UserId: " + userId + ", Token:" + token);
 		if (!userService.validateToken(userId, token)) {
 			throw new AuthenticationException("Can't authenticate user: userid and/or token are invalid");
 		}
