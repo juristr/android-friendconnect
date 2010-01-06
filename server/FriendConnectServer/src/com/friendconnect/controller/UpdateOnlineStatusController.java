@@ -16,30 +16,29 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.services;
+package com.friendconnect.controller;
 
 import java.util.Date;
 import java.util.List;
-import java.util.TimerTask;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.AbstractController;
 
 import com.friendconnect.model.User;
-import com.google.apphosting.api.ApiProxy;
-import com.google.apphosting.api.ApiProxy.Environment;
+import com.friendconnect.services.IUserService;
 
 /**
- * Task that can be scheduled to update the online/offline status of registered user
+ * Controller that updates the online/offline status of registered user. It is
+ * periodically invoked by a cron job.
  */
-public class UpdateOnlineStatusTask extends TimerTask {
+public class UpdateOnlineStatusController extends AbstractController {
 	private IUserService userService;
-	private Environment environment;
-	
-	public UpdateOnlineStatusTask() {
-		environment = ApiProxy.getCurrentEnvironment();
-	}
 
 	@Override
-	public void run() {
-		ApiProxy.setEnvironmentForCurrentThread(environment);
+	protected ModelAndView handleRequestInternal(HttpServletRequest arg0, HttpServletResponse arg1) throws Exception {
 		Date now = new Date();
 		List<User> users = userService.getOnlineUsers();
 		for (User user : users) {
@@ -51,15 +50,16 @@ public class UpdateOnlineStatusTask extends TimerTask {
 				userService.updateUser(user);
 			}
 		}
+		return null;
 	}
-
+	
 	/* Getters and setters */
 	
-	public IUserService getUserService() {
-		return userService;
-	}
-
 	public void setUserService(IUserService userService) {
 		this.userService = userService;
+	}
+
+	public IUserService getUserService() {
+		return userService;
 	}
 }
