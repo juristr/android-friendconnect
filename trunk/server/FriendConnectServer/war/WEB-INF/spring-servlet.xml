@@ -9,10 +9,15 @@
 
 	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="mappings">
-			<value>
-				/xmlrpc=xmlRpcController
-			</value>
+			<props>
+				<prop key="/xmlrpc">xmlRpcController</prop>
+				<prop key="/cron">updateOnlineStatusController</prop>
+			</props>
 		</property>
+	</bean>
+	
+	<bean name="updateOnlineStatusController" class="com.friendconnect.controller.UpdateOnlineStatusController">
+		<property name="userService" ref="userService"/>
 	</bean>
 
 	<bean name="xmlRpcController" class="com.friendconnect.controller.XmlRpcController" init-method="initialize">

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cronentries>
+	<cron>
+		<url>/cron</url>
+		<description>Update online status of users</description>
+		<schedule>every 1 minutes</schedule>
+	</cron>
+</cronentries>
