@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -57,11 +58,16 @@ import com.google.android.maps.Overlay;
 
 public class FriendMapActivity extends AuthenticationMapActivity implements IView, OnLongTouchListener,
 		OnDoubleClickListener, OnOverlayClickListener {
+	
+	public static String CENTER_LAT = "mapCenter_lat";
+	public static String CENTER_LNG = "mapCenter_lng";
+	
 	private static final int CENTER_MAP = Menu.FIRST;
 //	private static final int ADD_POI = Menu.FIRST + 1;
 	private static final int LIST_POIALERTS = Menu.FIRST + 2;
 	private static final int SUBACTIVITY_EDITPOI = 1;
-	private static final int POIDIALOGVIEW = 1;
+	private static final int POIDIALOGVIEW = 2;
+	private static final int SUBACTIVITY_POIALERTLIST = 3;
 
 	private FriendMapView mapView;
 	private MapController mapController;
@@ -99,6 +105,8 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 		this.friendOverlays = new HashMap<String, FriendPositionOverlay>();
 		this.poiOverlays = new HashMap<String, POIOverlay>();
 		update(locationController.getModel(), null);
+		
+		setCenterFromBundleData(getIntent());
 	}
 
 	@Override
@@ -152,20 +160,32 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		//don't react
-//		switch (requestCode) {
-//		case SUBACTIVITY_EDITPOI:
-//			if (resultCode == Activity.RESULT_OK) {
-//				// handle the thing, otherwise remove
-////				ActivityUtils.showToast(this, "Ok!", 1500);
-//			} else {
-////				ActivityUtils.showToast(this, "Cancelled!", 1500);
-//			}
-//			break;
-//
-//		default:
-//			break;
-//		}
+		switch (requestCode) {
+		case SUBACTIVITY_POIALERTLIST:
+			if (resultCode == Activity.RESULT_OK) {
+				setCenterFromBundleData(data);
+			}
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	/**
+	 * This sets the center of the map from data that is being passed
+	 * through the Intent's bundle data
+	 * @param data
+	 */
+	private void setCenterFromBundleData(Intent data) {
+		Bundle retrievedData = data.getExtras();
+		if(retrievedData != null){
+			doCenterMap = false;
+			double centerLat = retrievedData.getDouble(CENTER_LAT);
+			double centerLng = retrievedData.getDouble(CENTER_LNG);
+			
+			navigateToPoint(centerLat, centerLng);
+		}
 	}
 
 	@Override
@@ -211,7 +231,7 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 //				return true;
 //			}
 			case (LIST_POIALERTS): {
-				startActivity(new Intent(this, POIAlertListActivity.class));
+				startActivityForResult(new Intent(this, POIAlertListActivity.class), SUBACTIVITY_POIALERTLIST);
 				return true;
 			}
 		}

@@ -65,6 +65,7 @@
 	<string name="menuAddPoiAlert">Add POI Alert</string>
 	<string name="menuRemovePoiAlert">Remove POI Alert</string>
 	<string name="menuListPoiAlerts">List POI Alerts</string>
+	<string name="menuShowOnMap">Locate on Map</string>
 	<string name="invitation">FriendConnect Invitation</string>
 	<string name="sendInvite">Send Invite</string>
 	<string name="notificationNewPoiAlert">New POI Alert!</string>
