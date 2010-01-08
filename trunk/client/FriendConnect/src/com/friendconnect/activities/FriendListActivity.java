@@ -56,6 +56,7 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 	private static final int PENDINGINVITES_LIST = Menu.FIRST + 2;
 	private static final int PROFILE = Menu.FIRST + 3;
 	private static final int MAP_VIEW = Menu.FIRST + 4;
+	private static final int LOCATE_ON_MAP = Menu.FIRST + 5;
 
 	private boolean lock = false;
 
@@ -239,6 +240,7 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		menu.add(0, REMOVE_FRIEND, Menu.NONE, R.string.menuRemoveFriend);
+		menu.add(0, LOCATE_ON_MAP, Menu.NONE, R.string.menuShowOnMap);
 	}
 
 	@Override
@@ -253,6 +255,13 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 			case (REMOVE_FRIEND): {
 				doRemoveFriendActions(index);
 				return true;
+			}
+			case (LOCATE_ON_MAP):{
+				final User friend = getSelectedFriend(index);
+				Intent mapIntent = new Intent(FriendListActivity.this, FriendMapActivity.class);
+				mapIntent.putExtra(FriendMapActivity.CENTER_LAT, friend.getPosition().getLatitude());
+				mapIntent.putExtra(FriendMapActivity.CENTER_LNG, friend.getPosition().getLongitude());
+				startActivity(mapIntent);
 			}
 		}
 		return super.onContextItemSelected(item);

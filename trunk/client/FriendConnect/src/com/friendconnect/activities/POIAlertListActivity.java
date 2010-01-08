@@ -46,9 +46,11 @@ import com.friendconnect.utils.ActivityUtils;
 
 public class POIAlertListActivity extends AuthenticationActivity implements IView {
 	private static final int REMOVE_POIALERT = Menu.FIRST;
+	private static final int NAVIGATE_TO_ALERT = Menu.FIRST + 1;
 
 	private static final int POIDIALOGVIEW = 1;
-	private static final int SUBACTIVITY_EDITPOI = 1;
+	private static final int SUBACTIVITY_EDITPOI = 2;
+	private static final int MAP_ACTIVITY = 3;
 	
 	private POIAlertListController controller;
 	private ListView listViewPoiAlerts;
@@ -92,7 +94,8 @@ public class POIAlertListActivity extends AuthenticationActivity implements IVie
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		// Create and add new menu items.
-		MenuItem itemRemovePOIAlert = menu.add(0, REMOVE_POIALERT, Menu.NONE, this.getString(R.string.menuRemovePoiAlert));
+		MenuItem itemRemovePOIAlert = menu.add(0, REMOVE_POIALERT, Menu.NONE, R.string.menuRemovePoiAlert);
+		MenuItem itemNavigateToAlert = menu.add(0, NAVIGATE_TO_ALERT, Menu.NONE, R.string.menuShowOnMap);
 		
 		// Assign icons
 		itemRemovePOIAlert.setIcon(R.drawable.menu_delete);
@@ -110,14 +113,19 @@ public class POIAlertListActivity extends AuthenticationActivity implements IVie
 				doRemovePOIAlertActions(listViewPoiAlerts.getSelectedItemPosition());
 				return true;
 			}
+			case (NAVIGATE_TO_ALERT):{
+				showOnMap(listViewPoiAlerts.getSelectedItemPosition());				
+				return true;
+			}
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		menu.add(0, REMOVE_POIALERT, Menu.NONE, R.string.menuRemovePoiAlert);
+		menu.add(0, NAVIGATE_TO_ALERT, Menu.NONE, R.string.menuShowOnMap);
 	}
 
 	@Override
@@ -132,6 +140,9 @@ public class POIAlertListActivity extends AuthenticationActivity implements IVie
 			case (REMOVE_POIALERT): {
 				doRemovePOIAlertActions(index);
 				return true;
+			}
+			case (NAVIGATE_TO_ALERT):{
+				showOnMap(index);
 			}
 		}
 		return super.onContextItemSelected(item);
@@ -200,6 +211,17 @@ public class POIAlertListActivity extends AuthenticationActivity implements IVie
 		ad.setNegativeButton(R.string.cancel, null);
 		ad.setCancelable(true);
 		ad.show();
+	}
+	
+	private void showOnMap(int selectedItemPosition) {
+		final POIAlert poiAlert = getSelectedPOIAlert(selectedItemPosition);
+		
+		Intent result = new Intent("", null);
+		result.putExtra(FriendMapActivity.CENTER_LAT, poiAlert.getPosition().getLatitude());
+		result.putExtra(FriendMapActivity.CENTER_LNG, poiAlert.getPosition().getLongitude());
+		
+		setResult(RESULT_OK, result);
+		finish();
 	}
 
 	/**
