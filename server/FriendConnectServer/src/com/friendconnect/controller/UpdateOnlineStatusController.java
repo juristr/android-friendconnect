@@ -20,6 +20,7 @@ package com.friendconnect.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +30,7 @@ import org.springframework.web.servlet.mvc.AbstractController;
 
 import com.friendconnect.model.User;
 import com.friendconnect.services.IUserService;
+import com.friendconnect.services.XmlRpcService;
 
 /**
  * Controller that updates the online/offline status of registered user. It is
@@ -36,9 +38,11 @@ import com.friendconnect.services.IUserService;
  */
 public class UpdateOnlineStatusController extends AbstractController {
 	private IUserService userService;
-
+	private static final Logger log = Logger.getLogger(XmlRpcService.class.getName());
+	
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest arg0, HttpServletResponse arg1) throws Exception {
+		log.info("Entering UpdateOnlineStatusController:handleRequestInternal");
 		Date now = new Date();
 		List<User> users = userService.getOnlineUsers();
 		for (User user : users) {
@@ -50,6 +54,7 @@ public class UpdateOnlineStatusController extends AbstractController {
 				userService.updateUser(user);
 			}
 		}
+		log.info("Exiting UpdateOnlineStatusController:handleRequestInternal");
 		return null;
 	}
 	
