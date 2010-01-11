@@ -56,14 +56,14 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapController;
 import com.google.android.maps.Overlay;
 
-public class FriendMapActivity extends AuthenticationMapActivity implements IView, OnLongTouchListener,
-		OnDoubleClickListener, OnOverlayClickListener {
-	
+public class FriendMapActivity extends AuthenticationMapActivity implements IView,
+		OnLongTouchListener, OnDoubleClickListener, OnOverlayClickListener {
+
 	public static String CENTER_LAT = "mapCenter_lat";
 	public static String CENTER_LNG = "mapCenter_lng";
-	
+
 	private static final int CENTER_MAP = Menu.FIRST;
-//	private static final int ADD_POI = Menu.FIRST + 1;
+	// private static final int ADD_POI = Menu.FIRST + 1;
 	private static final int LIST_POIALERTS = Menu.FIRST + 2;
 	private static final int SUBACTIVITY_EDITPOI = 1;
 	private static final int POIDIALOGVIEW = 2;
@@ -78,14 +78,15 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 	private HashMap<String, POIOverlay> poiOverlays;
 	private boolean doCenterMap = true;
 	private POIAlert clickedPOIAlert = null; // the clicked alert (for showing
-												// appropriate dialog)
+
+	// appropriate dialog)
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	}
-	
+
 	public void onAuthenticated() {
 		setContentView(R.layout.friendmapview);
 		this.mapView = (FriendMapView) findViewById(R.id.map_view);
@@ -99,13 +100,14 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 		this.locationController = IoC.getInstance(LocationController.class);
 		this.locationController.registerView(this);
 		this.poiController = IoC.getInstance(POIAlertListController.class);
-		 //do not register to not get too many updates! LocationController already registers on FriendConnectUser
+		// do not register to not get too many updates! LocationController
+		// already registers on FriendConnectUser
 		this.poiController.registerView(this);
-		
+
 		this.friendOverlays = new HashMap<String, FriendPositionOverlay>();
 		this.poiOverlays = new HashMap<String, POIOverlay>();
 		update(locationController.getModel(), null);
-		
+
 		setCenterFromBundleData(getIntent());
 	}
 
@@ -136,13 +138,13 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 
 	public void onLongTouch(MotionEvent ev) {
 		GeoPoint point = mapView.getProjection().fromPixels((int) ev.getX(), (int) ev.getY());
-		
+
 		Intent intent = new Intent(this, EditPoiActivity.class);
 		intent.putExtra(EditPoiActivity.BUNDLE_GEO_LAT, point.getLatitudeE6());
 		intent.putExtra(EditPoiActivity.BUNDLE_GEO_LNG, point.getLongitudeE6());
 		startActivityForResult(intent, SUBACTIVITY_EDITPOI);
 	}
-	
+
 	public void onDoubleClick(MotionEvent ev) {
 		doCenterMap = false;
 		mapController.zoomInFixing((int) ev.getX(), (int) ev.getY());
@@ -173,17 +175,18 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 	}
 
 	/**
-	 * This sets the center of the map from data that is being passed
-	 * through the Intent's bundle data
+	 * This sets the center of the map from data that is being passed through
+	 * the Intent's bundle data
+	 * 
 	 * @param data
 	 */
 	private void setCenterFromBundleData(Intent data) {
 		Bundle retrievedData = data.getExtras();
-		if(retrievedData != null){
+		if (retrievedData != null) {
 			doCenterMap = false;
 			double centerLat = retrievedData.getDouble(CENTER_LAT);
 			double centerLng = retrievedData.getDouble(CENTER_LNG);
-			
+
 			navigateToPoint(centerLat, centerLng);
 		}
 	}
@@ -208,12 +211,13 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 		MenuItem itemCenterMap = menu.add(0, CENTER_MAP, Menu.NONE, R.string.menuCenterMap);
 		itemCenterMap.setIcon(R.drawable.menu_mylocation);
 
-//		MenuItem itemAddPoi = menu.add(1, ADD_POI, Menu.NONE, R.string.menuAddPoiAlert);
-//		itemAddPoi.setIcon(R.drawable.menu_add);
+		// MenuItem itemAddPoi = menu.add(1, ADD_POI, Menu.NONE,
+		// R.string.menuAddPoiAlert);
+		// itemAddPoi.setIcon(R.drawable.menu_add);
 
 		MenuItem listPoiAlerts = menu.add(1, LIST_POIALERTS, Menu.NONE, R.string.menuListPoiAlerts);
 		listPoiAlerts.setIcon(R.drawable.menu_myplaces);
-		
+
 		return true;
 	}
 
@@ -222,18 +226,19 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 		super.onOptionsItemSelected(item);
 
 		switch (item.getItemId()) {
-			case (CENTER_MAP): {
-				doCenterMap = true;
-				return true;
-			}
-//			case (ADD_POI): {
-//				startActivity(new Intent(this, EditPoiActivity.class));
-//				return true;
-//			}
-			case (LIST_POIALERTS): {
-				startActivityForResult(new Intent(this, POIAlertListActivity.class), SUBACTIVITY_POIALERTLIST);
-				return true;
-			}
+		case (CENTER_MAP): {
+			doCenterMap = true;
+			return true;
+		}
+			// case (ADD_POI): {
+			// startActivity(new Intent(this, EditPoiActivity.class));
+			// return true;
+			// }
+		case (LIST_POIALERTS): {
+			startActivityForResult(new Intent(this, POIAlertListActivity.class),
+					SUBACTIVITY_POIALERTLIST);
+			return true;
+		}
 		}
 		return false;
 	}
@@ -241,9 +246,10 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
-			case (POIDIALOGVIEW): {
-				return ActivityUtils.createViewDialog(this, R.layout.poidialogview, R.string.details, R.drawable.flag);
-			}
+		case (POIDIALOGVIEW): {
+			return ActivityUtils.createViewDialog(this, R.layout.poidialogview, R.string.details,
+					R.drawable.flag);
+		}
 		}
 		return null;
 	}
@@ -252,21 +258,25 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 	protected void onPrepareDialog(int id, final Dialog dialog) {
 		switch (id) {
 		case POIDIALOGVIEW:
-			((TextView) dialog.findViewById(R.id.textViewPoiTitle)).setText(clickedPOIAlert.getTitle());
-			((TextView) dialog.findViewById(R.id.textViewPoiRadius)).setText(clickedPOIAlert.getRadius().toString());
-			((TextView) dialog.findViewById(R.id.textViewPoiActivated)).setText(clickedPOIAlert.getActivated() ? getText(R.string.yes) : getText(R.string.no)); 
-			((TextView) dialog.findViewById(R.id.textViewPoiExpirationDate)).setText(clickedPOIAlert.getExpirationDateString());
-			Button deleteButton = (Button)dialog.findViewById(R.id.buttonDeletePoi);
-			deleteButton.setOnClickListener(new OnClickListener() {	
+			((TextView) dialog.findViewById(R.id.textViewPoiTitle)).setText(clickedPOIAlert
+					.getTitle());
+			((TextView) dialog.findViewById(R.id.textViewPoiRadius)).setText(clickedPOIAlert
+					.getRadius().toString());
+			((TextView) dialog.findViewById(R.id.textViewPoiActivated)).setText(clickedPOIAlert
+					.getActivated() ? getText(R.string.yes) : getText(R.string.no));
+			((TextView) dialog.findViewById(R.id.textViewPoiExpirationDate))
+					.setText(clickedPOIAlert.getExpirationDateString());
+			Button deleteButton = (Button) dialog.findViewById(R.id.buttonDeletePoi);
+			deleteButton.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					showProgressDialog(getText(R.string.uiMessageRemovingPOIAlert));
 					poiController.removePOIAlert(clickedPOIAlert.getId());
 					dialog.cancel();
 				}
 			});
-			
-			Button editButton = (Button)dialog.findViewById(R.id.buttonEditPoi);
-			editButton.setOnClickListener(new OnClickListener() {	
+
+			Button editButton = (Button) dialog.findViewById(R.id.buttonEditPoi);
+			editButton.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					Intent intent = new Intent(FriendMapActivity.this, EditPoiActivity.class);
 					intent.putExtra(EditPoiActivity.BUNDLE_ALERT_ID, clickedPOIAlert.getId());
@@ -274,7 +284,7 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 					dialog.cancel();
 				}
 			});
-			
+
 			break;
 
 		default:
@@ -359,14 +369,19 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 
 			updateFriendLocations(user);
 			updatePOIFlags(user);
-	
+
 			mapView.invalidate();
 			if (doCenterMap && user.getPosition() != null) {
 				// center the map on the user's position
-				navigateToPoint(user.getPosition().getLatitude(), user.getPosition().getLongitude());
+
+				if (user.getPosition().getLatitude() != 0 && user.getPosition().getLongitude() != 0) {
+					navigateToPoint(user.getPosition().getLatitude(), user.getPosition()
+							.getLongitude());
+				}
 			}
 		} catch (Exception e) {
-			Log.i(FriendMapActivity.class.getCanonicalName(), "Error during update: " + e.getMessage());
+			Log.i(FriendMapActivity.class.getCanonicalName(), "Error during update: "
+					+ e.getMessage());
 		}
 	}
 
@@ -430,7 +445,7 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 		// }
 		// }
 	}
-	
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
