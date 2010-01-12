@@ -18,47 +18,53 @@
 
 package com.friendconnect.services;
 
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
 import android.location.Criteria;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 
 import com.friendconnect.R;
 import com.friendconnect.controller.LocationController;
-import com.friendconnect.model.Location;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import com.friendconnect.main.IoC;
 
-@Singleton
-public class LocationService implements ILocationService, LocationListener {
+public class LocationService extends Service implements LocationListener {
 	private LocationController locationController;
 	private LocationManager locationManager;
 	private String provider;
-	private boolean running = false;
 	
-	public LocationService() {
-		
+	@Override
+	public IBinder onBind(Intent intent) {
+		return null;
 	}
 	
-	public Location getLocation() {
-		android.location.Location loc = locationManager.getLastKnownLocation(provider);
-		Location location = new Location();
-		location.setLatitude(loc.getLatitude());
-		location.setLongitude(loc.getLongitude());
-		return location;
+	@Override
+	public void onCreate() {
+		this.locationController = IoC.getInstance(LocationController.class);
+		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		Criteria criteria = new Criteria(); 
+		criteria.setAccuracy(Criteria.ACCURACY_FINE); 
+		criteria.setAltitudeRequired(false); 
+		criteria.setBearingRequired(false); 
+		criteria.setCostAllowed(true); 
+		provider = locationManager.getBestProvider(criteria, true);
+		Handler handler = new Handler();
+		handler.post(new Runnable() {
+			public void run() {
+				locationManager.requestLocationUpdates(provider, 10000, 10, LocationService.this);
+			}
+		});
 	}
 	
-	public void startLocationTracking() {
-		if (!running) {
-			Handler handler = new Handler();
-			handler.post(new Runnable() {
-				public void run() {
-					locationManager.requestLocationUpdates(provider, 60000, 10, LocationService.this);
-				}
-			});
-			running = true;
+	@Override
+	public void onDestroy() {
+		if (locationManager != null) {
+			locationManager.removeUpdates(this);
 		}
 	}
 
@@ -84,21 +90,5 @@ public class LocationService implements ILocationService, LocationListener {
 		}else if(status == LocationProvider.TEMPORARILY_UNAVAILABLE){
 			locationController.notifyShowMessage(R.string.uiMessageLocationProviderTemporarilyUnavailable);
 		}
-	}
-	
-	public void setSystemService(Object systemService) {
-		locationManager = (LocationManager)systemService;
-		Criteria criteria = new Criteria(); 
-		criteria.setAccuracy(Criteria.ACCURACY_FINE); 
-		criteria.setAltitudeRequired(false); 
-		criteria.setBearingRequired(false); 
-		criteria.setCostAllowed(true); 
-		criteria.setPowerRequirement(Criteria.POWER_LOW); 
-		provider = locationManager.getBestProvider(criteria, true);
-	}
-	
-	@Inject
-	public void setLocationController(LocationController locationController) {
-		this.locationController = locationController;
 	}
 }

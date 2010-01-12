@@ -16,29 +16,12 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.services;
+package com.friendconnect.exceptions;
 
-import com.friendconnect.model.Location;
-
-/**
- * Interface for the LocationService
- */
-public interface ILocationService {
+public class CaptchaException extends Exception {
+	private static final long serialVersionUID = 1L;
 	
-	/**
-	 * Returns the current position (latitude, longitude) of the user
-	 * @return location
-	 */
-	public Location getLocation();
-	
-	/**
-	 * Starts the tracking of the user's location
-	 */
-	public void startLocationTracking();
-	
-	/**
-	 * Sets the system service
-	 * @param systemService
-	 */
-	public void setSystemService(Object systemService);
+	public CaptchaException(String captchaUrl) {
+		super("Captcha required: " + captchaUrl);
+	}
 }

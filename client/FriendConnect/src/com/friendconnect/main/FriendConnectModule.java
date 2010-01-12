@@ -18,9 +18,7 @@
 
 package com.friendconnect.main;
 
-import com.friendconnect.services.ILocationService;
 import com.friendconnect.services.IXMLRPCService;
-import com.friendconnect.services.LocationService;
 import com.friendconnect.services.XMLRPCService;
 import com.google.inject.AbstractModule;
 
@@ -35,6 +33,5 @@ public class FriendConnectModule extends AbstractModule {
 	protected void configure() {
 		bind(IXMLRPCService.class).to(XMLRPCService.class);
 		bind(IFriendConnectApplication.class).to(FriendConnectApplication.class);
-		bind(ILocationService.class).to(LocationService.class);
 	}
 }

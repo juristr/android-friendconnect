@@ -20,7 +20,6 @@ package com.friendconnect.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -28,7 +27,6 @@ import android.widget.Toast;
 import com.friendconnect.main.FriendConnectApplication;
 import com.friendconnect.main.IoC;
 import com.friendconnect.services.FriendUpdateService;
-import com.friendconnect.services.ILocationService;
 import com.friendconnect.services.LocationService;
 import com.friendconnect.services.POIAlertNotificationService;
 import com.friendconnect.utils.ActivityUtils;
@@ -73,11 +71,8 @@ public abstract class AuthenticationActivity extends Activity {
         		//Start all FriendConnect services
         		startService(new Intent(this, FriendUpdateService.class));
         		startService(new Intent(this, POIAlertNotificationService.class));
-        		
-        		ILocationService locationService = IoC.getInstance(LocationService.class);
-        		locationService.setSystemService(getSystemService(Context.LOCATION_SERVICE));
-        		locationService.startLocationTracking();
-
+        		startService(new Intent(this, LocationService.class));
+        	
         		onAuthenticated();
         	}
         }

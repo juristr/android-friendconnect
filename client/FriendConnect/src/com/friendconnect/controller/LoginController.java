@@ -24,9 +24,11 @@ import android.widget.BaseAdapter;
 
 import com.friendconnect.R;
 import com.friendconnect.main.IFriendConnectApplication;
+import com.friendconnect.model.Constants;
 import com.friendconnect.model.FriendConnectUser;
 import com.friendconnect.model.LoginResult;
 import com.friendconnect.model.RPCRemoteMappings;
+import com.friendconnect.model.LoginResult.Result;
 import com.friendconnect.services.IXMLRPCService;
 import com.friendconnect.utils.Encrypter;
 import com.friendconnect.xmlrpc.IAsyncCallback;
@@ -56,13 +58,19 @@ public class LoginController extends AbstractController<LoginResult> {
 				application.setApplicationModel(result);
 				
 				notifyStopProgress();
-				model.setLoginSucceeded(true);
+				model.setLoginResult(Result.SUCCESS);
 			}
 			
 			public void onFailure(Throwable throwable) {
-				Log.e(LoginController.class.getCanonicalName(), throwable.getMessage());
+				String errorMessage = throwable.getMessage();
+				Log.e(LoginController.class.getCanonicalName(), errorMessage);
 				notifyStopProgress();
-				notifyShowMessage(R.string.uiMessageLoginErrorMsg);
+				//Check whether the user needs to handle a captcha challenge
+				if (errorMessage.contains(Constants.CAPTCHA_REQUIRED)) {
+					model.setLoginResult(Result.CAPTCHA_REQUIRED);
+				} else {
+					notifyShowMessage(R.string.uiMessageLoginErrorMsg);
+				}
 			}
 			
 		}, FriendConnectUser.class);

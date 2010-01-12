@@ -39,8 +39,8 @@ public class XMLRPCService implements IXMLRPCService {
 
 	public XMLRPCService() {
 		// Resources.getString(com.friendconnect.activities.R.string.friendConnectServerUrl);
-		String baseUrl = "http://10.0.2.2:8080/xmlrpc";  //works always
-//		String baseUrl = "http://0-1.latest.android-friendconnect.appspot.com/xmlrpc";
+//		String baseUrl = "http://10.0.2.2:8080/xmlrpc";  //works always
+		String baseUrl = "http://0-1.latest.android-friendconnect.appspot.com/xmlrpc";
 		
 		this.baseURI = URI.create(baseUrl);
 		

@@ -24,24 +24,26 @@ import java.util.Observable;
  * Represents the model part for the Login Activity. Contains
  * information about the successful outcome of a login
  * action.
- *
  */
 public class LoginResult extends Observable {
-
-	private boolean loginSucceeded = false;
+	public enum Result {
+	    SUCCESS, 
+	    CAPTCHA_REQUIRED, 
+	    FAILURE
+	}
+	
+	private Result loginResult = Result.FAILURE;
 
 	public LoginResult() {
-
 	}
 
-	public boolean isLoginSucceeded() {
-		return loginSucceeded;
+	public Result getLoginResult() {
+		return loginResult;
 	}
 
-	public void setLoginSucceeded(boolean loginSucceeded) {
-		this.loginSucceeded = loginSucceeded;
+	public void setLoginResult(Result loginResult) {
+		this.loginResult = loginResult;
 		setChanged();
 		notifyObservers();
 	}
-
 }

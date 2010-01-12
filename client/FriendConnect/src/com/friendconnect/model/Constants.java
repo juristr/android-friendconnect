@@ -21,5 +21,6 @@ package com.friendconnect.model;
 public class Constants {
 
 	public static String USER_PREFS = "userGlblPrefs";
+	public static String CAPTCHA_REQUIRED = "Captcha required";
 	
 }
