@@ -35,15 +35,17 @@ public class AndroidUserPositionOverlay extends BasePositionOverlay {
 	}
 
 	public void setPosition(com.friendconnect.model.Location position) {
-		this.androidUserGeoPoint = new GeoPoint(
-				(int) (position.getLatitude() * 1E6), (int) (position
-						.getLongitude() * 1E6));
+		if(position != null){
+			this.androidUserGeoPoint = new GeoPoint(
+					(int) (position.getLatitude() * 1E6), (int) (position
+							.getLongitude() * 1E6));	
+		}
 	}
 
 	@Override
 	public void draw(Canvas canvas, MapView mapView, boolean shadow) {
 		Projection projection = mapView.getProjection();
-		if (shadow == false) {
+		if (shadow == false && androidUserGeoPoint != null) {
 			Paint paint = new Paint();
 			paint.setARGB(250, 0, 0, 255);
 			paint.setAntiAlias(true);
