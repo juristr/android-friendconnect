@@ -21,8 +21,12 @@ package com.friendconnect.activities;
 import java.util.Observable;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,6 +40,7 @@ import com.friendconnect.controller.LoginController;
 import com.friendconnect.main.IoC;
 import com.friendconnect.model.Constants;
 import com.friendconnect.model.LoginResult;
+import com.friendconnect.model.LoginResult.Result;
 import com.friendconnect.utils.ActivityUtils;
 
 /**
@@ -128,10 +133,22 @@ public class LoginActivity extends Activity implements IView {
 	public void update(Observable observable, Object data) {
 		LoginResult result = (LoginResult) observable;
 
-		if (result.isLoginSucceeded()) {
+		if (result.getLoginResult() == Result.SUCCESS) {
 			saveActivityPreferences();
 			setResult(Activity.RESULT_OK, null);
 			finish();
+		} else if (result.getLoginResult() == Result.CAPTCHA_REQUIRED) {
+			AlertDialog.Builder builder = ActivityUtils.createConfirmationDialog(this, this.getString(R.string.dialogCaptchaRequiredTitle), this.getString(R.string.dialogCaptchaRequiredMessage));
+			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					Intent browserIntent = new Intent(Intent.ACTION_VIEW);
+					browserIntent.setData(Uri.parse(LoginActivity.this.getString(R.string.googleUnlockAccountLink)));
+					LoginActivity.this.startActivity(browserIntent);
+				}
+			});
+			builder.setNegativeButton(R.string.cancel, null);
+			builder.setCancelable(true);
+			builder.show();
 		}
 	}
 	

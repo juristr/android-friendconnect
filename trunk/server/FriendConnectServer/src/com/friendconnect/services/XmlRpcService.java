@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import com.friendconnect.exceptions.CaptchaException;
 import com.friendconnect.model.Location;
 import com.friendconnect.model.POIAlert;
 import com.friendconnect.model.User;
@@ -33,8 +34,9 @@ public class XmlRpcService {
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
+	 * @throws CaptchaException 
 	 */
-	public Object login(String username, byte[] encryptedPwd) throws AuthenticationException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	public Object login(String username, byte[] encryptedPwd) throws AuthenticationException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, CaptchaException {
 		String password = encrypter.performDecrypt(encryptedPwd);
 		
 		User user = userService.authenticate(username, password);

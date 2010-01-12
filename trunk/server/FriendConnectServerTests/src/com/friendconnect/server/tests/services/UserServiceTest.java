@@ -25,6 +25,7 @@ import java.util.Properties;
 import junit.framework.TestCase;
 
 import com.friendconnect.dao.IUserDao;
+import com.friendconnect.exceptions.CaptchaException;
 import com.friendconnect.model.Location;
 import com.friendconnect.model.User;
 import com.friendconnect.server.tests.mock.MockUserDao;
@@ -54,7 +55,7 @@ public class UserServiceTest extends TestCase {
 		properties = null;
 	}
 	
-	public void testAuthenticate() throws AuthenticationException{
+	public void testAuthenticate() throws AuthenticationException, CaptchaException{
 		String emailAddress = properties.getProperty("emailAddress");
 		String password = properties.getProperty("password");
 		

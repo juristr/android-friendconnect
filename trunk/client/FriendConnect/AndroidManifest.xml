@@ -21,6 +21,7 @@
 		<activity android:name=".activities.POIAlertActivity" android:label="@string/activityPOIAlert"/>
 		<service android:name=".services.FriendUpdateService" android:enabled="true"/>
 		<service android:name=".services.POIAlertNotificationService" android:enabled="true"/>
+		<service android:name=".services.LocationService" android:enabled="true"/>
 	</application>
     <uses-sdk android:minSdkVersion="3" />
     <uses-permission android:name="android.permission.INTERNET"/>

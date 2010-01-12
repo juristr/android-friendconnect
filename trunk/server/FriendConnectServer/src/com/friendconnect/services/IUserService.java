@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.jdo.JDOException;
 
+import com.friendconnect.exceptions.CaptchaException;
 import com.friendconnect.model.Location;
 import com.friendconnect.model.POIAlert;
 import com.friendconnect.model.User;
@@ -35,9 +36,9 @@ public interface IUserService {
 	 * @param password the password, i.e. the Google Account password
 	 * @return user, if the authentication was successful, null otherwise
 	 * @throws AuthenticationException
-	 * @throws JDOException
+	 * @throws CaptchaException
 	 */
-	public User authenticate(String username, String password) throws AuthenticationException;
+	public User authenticate(String username, String password) throws AuthenticationException, CaptchaException;
 
 	/**
 	 * Validates the received token against the user id. This method will

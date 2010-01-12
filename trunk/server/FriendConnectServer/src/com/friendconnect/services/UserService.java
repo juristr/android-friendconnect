@@ -23,34 +23,40 @@ import java.util.Date;
 import java.util.List;
 
 import com.friendconnect.dao.IUserDao;
+import com.friendconnect.exceptions.CaptchaException;
 import com.friendconnect.model.Location;
 import com.friendconnect.model.POIAlert;
 import com.friendconnect.model.User;
 import com.google.gdata.client.GoogleService;
 import com.google.gdata.client.GoogleAuthTokenFactory.UserToken;
+import com.google.gdata.client.GoogleService.CaptchaRequiredException;
 import com.google.gdata.client.contacts.ContactsService;
 import com.google.gdata.util.AuthenticationException;
 
 public class UserService implements IUserService {
 	private IUserDao userDao;
 	private String applicationName;
-
+	
 	@Override
-	public User authenticate(String username, String password) throws AuthenticationException {
-		GoogleService contactsService = new ContactsService(applicationName);
-		contactsService.setUserCredentials(username, password);
-		UserToken auth_token = (UserToken) contactsService.getAuthTokenFactory().getAuthToken();
-		String token = auth_token.getValue();
-		User user = userDao.getUserByEmailAddress(username);
-		if (user == null) {
-			user = new User();
-			user.setEmailAddress(username);
-		} 
-		user.setToken(token);
-		user.setLastAccess(new Date());
-		user.setOnline(true);
-		userDao.saveUser(user);
-		return user;
+	public User authenticate(String username, String password) throws AuthenticationException, CaptchaException {
+		try {
+			GoogleService contactsService = new ContactsService(applicationName);
+			contactsService.setUserCredentials(username, password);
+			UserToken auth_token = (UserToken) contactsService.getAuthTokenFactory().getAuthToken();
+			String token = auth_token.getValue();
+			User user = userDao.getUserByEmailAddress(username);
+			if (user == null) {
+				user = new User();
+				user.setEmailAddress(username);
+			} 
+			user.setToken(token);
+			user.setLastAccess(new Date());
+			user.setOnline(true);
+			userDao.saveUser(user);
+			return user;
+		} catch (CaptchaRequiredException e) {
+			throw new CaptchaException(e.getCaptchaUrl());
+		}
 	}
 
 	@Override

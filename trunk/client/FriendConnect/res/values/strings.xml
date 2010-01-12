@@ -88,4 +88,7 @@
 	<string name="dialogRemovePOIAlertTitle">Confirm Remove</string>
 	<string name="yes">Yes</string>
 	<string name="no">No</string>
+	<string name="dialogCaptchaRequiredTitle">Unlock Google Account</string>
+	<string name="dialogCaptchaRequiredMessage">Your Google account seems to be locked. Do you wish to unlock it now?</string>
+	<string name="googleUnlockAccountLink">https://www.google.com/accounts/DisplayUnlockCaptcha</string>
 </resources>
