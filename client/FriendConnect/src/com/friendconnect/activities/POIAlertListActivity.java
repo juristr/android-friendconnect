@@ -86,6 +86,8 @@ public class POIAlertListActivity extends AuthenticationActivity implements IVie
 		int index = listViewPoiAlerts.getSelectedItemPosition();
 		MenuItem itemRemovePOIAlert = menu.findItem(REMOVE_POIALERT);
 		itemRemovePOIAlert.setVisible(index >= 0);
+		MenuItem itemLocateOnMap = menu.findItem(NAVIGATE_TO_ALERT);
+		itemLocateOnMap.setVisible(index >= 0);
 		
 		return true;
 	}
