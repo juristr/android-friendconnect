@@ -12,11 +12,11 @@ import android.widget.EditText;
 import com.friendconnect.R;
 import com.friendconnect.activities.LoginActivity;
 
-public class FriendConnectActivityTest extends
+public class LoginActivityTest extends
 		ActivityUnitTestCase<LoginActivity> {
 	private Intent startIntent;
 
-	public FriendConnectActivityTest() {
+	public LoginActivityTest() {
 		super(LoginActivity.class);
 	}
 
