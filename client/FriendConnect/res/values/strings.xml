@@ -53,6 +53,7 @@
 	<string name="uiMessageFriendInviteSuccessful">Your friend has been invited successfully.</string>
 	<string name="uiMessageFriendInviteFailure">Oops, there was a problem inviting your friend. We're sorry, please try again.</string>
 	<string name="uiMessageFriendRemovalFailure">Oops, there was a problem in removing your friend. We're sorry, please try again.</string>
+	<string name="uiMessageInvalidLocation">Oops...couldn't find the given location.</string>
 	<string name="menuAddFriend">Add Friend</string>
 	<string name="menuRemoveFriend">Remove Friend</string>
 	<string name="menuPendingInvitesListView">Pending Invites</string>
@@ -61,7 +62,7 @@
 	<string name="menuRejectInvite">Reject Invite</string>
 	<string name="menuRefresh">Refresh</string>
 	<string name="menuMapView">Friend Map</string>
-	<string name="menuCenterMap">Center Map</string>
+	<string name="menuCenterMap">Locate me</string>
 	<string name="menuAddPoiAlert">Add POI Alert</string>
 	<string name="menuRemovePoiAlert">Remove POI Alert</string>
 	<string name="menuListPoiAlerts">List POI Alerts</string>

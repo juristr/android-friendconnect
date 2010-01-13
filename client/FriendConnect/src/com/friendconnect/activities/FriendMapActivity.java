@@ -186,7 +186,7 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 			if(centerLat != 0 && centerLng != 0){
 				navigateToPoint(centerLat, centerLng);
 			}else{
-				ActivityUtils.showToast(this, "Couldn't identify location", 2000);
+				ActivityUtils.showToast(this, R.string.uiMessageInvalidLocation, 2000);
 			}
 		}
 	}
@@ -303,6 +303,7 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 	private void navigateToPoint(double lat, double lng) {
 		GeoPoint point = new GeoPoint((int) (lat * 1E6), (int) (lng * 1E6));
 		mapController.animateTo(point);
+		mapController.setZoom(16);
 	}
 
 	private boolean containsPoiAlert(String poiAlertId, List<POIAlert> poiAlerts) {
