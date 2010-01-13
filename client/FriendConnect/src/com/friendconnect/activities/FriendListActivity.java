@@ -131,20 +131,11 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 	public void onPrepareDialog(int id, final Dialog dialog) {
 		switch (id) {
 		case (FRIENDDETAILS_DIALOG): {
-			if (selectedUser != null) {
-				((TextView) dialog.findViewById(R.id.textViewName)).setText(selectedUser.getName());
-				((TextView) dialog.findViewById(R.id.textViewPhone)).setText(selectedUser
-						.getPhone());
-				((TextView) dialog.findViewById(R.id.textViewEmail)).setText(selectedUser
-						.getEmailAddress());
-				((TextView) dialog.findViewById(R.id.textViewWebsite)).setText(selectedUser
-						.getWebsite());
-				((TextView) dialog.findViewById(R.id.textViewStatusmessage)).setText(selectedUser
-						.getStatusMessage());
-			}else{
-				dialog.cancel();
-				dialog.dismiss();
-			}
+			((TextView) dialog.findViewById(R.id.textViewName)).setText(selectedUser.getName());
+			((TextView) dialog.findViewById(R.id.textViewPhone)).setText(selectedUser.getPhone());
+			((TextView) dialog.findViewById(R.id.textViewEmail)).setText(selectedUser.getEmailAddress());
+			((TextView) dialog.findViewById(R.id.textViewWebsite)).setText(selectedUser.getWebsite());
+			((TextView) dialog.findViewById(R.id.textViewStatusmessage)).setText(selectedUser.getStatusMessage());
 			break;
 		}
 		case (ADDFRIEND_DIALOG): {
