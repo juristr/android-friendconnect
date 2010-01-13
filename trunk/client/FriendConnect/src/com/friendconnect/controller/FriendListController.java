@@ -75,7 +75,8 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 				}
 				
 				List<User> currentFriends = model.getFriends();
-				for (User friend : currentFriends) {
+				for (int i = currentFriends.size() - 1; i >= 0; i--) {
+					User friend = currentFriends.get(i);
 					User friendInResult = getFriend(result, friend.getId());
 					if(friendInResult == null){
 						//remove friend
