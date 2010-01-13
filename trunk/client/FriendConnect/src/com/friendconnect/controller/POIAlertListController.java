@@ -112,9 +112,7 @@ public class POIAlertListController extends AbstractController<FriendConnectUser
 					new Object[] { serializedAlert }, new IAsyncCallback<Boolean>() {
 
 						public void onSuccess(Boolean result) {
-							if (result) {
-//								model.addPoiAlert(alert);
-							} else {
+							if (!result) {
 								onFailure(new Exception(alert.getTitle()));
 							}
 							notifyStopProgress();
