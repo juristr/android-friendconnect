@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="fill_parent" android:fillViewport="true"> 
+<TableLayout
 	android:layout_height="fill_parent" android:layout_width="fill_parent" android:stretchColumns="1,2"
 	android:background="#e8eefa" android:padding="2dp" >
 	<TableRow android:paddingBottom="5dp">
@@ -33,3 +34,4 @@
 		<TextView android:autoLink="web" android:layout_span="3" android:text="@string/googlelink" android:layout_gravity="center_horizontal" android:textColor="#000000"/>
 	</TableRow>
 </TableLayout>
+</ScrollView>
