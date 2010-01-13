@@ -48,6 +48,9 @@ public class PendingFriendListController extends AbstractController<FriendConnec
 					onFailure(new Exception("Result was null"));
 				}
 				
+				//clear all previously fetched pending invites
+				model.getPendingInvites().clear();
+				
 				for (User userInvite : result) {
 					if(!modelContainsPendingInvite(userInvite))
 						model.addPendingInvite(userInvite);
@@ -116,7 +119,7 @@ public class PendingFriendListController extends AbstractController<FriendConnec
 	
 	private void removeInvite(final String friendId) {
 		List<User> pendingInvites = model.getPendingInvites();
-		for(int i=0; i<pendingInvites.size(); i++){
+		for(int i = 0; i<pendingInvites.size(); i++){
 			User user = model.getPendingInvites().get(i);
 			if(user.getId().equals(friendId)){
 				model.removePendingInvite(user);
