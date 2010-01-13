@@ -21,6 +21,7 @@ package com.friendconnect.services;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -176,8 +177,8 @@ public class POIAlertNotificationService extends Service {
 			intent.putExtra(POIAlertActivity.NOTIFICATION_ID, notificationId);
 			
 			notification.defaults = Notification.DEFAULT_ALL;
-
-			PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, Intent.FLAG_ACTIVITY_NEW_TASK);
+			
+			PendingIntent pendingIntent = PendingIntent.getActivity(this, notificationId, intent, Intent.FLAG_ACTIVITY_NEW_TASK);
 	
 			String notificationContentText = String.format(getString(R.string.notificationText), friend.toString(), poiAlert.getTitle());
 				
