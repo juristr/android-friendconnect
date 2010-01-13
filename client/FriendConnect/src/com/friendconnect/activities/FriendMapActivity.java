@@ -63,7 +63,6 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 	public static String CENTER_LNG = "mapCenter_lng";
 
 	private static final int CENTER_MAP = Menu.FIRST;
-	// private static final int ADD_POI = Menu.FIRST + 1;
 	private static final int LIST_POIALERTS = Menu.FIRST + 2;
 	private static final int SUBACTIVITY_EDITPOI = 1;
 	private static final int POIDIALOGVIEW = 2;
@@ -78,7 +77,6 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 	private HashMap<String, POIOverlay> poiOverlays;
 	private boolean doCenterMap = true;
 	private POIAlert clickedPOIAlert = null; // the clicked alert (for showing
-
 	// appropriate dialog)
 
 	/** Called when the activity is first created. */
@@ -100,8 +98,6 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 		this.locationController = IoC.getInstance(LocationController.class);
 		this.locationController.registerView(this);
 		this.poiController = IoC.getInstance(POIAlertListController.class);
-		// do not register to not get too many updates! LocationController
-		// already registers on FriendConnectUser
 		this.poiController.registerView(this);
 
 		this.friendOverlays = new HashMap<String, FriendPositionOverlay>();
@@ -187,7 +183,11 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 			double centerLat = retrievedData.getDouble(CENTER_LAT);
 			double centerLng = retrievedData.getDouble(CENTER_LNG);
 
-			navigateToPoint(centerLat, centerLng);
+			if(centerLat != 0 && centerLng != 0){
+				navigateToPoint(centerLat, centerLng);
+			}else{
+				ActivityUtils.showToast(this, "Couldn't identify location", 2000);
+			}
 		}
 	}
 
@@ -211,10 +211,6 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 		MenuItem itemCenterMap = menu.add(0, CENTER_MAP, Menu.NONE, R.string.menuCenterMap);
 		itemCenterMap.setIcon(R.drawable.menu_mylocation);
 
-		// MenuItem itemAddPoi = menu.add(1, ADD_POI, Menu.NONE,
-		// R.string.menuAddPoiAlert);
-		// itemAddPoi.setIcon(R.drawable.menu_add);
-
 		MenuItem listPoiAlerts = menu.add(1, LIST_POIALERTS, Menu.NONE, R.string.menuListPoiAlerts);
 		listPoiAlerts.setIcon(R.drawable.menu_myplaces);
 
@@ -230,10 +226,7 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 			doCenterMap = true;
 			return true;
 		}
-			// case (ADD_POI): {
-			// startActivity(new Intent(this, EditPoiActivity.class));
-			// return true;
-			// }
+
 		case (LIST_POIALERTS): {
 			startActivityForResult(new Intent(this, POIAlertListActivity.class),
 					SUBACTIVITY_POIALERTLIST);
@@ -290,38 +283,6 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 		default:
 			break;
 		}
-
-		// switch (id) {
-		// case (DUMMY_LOCATIONSETTERDIALOG): {
-		// ((Button) dialog.findViewById(R.id.buttonSubmitLoc))
-		// .setOnClickListener(new OnClickListener() {
-		// public void onClick(View v) {
-		// EditText editTextLat = (EditText) dialog
-		// .findViewById(R.id.editTextLatitude);
-		// EditText editTextLng = (EditText) dialog
-		// .findViewById(R.id.editTextLongitude);
-		//
-		// double lat = Double.parseDouble(editTextLat
-		// .getText().toString());
-		// double lng = Double.parseDouble(editTextLng
-		// .getText().toString());
-		//
-		// final Location loc = new Location();
-		// loc.setLatitude(lat);
-		// loc.setLongitude(lng);
-		//
-		// Handler handler = new Handler();
-		// handler.post(new Runnable() {
-		// public void run() {
-		// controller.updateDummyLocation(loc);
-		// }
-		// });
-		//
-		// dialog.dismiss();
-		// }
-		// });
-		// }
-		// }
 	}
 
 	private void showAndroidUserPosition(Location position) {
@@ -374,7 +335,7 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 			if (doCenterMap && user.getPosition() != null) {
 				// center the map on the user's position
 
-				if (user.getPosition().getLatitude() != 0 && user.getPosition().getLongitude() != 0) {
+				if (isValidPosition(user.getPosition())) {
 					navigateToPoint(user.getPosition().getLatitude(), user.getPosition()
 							.getLongitude());
 				}
@@ -392,7 +353,7 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 		// update friend's positions
 		List<User> friends = user.getCopyOfFriends();
 		for (User friend : friends) {
-			if (friend.getOnline() && friend.getPosition() != null) {
+			if (friend.getOnline() && friend.getPosition() != null && isValidPosition(friend.getPosition())) {
 				FriendPositionOverlay friendOverlay = friendOverlays.get(friend.getId());
 				if (friendOverlay != null) {
 					friendOverlay.setPosition(friend.getPosition().convertToAndroidGeoPoint(), user
@@ -414,6 +375,10 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 				friendOverlays.remove(friendId);
 			}
 		}
+	}
+
+	private boolean isValidPosition(Location position) {
+		return (position.getLatitude() != 0 && position.getLongitude() != 0);
 	}
 
 	private void updatePOIFlags(final FriendConnectUser user) {
