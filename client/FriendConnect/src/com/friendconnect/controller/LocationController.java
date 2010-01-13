@@ -18,6 +18,7 @@
 
 package com.friendconnect.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
@@ -80,8 +81,9 @@ public class LocationController extends AbstractController<FriendConnectUser> {
 	 * it's friends.
 	 */
 	public void updateFriendDistances() {
-		if (model.getFriends() != null) {
-			for (User friend : model.getFriends()) {
+		List<User> friends = model.getCopyOfFriends();
+		if (friends != null) {
+			for (User friend : friends) {
 				if (model.getPosition() != null && friend.getPosition() != null) {
 					float distance = model.getPosition().convertToAndroidLocation().distanceTo(friend.getPosition().convertToAndroidLocation());
 
