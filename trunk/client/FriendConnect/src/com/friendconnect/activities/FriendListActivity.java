@@ -69,7 +69,7 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 
 	static final private int FRIENDDETAILS_DIALOG = 10;
 	static final private int ADDFRIEND_DIALOG = 20;
-	
+
 	public void onAuthenticated() {
 		setContentView(R.layout.friendlist);
 		handler = new Handler();
@@ -97,6 +97,7 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 
 	/**
 	 * Shows information of the logged-in user
+	 * 
 	 * @param user
 	 */
 	private void showFriendConnectUserInfo(FriendConnectUser user) {
@@ -114,12 +115,14 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 	@Override
 	public Dialog onCreateDialog(int id) {
 		switch (id) {
-			case (FRIENDDETAILS_DIALOG): {
-				return ActivityUtils.createViewDialog(this, R.layout.frienddetailsview, R.string.details, R.drawable.icon);
-			}
-			case (ADDFRIEND_DIALOG): {
-				return ActivityUtils.createViewDialog(this, R.layout.friendinvite, R.string.invitation, R.drawable.icon);
-			}
+		case (FRIENDDETAILS_DIALOG): {
+			return ActivityUtils.createViewDialog(this, R.layout.frienddetailsview,
+					R.string.details, R.drawable.icon);
+		}
+		case (ADDFRIEND_DIALOG): {
+			return ActivityUtils.createViewDialog(this, R.layout.friendinvite, R.string.invitation,
+					R.drawable.icon);
+		}
 		}
 		return super.onCreateDialog(id);
 	}
@@ -127,18 +130,29 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 	@Override
 	public void onPrepareDialog(int id, final Dialog dialog) {
 		switch (id) {
-			case (FRIENDDETAILS_DIALOG): {
+		case (FRIENDDETAILS_DIALOG): {
+			if (selectedUser != null) {
 				((TextView) dialog.findViewById(R.id.textViewName)).setText(selectedUser.getName());
-				((TextView) dialog.findViewById(R.id.textViewPhone)).setText(selectedUser.getPhone());
-				((TextView) dialog.findViewById(R.id.textViewEmail)).setText(selectedUser.getEmailAddress());
-				((TextView) dialog.findViewById(R.id.textViewWebsite)).setText(selectedUser.getWebsite());
-				((TextView) dialog.findViewById(R.id.textViewStatusmessage)).setText(selectedUser.getStatusMessage());
-				break;
+				((TextView) dialog.findViewById(R.id.textViewPhone)).setText(selectedUser
+						.getPhone());
+				((TextView) dialog.findViewById(R.id.textViewEmail)).setText(selectedUser
+						.getEmailAddress());
+				((TextView) dialog.findViewById(R.id.textViewWebsite)).setText(selectedUser
+						.getWebsite());
+				((TextView) dialog.findViewById(R.id.textViewStatusmessage)).setText(selectedUser
+						.getStatusMessage());
+			}else{
+				dialog.cancel();
+				dialog.dismiss();
 			}
-			case (ADDFRIEND_DIALOG): {
-				((Button) dialog.findViewById(R.id.buttonInvite)).setOnClickListener(new OnClickListener() {
+			break;
+		}
+		case (ADDFRIEND_DIALOG): {
+			((Button) dialog.findViewById(R.id.buttonInvite))
+					.setOnClickListener(new OnClickListener() {
 						public void onClick(View v) {
-							EditText editTextEmailAddress = (EditText) dialog.findViewById(R.id.editTextInviteeEmail);
+							EditText editTextEmailAddress = (EditText) dialog
+									.findViewById(R.id.editTextInviteeEmail);
 							String emailAddress = editTextEmailAddress.getText().toString().trim();
 							if (!emailAddress.equals("") && emailAddress.contains("@")) {
 								if (!emailAddress.equals(controller.getModel().getEmailAddress())) {
@@ -148,16 +162,19 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 									editTextEmailAddress.requestFocus();
 									dialog.dismiss();
 								} else {
-									ActivityUtils.showToast(FriendListActivity.this, R.string.uiMessageCannotInviteYourself, Toast.LENGTH_LONG);
+									ActivityUtils.showToast(FriendListActivity.this,
+											R.string.uiMessageCannotInviteYourself,
+											Toast.LENGTH_LONG);
 								}
 
 							} else {
-								ActivityUtils.showToast(FriendListActivity.this, R.string.uiMessageProvideEmailAddress, Toast.LENGTH_LONG);
+								ActivityUtils.showToast(FriendListActivity.this,
+										R.string.uiMessageProvideEmailAddress, Toast.LENGTH_LONG);
 							}
 						}
 					});
-				break;
-			}
+			break;
+		}
 		}
 	}
 
@@ -166,9 +183,10 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 			public void run() {
 				showFriendConnectUserInfo((FriendConnectUser) observable);
 
-				while (lock);
-				
-				((FriendAdapter)adapter).sort(userComparator);
+				while (lock)
+					;
+
+				((FriendAdapter) adapter).sort(userComparator);
 				adapter.notifyDataSetChanged();
 			}
 		});
@@ -189,11 +207,16 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		// Create and add new menu items.
-		MenuItem itemAddFriend = menu.add(0, ADD_FRIEND, Menu.NONE, this.getString(R.string.menuAddFriend));
-		MenuItem itemRemoveFriend = menu.add(0, REMOVE_FRIEND, Menu.NONE, this.getString(R.string.menuRemoveFriend));
-		MenuItem itemPendingInvitesList = menu.add(2, PENDINGINVITES_LIST, Menu.NONE, this.getString(R.string.menuPendingInvitesListView));
-		MenuItem itemProfile = menu.add(3, PROFILE, Menu.NONE, this.getString(R.string.menuEditProfile));
-		MenuItem itemMapView = menu.add(4, MAP_VIEW, Menu.NONE, this.getString(R.string.menuMapView));
+		MenuItem itemAddFriend = menu.add(0, ADD_FRIEND, Menu.NONE, this
+				.getString(R.string.menuAddFriend));
+		MenuItem itemRemoveFriend = menu.add(0, REMOVE_FRIEND, Menu.NONE, this
+				.getString(R.string.menuRemoveFriend));
+		MenuItem itemPendingInvitesList = menu.add(2, PENDINGINVITES_LIST, Menu.NONE, this
+				.getString(R.string.menuPendingInvitesListView));
+		MenuItem itemProfile = menu.add(3, PROFILE, Menu.NONE, this
+				.getString(R.string.menuEditProfile));
+		MenuItem itemMapView = menu.add(4, MAP_VIEW, Menu.NONE, this
+				.getString(R.string.menuMapView));
 
 		// Assign icons
 		itemAddFriend.setIcon(R.drawable.menu_invite);
@@ -212,26 +235,26 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
 		switch (item.getItemId()) {
-			case (ADD_FRIEND): {
-				showDialog(ADDFRIEND_DIALOG);
-				return true;
-			}
-			case (REMOVE_FRIEND): {
-				doRemoveFriendActions(listViewFriends.getSelectedItemPosition());
-				return true;
-			}
-			case (PENDINGINVITES_LIST): {
-				startActivity(new Intent(FriendListActivity.this, PendingInvitesListActivity.class));
-				return true;
-			}
-			case (PROFILE): {
-				startActivity(new Intent(FriendListActivity.this, EditProfileActivity.class));
-				return true;
-			}
-			case (MAP_VIEW): {
-				startActivity(new Intent(FriendListActivity.this, FriendMapActivity.class));
-				return true;
-			}
+		case (ADD_FRIEND): {
+			showDialog(ADDFRIEND_DIALOG);
+			return true;
+		}
+		case (REMOVE_FRIEND): {
+			doRemoveFriendActions(listViewFriends.getSelectedItemPosition());
+			return true;
+		}
+		case (PENDINGINVITES_LIST): {
+			startActivity(new Intent(FriendListActivity.this, PendingInvitesListActivity.class));
+			return true;
+		}
+		case (PROFILE): {
+			startActivity(new Intent(FriendListActivity.this, EditProfileActivity.class));
+			return true;
+		}
+		case (MAP_VIEW): {
+			startActivity(new Intent(FriendListActivity.this, FriendMapActivity.class));
+			return true;
+		}
 		}
 		return true;
 	}
@@ -252,17 +275,17 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 		int index = menuInfo.position;
 
 		switch (item.getItemId()) {
-			case (REMOVE_FRIEND): {
-				doRemoveFriendActions(index);
-				return true;
-			}
-			case (LOCATE_ON_MAP):{
-				final User friend = getSelectedFriend(index);
-				Intent mapIntent = new Intent(FriendListActivity.this, FriendMapActivity.class);
-				mapIntent.putExtra(FriendMapActivity.CENTER_LAT, friend.getPosition().getLatitude());
-				mapIntent.putExtra(FriendMapActivity.CENTER_LNG, friend.getPosition().getLongitude());
-				startActivity(mapIntent);
-			}
+		case (REMOVE_FRIEND): {
+			doRemoveFriendActions(index);
+			return true;
+		}
+		case (LOCATE_ON_MAP): {
+			final User friend = getSelectedFriend(index);
+			Intent mapIntent = new Intent(FriendListActivity.this, FriendMapActivity.class);
+			mapIntent.putExtra(FriendMapActivity.CENTER_LAT, friend.getPosition().getLatitude());
+			mapIntent.putExtra(FriendMapActivity.CENTER_LNG, friend.getPosition().getLongitude());
+			startActivity(mapIntent);
+		}
 		}
 		return super.onContextItemSelected(item);
 	}
@@ -272,7 +295,9 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 	 */
 	private void doRemoveFriendActions(int index) {
 		final User friend = getSelectedFriend(index);
-		AlertDialog.Builder ad = ActivityUtils.createConfirmationDialog(this, getString(R.string.dialogRemoveFriendTitle), String.format(getString(R.string.dialogRemoveFriendMessage), friend.toString()));
+		AlertDialog.Builder ad = ActivityUtils.createConfirmationDialog(this,
+				getString(R.string.dialogRemoveFriendTitle), String.format(
+						getString(R.string.dialogRemoveFriendMessage), friend.toString()));
 		ad.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				if (friend != null) {
@@ -287,8 +312,8 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 	}
 
 	/**
-	 * Locks the friend-list to be updated and retrieves the friend object
-	 * that is being selected by the user
+	 * Locks the friend-list to be updated and retrieves the friend object that
+	 * is being selected by the user
 	 * 
 	 * @return the friend to remove
 	 */
@@ -303,7 +328,7 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 
 		return user;
 	}
-	
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -311,7 +336,7 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 	}
 
 	/* Getters and setters */
-	
+
 	public FriendListController getController() {
 		return controller;
 	}
