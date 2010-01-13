@@ -184,7 +184,7 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 			double centerLng = retrievedData.getDouble(CENTER_LNG);
 
 			if(centerLat != 0 && centerLng != 0){
-				navigateToPoint(centerLat, centerLng);
+				navigateToPoint(centerLat, centerLng, true);
 			}else{
 				ActivityUtils.showToast(this, R.string.uiMessageInvalidLocation, 2000);
 			}
@@ -300,10 +300,11 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 		mapView.invalidate();
 	}
 
-	private void navigateToPoint(double lat, double lng) {
+	private void navigateToPoint(double lat, double lng, boolean doZoom) {
 		GeoPoint point = new GeoPoint((int) (lat * 1E6), (int) (lng * 1E6));
 		mapController.animateTo(point);
-		mapController.setZoom(16);
+		if(doZoom)
+			mapController.setZoom(16);
 	}
 
 	private boolean containsPoiAlert(String poiAlertId, List<POIAlert> poiAlerts) {
@@ -338,7 +339,7 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 
 				if (isValidPosition(user.getPosition())) {
 					navigateToPoint(user.getPosition().getLatitude(), user.getPosition()
-							.getLongitude());
+							.getLongitude(), false);
 				}
 			}
 		} catch (Exception e) {
