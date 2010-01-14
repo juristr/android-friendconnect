@@ -24,6 +24,7 @@ import org.xmlrpc.android.XMLRPCClient;
 
 import android.util.Log;
 
+import com.friendconnect.annotations.FriendConnectURL;
 import com.friendconnect.main.IFriendConnectApplication;
 import com.friendconnect.model.FriendConnectUser;
 import com.friendconnect.xmlrpc.IAsyncCallback;
@@ -38,13 +39,7 @@ public class XMLRPCService implements IXMLRPCService {
 	private IFriendConnectApplication application;
 
 	public XMLRPCService() {
-		// Resources.getString(com.friendconnect.activities.R.string.friendConnectServerUrl);
-//		String baseUrl = "http://10.0.2.2:8080/xmlrpc";  //works always
-		String baseUrl = "http://0-1.latest.android-friendconnect.appspot.com/xmlrpc";
 		
-		this.baseURI = URI.create(baseUrl);
-		
-		this.client = new XMLRPCClient(baseURI); // TODO BAD, inject this later
 	}
 
 	public <T> void sendRequest(String remoteMethod, Object[] params, IAsyncCallback<T> callback, Class clazz) {
@@ -105,4 +100,9 @@ public class XMLRPCService implements IXMLRPCService {
 		this.application = application;
 	}
 	
+	@Inject
+	public void setFriendConnectURL(@FriendConnectURL String friendconnectURL) {
+		this.baseURI = URI.create(friendconnectURL);
+		this.client = new XMLRPCClient(baseURI);
+	}
 }

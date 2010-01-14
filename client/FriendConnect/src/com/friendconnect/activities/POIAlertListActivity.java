@@ -50,7 +50,6 @@ public class POIAlertListActivity extends AuthenticationActivity implements IVie
 
 	private static final int POIDIALOGVIEW = 1;
 	private static final int SUBACTIVITY_EDITPOI = 2;
-	private static final int MAP_ACTIVITY = 3;
 	
 	private POIAlertListController controller;
 	private ListView listViewPoiAlerts;
@@ -101,6 +100,7 @@ public class POIAlertListActivity extends AuthenticationActivity implements IVie
 		
 		// Assign icons
 		itemRemovePOIAlert.setIcon(R.drawable.menu_delete);
+		itemNavigateToAlert.setIcon(R.drawable.menu_locateonmap);
 
 		// Allocate shortcuts to each of them.
 		itemRemovePOIAlert.setShortcut('1', 'r');
@@ -109,7 +109,6 @@ public class POIAlertListActivity extends AuthenticationActivity implements IVie
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		super.onOptionsItemSelected(item);
 		switch (item.getItemId()) {
 			case (REMOVE_POIALERT): {
 				doRemovePOIAlertActions(listViewPoiAlerts.getSelectedItemPosition());
@@ -120,7 +119,7 @@ public class POIAlertListActivity extends AuthenticationActivity implements IVie
 				return true;
 			}
 		}
-		return true;
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -132,8 +131,6 @@ public class POIAlertListActivity extends AuthenticationActivity implements IVie
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		super.onContextItemSelected(item);
-
 		AdapterView.AdapterContextMenuInfo menuInfo;
 		menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 		int index = menuInfo.position;
@@ -145,6 +142,7 @@ public class POIAlertListActivity extends AuthenticationActivity implements IVie
 			}
 			case (NAVIGATE_TO_ALERT):{
 				showOnMap(index);
+				return true;
 			}
 		}
 		return super.onContextItemSelected(item);
@@ -157,7 +155,7 @@ public class POIAlertListActivity extends AuthenticationActivity implements IVie
 				return ActivityUtils.createViewDialog(this, R.layout.poidialogview, R.string.details, R.drawable.flag);
 			}
 		}
-		return null;
+		return super.onCreateDialog(id);
 	}
 	
 	@Override
@@ -189,11 +187,6 @@ public class POIAlertListActivity extends AuthenticationActivity implements IVie
 				
 				break;
 		}
-	}
-	
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
 	}
 	
 	/**

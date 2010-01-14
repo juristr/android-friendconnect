@@ -16,52 +16,21 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.model;
+package com.friendconnect.annotations;
 
-import com.google.android.maps.GeoPoint;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
+import com.google.inject.BindingAnnotation;
 
 /**
- * Representing a location on the earth (lat/lng)
- * 
+ * Annotation for uniquely identify a Giuce binding
  */
-public class Location {
-	private double latitude;
-	private double longitude;
-
-	public Location() {
-		
-	}
-
-	public double getLatitude() {
-		return latitude;
-	}
-
-	public void setLatitude(double latitude) {
-		this.latitude = latitude;
-	}
-
-	public double getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(double longitude) {
-		this.longitude = longitude;
-	}
-	
-	/**
-	 * Converts into a Android Location
-	 * @return
-	 */
-	public android.location.Location convertToAndroidLocation(){
-		android.location.Location androidLoc = new android.location.Location("converted");
-		androidLoc.setLatitude(this.latitude);
-		androidLoc.setLongitude(this.longitude);
-		return androidLoc;
-	}
-	
-	public GeoPoint convertToAndroidGeoPoint(){
-		return new GeoPoint((int) (this.latitude * 1E6), (int) (this.longitude * 1E6));
-	}
+@BindingAnnotation 
+@Retention(RetentionPolicy.RUNTIME) 
+@Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD})
+public @interface FriendConnectURL {
 
 }

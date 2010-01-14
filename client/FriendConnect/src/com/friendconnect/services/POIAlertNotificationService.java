@@ -49,7 +49,7 @@ public class POIAlertNotificationService extends Service {
 	private POIAlertListController controller;
 	private NotificationManager notificationManager;
 	private Timer timer;
-	private final int CHECK_INTERVAL = 5000; // TODO make configurable??
+	private final int CHECK_INTERVAL = 5000;
 	private Handler mainHandler;
 	private List<String> shownNotifications = new ArrayList<String>();
 	private int notificationCounter = 0;

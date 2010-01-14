@@ -82,14 +82,13 @@ public class PendingInvitesListActivity extends AuthenticationActivity implement
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		super.onOptionsItemSelected(item);
 		switch (item.getItemId()) {
 			case (REFRESH): {
 				loadPendingInvites();
 				return true;
 			}
 		}
-		return false;
+		return super.onOptionsItemSelected(item);
 	}
 	
 	@Override
@@ -103,8 +102,6 @@ public class PendingInvitesListActivity extends AuthenticationActivity implement
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		super.onContextItemSelected(item);
-		
 		AdapterView.AdapterContextMenuInfo menuInfo;
         menuInfo = (AdapterView.AdapterContextMenuInfo)
         item.getMenuInfo();
@@ -120,7 +117,7 @@ public class PendingInvitesListActivity extends AuthenticationActivity implement
 				return true;
 			}
 		}
-		return false;
+		return super.onContextItemSelected(item);
 	}
 	
 	/**

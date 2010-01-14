@@ -164,9 +164,6 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 				setCenterFromBundleData(data);
 			}
 			break;
-
-		default:
-			break;
 		}
 	}
 
@@ -197,19 +194,13 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 		return false;
 	}
 
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		super.onPrepareOptionsMenu(menu);
-		return true;
-	}
-
 	/** Triggered the first time activity’s menu is displayed. */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		// Create and add new menu items.
 		MenuItem itemCenterMap = menu.add(0, CENTER_MAP, Menu.NONE, R.string.menuCenterMap);
-		itemCenterMap.setIcon(R.drawable.menu_mylocation);
+		itemCenterMap.setIcon(R.drawable.menu_locateonmap);
 
 		MenuItem listPoiAlerts = menu.add(1, LIST_POIALERTS, Menu.NONE, R.string.menuListPoiAlerts);
 		listPoiAlerts.setIcon(R.drawable.menu_myplaces);
@@ -219,8 +210,6 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		super.onOptionsItemSelected(item);
-
 		switch (item.getItemId()) {
 		case (CENTER_MAP): {
 			doCenterMap = true;
@@ -233,7 +222,7 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 			return true;
 		}
 		}
-		return false;
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -244,7 +233,7 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 					R.drawable.flag);
 		}
 		}
-		return null;
+		return super.onCreateDialog(id);
 	}
 
 	@Override
@@ -278,9 +267,6 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 				}
 			});
 
-			break;
-
-		default:
 			break;
 		}
 	}
@@ -403,14 +389,6 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 				}
 			}
 		}
-
-		// remove overlays of past friends
-		// for (String friendId : friendOverlays.keySet()) {
-		// if (!containsFriend(friendId, user.getFriends())) {
-		// friendOverlays.remove(friendId);
-		// mapView.getOverlays().remove(friendOverlays.get(friendId));
-		// }
-		// }
 	}
 
 	@Override
