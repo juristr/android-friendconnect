@@ -63,8 +63,7 @@ public class POIAlertNotificationService extends Service {
 	public void onCreate() {
 		this.controller = IoC.getInstance(POIAlertListController.class);
 		
-		String svcName = Context.NOTIFICATION_SERVICE; 
-		notificationManager = (NotificationManager)getSystemService(svcName); 
+		notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE); 
 		
 		this.mainHandler = new Handler();
 		this.timer = new Timer("POIAlertNotificationTimer");

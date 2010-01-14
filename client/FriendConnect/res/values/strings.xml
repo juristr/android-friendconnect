@@ -49,7 +49,7 @@
 	<string name="uiMessageSavingPOIAlert">Saving POI Alert...</string>
 	<string name="uiMessageLocationProviderOutOfService">Oops, it seems as if your location provider is out of service!</string>
 	<string name="uiMessageLocationProviderTemporarilyUnavailable">Oops, your location provider is temporarily unavailable.</string>
-	<string name="uiMessageLocationProviderDisabled">You disabled the location provider. We cannot update your location any more :(</string>
+	<string name="uiMessageLocationProviderDisabled">You disabled the location provider. We cannot update your location any more :(. This may lead to incorrect behaviour of the program!</string>
 	<string name="uiMessageFriendInviteSuccessful">Your friend has been invited successfully.</string>
 	<string name="uiMessageFriendInviteFailure">Oops, there was a problem inviting your friend. We're sorry, please try again.</string>
 	<string name="uiMessageFriendRemovalFailure">Oops, there was a problem in removing your friend. We're sorry, please try again.</string>
@@ -71,6 +71,9 @@
 	<string name="sendInvite">Send Invite</string>
 	<string name="notificationNewPoiAlert">New POI Alert!</string>
 	<string name="notificationText">&quot;'%1$s' is nearby to '%2$s'&quot;</string>
+	<string name="notificationLocationProblem">Location problem</string>
+	<string name="notificationLocationTitle">Oops! No location provider</string>
+	<string name="notificationLocationText">Click to change your settings</string>
 	<string name="inviteFriend">Type the email address of the person you would like to invite:</string>
 	<string name="contactFriendText">&quot;'%1$s' is nearby to '%2$s'&quot;! Please select from one of the options listed below to contact him/her:</string>
 	<string name="radioButtonEmail">Email</string>
