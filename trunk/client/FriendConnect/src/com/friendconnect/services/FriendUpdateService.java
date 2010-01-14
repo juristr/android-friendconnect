@@ -34,14 +34,13 @@ import com.friendconnect.main.IoC;
  *
  */
 public class FriendUpdateService extends Service {
+	private final int UPDATE_INTERVAL = 5000;
 	private FriendListController controller;
 	private Timer timer;
-	private final int UPDATE_INTERVAL = 5000; // TODO make configurable??
 	private Handler mainHandler;
 
 	@Override
 	public IBinder onBind(Intent arg0) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
