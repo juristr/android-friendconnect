@@ -33,7 +33,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
@@ -50,7 +49,6 @@ public class LocationService extends Service implements LocationListener {
 	private NotificationManager notificationManager;
 	private Timer timer;
 	private int notificationId = 339484712;
-	private Handler mainHandler;
 	private String provider;
 	private boolean isUserNotified = false;
 

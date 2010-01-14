@@ -18,6 +18,7 @@
 
 package com.friendconnect.main;
 
+import com.friendconnect.annotations.FriendConnectURL;
 import com.friendconnect.services.IXMLRPCService;
 import com.friendconnect.services.XMLRPCService;
 import com.google.inject.AbstractModule;
@@ -33,5 +34,8 @@ public class FriendConnectModule extends AbstractModule {
 	protected void configure() {
 		bind(IXMLRPCService.class).to(XMLRPCService.class);
 		bind(IFriendConnectApplication.class).to(FriendConnectApplication.class);
+//		bind(String.class).annotatedWith(FriendConnectURL.class).toInstance("http://10.0.2.2:8080/xmlrpc");
+//		bind(String.class).annotatedWith(FriendConnectURL.class).toInstance("http://0-1.latest.android-friendconnect.appspot.com/xmlrpc");
+		bind(String.class).annotatedWith(FriendConnectURL.class).toInstance("http://android-friendconnect.appspot.com/xmlrpc");	
 	}
 }

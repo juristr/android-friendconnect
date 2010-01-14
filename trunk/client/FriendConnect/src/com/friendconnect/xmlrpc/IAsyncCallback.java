@@ -37,13 +37,4 @@ public interface IAsyncCallback<T> {
 	 * @param throwable the exception
 	 */
 	public void onFailure(Throwable throwable);
-
-	
-	//TODO Juri: define this, just if needed
-	/**
-	 * A callback getting messages about the ongoing
-	 * processing.
-	 * @param message
-	 */
-//	public void onProgressChange(String message);
 }

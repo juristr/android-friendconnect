@@ -19,11 +19,8 @@
 package com.friendconnect.model;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Observable;
-
-import android.text.format.DateFormat;
 
 import com.friendconnect.annotations.ComplexSerializableType;
 import com.friendconnect.annotations.NotRecursiveSync;

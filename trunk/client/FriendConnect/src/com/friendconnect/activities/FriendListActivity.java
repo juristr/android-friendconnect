@@ -174,8 +174,7 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 			public void run() {
 				showFriendConnectUserInfo((FriendConnectUser) observable);
 
-				while (lock)
-					;
+				while (lock);
 
 				((FriendAdapter) adapter).sort(userComparator);
 				adapter.notifyDataSetChanged();
@@ -224,7 +223,6 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		super.onOptionsItemSelected(item);
 		switch (item.getItemId()) {
 		case (ADD_FRIEND): {
 			showDialog(ADDFRIEND_DIALOG);
@@ -247,7 +245,7 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 			return true;
 		}
 		}
-		return true;
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -259,8 +257,6 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		super.onContextItemSelected(item);
-
 		AdapterView.AdapterContextMenuInfo menuInfo;
 		menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 		int index = menuInfo.position;
@@ -276,6 +272,7 @@ public class FriendListActivity extends AuthenticationActivity implements IView 
 			mapIntent.putExtra(FriendMapActivity.CENTER_LAT, friend.getPosition().getLatitude());
 			mapIntent.putExtra(FriendMapActivity.CENTER_LNG, friend.getPosition().getLongitude());
 			startActivity(mapIntent);
+			return true;
 		}
 		}
 		return super.onContextItemSelected(item);

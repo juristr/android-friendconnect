@@ -29,7 +29,6 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Projection;
 
 public class FriendPositionOverlay extends BasePositionOverlay {
-	private final float MAX_DISTANCE = 20000;
 	private User friendUser;
 	private GeoPoint friendGeoPoint;
 	private GeoPoint androidUserGeoPoint;
@@ -54,40 +53,37 @@ public class FriendPositionOverlay extends BasePositionOverlay {
 			paint.setAntiAlias(true);
 			paint.setFakeBoldText(true);
 
-//			if (friendDist < MAX_DISTANCE) {
-				Point androidUserPoint = new Point();
-				projection.toPixels(androidUserGeoPoint, androidUserPoint);
+			Point androidUserPoint = new Point();
+			projection.toPixels(androidUserGeoPoint, androidUserPoint);
 
-				Point friendPoint = new Point();
-				projection.toPixels(friendGeoPoint, friendPoint);
+			Point friendPoint = new Point();
+			projection.toPixels(friendGeoPoint, friendPoint);
 
-				canvas.drawLine(androidUserPoint.x, androidUserPoint.y,
-						friendPoint.x, friendPoint.y, paint);
+			canvas.drawLine(androidUserPoint.x, androidUserPoint.y,
+					friendPoint.x, friendPoint.y, paint);
 
-				int markerRadius = 5;
-				RectF oval = new RectF(friendPoint.x - markerRadius,
-						friendPoint.y - markerRadius, friendPoint.x
-								+ markerRadius, friendPoint.y + markerRadius);
+			int markerRadius = 5;
+			RectF oval = new RectF(friendPoint.x - markerRadius,
+					friendPoint.y - markerRadius, friendPoint.x
+							+ markerRadius, friendPoint.y + markerRadius);
 
-				canvas.drawOval(oval, paint);
-				
-				//TODO refactor this
-				String userDistance = friendUser.getFormattedDistanceString();
-				if(!userDistance.equals(""))
-					userDistance = "(" + userDistance + ")";
-				String textToDisplay = friendUser.toString() + userDistance;
+			canvas.drawOval(oval, paint);
+			
+			String userDistance = friendUser.getFormattedDistanceString();
+			if(!userDistance.equals(""))
+				userDistance = "(" + userDistance + ")";
+			String textToDisplay = friendUser.toString() + userDistance;
 
-				float textWidth = paint.measureText(textToDisplay);
-				float textHeight = paint.getTextSize();
-				
-				RectF infoWindowRect = new RectF(friendPoint.x + markerRadius, friendPoint.y - textHeight,friendPoint.x + 14 + textWidth, friendPoint.y + 7);	
-				
-				canvas.drawRoundRect(infoWindowRect, 5, 5, getInnerPaint());
-				canvas.drawRoundRect(infoWindowRect, 5, 5, getBorderPaint());
-				
-				canvas.drawText(textToDisplay, friendPoint.x + markerRadius + 4,
-						friendPoint.y, getTextPaint());
-//			}
+			float textWidth = paint.measureText(textToDisplay);
+			float textHeight = paint.getTextSize();
+			
+			RectF infoWindowRect = new RectF(friendPoint.x + markerRadius, friendPoint.y - textHeight,friendPoint.x + 14 + textWidth, friendPoint.y + 7);	
+			
+			canvas.drawRoundRect(infoWindowRect, 5, 5, getInnerPaint());
+			canvas.drawRoundRect(infoWindowRect, 5, 5, getBorderPaint());
+			
+			canvas.drawText(textToDisplay, friendPoint.x + markerRadius + 4,
+					friendPoint.y, getTextPaint());
 		}
 
 		super.draw(canvas, mapView, shadow);

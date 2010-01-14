@@ -45,9 +45,6 @@ public class POIOverlay extends Overlay {
 		this.alert = alert;
 		this.context = context;
 		this.geoLocation = alert.getPosition().convertToAndroidGeoPoint();
-		// this.flagBitmap =
-		// BitmapFactory.decodeResource(context.getResources(),
-		// R.drawable.flag);
 		this.flagShadowBitmap = BitmapFactory.decodeResource(context.getResources(),
 				R.drawable.flag_shadow);
 
@@ -100,15 +97,6 @@ public class POIOverlay extends Overlay {
 
 				canvas.drawOval(oval, radiusPaint);
 			}
-
-			// Paint rectPaint = new Paint();
-			// rectPaint.setARGB(225, 75, 75, 75); //gray
-			// rectPaint.setAntiAlias(true);
-
-			// RectF rect = new RectF();
-			// rect.set(-flagBitmap.getWidth()/2,-flagBitmap.getHeight(),flagBitmap.getWidth()/2,0);
-			// rect.offset(screenPos.x, screenPos.y);
-			// canvas.drawRect(rect, rectPaint);
 
 		} else {
 			int xPos = screenPos.x - 10;
