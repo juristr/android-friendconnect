@@ -20,6 +20,7 @@ package com.friendconnect.utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
@@ -31,13 +32,13 @@ public class ActivityUtils {
 	
 	/**
 	 * Initializes a confirmation dialog
-	 * @param activity
+	 * @param context
 	 * @param title
 	 * @param message
 	 * @return
 	 */
-	public static AlertDialog.Builder createConfirmationDialog(Activity activity, String title, String message) {
-		AlertDialog.Builder ad = new AlertDialog.Builder(activity); 
+	public static AlertDialog.Builder createConfirmationDialog(Context context, String title, String message) {
+		AlertDialog.Builder ad = new AlertDialog.Builder(context); 
 		ad.setTitle(title);
 		ad.setMessage(message); 
 		ad.setCancelable(true); 
@@ -66,15 +67,15 @@ public class ActivityUtils {
 	
 	/**
 	 * Shows a standard toast
-	 * @param activity
+	 * @param context
 	 * @param textId
 	 * @param duration
 	 */
-	public static void showToast(Activity activity, int textId, int duration) {
-		Toast.makeText(activity, textId, duration).show();
+	public static void showToast(Context context, int textId, int duration) {
+		Toast.makeText(context, textId, duration).show();
 	}
 	
-	public static void showToast(Activity activity, String text, int duration){
-		Toast.makeText(activity, text, duration).show();
+	public static void showToast(Context context, String text, int duration){
+		Toast.makeText(context, text, duration).show();
 	}
 }
