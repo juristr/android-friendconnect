@@ -210,8 +210,8 @@ public class POIAlertListActivity extends AuthenticationActivity implements IVie
 	
 	private void showOnMap(int selectedItemPosition) {
 		final POIAlert poiAlert = getSelectedPOIAlert(selectedItemPosition);
-		
-		Intent result = new Intent("", null);
+				
+		Intent result = getIntent();
 		result.putExtra(FriendMapActivity.CENTER_LAT, poiAlert.getPosition().getLatitude());
 		result.putExtra(FriendMapActivity.CENTER_LNG, poiAlert.getPosition().getLongitude());
 		
