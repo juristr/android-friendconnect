@@ -179,10 +179,6 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 		return new FriendAdapter(context, this.layoutId, this.model.getFriends());
 	}
 
-	public void addFriend(User friend) {
-		this.model.addFriend(friend);
-	}
-
 	public User getFriend(int position) {
 		return this.model.getFriends().get(position);
 	}

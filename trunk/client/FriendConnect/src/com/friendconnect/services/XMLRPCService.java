@@ -39,7 +39,6 @@ public class XMLRPCService implements IXMLRPCService {
 	private IFriendConnectApplication application;
 
 	public XMLRPCService() {
-		
 	}
 
 	public <T> void sendRequest(String remoteMethod, Object[] params, IAsyncCallback<T> callback, Class clazz) {

@@ -16,7 +16,7 @@
  **                                                                          **
  **  **********************************************************************  */
 
-package com.friendconnect.main;
+package com.friendconnect.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,7 +24,8 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.friendconnect.R;
-import com.friendconnect.activities.FriendListActivity;
+import com.friendconnect.main.FriendConnectApplication;
+import com.friendconnect.main.IoC;
 
 public class SplashScreenActivity extends Activity {
 	private long splashTime = 3000;

@@ -80,10 +80,10 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 	// appropriate dialog)
 
 	/** Called when the activity is first created. */
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
+//	@Override
+//	public void onCreate(Bundle savedInstanceState) {
+//		super.onCreate(savedInstanceState);
+//	}
 
 	public void onAuthenticated() {
 		setContentView(R.layout.friendmapview);
@@ -190,7 +190,6 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 
 	@Override
 	protected boolean isRouteDisplayed() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

@@ -33,7 +33,6 @@ import com.friendconnect.annotations.NotRecursiveSync;
 public class ObjectHelper {
 
 	public ObjectHelper() {
-
 	}
 
 	/**

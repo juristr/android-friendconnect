@@ -30,7 +30,9 @@ import com.friendconnect.services.IXMLRPCService;
 import com.friendconnect.xmlrpc.IAsyncCallback;
 import com.friendconnect.xmlrpc.ObjectSerializer;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
+@Singleton
 public class EditProfileController extends AbstractController<FriendConnectUser> {
 	private IFriendConnectApplication application;
 	private IXMLRPCService xmlRpcService;

@@ -5,7 +5,7 @@
       android:versionName="1.0">
     <application android:name=".main.AndroidApplication" android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="true">
     	<uses-library android:name="com.google.android.maps"/>
-        <activity android:clearTaskOnLaunch="true" android:label="@string/app_name" android:name=".main.SplashScreenActivity" android:configChanges="keyboardHidden|orientation">
+        <activity android:clearTaskOnLaunch="true" android:label="@string/app_name" android:name=".activities.SplashScreenActivity" android:configChanges="keyboardHidden|orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
