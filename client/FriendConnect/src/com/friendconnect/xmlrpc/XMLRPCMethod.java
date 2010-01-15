@@ -122,16 +122,7 @@ public class XMLRPCMethod<T> extends Thread {
 		} catch (final XMLRPCException e) {
 			handler.post(new Runnable() {
 				public void run() {
-//					Throwable couse = e.getCause();
-//					if (couse instanceof HttpHostConnectException) {
-//						status
-//								.setText("Cannot connect to "
-//										+ uri.getHost()
-//										+ "\nMake sure server.py on your development host is running !!!");
-//					} else {
-//						status.setText("Error " + e.getMessage());
-//					}
-					Log.d("Test", "error", e);
+					Log.d(XMLRPCException.class.getCanonicalName(), e.getMessage(), e);
 					callBack.onFailure(e);
 				}
 			});

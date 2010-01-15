@@ -30,10 +30,8 @@ import com.friendconnect.annotations.ComplexSerializableType;
 import com.friendconnect.annotations.NotSerializable;
 
 public class ObjectSerializer {
-	// private Class<T> clazz;
 
 	public ObjectSerializer() {
-		// this.clazz = clazz;
 	}
 
 	@SuppressWarnings("unchecked")

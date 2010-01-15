@@ -208,6 +208,11 @@ public class POIAlertListActivity extends AuthenticationActivity implements IVie
 		ad.show();
 	}
 	
+	/**
+	 * This method is used to return the result of the item that should be zoomed and
+	 * centered to the map activity
+	 * @param selectedItemPosition
+	 */
 	private void showOnMap(int selectedItemPosition) {
 		final POIAlert poiAlert = getSelectedPOIAlert(selectedItemPosition);
 				

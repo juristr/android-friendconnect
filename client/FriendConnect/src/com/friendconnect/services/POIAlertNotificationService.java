@@ -166,7 +166,9 @@ public class POIAlertNotificationService extends Service {
 			int notificationId = getNextNotificationId();
 			shownNotifications.add(notificationKey);
 			
-			Notification notification = new Notification(R.drawable.icon, getText(R.string.notificationNewPoiAlert), System.currentTimeMillis()); 
+			Notification notification = new Notification(R.drawable.icon, getText(R.string.notificationNewPoiAlert), System.currentTimeMillis());
+			notification.defaults = Notification.DEFAULT_ALL;
+			
 			Intent intent = new Intent(this, POIAlertActivity.class);
 			intent.putExtra(POIAlertActivity.FRIEND_EMAIL, friend.getEmailAddress());
 			intent.putExtra(POIAlertActivity.FRIEND_NAME, friend.getName());
@@ -174,12 +176,9 @@ public class POIAlertNotificationService extends Service {
 			intent.putExtra(POIAlertActivity.POI_TITLE, poiAlert.getTitle());
 			intent.putExtra(POIAlertActivity.NOTIFICATION_ID, notificationId);
 			
-			notification.defaults = Notification.DEFAULT_ALL;
-			
 			PendingIntent pendingIntent = PendingIntent.getActivity(this, notificationId, intent, Intent.FLAG_ACTIVITY_NEW_TASK);
 	
-			String notificationContentText = String.format(getString(R.string.notificationText), friend.toString(), poiAlert.getTitle());
-				
+			String notificationContentText = String.format(getString(R.string.notificationText), friend.toString(), poiAlert.getTitle());	
 			notification.setLatestEventInfo(this, poiAlert.getTitle(), notificationContentText, pendingIntent);
 			
 			notificationManager.notify(notificationId, notification);
