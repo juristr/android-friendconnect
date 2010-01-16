@@ -79,12 +79,6 @@ public class FriendMapActivity extends AuthenticationMapActivity implements IVie
 	private POIAlert clickedPOIAlert = null; // the clicked alert (for showing
 	// appropriate dialog)
 
-	/** Called when the activity is first created. */
-//	@Override
-//	public void onCreate(Bundle savedInstanceState) {
-//		super.onCreate(savedInstanceState);
-//	}
-
 	public void onAuthenticated() {
 		setContentView(R.layout.friendmapview);
 		this.mapView = (FriendMapView) findViewById(R.id.map_view);

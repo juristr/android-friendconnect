@@ -44,7 +44,7 @@ public abstract class AuthenticationMapActivity extends MapActivity {
 	 * Template method
 	 */
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected final void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		progressDialog = new ProgressDialog(this);
 		

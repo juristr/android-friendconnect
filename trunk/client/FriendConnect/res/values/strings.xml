@@ -45,6 +45,7 @@
 	<string name="uiMessageSavingProfile">Saving profile...</string>
 	<string name="uiMessageSaveProfile">Save Profile</string>
 	<string name="uiMessageCannotInviteYourself">You cannot invite yourself ;)</string>
+	<string name="uiMessageFriendAlreadyInFriendList">You cannot invite a friend that is already in your friend list ;)</string>
 	<string name="uiMessageRemovingPOIAlert">Removing POI Alert...</string>
 	<string name="uiMessageSavingPOIAlert">Saving POI Alert...</string>
 	<string name="uiMessageLocationProviderOutOfService">Oops, it seems as if your location provider is out of service!</string>

@@ -111,25 +111,30 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 	 * another user.
 	 */
 	public void inviteFriend(final String inviteeEmailAddress) {
-		Object[] params = {inviteeEmailAddress.toLowerCase()};
-		xmlRPCService.sendRequest(RPCRemoteMappings.INVITEFRIEND, params, new IAsyncCallback<Boolean>() {
-
-			public void onSuccess(Boolean result) {
-				if(!result){
-					onFailure(new Exception("Server returned false"));
+		if (!containsFriend(model.getCopyOfFriends(), inviteeEmailAddress)) {
+			Object[] params = {inviteeEmailAddress.toLowerCase()};
+			xmlRPCService.sendRequest(RPCRemoteMappings.INVITEFRIEND, params, new IAsyncCallback<Boolean>() {
+	
+				public void onSuccess(Boolean result) {
+					if(!result){
+						onFailure(new Exception("Server returned false"));
+					}
+					notifyStopProgress();
+					notifyShowMessage(R.string.uiMessageFriendInviteSuccessful);
 				}
-				notifyStopProgress();
-				notifyShowMessage(R.string.uiMessageFriendInviteSuccessful);
-			}
-			
-			public void onFailure(Throwable throwable) {
-				Log.e(FriendListController.class.getCanonicalName(), "Problem inviting the friend " + inviteeEmailAddress + ": " + throwable.getMessage());
-				notifyStopProgress();
 				
-				notifyShowMessage(R.string.uiMessageFriendInviteFailure);
-			}
-			
-		}, Boolean.class);
+				public void onFailure(Throwable throwable) {
+					Log.e(FriendListController.class.getCanonicalName(), "Problem inviting the friend " + inviteeEmailAddress + ": " + throwable.getMessage());
+					notifyStopProgress();
+					
+					notifyShowMessage(R.string.uiMessageFriendInviteFailure);
+				}
+				
+			}, Boolean.class);
+		} else {
+			notifyStopProgress();
+			notifyShowMessage(R.string.uiMessageFriendAlreadyInFriendList);
+		}
 	}
 	
 	/**
@@ -158,10 +163,27 @@ public class FriendListController extends AbstractController<FriendConnectUser> 
 	}
 	
 	/**
-	 * Retrieves a {@link Friend} object from a list of friends
+	 * Checks whether a list of users contains a user with a certain e-mail 
+	 * address 
+	 * @param users
+	 * @param emailAddress
+	 * @return
+	 */
+	private boolean containsFriend(List<User> users, String emailAddress) {
+		for (User friend : users) {
+			if (friend.getEmailAddress().toLowerCase().equals(emailAddress.toLowerCase())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	/**
+	 * Retrieves a {@link User} object from a list of friends
 	 * @param users users to search a friend in
 	 * @param id the identifier to be matched
-	 * @return the corresponding {@link Friend} object, null otherwise
+	 * @return the corresponding {@link User} object, null otherwise
 	 */
 	private User getFriend(List<User> users, String id) {
 		
