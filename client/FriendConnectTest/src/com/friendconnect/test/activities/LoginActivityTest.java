@@ -10,11 +10,14 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.friendconnect.R;
+import com.friendconnect.activities.FriendListActivity;
 import com.friendconnect.activities.LoginActivity;
+import com.friendconnect.model.Constants;
 
-public class LoginActivityTest extends
-		ActivityUnitTestCase<LoginActivity> {
+public class LoginActivityTest extends ActivityUnitTestCase<LoginActivity> {
 	private Intent startIntent;
+	private String username;
+	private String password;
 
 	public LoginActivityTest() {
 		super(LoginActivity.class);
@@ -23,13 +26,19 @@ public class LoginActivityTest extends
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		startIntent = new Intent(Intent.ACTION_MAIN);
+		startIntent = new Intent(this.getInstrumentation().getTargetContext(), FriendListActivity.class);
+		username = "";
+		password = "";
+		
+		fail("Username + password must be specified");
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
 		startIntent = null;
+		username = null;
+		password = null;
 	}
 
 	@MediumTest
@@ -53,11 +62,6 @@ public class LoginActivityTest extends
 		Button signInButton = (Button) getActivity().findViewById(
 				R.id.buttonSignIn);
 
-		String username = "";
-		String password = "";
-
-		fail("Username + password must be specified");
-
 		editTextEmail.setText(username);
 		editTextPassword.setText(password);
 		signInButton.performClick();
@@ -72,23 +76,20 @@ public class LoginActivityTest extends
 
 	@MediumTest
 	public void testLoadPreferences() {
-		// clear Activitie's preference store
-		SharedPreferences activityPreferences = getActivity().getPreferences(
-				Activity.MODE_PRIVATE);
+		// clear Activity's preference store
+		SharedPreferences activityPreferences = this.getInstrumentation().getTargetContext().getSharedPreferences(Constants.USER_PREFS, Activity.MODE_PRIVATE);
 		SharedPreferences.Editor editor = activityPreferences.edit();
 		editor.putString("username", "juri");
 		editor.putString("password", "juri123");
 		editor.putBoolean("savePrefs", true);
 		editor.commit();
-
+		
 		startActivity(startIntent, null, null);
-
+			
 		EditText editTextEmail = (EditText) getActivity().findViewById(
 				R.id.editTextEmail);
 		EditText editTextPassword = (EditText) getActivity().findViewById(
 				R.id.editTextPassword);
-		Button signInButton = (Button) getActivity().findViewById(
-				R.id.buttonSignIn);
 		CheckBox checkBoxSavePrefs = (CheckBox) getActivity().findViewById(
 				R.id.checkBoxSavePassword);
 
@@ -100,7 +101,7 @@ public class LoginActivityTest extends
 	}
 	
 	@MediumTest
-	public void testSavePreferences() {
+	public void testSavePreferences() throws Exception {
 		startActivity(startIntent, null, null);
 
 		EditText editTextEmail = (EditText) getActivity().findViewById(
@@ -111,23 +112,25 @@ public class LoginActivityTest extends
 				R.id.buttonSignIn);
 		CheckBox checkBoxSavePrefs = (CheckBox) getActivity().findViewById(
 				R.id.checkBoxSavePassword);
-		
-		editTextEmail.setText("juri");
-		editTextPassword.setText("123Test456");
+
+		editTextEmail.setText(username);
+		editTextPassword.setText(password);
 		checkBoxSavePrefs.setChecked(true);
 		
 		signInButton.performClick();
 		
+		// wait some seconds
+		Thread.sleep(2000);
+		
 		//the Activity's preference store should contain the data now
-		SharedPreferences activityPreferences = getActivity().getPreferences(
-				Activity.MODE_PRIVATE);
-		assertEquals("juri", activityPreferences.getString("username", ""));
-		assertEquals("123Test456", activityPreferences.getString("password", ""));
+		SharedPreferences activityPreferences = getActivity().getSharedPreferences(Constants.USER_PREFS, Activity.MODE_PRIVATE);
+		assertEquals(username, activityPreferences.getString("username", ""));
+		assertEquals(password, activityPreferences.getString("password", ""));
 		assertEquals(true, activityPreferences.getBoolean("storePrefs", false));
 	}
 	
 	@MediumTest
-	public void testSavePreferences2() {
+	public void testSavePreferences2() throws Exception {
 		startActivity(startIntent, null, null);
 
 		EditText editTextEmail = (EditText) getActivity().findViewById(
@@ -138,16 +141,18 @@ public class LoginActivityTest extends
 				R.id.buttonSignIn);
 		CheckBox checkBoxSavePrefs = (CheckBox) getActivity().findViewById(
 				R.id.checkBoxSavePassword);
-		
-		editTextEmail.setText("juri");
-		editTextPassword.setText("123Test456");
-		checkBoxSavePrefs.setChecked(false); //the preferences shouldn't be stored!!
+
+		editTextEmail.setText(username);
+		editTextPassword.setText(password);
+		checkBoxSavePrefs.setChecked(false);
 		
 		signInButton.performClick();
 		
+		// wait some seconds
+		Thread.sleep(2000);
+		
 		//the Activity's preference store should contain the data now
-		SharedPreferences activityPreferences = getActivity().getPreferences(
-				Activity.MODE_PRIVATE);
+		SharedPreferences activityPreferences = getActivity().getSharedPreferences(Constants.USER_PREFS, Activity.MODE_PRIVATE);
 		assertEquals("", activityPreferences.getString("username", ""));
 		assertEquals("", activityPreferences.getString("password", ""));
 		assertEquals(false, activityPreferences.getBoolean("storePrefs", false));
