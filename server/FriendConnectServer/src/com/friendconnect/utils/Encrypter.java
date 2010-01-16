@@ -30,7 +30,7 @@ import org.bouncycastle.crypto.params.KeyParameter;
  */
 public class Encrypter {
 
-	private String key = "abc123abc123abcd";
+	private String key = "abc123abc123abcd"; //note: this key must match the client-side key
 	private BufferedBlockCipher cipher;
 
 	public Encrypter() {

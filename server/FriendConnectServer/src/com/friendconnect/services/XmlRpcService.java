@@ -16,6 +16,12 @@ import com.friendconnect.utils.Encrypter;
 import com.friendconnect.xmlrpc.ObjectSerializer;
 import com.google.gdata.util.AuthenticationException;
 
+/**
+ * Service facade that represents the main entry point to the lower-level application
+ * layers. All requests MUST pass through one of the methods exposed by this class.
+ * The methods are directly invoked from the client through XML-RPC
+ *
+ */
 public class XmlRpcService {
 	private static final Logger log = Logger.getLogger(XmlRpcService.class.getName());
 	private IUserService userService;
