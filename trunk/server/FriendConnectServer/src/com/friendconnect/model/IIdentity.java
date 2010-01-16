@@ -18,6 +18,10 @@
 
 package com.friendconnect.model;
 
+/**
+ * Identifies an object that exposes an id (from the datastore)
+ *
+ */
 public interface IIdentity {
 	
 	public String getId();
