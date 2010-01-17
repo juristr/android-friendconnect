@@ -88,6 +88,6 @@ public abstract class AuthenticationActivity extends Activity {
 	}
 
 	public void showMessage(int messageId) {
-		ActivityUtils.showToast(this, messageId, Toast.LENGTH_SHORT);
+		ActivityUtils.showToast(this, messageId, Toast.LENGTH_LONG);
 	}
 }
