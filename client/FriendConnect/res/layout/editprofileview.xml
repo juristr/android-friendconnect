@@ -13,7 +13,7 @@
 		</TableRow>
 		<TableRow>
 			<TextView android:id="@+id/textViewWebsite" android:text="@string/website"  />
-			<EditText android:id="@+id/editTextWebsite" android:layout_span="2" android:maxLines="1" />
+			<EditText android:id="@+id/editTextWebsite" android:layout_span="2" android:hint="http://www.google.com" android:maxLines="1" />
 		</TableRow>
 		<TableRow>
 			<TextView android:id="@+id/textViewPhone" android:text="@string/phone"  />

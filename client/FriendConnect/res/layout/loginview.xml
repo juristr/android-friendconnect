@@ -11,7 +11,7 @@
 		</TableRow>
 		<TableRow>
 			<TextView android:id="@+id/textViewEmail" android:text="@string/email" android:textColor="#000000" />
-			<EditText android:id="@+id/editTextEmail" android:layout_span="2" android:maxLines="1" />
+			<EditText android:id="@+id/editTextEmail" android:layout_span="2" android:hint="your.username@gmail.com" android:maxLines="1" />
 		</TableRow>
 		<TableRow>
 			<TextView android:id="@+id/textViewPassword" android:text="@string/password" android:textColor="#000000" />
