@@ -17,7 +17,7 @@
 		</TableRow>
 		<TableRow>
 			<TextView android:id="@+id/textViewPhone" android:text="@string/phone"  />
-			<EditText android:id="@+id/editTextPhone" android:layout_span="2" android:maxLines="1" />
+			<EditText android:id="@+id/editTextPhone" android:layout_span="2" android:phoneNumber="true" android:maxLines="1" />
 		</TableRow>
 		<TableRow>
 			<TextView android:id="@+id/textViewStatusMsg" android:text="@string/statusmessage"  />
